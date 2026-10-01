@@ -1,0 +1,1565 @@
+-- Boss Blinds Atlas
+SMODS.Atlas {
+    key = "witch_brew_blinds",
+    path = "blinds.png",
+    px = 34,
+    py = 34
+}
+-- Boss Blinds
+G.Witch_brew_BLIND_THEMES = {
+    ['pole'] = {
+        name = 'The Pole',
+        boss_colour = HEX('868686'),
+        new_colour = HEX('2b2b2b'),
+        special_colour = HEX('a3a3a3'),
+        tertiary_colour = HEX('1a1a1a'),
+        contrast = 2
+    },
+    ['stick'] = {
+        name = 'The Rod',
+        boss_colour = HEX('439a4f'),
+        new_colour = HEX('1a3e20'),
+        special_colour = HEX('71b27a'),
+        tertiary_colour = HEX('0e2312'),
+        contrast = 2
+    },
+    ['wizard'] = {
+        name = 'The Magician',
+        boss_colour = HEX('8a52b4'),
+        new_colour = HEX('3d165c'),
+        special_colour = HEX('ad75d7'),
+        tertiary_colour = HEX('200933'),
+        contrast = 2.5
+    },
+    ['mountain'] = {
+        name = 'The Mountain',
+        boss_colour = HEX('5b94b3'),
+        new_colour = HEX('1a3c4f'),
+        special_colour = HEX('78b1d0'),
+        tertiary_colour = HEX('0f222d'),
+        contrast = 2
+    },
+    ['door'] = {
+        name = 'The Door',
+        boss_colour = HEX('ff1fdb'),
+        new_colour = HEX('610052'),
+        special_colour = HEX('ff55e4'),
+        tertiary_colour = HEX('300028'),
+        contrast = 2.5
+    },
+    ['triangle'] = {
+        name = 'The Triangle',
+        boss_colour = HEX('2e8a81'),
+        new_colour = HEX('0d3d37'),
+        special_colour = HEX('52aea5'),
+        tertiary_colour = HEX('05211e'),
+        contrast = 2
+    },
+    ['cube'] = {
+        name = 'The Cube',
+        boss_colour = HEX('5e8bd6'),
+        new_colour = HEX('18386e'),
+        special_colour = HEX('7ba8f3'),
+        tertiary_colour = HEX('0b1c3b'),
+        contrast = 2.5
+    },
+    ['void'] = {
+        name = 'The Void',
+        boss_colour = HEX('150426'),
+        new_colour = HEX('090112'),
+        special_colour = HEX('b067b1'),
+        tertiary_colour = HEX('000000'),
+        contrast = 3
+    },
+    ['guitar'] = {
+        name = 'The Guitar',
+        boss_colour = HEX('ce515a'),
+        new_colour = HEX('541318'),
+        special_colour = HEX('ef727b'),
+        tertiary_colour = HEX('2b080b'),
+        contrast = 2.5
+    },
+    ['phone'] = {
+        name = 'The Phone',
+        boss_colour = HEX('00b281'),
+        new_colour = HEX('004230'),
+        special_colour = HEX('00e3a5'),
+        tertiary_colour = HEX('002118'),
+        contrast = 2
+    },
+    ['pinza'] = {
+        name = 'The Pincer',
+        boss_colour = HEX('777777'),
+        new_colour = HEX('2d3436'),
+        special_colour = HEX('b2bec3'),
+        tertiary_colour = HEX('181d1e'),
+        contrast = 3
+    },
+    ['doppelganger'] = {
+        name = 'The Doppelgänger',
+        boss_colour = HEX('1c2833'),
+        new_colour = HEX('0e141a'),
+        special_colour = HEX('aeb6bf'),
+        tertiary_colour = HEX('070a0d'),
+        contrast = 2.5
+    },
+    ['The Doppelgänger'] = {
+        name = 'The Doppelgänger',
+        boss_colour = HEX('1c2833'),
+        new_colour = HEX('0e141a'),
+        special_colour = HEX('aeb6bf'),
+        tertiary_colour = HEX('070a0d'),
+        contrast = 2.5
+    },
+    ['The Doppelganger'] = {
+        name = 'The Doppelgänger',
+        boss_colour = HEX('1c2833'),
+        new_colour = HEX('0e141a'),
+        special_colour = HEX('aeb6bf'),
+        tertiary_colour = HEX('070a0d'),
+        contrast = 2.5
+    },
+    ['The Void'] = {
+        name = 'The Void',
+        boss_colour = HEX('150426'),
+        new_colour = HEX('090112'),
+        special_colour = HEX('b067b1'),
+        tertiary_colour = HEX('000000'),
+        contrast = 3
+    },
+    ['The Pincer'] = {
+        name = 'The Pincer',
+        boss_colour = HEX('777777'),
+        new_colour = HEX('2d3436'),
+        special_colour = HEX('b2bec3'),
+        tertiary_colour = HEX('181d1e'),
+        contrast = 3
+    },
+    ['chronos'] = {
+        name = 'Chronos',
+        boss_colour = HEX('6a0dad'),
+        new_colour = HEX('1e0038'),
+        special_colour = HEX('ffd166'),
+        tertiary_colour = HEX('0e001c'),
+        contrast = 3.0
+    },
+    ['ares'] = {
+        name = 'Ares',
+        boss_colour = HEX('c1121f'),
+        new_colour = HEX('400307'),
+        special_colour = HEX('ff3838'),
+        tertiary_colour = HEX('1a0103'),
+        contrast = 3.2
+    },
+    ['athena'] = {
+        name = 'Athena',
+        boss_colour = HEX('e5a910'),
+        new_colour = HEX('0b2545'),
+        special_colour = HEX('ffd000'),
+        tertiary_colour = HEX('041021'),
+        contrast = 2.8
+    },
+    ['hades'] = {
+        name = 'Hades',
+        boss_colour = HEX('160f24'),
+        new_colour = HEX('090412'),
+        special_colour = HEX('00f5d4'),
+        tertiary_colour = HEX('2a0845'),
+        contrast = 3.2
+    },
+    ['zeus'] = {
+        name = 'Zeus',
+        boss_colour = HEX('0096c7'),
+        new_colour = HEX('021e3f'),
+        special_colour = HEX('ffe033'),
+        tertiary_colour = HEX('001a33'),
+        contrast = 3.2
+    },
+    ['arrow'] = {
+        name = 'The Arrow',
+        boss_colour = HEX('8f2d56'),
+        new_colour = HEX('3d0c20'),
+        special_colour = HEX('d81159'),
+        tertiary_colour = HEX('1a050e'),
+        contrast = 2.5
+    },
+    ['guillotine'] = {
+        name = 'The Guillotine',
+        boss_colour = HEX('6b0f1a'),
+        new_colour = HEX('2b0006'),
+        special_colour = HEX('b91325'),
+        tertiary_colour = HEX('120002'),
+        contrast = 3.0
+    },
+    ['net'] = {
+        name = 'The Net',
+        boss_colour = HEX('0077b6'),
+        new_colour = HEX('022b42'),
+        special_colour = HEX('00b4d8'),
+        tertiary_colour = HEX('01131c'),
+        contrast = 2.5
+    },
+    ['poison'] = {
+        name = 'The Poison',
+        boss_colour = HEX('2d6a4f'),
+        new_colour = HEX('081c15'),
+        special_colour = HEX('74c69d'),
+        tertiary_colour = HEX('030a07'),
+        contrast = 3.0
+    },
+    ['code'] = {
+        name = 'The Code',
+        boss_colour = HEX('00b4d8'),
+        new_colour = HEX('051923'),
+        special_colour = HEX('00f0ff'),
+        tertiary_colour = HEX('00080d'),
+        contrast = 3.5
+    }
+}
+
+function get_witch_brew_blind_theme(blind)
+    if not blind or not G.Witch_brew_BLIND_THEMES then return nil end
+    local key = ''
+    local bname = ''
+    if type(blind) == 'string' then
+        key = blind
+        bname = blind
+    elseif type(blind) == 'table' then
+        key = (blind.config and blind.config.blind and blind.config.blind.key)
+            or (blind.config and blind.config.center and blind.config.center.key)
+            or blind.key
+            or blind.name
+            or ''
+        bname = blind.name or ''
+    end
+    key = string.gsub(key, '^bl_Witch_brew_', '')
+    key = string.gsub(key, '^b_Witch_brew_', '')
+    key = string.gsub(key, '^bl_', '')
+    key = string.gsub(key, '^b_', '')
+
+    local theme = G.Witch_brew_BLIND_THEMES[key] or (bname ~= '' and G.Witch_brew_BLIND_THEMES[bname])
+    if not theme then
+        local lkey = string.lower(key)
+        local lbname = string.lower(bname)
+        if string.find(lkey, 'doppel', 1, true) or string.find(lbname, 'doppel', 1, true) then
+            return G.Witch_brew_BLIND_THEMES['doppelganger']
+        end
+        if string.find(lkey, 'void', 1, true) or string.find(lbname, 'void', 1, true) then
+            return G.Witch_brew_BLIND_THEMES['void']
+        end
+        if string.find(lkey, 'pinza', 1, true) or string.find(lkey, 'pincer', 1, true) or string.find(lbname, 'pincer', 1, true) or string.find(lbname, 'pinza', 1, true) then
+            return G.Witch_brew_BLIND_THEMES['pinza']
+        end
+        for k, v in pairs(G.Witch_brew_BLIND_THEMES) do
+            if string.find(key, k, 1, true) or (bname ~= '' and (string.find(bname, v.name, 1, true) or string.find(bname, k, 1, true))) then
+                theme = v
+                break
+            end
+        end
+    end
+    return theme
+end
+
+function ease_custom_blind_background(blind)
+    local theme = get_witch_brew_blind_theme(blind)
+    if not theme then return end
+
+    G.GAME.blind_color = theme.special_colour or theme.boss_colour
+    G.ARGS.blind_colour = G.GAME.blind_color
+    if G.C and G.C.DYN_UI then
+        if G.C.DYN_UI.BOSS_MAIN and theme.boss_colour then
+            ease_colour(G.C.DYN_UI.BOSS_MAIN, theme.boss_colour)
+        end
+        if G.C.DYN_UI.BOSS_DARK and (theme.tertiary_colour or theme.boss_colour) then
+            ease_colour(G.C.DYN_UI.BOSS_DARK, theme.tertiary_colour or theme.boss_colour)
+        end
+        if G.C.DYN_UI.MAIN and theme.special_colour then
+            ease_colour(G.C.DYN_UI.MAIN, theme.special_colour)
+        end
+        if G.C.DYN_UI.DARK and theme.tertiary_colour then
+            ease_colour(G.C.DYN_UI.DARK, theme.tertiary_colour)
+        end
+    end
+    ease_background_colour{
+        new_colour = theme.new_colour,
+        special_colour = theme.special_colour,
+        tertiary_colour = theme.tertiary_colour,
+        contrast = theme.contrast or 2,
+        _is_witch_brew_theme = true
+    }
+end
+
+local function sync_witch_brew_blind_colours()
+    if not G.C or not G.C.BLIND or not G.Witch_brew_BLIND_THEMES then return end
+    for key, data in pairs(G.Witch_brew_BLIND_THEMES) do
+        G.C.BLIND[key] = data.boss_colour
+        G.C.BLIND['b_Witch_brew_' .. key] = data.boss_colour
+        G.C.BLIND['bl_Witch_brew_' .. key] = data.boss_colour
+        if data.name then
+            G.C.BLIND[data.name] = data.boss_colour
+        end
+    end
+end
+
+-- 1. The Pole
+SMODS.Blind {
+    key = 'pole',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 0, y = 0 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 3, max = 10 },
+    boss_colour = HEX('868686'),
+    loc_txt = {
+        name = 'The Pole',
+        text = {
+            "Cards with Editions (Foil, Holo, Poly)",
+            "lose $10 when scored"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if context.individual and context.cardarea == G.play and context.other_card and context.other_card.edition then
+            ease_dollars(-10)
+            return {
+                message = '-$10',
+                colour = G.C.MONEY
+            }
+        end
+    end
+}
+
+-- 2. The Rod
+SMODS.Blind {
+    key = 'stick',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 1, y = 0 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 3, max = 10 },
+    boss_colour = HEX('439a4f'),
+    loc_txt = {
+        name = 'The Rod',
+        text = {
+            "If score triples target,",
+            "next round target is X1.5"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    defeat = function(self)
+        if G.GAME.chips and G.GAME.blind and G.GAME.chips >= G.GAME.blind.chips * 3 then
+            G.GAME.stick_penalty = 1.5
+        end
+    end
+}
+
+-- 3. The Magician
+SMODS.Blind {
+    key = 'wizard',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 2, y = 0 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 3, max = 10 },
+    boss_colour = HEX('8a52b4'),
+    loc_txt = {
+        name = 'The Magician',
+        text = {
+            "All Enhanced cards",
+            "are debuffed"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if blind.disabled then return end
+
+        if context.debuff_card and context.debuff_card.area ~= G.jokers then
+            local card = context.debuff_card
+            local is_enhanced = (card.ability and card.ability.set == 'Enhanced') or
+                               (card.config and card.config.center and card.config.center.set == 'Enhanced') or
+                               (card.config and card.config.center_key and G.P_CENTERS and G.P_CENTERS[card.config.center_key] and G.P_CENTERS[card.config.center_key].set == 'Enhanced')
+            if is_enhanced then
+                return { debuff = true }
+            end
+        end
+    end
+}
+
+-- 4. The Mountain
+SMODS.Blind {
+    key = 'mountain',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 3, y = 0 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 3, max = 10 },
+    boss_colour = HEX('5b94b3'),
+    loc_txt = {
+        name = 'The Mountain',
+        text = {
+            "Using consumables disables",
+            "scoring on the next hand"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    debuff_hand = function(self, cards, hand, handname, check)
+        if G.GAME and G.GAME.mountain_disabled_hand then
+            if not check then
+                G.GAME.mountain_disabled_hand = nil
+            end
+            return true
+        end
+    end,
+    defeat = function(self)
+        if G.GAME then G.GAME.mountain_disabled_hand = nil end
+    end,
+    disable = function(self)
+        if G.GAME then G.GAME.mountain_disabled_hand = nil end
+    end
+}
+
+-- 5. The Door
+SMODS.Blind {
+    key = 'door',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 4, y = 0 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 3, max = 10 },
+    boss_colour = HEX('ff1fdb'),
+    loc_txt = {
+        name = 'The Door',
+        text = {
+            "Hands with odd number",
+            "of cards do not score"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    debuff_hand = function(self, cards, hand, handname, check)
+        if cards and #cards > 0 and (#cards % 2 ~= 0) then
+            return true
+        end
+    end
+}
+
+-- 6. The Triangle
+SMODS.Blind {
+    key = 'triangle',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 5, y = 0 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 3, max = 10 },
+    boss_colour = HEX('2e8a81'),
+    loc_txt = {
+        name = 'The Triangle',
+        text = {
+            "Hands with even number",
+            "of cards do not score"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    debuff_hand = function(self, cards, hand, handname, check)
+        if cards and #cards > 0 and (#cards % 2 == 0) then
+            return true
+        end
+    end
+}
+
+-- 7. The Cube
+SMODS.Blind {
+    key = 'cube',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 0, y = 1 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 1, max = 10 },
+    boss_colour = HEX('5e8bd6'),
+    loc_txt = {
+        name = 'The Cube',
+        text = {
+            "Halves final Chips and Mult",
+            "if the number is even in final scoring"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if context.before then
+            G.GAME.cube_triggered = nil
+        end
+        if context.final_scoring_step and not G.GAME.cube_triggered then
+            G.GAME.cube_triggered = true
+            local c_val = to_big and to_big(hand_chips or context.chips or 0) or (hand_chips or context.chips or 0)
+            local m_val = to_big and to_big(mult or context.mult or 0) or (mult or context.mult or 0)
+            local is_even_chips = false
+            local is_even_mult = false
+
+            if to_big then
+                is_even_chips = (c_val > to_big(0)) and ((c_val % to_big(2)) == to_big(0))
+                is_even_mult = (m_val > to_big(0)) and ((m_val % to_big(2)) == to_big(0))
+            else
+                is_even_chips = (c_val > 0) and (c_val % 2 == 0)
+                is_even_mult = (m_val > 0) and (m_val % 2 == 0)
+            end
+
+            local mod_chips = is_even_chips and 0.5 or 1
+            local mod_mult = is_even_mult and 0.5 or 1
+            if mod_chips < 1 or mod_mult < 1 then
+                return {
+                    x_chips = mod_chips,
+                    Xmult = mod_mult,
+                    message = 'Cube Halved!',
+                    colour = HEX('5e8bd6')
+                }
+            end
+        end
+    end
+}
+
+-- 8. The Void (Showdown)
+SMODS.Blind {
+    key = 'void',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 1, y = 1 },
+    dollars = 8,
+    mult = 2,
+    boss = { min = 8, max = 10, showdown = true },
+    showdown = true,
+    boss_colour = HEX('150426'),
+    loc_txt = {
+        name = 'The Void',
+        text = {
+            "Increases chip requirement by",
+            "{C:attention}X1.5{} after each played hand",
+            "that does not defeat the blind"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if context.after and not context.blueprint and not context.individual and not context.repetition then
+            if G.GAME and G.GAME.blind and G.GAME.chips < G.GAME.blind.chips then
+                G.GAME.blind.chips = math.floor(G.GAME.blind.chips * 1.5)
+                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                return {
+                    message = 'X1.5 Target!',
+                    colour = HEX('b067b1')
+                }
+            end
+        end
+    end
+}
+
+-- 9. The Guitar (La Guitarra)
+SMODS.Blind {
+    key = 'guitar',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 2, y = 1 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 3, max = 10 },
+    boss_colour = HEX('ce515a'),
+    loc_txt = {
+        name = 'The Guitar',
+        text = {
+            "Hands containing 5 cards",
+            "do not score"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    debuff_hand = function(self, cards, hand, handname, check)
+        if cards and #cards == 5 then
+            return true
+        end
+    end
+}
+
+-- 10. The Phone (El Teléfono)
+SMODS.Blind {
+    key = 'phone',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 3, y = 1 },
+    dollars = 5,
+    mult = 2,
+    boss = { min = 3, max = 10 },
+    boss_colour = HEX('00b281'),
+    loc_txt = {
+        name = 'The Phone',
+        text = {
+            "Only the 1st scoring card scores",
+            "and triggers Jokers"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if context.before and context.scoring_hand and #context.scoring_hand > 1 then
+            for i = 2, #context.scoring_hand do
+                context.scoring_hand[i]:set_debuff(true)
+                context.scoring_hand[i].debuffed_by_phone = true
+            end
+            return {
+                message = '1st Card Only!',
+                colour = HEX('00b281')
+            }
+        end
+        if context.after and context.scoring_hand then
+            for i = 2, #context.scoring_hand do
+                if context.scoring_hand[i].debuffed_by_phone then
+                    context.scoring_hand[i]:set_debuff(false)
+                    context.scoring_hand[i].debuffed_by_phone = nil
+                end
+            end
+        end
+    end,
+    defeat = function(self)
+        if clear_witch_brew_phone_debuffs then clear_witch_brew_phone_debuffs() end
+    end,
+    disable = function(self)
+        if clear_witch_brew_phone_debuffs then clear_witch_brew_phone_debuffs() end
+    end
+}
+
+-- 11. The Pincer (La Pinza - Showdown Boss)
+SMODS.Blind {
+    key = 'pinza',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 4, y = 1 },
+    dollars = 8,
+    mult = 2,
+    boss = { min = 8, max = 10, showdown = true },
+    showdown = true,
+    boss_colour = HEX('777777'),
+    loc_txt = {
+        name = 'The Pincer',
+        text = {
+            "All Jokers are disabled until a playing",
+            "card is destroyed (except card-destroying Jokers)"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    set_blind = function(self, reset, silent)
+        G.GAME.pinza_card_destroyed = nil
+        ease_custom_blind_background(self)
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                local key = (j.config and j.config.center and j.config.center.key) or j.config.center_key or (j.ability and j.ability.name) or ''
+                local destroys_cards = {
+                    ['j_trading'] = true,
+                    ['j_sixth_sense'] = true,
+                    ['c_Witch_brew_butcher_job'] = true,
+                    ['j_c_butcher'] = true
+                }
+                if not destroys_cards[key] then
+                    j:set_debuff(true)
+                end
+            end
+        end
+    end,
+    recalc_debuff = function(self, card, from_blind)
+        if self.disabled then return false end
+        if card and card.area == G.jokers and not G.GAME.pinza_card_destroyed then
+            local key = (card.config and card.config.center and card.config.center.key) or card.config.center_key or (card.ability and card.ability.name) or ''
+            local destroys_cards = {
+                ['j_trading'] = true,
+                ['j_sixth_sense'] = true,
+                ['c_Witch_brew_butcher_job'] = true,
+                ['j_c_butcher'] = true
+            }
+            if destroys_cards[key] then return false end
+            return true
+        end
+        return false
+    end
+}
+
+local function joker_affects_scoring(card)
+    if not card or not card.ability then return false end
+    local center = card.config and card.config.center
+    local key = (center and center.key) or card.config.center_key or card.ability.name or ''
+    
+    local non_scoring_keys = {
+        ['j_riff_raff'] = true, ['j_trading'] = true, ['j_cartomancer'] = true, ['j_hallucination'] = true,
+        ['j_vagabond'] = true, ['j_marble'] = true, ['j_certificate'] = true, ['j_dna'] = true,
+        ['j_sixth_sense'] = true, ['j_seance'] = true, ['j_burglar'] = true, ['j_luchador'] = true,
+        ['j_chicot'] = true, ['j_mr_bones'] = true, ['j_diet_cola'] = true, ['j_golden'] = true,
+        ['j_delayed_grat'] = true, ['j_cloud_9'] = true, ['j_rocket'] = true, ['j_credit_card'] = true,
+        ['j_to_the_moon'] = true, ['j_egg'] = true, ['j_gift'] = true, ['j_chaos'] = true,
+        ['j_oops'] = true, ['j_merry_andy'] = true, ['j_troubadour'] = true, ['j_turtle_bean'] = true,
+        ['j_jugglier'] = true, ['j_drunkard'] = true, ['j_faceless'] = true, ['j_mail'] = true,
+        ['j_satellite'] = true, ['j_invisible'] = true, ['j_showman'] = true, ['j_matador'] = true,
+        ['j_space'] = true, ['j_splash'] = true, ['j_four_fingers'] = true, ['j_shortcut'] = true,
+        ['j_smeared'] = true, ['j_pareidolia'] = true, ['j_blueprint'] = true, ['j_brainstorm'] = true
+    }
+    if non_scoring_keys[key] or string.find(key, 'chameleon', 1, true) or string.find(key, 'brainprint', 1, true) then
+        return false
+    end
+
+    local ab = card.ability
+    if type(ab) == 'table' then
+        if (ab.mult and ab.mult ~= 0) or (ab.chips and ab.chips ~= 0) or (ab.x_mult and ab.x_mult > 1) or (ab.Xmult and ab.Xmult > 1) or (ab.t_mult and ab.t_mult ~= 0) or (ab.t_chips and ab.t_chips ~= 0) or (ab.x_chips and ab.x_chips > 1) or ab.repetitions or ab.repetition then
+            return true
+        end
+        if type(ab.extra) == 'table' then
+            local ex = ab.extra
+            if (ex.mult and ex.mult ~= 0) or (ex.chips and ex.chips ~= 0) or (ex.x_mult and ex.x_mult > 1) or (ex.Xmult and ex.Xmult > 1) or (ex.s_mult and ex.s_mult ~= 0) or (ex.xmult and ex.xmult > 1) or (ex.x_chips and ex.x_chips > 1) or ex.repetitions or ex.repetition or ex.retrigger then
+                return true
+            end
+        end
+    end
+
+    local loc_target = (G.localization and G.localization.descriptions and G.localization.descriptions.Joker and G.localization.descriptions.Joker[key])
+    local text_lines = (loc_target and loc_target.text) or (center and center.loc_txt and center.loc_txt.text)
+    if text_lines then
+        local combined = ""
+        for _, l in ipairs(text_lines) do
+            combined = combined .. " " .. tostring(l)
+        end
+        combined = string.lower(combined)
+        local scoring_words = {'mult', 'chip', 'ficha', 'xmult', 'retrigger', 're-trigger', 'reactiv', 'repetir', 'repite', 'again'}
+        for _, w in ipairs(scoring_words) do
+            if string.find(combined, w, 1, true) then
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
+-- 12. The Doppelgänger (El Doppelgänger - Showdown Boss)
+SMODS.Blind {
+    key = 'doppelganger',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 5, y = 1 },
+    dollars = 8,
+    mult = 2,
+    boss = { min = 8, max = 10, showdown = true },
+    showdown = true,
+    boss_colour = HEX('1c2833'),
+    loc_vars = function(self)
+        local target_name = (G.GAME and G.GAME.doppelganger_target_name) or "a random Joker"
+        return { vars = { target_name } }
+    end,
+    loc_txt = {
+        name = 'The Doppelgänger',
+        text = {
+            "Possesses {C:attention}#1#{}.",
+            "When it triggers, divide",
+            "Chips and Mult by 4"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    set_blind = function(self, reset, silent)
+        ease_custom_blind_background(self)
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                j.doppelganger_reflected = nil
+            end
+        end
+        G.GAME.doppelganger_target = nil
+        G.GAME.doppelganger_target_name = nil
+
+        local eligible = {}
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                if not j.debuff and joker_affects_scoring(j) then
+                    table.insert(eligible, j)
+                end
+            end
+            if #eligible == 0 then
+                for _, j in ipairs(G.jokers.cards) do
+                    if joker_affects_scoring(j) then
+                        table.insert(eligible, j)
+                    end
+                end
+            end
+            if #eligible == 0 then
+                for _, j in ipairs(G.jokers.cards) do
+                    table.insert(eligible, j)
+                end
+            end
+        end
+
+        if #eligible > 0 then
+            local ante = (G.GAME.round_resets and G.GAME.round_resets.ante) or 1
+            local r_num = (G.GAME.round) or 1
+            local pick_idx = pseudorandom('doppel_pick_' .. ante .. '_' .. r_num, 1, #eligible)
+            local chosen = eligible[pick_idx]
+            G.GAME.doppelganger_target = chosen
+            chosen.doppelganger_reflected = true
+            local jname = (chosen.ability and chosen.ability.name) or (chosen.config and chosen.config.center and chosen.config.center.name) or 'Joker'
+            G.GAME.doppelganger_target_name = jname
+
+            self.loc_debuff_text = "Possessed: " .. jname .. " (÷4 Chips & Mult)"
+            if G.GAME.blind then
+                G.GAME.blind.loc_debuff_text = self.loc_debuff_text
+            end
+
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.5,
+                func = function()
+                    if chosen and not chosen.removed then
+                        chosen:juice_up(0.8, 0.8)
+                        attention_text({
+                            text = tostring(jname) .. ' Possessed!',
+                            scale = 0.7,
+                            hold = 2.5,
+                            colour = HEX('aeb6bf'),
+                            align = 'cm',
+                            offset = { x = 0, y = -1.2 }
+                        })
+                    end
+                    return true
+                end
+            }))
+        else
+            self.loc_debuff_text = "No Jokers to possess"
+            if G.GAME.blind then
+                G.GAME.blind.loc_debuff_text = self.loc_debuff_text
+            end
+        end
+    end,
+    calculate = function(self, blind, context)
+        local context = context or card
+        if not context then return end
+
+        if context.before then
+            G.GAME.doppel_triggered_in_hand = nil
+            -- Repick if target is removed or sold or not eligible
+            if not G.GAME.doppelganger_target or G.GAME.doppelganger_target.removed or (G.GAME.doppelganger_target.area and G.GAME.doppelganger_target.area ~= G.jokers) then
+                local eligible = {}
+                if G.jokers and G.jokers.cards then
+                    for _, j in ipairs(G.jokers.cards) do
+                        if joker_affects_scoring(j) then
+                            table.insert(eligible, j)
+                        end
+                    end
+                end
+                if #eligible > 0 then
+                    local ante = (G.GAME.round_resets and G.GAME.round_resets.ante) or 1
+                    local r_num = (G.GAME.round) or 1
+                    local pick_idx = pseudorandom('doppel_repick_' .. ante .. '_' .. r_num, 1, #eligible)
+                    local chosen = eligible[pick_idx]
+                    G.GAME.doppelganger_target = chosen
+                    if chosen then
+                        chosen.doppelganger_reflected = true
+                        local jname = (chosen.ability and chosen.ability.name) or (chosen.config and chosen.config.center and chosen.config.center.name) or 'Joker'
+                        G.GAME.doppelganger_target_name = jname
+                        self.loc_debuff_text = "Possessed: " .. jname .. " (÷4 Chips & Mult)"
+                        if G.GAME.blind then
+                            G.GAME.blind.loc_debuff_text = self.loc_debuff_text
+                        end
+                    end
+                else
+                    G.GAME.doppelganger_target = nil
+                    G.GAME.doppelganger_target_name = "None"
+                end
+            end
+        end
+    end,
+    defeat = function(self)
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                j.doppelganger_reflected = nil
+            end
+        end
+        if G.playing_cards then
+            for _, c in ipairs(G.playing_cards) do
+                if c.doppel_ignored then
+                    c.doppel_ignored = nil
+                    c.debuff = nil
+                end
+            end
+        end
+        G.GAME.doppelganger_target = nil
+        G.GAME.doppelganger_target_name = nil
+        reset_witch_brew_boss_ui()
+    end,
+    disable = function(self)
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                j.doppelganger_reflected = nil
+            end
+        end
+        if G.playing_cards then
+            for _, c in ipairs(G.playing_cards) do
+                if c.doppel_ignored then
+                    c.doppel_ignored = nil
+                    c.debuff = nil
+                end
+            end
+        end
+        G.GAME.doppelganger_target = nil
+        G.GAME.doppelganger_target_name = nil
+        reset_witch_brew_boss_ui()
+    end
+}
+
+-- 12. Chronos (Supreme Showdown Boss)
+SMODS.Blind {
+    key = 'chronos',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 0, y = 2 },
+    dollars = 10,
+    mult = 4,
+    boss = { min = 8, showdown = true },
+    showdown = true,
+    boss_colour = HEX('6a0dad'),
+    in_pool = function(self)
+        return (G.GAME and G.GAME.battle_of_gods) and true or false
+    end,
+    loc_txt = {
+        name = 'Chronos',
+        text = {
+            "If final score exceeds requirement,",
+            "multiply Chips and Mult by {C:attention}0.90{}",
+            "before score is added"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+        if (G.GAME.chips + (hand_chips * mult)) >= G.GAME.blind.chips then
+            mult = mod_mult(math.max(1, math.floor(mult * 0.90)))
+            hand_chips = mod_chips(math.max(1, math.floor(hand_chips * 0.90)))
+            G.E_MANAGER:add_event(Event({
+                trigger = 'immediate',
+                func = function()
+                    attention_text({
+                        text = 'Time Dilation! (X0.90)',
+                        scale = 1.1,
+                        hold = 1.0,
+                        major = G.HUD_blind,
+                        backdrop_colour = HEX('6a0dad'),
+                        align = 'cm'
+                    })
+                    return true
+                end
+            }))
+            return mult, hand_chips, true
+        end
+        return mult, hand_chips, false
+    end
+}
+
+-- 13. Ares (Supreme Showdown Boss)
+SMODS.Blind {
+    key = 'ares',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 1, y = 2 },
+    dollars = 10,
+    mult = 4,
+    boss = { min = 8, showdown = true },
+    showdown = true,
+    boss_colour = HEX('c1121f'),
+    in_pool = function(self)
+        return (G.GAME and G.GAME.battle_of_gods) and true or false
+    end,
+    loc_txt = {
+        name = 'Ares',
+        text = {
+            "1 in 5 chance to destroy",
+            "played cards after scoring"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if context.after and context.scoring_hand and #context.scoring_hand > 0 then
+            if pseudorandom('ares_destroy') < G.GAME.probabilities.normal / 5 then
+                local destroyed_cards = {}
+                for _, c in ipairs(context.scoring_hand) do
+                    table.insert(destroyed_cards, c)
+                end
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.8,
+                    func = function()
+                        for _, c in ipairs(destroyed_cards) do
+                            if not c.destroyed and not c.shattered then
+                                c.destroyed = true
+                                if c.shatter and c.ability and c.ability.name == 'Glass Card' then
+                                    c:shatter()
+                                else
+                                    c:start_dissolve()
+                                end
+                            end
+                        end
+                        attention_text({
+                            text = 'Destroyed!',
+                            scale = 1.3,
+                            hold = 1.2,
+                            major = G.play,
+                            backdrop_colour = HEX('c1121f'),
+                            align = 'cm',
+                            offset = { x = 0, y = 0 }
+                        })
+                        play_sound('slice1', 1.0, 0.7)
+                        return true
+                    end
+                }))
+                return {
+                    message = 'Ares strikes!',
+                    colour = HEX('c1121f')
+                }
+            end
+        end
+    end
+}
+
+-- 14. Athena (Supreme Showdown Boss)
+SMODS.Blind {
+    key = 'athena',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 2, y = 2 },
+    dollars = 10,
+    mult = 4,
+    boss = { min = 8, showdown = true },
+    showdown = true,
+    boss_colour = HEX('e5a910'),
+    in_pool = function(self)
+        return (G.GAME and G.GAME.battle_of_gods) and true or false
+    end,
+    loc_txt = {
+        name = 'Athena',
+        text = {
+            "Must play {C:attention}#1#{};",
+            "otherwise Jokers are debuffed"
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        if not self.target_hand then
+            local eligible = {'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House'}
+            self.target_hand = pseudorandom_element(eligible, pseudoseed('athena_command_' .. (G.GAME and G.GAME.round or 1)))
+        end
+        local hand_name = localize(self.target_hand, 'poker_hands')
+        return { vars = { hand_name } }
+    end,
+    collection_loc_vars = function(self)
+        return { vars = { localize('Pair', 'poker_hands') } }
+    end,
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    set_blind = function(self, reset, silent)
+        local eligible = {'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House'}
+        self.target_hand = pseudorandom_element(eligible, pseudoseed('athena_command_' .. (G.GAME and G.GAME.round or 1)))
+        self.debuff_next = false
+        if G.GAME and G.GAME.blind then
+            G.GAME.blind:set_text()
+        end
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                j:set_debuff(false)
+            end
+        end
+    end,
+    press_play = function(self)
+    end,
+    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+        local matches = (text == self.target_hand)
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                if not (j.edition and (j.edition.blessed or j.edition.bendecido or j.edition.key == 'e_Witch_brew_blessed' or j.edition.key == 'e_blessed')) then
+                    j:set_debuff(not matches)
+                else
+                    j:set_debuff(false)
+                end
+            end
+        end
+        return mult, hand_chips, false
+    end,
+    calculate = function(self, blind, context)
+        if context.after and context.scoring_name then
+            local matches = (context.scoring_name == self.target_hand)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.2,
+                func = function()
+                    if G.jokers and G.jokers.cards then
+                        for _, j in ipairs(G.jokers.cards) do
+                            j:set_debuff(false)
+                        end
+                    end
+                    if matches then
+                        attention_text({
+                            text = 'Athena Pleased!',
+                            scale = 1.1,
+                            hold = 1.0,
+                            major = G.HUD_blind,
+                            backdrop_colour = HEX('e5a910'),
+                            align = 'cm'
+                        })
+                    else
+                        attention_text({
+                            text = 'Athena Displeased!',
+                            scale = 1.0,
+                            hold = 1.0,
+                            major = G.HUD_blind,
+                            backdrop_colour = HEX('e5a910'),
+                            align = 'cm'
+                        })
+                    end
+                    return true
+                end
+            }))
+        end
+    end,
+    defeat = function(self)
+        self.target_hand = nil
+        self.debuff_next = false
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                j:set_debuff(false)
+            end
+        end
+        reset_witch_brew_boss_ui()
+    end,
+    disable = function(self)
+        self.target_hand = nil
+        self.debuff_next = false
+        if G.jokers and G.jokers.cards then
+            for _, j in ipairs(G.jokers.cards) do
+                j:set_debuff(false)
+            end
+        end
+        reset_witch_brew_boss_ui()
+    end
+}
+
+-- 15. Hades (Supreme Showdown Boss)
+SMODS.Blind {
+    key = 'hades',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 3, y = 2 },
+    dollars = 10,
+    mult = 4,
+    boss = { min = 8, showdown = true },
+    showdown = true,
+    boss_colour = HEX('160f24'),
+    in_pool = function(self)
+        return (G.GAME and G.GAME.battle_of_gods) and true or false
+    end,
+    loc_txt = {
+        name = 'Hades',
+        text = {
+            "#1# in 4 chance to lose all money on play,",
+            "#2# in 3 chance to nullify hand score,",
+            "#3# in 10 chance to destroy cards in hand after scoring"
+        }
+    },
+    loc_vars = function(self)
+        local p = (G.GAME and G.GAME.probabilities.normal) or 1
+        return { vars = { '' .. p, '' .. p, '' .. p } }
+    end,
+    collection_loc_vars = function(self)
+        return { vars = { '1', '1', '1' } }
+    end,
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    press_play = function(self)
+        if pseudorandom('hades_money') < G.GAME.probabilities.normal / 4 then
+            local cur = G.GAME.dollars or 0
+            if cur > 0 then
+                ease_dollars(-cur)
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'immediate',
+                    func = function()
+                        attention_text({
+                            text = 'Bankrupt!',
+                            scale = 1.3,
+                            hold = 1.4,
+                            major = G.HUD_blind,
+                            backdrop_colour = HEX('1a1a24'),
+                            align = 'cm',
+                            offset = { x = 0, y = 0 }
+                        })
+                        return true
+                    end
+                }))
+            end
+        end
+        if pseudorandom('hades_no_score') < G.GAME.probabilities.normal / 3 then
+            self.hades_nullify_score = true
+        else
+            self.hades_nullify_score = false
+        end
+    end,
+    debuff_hand = function(self, cards, hand, handname, check)
+        if not self.disabled and self.hades_nullify_score then
+            self.triggered = true
+            return true
+        end
+    end,
+    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+        if not self.disabled and self.hades_nullify_score then
+            self.triggered = true
+            return 0, 0, true
+        end
+        return mult, hand_chips, false
+    end,
+    calculate = function(self, blind, context)
+        if context.before and self.hades_nullify_score then
+            mult = 0
+            hand_chips = 0
+            update_hand_text({delay = 0}, {chips = 0, mult = 0})
+            return {
+                message = 'Score Nullified!',
+                colour = HEX('1a1a24')
+            }
+        end
+        if context.after then
+            self.hades_nullify_score = false
+            if pseudorandom('hades_hand') < G.GAME.probabilities.normal / 10 then
+                if G.hand and G.hand.cards and #G.hand.cards > 0 then
+                    for _, c in ipairs(G.hand.cards) do
+                        c.destroyed = true
+                        c:start_dissolve()
+                    end
+                    return {
+                        message = 'Hand Annihilated!',
+                        colour = HEX('1a1a24')
+                    }
+                end
+            end
+        end
+    end
+}
+
+-- 16. Zeus (Supreme Showdown Boss)
+SMODS.Blind {
+    key = 'zeus',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 4, y = 2 },
+    dollars = 10,
+    mult = 4,
+    boss = { min = 8, showdown = true },
+    showdown = true,
+    boss_colour = HEX('0096c7'),
+    in_pool = function(self)
+        return (G.GAME and G.GAME.battle_of_gods) and true or false
+    end,
+    loc_txt = {
+        name = 'Zeus',
+        text = {
+            "Scored enhanced cards",
+            "revert to base cards"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if context.after and context.scoring_hand then
+            local cleansed = false
+            for _, c in ipairs(context.scoring_hand) do
+                if (c.config and c.config.center and c.config.center ~= G.P_CENTERS.c_base and c.config.center.set == 'Enhanced') or (c.ability and c.ability.set == 'Enhanced') then
+                    c:set_ability(G.P_CENTERS.c_base, nil, true)
+                    cleansed = true
+                end
+            end
+            if cleansed then
+                return {
+                    message = 'Cleansed!',
+                    colour = HEX('0077b6')
+                }
+            end
+        end
+    end
+}
+
+-- 17. The Arrow (La Flecha - Showdown Boss)
+SMODS.Blind {
+    key = 'arrow',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 0, y = 3 },
+    dollars = 8,
+    mult = 2,
+    boss = { min = 8, max = 10, showdown = true },
+    showdown = true,
+    boss_colour = HEX('8f2d56'),
+    loc_txt = {
+        name = 'The Arrow',
+        text = {
+            "Played cards decrease 1 rank",
+            "after being scored"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if context.after and context.scoring_hand and #context.scoring_hand > 0 then
+            local rank_down_map = {
+                ['Ace'] = 'King', ['King'] = 'Queen', ['Queen'] = 'Jack', ['Jack'] = '10',
+                ['10'] = '9', ['9'] = '8', ['8'] = '7', ['7'] = '6',
+                ['6'] = '5', ['5'] = '4', ['4'] = '3', ['3'] = '2', ['2'] = 'Ace'
+            }
+            local changed = false
+            for _, c in ipairs(context.scoring_hand) do
+                if not c.destroyed and c.base and c.base.value then
+                    local next_r = rank_down_map[c.base.value]
+                    if next_r and c.base.suit then
+                        local pk = c.base.suit .. '_' .. next_r
+                        local p_card = G.P_CARDS[pk] or G.P_CARDS[string.sub(c.base.suit, 1, 1) .. '_' .. next_r]
+                        if p_card then
+                            c:set_base(p_card)
+                            c:juice_up(0.4, 0.4)
+                            changed = true
+                        end
+                    end
+                end
+            end
+            if changed then
+                play_sound('tarot2', 1.1, 0.6)
+                return {
+                    message = '-1 Rank!',
+                    colour = HEX('8f2d56')
+                }
+            end
+        end
+    end
+}
+
+-- 18. The Guillotine (La Guillotina - Showdown Boss)
+SMODS.Blind {
+    key = 'guillotine',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 1, y = 3 },
+    dollars = 8,
+    mult = 2,
+    boss = { min = 8, max = 10, showdown = true },
+    showdown = true,
+    boss_colour = HEX('6b0f1a'),
+    loc_txt = {
+        name = 'The Guillotine',
+        text = {
+            "{C:green}#1# in 5{} chance for played hand",
+            "to reduce final score to 0"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        return { vars = { (G.GAME and G.GAME.probabilities.normal or 1) } }
+    end,
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+        if pseudorandom('guillotine') < (G.GAME.probabilities.normal or 1) / 5 then
+            mult = 0
+            hand_chips = 0
+            G.E_MANAGER:add_event(Event({
+                trigger = 'immediate',
+                func = function()
+                    attention_text({
+                        text = 'Severed! (0 Score)',
+                        scale = 1.2,
+                        hold = 1.2,
+                        major = G.HUD_blind,
+                        backdrop_colour = HEX('6b0f1a'),
+                        align = 'cm'
+                    })
+                    play_sound('slice1', 1.0, 0.7)
+                    return true
+                end
+            }))
+            return mult, hand_chips, true
+        end
+        return mult, hand_chips, false
+    end
+}
+
+-- 19. The Net (La Red - Showdown Boss)
+SMODS.Blind {
+    key = 'net',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 2, y = 3 },
+    dollars = 8,
+    mult = 2,
+    boss = { min = 8, max = 10, showdown = true },
+    showdown = true,
+    boss_colour = HEX('0077b6'),
+    loc_txt = {
+        name = 'The Net',
+        text = {
+            "Played cards with rank {C:attention}#1#{}",
+            "are destroyed after scoring"
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        if not self.target_rank then
+            local all_ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'}
+            self.target_rank = pseudorandom_element(all_ranks, pseudoseed('net_target_rank_' .. (G.GAME and G.GAME.round or 1)))
+        end
+        return { vars = { self.target_rank } }
+    end,
+    collection_loc_vars = function(self)
+        return { vars = { 'Ace' } }
+    end,
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    set_blind = function(self, reset, silent)
+        local all_ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'}
+        self.target_rank = pseudorandom_element(all_ranks, pseudoseed('net_target_rank_' .. (G.GAME and G.GAME.round or 1)))
+        if G.GAME and G.GAME.blind then
+            G.GAME.blind:set_text()
+        end
+    end,
+    calculate = function(self, blind, context)
+        if context.after and context.scoring_hand then
+            local destroyed_any = false
+            for _, c in ipairs(context.scoring_hand) do
+                if not c.destroyed and c.base and c.base.value == self.target_rank then
+                    c.destroyed = true
+                    c:start_dissolve()
+                    destroyed_any = true
+                end
+            end
+            if destroyed_any then
+                play_sound('slice1', 1.0, 0.7)
+                return {
+                    message = 'Trapped in Net!',
+                    colour = HEX('0077b6')
+                }
+            end
+        end
+    end
+}
+
+-- 20. The Poison (El Veneno - Showdown Boss)
+SMODS.Blind {
+    key = 'poison',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 3, y = 3 },
+    dollars = 8,
+    mult = 2,
+    boss = { min = 8, max = 10, showdown = true },
+    showdown = true,
+    boss_colour = HEX('2d6a4f'),
+    loc_txt = {
+        name = 'The Poison',
+        text = {
+            "Scored cards reduce Chips",
+            "and Mult by {C:attention}X0.15{}"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        local context = (context and type(context) == 'table' and context.cardarea and context)
+                     or (card and type(card) == 'table' and card.cardarea and card)
+                     or context or card
+        if not context then return end
+        if G.GAME and G.GAME.blind and G.GAME.blind.disabled then return end
+
+        if context.individual and context.cardarea == G.play then
+            local poison_factor = 0.85 -- 1 - 0.15 reduction (X0.85)
+            return {
+                x_chips = poison_factor,
+                Xmult = poison_factor,
+                card = context.other_card or (card and card.is and card:is(Card) and card) or nil,
+                message = 'X0.85 Poison',
+                colour = HEX('2d6a4f')
+            }
+        end
+    end
+}
+
+-- 21. The Code (El Código - Showdown Boss)
+SMODS.Blind {
+    key = 'code',
+    atlas = 'witch_brew_blinds',
+    pos = { x = 4, y = 3 },
+    dollars = 8,
+    mult = 2,
+    boss = { min = 8, max = 10, showdown = true },
+    showdown = true,
+    boss_colour = HEX('00b4d8'),
+    loc_txt = {
+        name = 'The Code',
+        text = {
+            "Using a consumable destroys a random",
+            "Joker and increases target by {C:attention}X1.25{}"
+        }
+    },
+    ease_background_colour = function(self)
+        ease_custom_blind_background(self)
+    end,
+    calculate = function(self, blind, context)
+        if context.using_consumeable then
+            if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
+                local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed('code_destroy'))
+                if chosen_joker and not chosen_joker.getting_sliced then
+                    chosen_joker.getting_sliced = true
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.4,
+                        func = function()
+                            chosen_joker:start_dissolve()
+                            play_sound('slice1', 0.96, 0.7)
+                            return true
+                        end
+                    }))
+                end
+            end
+            if G.GAME and G.GAME.blind then
+                G.GAME.blind.chips = math.floor(G.GAME.blind.chips * 1.25)
+                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                return {
+                    message = 'X1.25 Target!',
+                    colour = HEX('00b4d8')
+                }
+            end
+        end
+    end
+}
+
+local function sync_blind_atlases()
+    local atlas_obj = (SMODS and SMODS.Atlases and SMODS.Atlases['witch_brew_blinds']) or (G.ASSET_ATLAS and G.ASSET_ATLAS['witch_brew_blinds']) or (G.ANIMATION_ATLAS and G.ANIMATION_ATLAS['witch_brew_blinds'])
+    if atlas_obj then
+        atlas_obj.frames = 1
+        if G.ASSET_ATLAS and not G.ASSET_ATLAS['witch_brew_blinds'] then G.ASSET_ATLAS['witch_brew_blinds'] = atlas_obj end
+        if G.ANIMATION_ATLAS and not G.ANIMATION_ATLAS['witch_brew_blinds'] then G.ANIMATION_ATLAS['witch_brew_blinds'] = atlas_obj end
+    end
+    sync_witch_brew_blind_colours()
+end
+
+sync_blind_atlases()
+G.E_MANAGER:add_event(Event({
+    func = function()
+        sync_blind_atlases()
+        return true
+    end
+}))
+
+
+

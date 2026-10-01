@@ -1,0 +1,20 @@
+{
+    "id": "Witch_brew",
+    "name": "Balatro: Reality Warp",
+    "version": "1.0.0",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Unknow1022/RealityWarp",
+    "description": "Balatro: Reality Warp featuring Battle of Gods mode, Kyra's Black Market, Outsiders, 60+ Jokers, 17 Boss Blinds, Potions & Brews, Tags, Job Cards, Custom Decks, and full JokerDisplay integration.",
+    "dependencies": [],
+    "author": [
+        "Unknow102"
+    ],
+    "prefix": "Witch_brew",
+    "main_file": "WitcherExpansion.lua",
+    "icon_path": "icon.png",
+    "optional_dependencies": [
+        "CardSleeves",
+        "JokerDisplay",
+        "malverk"
+    ]
+}

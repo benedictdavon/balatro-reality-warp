@@ -1,0 +1,1056 @@
+-- Decks Atlas
+SMODS.Atlas {
+    key = "witch_brew_decks",
+    path = "decks.png",
+    px = 71,
+    py = 95
+}
+-- Custom Decks (Barajas)
+
+-- Helper to parse localization strings for Back objects
+local function reparse_deck_entry(entry)
+    if not entry then return end
+    local parse_fn = loc_parse_string or function(s) return { { strings = { s }, control = {} } } end
+
+    if entry.text then
+        entry.text_parsed = {}
+        for _, line in ipairs(entry.text) do
+            if type(line) == 'table' then
+                local sub = {}
+                for _, sub_line in ipairs(line) do
+                    sub[#sub + 1] = parse_fn(sub_line) or { { strings = { tostring(sub_line) }, control = {} } }
+                end
+                entry.text_parsed[#entry.text_parsed + 1] = sub
+            else
+                entry.text_parsed[#entry.text_parsed + 1] = parse_fn(line) or { { strings = { tostring(line) }, control = {} } }
+            end
+        end
+    else
+        entry.text_parsed = entry.text_parsed or {}
+    end
+
+    if entry.name then
+        entry.name_parsed = {}
+        local names = (type(entry.name) == 'table') and entry.name or { entry.name }
+        for _, line in ipairs(names) do
+            entry.name_parsed[#entry.name_parsed + 1] = parse_fn(line) or { { strings = { tostring(line) }, control = {} } }
+        end
+    else
+        entry.name_parsed = entry.name_parsed or {}
+    end
+end
+
+-- Global Decks Registry & Extensibility System
+WITCH_BREW_DECKS = WITCH_BREW_DECKS or {}
+WITCH_BREW_DECK_HOOKS = WITCH_BREW_DECK_HOOKS or {}
+WITCH_BREW_DECK_LOCS = WITCH_BREW_DECK_LOCS or {}
+
+function register_witch_brew_deck(deck_def)
+    if not deck_def or not deck_def.key then return end
+    WITCH_BREW_DECKS[deck_def.key] = deck_def
+    if deck_def.loc_txt then
+        WITCH_BREW_DECK_LOCS[deck_def.key] = {
+            name = deck_def.loc_txt.name or deck_def.name,
+            text = deck_def.loc_txt.text
+        }
+    end
+    local back_obj = SMODS.Back(deck_def)
+    if inject_witch_brew_deck_localization then
+        inject_witch_brew_deck_localization()
+    end
+    return back_obj
+end
+
+function add_witch_brew_deck_hook(deck_key, hook_fn)
+    if not deck_key or not hook_fn then return end
+    WITCH_BREW_DECK_HOOKS[deck_key] = WITCH_BREW_DECK_HOOKS[deck_key] or {}
+    table.insert(WITCH_BREW_DECK_HOOKS[deck_key], hook_fn)
+end
+
+-- 1. Caveman Deck
+SMODS.Back {
+    name = 'Caveman Deck',
+    key = 'cavernicola',
+    atlas = 'witch_brew_decks',
+    pos = { x = 0, y = 0 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Caveman Deck',
+        text = {
+            "Start with only {C:attention}A, 2, 3, 4, 6, 8{} of each suit in your full deck,",
+            "all other starting cards are {C:attention}Stone Cards{},",
+            "{C:red}-1{} Hand"
+        }
+    },
+    loc_vars = function(self, info_queue, back)
+        return { vars = {} }
+    end,
+    apply = function(self, back)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                local is_combo = false
+                if CardSleeves and G.GAME then
+                    if G.GAME.cavernicola_sleeve_combo then
+                        is_combo = true
+                    elseif G.GAME.selected_sleeve then
+                        local s = tostring(G.GAME.selected_sleeve.key or G.GAME.selected_sleeve.name or G.GAME.selected_sleeve)
+                        if string.find(string.lower(s), "cavernicola", 1, true) ~= nil then
+                            is_combo = true
+                        end
+                    end
+                end
+
+                if G.playing_cards then
+                    local keep_ranks = is_combo and { ['Ace'] = true, ['2'] = true, ['3'] = true }
+                        or { ['Ace'] = true, ['2'] = true, ['3'] = true, ['4'] = true, ['6'] = true, ['8'] = true }
+                    for _, card in ipairs(G.playing_cards) do
+                        local val = card.base and card.base.value
+                        if not keep_ranks[val] then
+                            card:set_ability(G.P_CENTERS.m_stone)
+                        end
+                    end
+                end
+
+                if not is_combo then
+                    G.GAME.starting_params.hands = G.GAME.starting_params.hands - 1
+                    G.GAME.round_resets.hands = math.max(1, G.GAME.round_resets.hands - 1)
+                    ease_hands_played(-1)
+                end
+
+                return true
+            end
+        }))
+    end
+}
+
+-- 2. Strategist Deck
+SMODS.Back {
+    name = 'Strategist Deck',
+    key = 'strategist',
+    atlas = 'witch_brew_decks',
+    pos = { x = 1, y = 0 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Strategist Deck',
+        text = {
+            "Start with a {C:attention}24-card deck{}",
+            "{C:inactive}(Aces, Kings, Queens, Jacks, 10s, 9s){}",
+            "Start with {C:attention}Magic Trick{} voucher,",
+            "Start with {C:money}$0{}, {C:red}-1{} hand, {C:red}-2{} discards,",
+            "Blind score targets are {C:attention}X1.2{}"
+        }
+    },
+    loc_vars = function(self, info_queue, back)
+        return { vars = {} }
+    end,
+    apply = function(self, back)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                local is_combo = G.GAME and (G.GAME.strategist_sleeve_combo or is_sleeve_matching("strategist"))
+                if G.playing_cards then
+                    for i = #G.playing_cards, 1, -1 do
+                        local card = G.playing_cards[i]
+                        local val = card.base and card.base.value
+                        local keep = false
+                        if is_combo then
+                            -- 20 cards: Ace, King, Queen, Jack, 10
+                            keep = (val == 'Ace' or val == 'King' or val == 'Queen' or val == 'Jack' or val == '10')
+                        else
+                            -- 24 cards: Ace, King, Queen, Jack, 10, 9
+                            keep = (val == 'Ace' or val == 'King' or val == 'Queen' or val == 'Jack' or val == '10' or val == '9')
+                        end
+                        if not keep then
+                            if card.area then
+                                card.area:remove_card(card)
+                            end
+                            card:remove()
+                            table.remove(G.playing_cards, i)
+                        end
+                    end
+                end
+
+                G.GAME.dollars = 0
+
+                G.GAME.round_resets.hands = math.max(1, G.GAME.round_resets.hands - 1)
+                ease_hands_played(-1)
+
+                G.GAME.round_resets.discards = math.max(0, G.GAME.round_resets.discards - 2)
+                ease_discard(-2)
+
+                G.GAME.used_vouchers = G.GAME.used_vouchers or {}
+                G.GAME.used_vouchers['v_magic_trick'] = true
+                if is_combo then
+                    G.GAME.used_vouchers['v_tarot_merchant'] = true
+                    if G.GAME.shop then
+                        G.GAME.shop.joker_max = (G.GAME.shop.joker_max or 2) + 1
+                    end
+                    G.GAME.modifiers = G.GAME.modifiers or {}
+                    G.GAME.modifiers.money_per_hand = (G.GAME.modifiers.money_per_hand or 0) + 1
+                end
+
+                G.GAME.starting_params.ante_scaling = (G.GAME.starting_params.ante_scaling or 1) * 1.2
+
+                return true
+            end
+        }))
+    end
+}
+
+-- 3. Overseer Deck
+SMODS.Back {
+    name = 'Overseer Deck',
+    key = 'overseer',
+    atlas = 'witch_brew_decks',
+    pos = { x = 2, y = 0 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Overseer Deck',
+        text = {
+            "Creates a random {C:spectral}Spectral card{}",
+            "at the end of round {C:inactive}(except Rot, Soul and Secrets){},",
+            "{C:attention}Tags are always doubled{},",
+            "Joker prices are {C:red}X1.5{},",
+            "Start with {C:money}$5{}, {C:red}-1{} hand, {C:red}-1{} discard"
+        }
+    },
+    loc_vars = function(self, info_queue, back)
+        return { vars = {} }
+    end,
+    apply = function(self, back)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.overseer_deck = true
+                local is_combo = G.GAME and (G.GAME.overseer_sleeve_combo or is_sleeve_matching("overseer"))
+                if is_combo then
+                    G.GAME.overseer_no_markup = true
+                    G.GAME.dollars = 7
+                else
+                    G.GAME.dollars = 5
+                    G.GAME.round_resets.hands = math.max(1, G.GAME.round_resets.hands - 1)
+                    ease_hands_played(-1)
+                end
+
+                G.GAME.round_resets.discards = math.max(0, G.GAME.round_resets.discards - 1)
+                ease_discard(-1)
+
+                return true
+            end
+        }))
+    end,
+    calculate = function(self, back, context)
+        local is_combo = G.GAME and (G.GAME.overseer_sleeve_combo or is_sleeve_matching("overseer"))
+        if not is_combo and context.end_of_round and not context.individual and not context.repetition then
+            if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        local forbidden = {
+                            ['c_rot'] = true,
+                            ['c_Witch_brew_rot'] = true,
+                            ['c_soul'] = true,
+                            ['c_the_gang'] = true,
+                            ['c_Witch_brew_the_gang'] = true,
+                            ['the_gang'] = true,
+                            ['c_la_muchachada'] = true,
+                            ['c_Witch_brew_la_muchachada'] = true,
+                            ['la_muchachada'] = true,
+                        }
+                        local valid_spectrals = {}
+                        if G.P_CENTER_POOLS and G.P_CENTER_POOLS['Spectral'] then
+                            for _, center in ipairs(G.P_CENTER_POOLS['Spectral']) do
+                                local k = center.key
+                                local is_nemesis = (k == 'c_wraith' or string.find(k, 'nemesis', 1, true) or string.find(k, 'wraith', 1, true))
+                                local is_forbidden = not is_nemesis and (
+                                    forbidden[k] or
+                                    string.find(k, 'rot', 1, true) or
+                                    string.find(k, 'soul', 1, true) or
+                                    string.find(k, 'the_gang', 1, true) or
+                                    string.find(k, 'muchachada', 1, true) or
+                                    string.find(k, 'secret', 1, true) or
+                                    string.find(k, 'legendary', 1, true)
+                                )
+                                if not is_forbidden then
+                                    table.insert(valid_spectrals, k)
+                                end
+                            end
+                        end
+                        local chosen_key = (#valid_spectrals > 0) and pseudorandom_element(valid_spectrals, pseudoseed('overseer')) or 'c_ankh'
+                        local scard = create_card('Spectral', G.consumeables, nil, nil, nil, nil, chosen_key, 'overseer')
+                        scard:add_to_deck()
+                        G.consumeables:emplace(scard)
+                        scard:juice_up(0.5, 0.5)
+                        return true
+                    end
+                }))
+            end
+        end
+    end
+}
+
+-- 4. Friendly Deck (Baraja Amistosa)
+SMODS.Back {
+    name = 'Friendly Deck',
+    key = 'friendly',
+    atlas = 'witch_brew_decks',
+    pos = { x = 3, y = 0 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Friendly Deck',
+        text = {
+            "Start run with {C:attention}2 random Negative Eternal Jokers{},",
+            "{C:inactive}(At least 1 Uncommon or Rare, no Secrets/Legendaries){},",
+            "{C:red}-1{} Joker slot, {C:red}-1{} Discard, {C:money}+$4{}"
+        }
+    },
+    loc_vars = function(self, info_queue, back)
+        return { vars = {} }
+    end,
+    apply = function(self, back)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                local is_combo = false
+                if CardSleeves and G.GAME then
+                    if G.GAME.friendly_sleeve_combo then
+                        is_combo = true
+                    elseif G.GAME.selected_sleeve then
+                        local s = tostring(G.GAME.selected_sleeve.key or G.GAME.selected_sleeve.name or G.GAME.selected_sleeve)
+                        if string.find(string.lower(s), "friendly", 1, true) ~= nil then
+                            is_combo = true
+                        end
+                    end
+                end
+
+                local num_jokers = is_combo and 3 or 2
+                local slot_penalty = is_combo and 2 or 1
+
+                if G.jokers and G.jokers.config then
+                    G.jokers.config.card_limit = math.max(1, G.jokers.config.card_limit - slot_penalty)
+                end
+                if G.GAME and G.GAME.starting_params and G.GAME.starting_params.joker_slots then
+                    G.GAME.starting_params.joker_slots = math.max(1, G.GAME.starting_params.joker_slots - slot_penalty)
+                end
+
+                G.GAME.round_resets.discards = math.max(0, G.GAME.round_resets.discards - 1)
+                ease_discard(-1)
+
+                if not is_combo then
+                    ease_dollars(4)
+                end
+
+                play_sound('foil1')
+                for i = 1, num_jokers do
+                    local new_joker = nil
+                    local attempts = 0
+                    repeat
+                        attempts = attempts + 1
+                        local roll = pseudorandom('friendly_roll_' .. i .. '_' .. attempts)
+                        local roll_type = 'common'
+
+                        if is_combo then
+                            if roll < 0.01 then -- 1 en 100 de ser secreto
+                                roll_type = 'secret'
+                            elseif roll < 0.06 then -- 1 en 20 de ser legendario (0.01 + 0.05)
+                                roll_type = 'legendary'
+                            elseif roll < 0.185 then -- 1 en 8 de ser raro (0.06 + 0.125)
+                                roll_type = 'rare'
+                            elseif roll < 0.435 then -- 1 en 4 de ser poco comun (0.185 + 0.25)
+                                roll_type = 'uncommon'
+                            else -- 1 en 2 de ser comun (resto)
+                                roll_type = 'common'
+                            end
+                        else
+                            if i == 1 then
+                                -- Guaranteed at least Uncommon or Rare for the first Joker
+                                if roll < 0.35 then
+                                    roll_type = 'rare'
+                                else
+                                    roll_type = 'uncommon'
+                                end
+                            else
+                                if roll < 0.125 then -- 1 en 8 de ser raro
+                                    roll_type = 'rare'
+                                elseif roll < 0.375 then -- 1 en 4 de ser poco comun (0.125 + 0.25)
+                                    roll_type = 'uncommon'
+                                else -- 1 en 2 de ser comun (resto)
+                                    roll_type = 'common'
+                                end
+                            end
+                        end
+
+                        if roll_type == 'secret' then
+                            local secret_keys = {
+                                'esteban', 'thiago', 'black_hole_joker',
+                                'squele', 'bluxdir', 'charles', 'mochi',
+                                'helin', 'raytracing', 'paco', 'yairo',
+                                'kyra'
+                            }
+                            local valid_secrets = {}
+                            for _, sk in ipairs(secret_keys) do
+                                local k = 'j_Witch_brew_' .. sk
+                                if G.P_CENTERS and G.P_CENTERS[k] then
+                                    table.insert(valid_secrets, k)
+                                end
+                            end
+                            if #valid_secrets == 0 and G.P_CENTERS then
+                                for pk, pv in pairs(G.P_CENTERS) do
+                                    if pv.set == 'Joker' and (pv.is_secret or pv.rarity == 'Secret') then
+                                        table.insert(valid_secrets, pk)
+                                    end
+                                end
+                            end
+                            local chosen_secret = (#valid_secrets > 0) and pseudorandom_element(valid_secrets, pseudoseed('friendly_secret_' .. i .. '_' .. attempts)) or nil
+                            if chosen_secret then
+                                new_joker = create_card('Joker', G.jokers, nil, nil, nil, nil, chosen_secret, 'friendly_secret')
+                            else
+                                new_joker = create_card('Joker', G.jokers, true, nil, nil, false, nil, 'friendly_legendary')
+                            end
+                        elseif roll_type == 'legendary' then
+                            new_joker = create_card('Joker', G.jokers, true, nil, nil, false, nil, 'friendly_legendary')
+                        elseif roll_type == 'rare' then
+                            new_joker = create_card('Joker', G.jokers, false, 0.99, nil, false, nil, 'friendly_rare')
+                        elseif roll_type == 'uncommon' then
+                            new_joker = create_card('Joker', G.jokers, false, 0.8, nil, false, nil, 'friendly_uncommon')
+                        else -- common
+                            new_joker = create_card('Joker', G.jokers, false, 0.5, nil, false, nil, 'friendly_common')
+                        end
+
+                        if new_joker and roll_type ~= 'secret' and is_invalid_eternal_joker(new_joker) then
+                            if new_joker.area then new_joker.area:remove_card(new_joker) end
+                            new_joker:remove()
+                            new_joker = nil
+                        end
+                    until new_joker or attempts >= 20
+
+                    if not new_joker then
+                        new_joker = create_card('Joker', G.jokers, false, 0.5, nil, false, nil, 'friendly_fallback')
+                    end
+
+                    new_joker:set_eternal(true)
+                    if new_joker.ability then new_joker.ability.eternal = true end
+                    new_joker:set_edition({ negative = true }, true)
+                    new_joker:add_to_deck()
+                    G.jokers:emplace(new_joker)
+                    new_joker:juice_up(0.5, 0.5)
+                end
+                return true
+            end
+        }))
+    end
+}
+
+-- 5. Alchemist Deck (Baraja Alquimista)
+SMODS.Back {
+    name = 'Alchemist Deck',
+    key = 'alchemist',
+    atlas = 'witch_brew_decks',
+    pos = { x = 0, y = 1 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Alchemist Deck',
+        text = {
+            "Start run with the voucher",
+            "{C:attention,T:v_Witch_brew_destilacion_recurrente}Recurring Distillation{}"
+        }
+    },
+    loc_vars = function(self, info_queue, back)
+        return { vars = {} }
+    end,
+    apply = function(self, back)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.alchemist_deck = true
+                G.GAME.used_vouchers = G.GAME.used_vouchers or {}
+                G.GAME.used_vouchers.v_Witch_brew_destilacion_recurrente = true
+                G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] = true
+                G.GAME.used_vouchers.v_destilacion_recurrente = true
+                G.GAME.used_vouchers.destilacion_recurrente = true
+
+                local is_combo = G.GAME and (G.GAME.alchemist_sleeve_combo or is_sleeve_matching("alchemist"))
+                if is_combo then
+                    G.GAME.alchemist_sleeve_combo = true
+                    if not G.GAME.alchemist_fusion_kyra_given and G.jokers then
+                        G.GAME.alchemist_fusion_kyra_given = true
+                        local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_Witch_brew_kyra', 'alchemist_fusion')
+                        if not kyra_card or not kyra_card.config then
+                            kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'kyra', 'alchemist_fusion_fallback')
+                        end
+                        if kyra_card then
+                            kyra_card:set_eternal(true)
+                            if kyra_card.ability then kyra_card.ability.eternal = true end
+                            kyra_card:add_to_deck()
+                            G.jokers:emplace(kyra_card)
+                            kyra_card:juice_up(0.6, 0.6)
+                            card_eval_status_text(kyra_card, 'extra', nil, nil, nil, { message = 'Kyra Summoned!', colour = G.C.GOLD })
+                        end
+                    end
+                end
+                return true
+            end
+        }))
+    end,
+    calculate = function(self, back, context)
+        if (context.first_hand_drawn or context.setting_blind) and not context.blueprint and not context.individual and not context.repetition then
+            G.GAME.used_vouchers = G.GAME.used_vouchers or {}
+            G.GAME.used_vouchers.v_Witch_brew_destilacion_recurrente = true
+            G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] = true
+
+            local is_combo = G.GAME and (G.GAME.alchemist_sleeve_combo or is_sleeve_matching("alchemist"))
+            if is_combo and not G.GAME.alchemist_fusion_kyra_given and G.jokers then
+                G.GAME.alchemist_fusion_kyra_given = true
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_Witch_brew_kyra', 'alchemist_fusion')
+                        if not kyra_card or not kyra_card.config then
+                            kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'kyra', 'alchemist_fusion_fallback')
+                        end
+                        if kyra_card then
+                            kyra_card:set_eternal(true)
+                            if kyra_card.ability then kyra_card.ability.eternal = true end
+                            kyra_card:add_to_deck()
+                            G.jokers:emplace(kyra_card)
+                            kyra_card:juice_up(0.6, 0.6)
+                            card_eval_status_text(kyra_card, 'extra', nil, nil, nil, { message = 'Kyra Summoned!', colour = G.C.GOLD })
+                        end
+                        return true
+                    end
+                }))
+            end
+        end
+    end
+}
+
+-- 6. Colosseum Deck (Baraja Coliseo)
+SMODS.Back {
+    name = 'Colosseum Deck',
+    key = 'coliseo',
+    atlas = 'witch_brew_decks',
+    pos = { x = 1, y = 1 },
+    config = { dollars = 100 },
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Colosseum Deck',
+        text = {
+            "Start run in {C:attention}Battle of Gods{} mode",
+            "with {C:attention}24 Antes{} required to win,",
+            "starts with {C:money}$100{}, {C:attention}Perishable Stencil & Blueprint{} (4 rounds),",
+            "{C:attention}Taster{}, {C:attention}Critic{}, {C:attention}Planet Merchant{},",
+            "{C:attention}Seed Money{}, and {C:attention}Money Tree{} vouchers,",
+            "and all poker hands gain {C:attention}+3 levels{}"
+        }
+    },
+    loc_vars = function(self, info_queue, back)
+        return { vars = {} }
+    end,
+    apply = function(self, back)
+        G.GAME.battle_of_gods = true
+        G.GAME.coliseo_deck = true
+        G.GAME.win_ante = 24
+        if G.GAME.starting_params then
+            G.GAME.starting_params.dollars = 100
+        end
+        G.GAME.dollars = 100
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.battle_of_gods = true
+                G.GAME.coliseo_deck = true
+                G.GAME.win_ante = 24
+                if G.GAME.starting_params then
+                    G.GAME.starting_params.dollars = 100
+                end
+
+                -- Balanced Ante 1 blind chips curve (4,000 base)
+                if G.GAME.round_resets and (not G.GAME.round_resets.ante or G.GAME.round_resets.ante == 1) then
+                    local base_1 = 4000
+                    if G.GAME.blind and not G.GAME.blind.disabled then
+                        local b_type = G.GAME.blind.get_type and G.GAME.blind:get_type() or 'Small'
+                        local mult = (b_type == 'Boss' and 2) or (b_type == 'Big' and 1.5) or 1
+                        G.GAME.blind.chips = math.floor(base_1 * mult)
+                        G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                    end
+                end
+
+                local cur_dollars = G.GAME.dollars or 4
+                if cur_dollars ~= 100 then
+                    ease_dollars(100 - cur_dollars)
+                end
+
+                -- Vouchers: Taster (Catador), Critic (Critico), Planet Merchant (and Telescope), Seed Money, Money Tree
+                G.GAME.used_vouchers = G.GAME.used_vouchers or {}
+                local v_keys = {
+                    'v_Witch_brew_catador', 'v_Witch brew_catador', 'v_catador', 'catador',
+                    'v_Witch_brew_critico', 'v_Witch brew_critico', 'v_critico', 'critico',
+                    'v_planet_merchant', 'planet_merchant', 'v_telescope',
+                    'v_seed_money', 'seed_money', 'v_money_tree', 'money_tree'
+                }
+                for _, k in ipairs(v_keys) do
+                    G.GAME.used_vouchers[k] = true
+                end
+                if G.P_CENTERS['v_Witch_brew_catador'] and G.P_CENTERS['v_Witch_brew_catador'].redeem then
+                    pcall(function() G.P_CENTERS['v_Witch_brew_catador']:redeem() end)
+                end
+                if G.P_CENTERS['v_Witch_brew_critico'] and G.P_CENTERS['v_Witch_brew_critico'].redeem then
+                    pcall(function() G.P_CENTERS['v_Witch_brew_critico']:redeem() end)
+                end
+                if G.P_CENTERS['v_seed_money'] and G.P_CENTERS['v_seed_money'].redeem then
+                    pcall(function() G.P_CENTERS['v_seed_money']:redeem() end)
+                end
+                if G.P_CENTERS['v_money_tree'] and G.P_CENTERS['v_money_tree'].redeem then
+                    pcall(function() G.P_CENTERS['v_money_tree']:redeem() end)
+                end
+                G.GAME.interest_cap = 100
+                if G.GAME.planet_rate then
+                    G.GAME.planet_rate = G.GAME.planet_rate * 2
+                end
+
+                -- Perishable Starter Jokers: Stencil + Blueprint (4 rounds)
+                if G.jokers then
+                    local starter_keys = { 'j_stencil', 'j_blueprint' }
+                    for _, s_key in ipairs(starter_keys) do
+                        local s_card = create_card('Joker', G.jokers, nil, nil, nil, nil, s_key, 'coliseo_deck')
+                        s_card:set_perishable(true)
+                        s_card.ability.perish_tally = 4
+                        s_card:add_to_deck()
+                        G.jokers:emplace(s_card)
+                    end
+                end
+
+                -- Grant +3 levels to all poker hands
+                if G.GAME and G.GAME.hands then
+                    for handname, _ in pairs(G.GAME.hands) do
+                        level_up_hand(nil, handname, true, 3)
+                    end
+                end
+
+                if apply_battle_of_gods_bg then
+                    apply_battle_of_gods_bg()
+                end
+
+                -- Prompt Charles Shop choice on Ante 1 first blind
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.8,
+                    blocking = false,
+                    func = function()
+                        if G.GAME and G.GAME.coliseo_deck and not G.GAME.charles_shop_offered and (not G.GAME.round_resets.ante or G.GAME.round_resets.ante == 1) then
+                            G.GAME.charles_shop_offered = true
+                            if prompt_charles_coliseo_choice then
+                                prompt_charles_coliseo_choice()
+                            end
+                        end
+                        return true
+                    end
+                }))
+
+                return true
+            end
+        }))
+    end,
+    calculate = function(self, back, context)
+    end
+}
+
+-- 7. Dark Merchant Deck (Baraja de Mercader Oscura)
+SMODS.Back {
+    name = 'Dark Merchant Deck',
+    key = 'dark_merchant',
+    atlas = 'witch_brew_decks',
+    pos = { x = 2, y = 1 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Dark Merchant Deck',
+        text = {
+            "Start run with {C:dark_edition}+$10{} Dark Money,",
+            "Gain {C:dark_edition}+$5{} extra Dark Money",
+            "when defeating a {C:attention}Boss Blind{},",
+            "{C:attention}Black Market{} is guaranteed",
+            "to appear in every shop"
+        }
+    },
+    loc_vars = function(self, info_queue, back)
+        return { vars = {} }
+    end,
+    apply = function(self, back)
+        G.GAME.dark_merchant_deck = true
+        G.GAME.black_market_available = true
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.dark_merchant_deck = true
+                G.GAME.black_market_available = true
+                ease_dark_coins(10)
+                return true
+            end
+        }))
+    end,
+    calculate = function(self, back, context)
+    end
+}
+
+-- 8. Witcher Deck (White Wolf Deck)
+SMODS.Back {
+    name = 'Witcher Deck',
+    key = 'witcher',
+    atlas = 'witch_brew_decks',
+    pos = { x = 3, y = 1 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Witcher Deck',
+        text = {
+            "Start run with {C:attention}+1{} Consumable slot",
+            "and {C:attention}2 random Potions{},",
+            "Defeating a {C:attention}Boss Blind{} creates a random",
+            "{C:attention}Potion{} or {C:spectral}Spectral Card{},",
+            "{C:red}-1{} Hand size"
+        }
+    },
+    loc_vars = function(self, info_queue, back)
+        return { vars = {} }
+    end,
+    apply = function(self, back)
+        G.GAME.witcher_deck = true
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.witcher_deck = true
+                if G.consumeables and G.consumeables.config then
+                    G.consumeables.config.card_limit = (G.consumeables.config.card_limit or 2) + 1
+                end
+                if G.GAME.starting_params then
+                    G.GAME.starting_params.consumable_slots = (G.GAME.starting_params.consumable_slots or 2) + 1
+                end
+
+                G.GAME.round_resets.hand_size = math.max(1, (G.GAME.round_resets.hand_size or 8) - 1)
+                if G.hand and G.hand.change_size then
+                    G.hand:change_size(-1)
+                end
+
+                for i = 1, 2 do
+                    if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                        local p_card = (create_potion_card_safe and create_potion_card_safe(G.consumeables, 'witcher_deck'))
+                            or create_card('Potion', G.consumeables, nil, nil, nil, nil, nil, 'witcher_deck')
+                        if p_card then
+                            p_card:add_to_deck()
+                            G.consumeables:emplace(p_card)
+                            p_card:juice_up(0.5, 0.5)
+                        end
+                    end
+                end
+                return true
+            end
+        }))
+    end,
+    calculate = function(self, back, context)
+        if context.end_of_round and G.GAME and G.GAME.blind and G.GAME.blind.boss and not context.individual and not context.repetition then
+            if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        local roll = pseudorandom('witcher_reward')
+                        local reward_type = (roll < 0.5) and 'Potion' or 'Spectral'
+                        local reward_card = (reward_type == 'Potion' and ((create_potion_card_safe and create_potion_card_safe(G.consumeables, 'witcher_boss')) or create_card('Potion', G.consumeables, nil, nil, nil, nil, nil, 'witcher_boss')))
+                            or create_card('Spectral', G.consumeables, nil, nil, nil, nil, nil, 'witcher_boss')
+                        if reward_card then
+                            reward_card:add_to_deck()
+                            G.consumeables:emplace(reward_card)
+                            reward_card:juice_up(0.5, 0.5)
+                            card_eval_status_text(reward_card, 'extra', nil, nil, nil, { message = 'Witcher Spoils!', colour = G.C.GOLD })
+                        end
+                        return true
+                    end
+                }))
+            end
+        end
+    end
+}
+
+-- Inject Deck localizations into G.localization.descriptions.Back with parsed entries
+function inject_witch_brew_deck_localization()
+    if not (G.localization and G.localization.descriptions) then return end
+    G.localization.descriptions.Back = G.localization.descriptions.Back or {}
+
+    local deck_locs = {
+        cavernicola = {
+            name = "Caveman Deck",
+            text = {
+                "Start run with only {C:attention}A, 2, 3, 4, 6, 8{} of each suit,",
+                "All other starting cards become {C:attention}Stone Cards{},",
+                "{C:red}-1{} Hand"
+            }
+        },
+        strategist = {
+            name = "Strategist Deck",
+            text = {
+                "Start run with a {C:attention}24-card deck{} {C:inactive}(9 through Ace){},",
+                "Start with {C:attention}Magic Trick{} voucher and {C:money}$0{},",
+                "Blind score targets are {C:attention}X1.2{},",
+                "{C:red}-1{} Hand, {C:red}-2{} Discards"
+            }
+        },
+        overseer = {
+            name = "Overseer Deck",
+            text = {
+                "Creates a random {C:spectral}Spectral card{} at end of round",
+                "{C:inactive}(except Rot, Soul and Secrets){},",
+                "{C:attention}Tags are always doubled{},",
+                "Joker prices are {C:red}X1.5{},",
+                "Start with {C:money}$5{}, {C:red}-1{} Hand, {C:red}-1{} Discard"
+            }
+        },
+        friendly = {
+            name = "Friendly Deck",
+            text = {
+                "Start run with {C:attention}2{} random {C:dark_edition}Negative{} {C:attention}Eternal Jokers{},",
+                "{C:inactive}(At least 1 Uncommon or Rare, no Secrets/Legendaries){},",
+                "{C:red}-1{} Joker Slot, {C:red}-1{} Discard, {C:money}+$4{}"
+            }
+        },
+        alchemist = {
+            name = "Alchemist Deck",
+            text = {
+                "Start run with the voucher",
+                "{C:attention,T:v_Witch_brew_destilacion_recurrente}Recurring Distillation{}"
+            }
+        },
+        coliseo = {
+            name = "Colosseum Deck",
+            text = {
+                "Start run in {C:attention}Battle of Gods{} mode",
+                "with {C:attention}24 Antes{} required to win,",
+                "starts with {C:money}$100{}, {C:attention}2 Perishable Stencils{} (2 rounds),",
+                "{C:attention}Taster{}, {C:attention}Critic{}, {C:attention}Planet Merchant{},",
+                "{C:attention}Seed Money{}, and {C:attention}Money Tree{} vouchers,",
+                "and all poker hands gain {C:attention}+3 levels{}"
+            }
+        },
+        dark_merchant = {
+            name = "Dark Merchant Deck",
+            text = {
+                "Start run with {C:dark_edition}+$10{} Dark Money,",
+                "Gain {C:dark_edition}+$5{} extra Dark Money",
+                "when defeating a {C:attention}Boss Blind{},",
+                "{C:attention}Black Market{} is guaranteed",
+                "to appear in every shop"
+            }
+        },
+        witcher = {
+            name = "Witcher Deck",
+            text = {
+                "Start run with {C:attention}+1{} Consumable slot",
+                "and {C:attention}2 random Potions{},",
+                "Defeating a {C:attention}Boss Blind{} creates a random",
+                "{C:attention}Potion{} or {C:spectral}Spectral Card{},",
+                "{C:red}-1{} Hand size"
+            }
+        },
+        auction_deck = {
+            name = "The Auction Deck",
+            text = {
+                "Start run with {C:money}$15{} and",
+                "immediately open a",
+                "{C:attention}Mega Job Application{} pack"
+            }
+        },
+        arcade_deck = {
+            name = "The Arcade Deck",
+            text = {
+                "Start run with a random {C:attention}Minigame Joker{}",
+                "{C:inactive}(Ethernet, Pachinko Machine, Claw Machine, etc.){}.",
+                "Gains {C:chips}+10 Chips{} permanently each time",
+                "a minigame is completed"
+            }
+        },
+        guild_deck = {
+            name = "The Guildmaster Deck",
+            text = {
+                "All {C:attention}Face cards{} in your starting deck",
+                "begin with random {C:attention}Job Stickers{} pre-applied",
+                "{C:inactive}(Gardener, Detective, Chef, Archaeologist, Miner, Jeweler){}"
+            }
+        },
+        high_roller_deck = {
+            name = "The High Roller Deck",
+            text = {
+                "Start with {C:money}$25{}.",
+                "Max interest cap is doubled to {C:money}$10{} per round {C:inactive}($50 threshold){}.",
+                "Shop rerolls begin at {C:money}$8{}, but reduce by {C:money}-$1{}",
+                "for every hand won in a single turn"
+            }
+        },
+        mirage_deck = {
+            name = "The Mirage Deck",
+            text = {
+                "Start with {C:blue}+1 Hand{} and {C:red}-1 Discard{}.",
+                "Through Ante 3, you only fight titanic Bosses:",
+                "{C:attention}The Wall{} and {C:attention}Violet Vessel{}"
+            }
+        },
+        bounty_deck = {
+            name = "The Bounty Deck",
+            text = {
+                "Each time you defeat a {C:attention}Boss Blind{},",
+                "claims a royal bounty: awards a random",
+                "{C:attention}Tag{}, {C:money}cash bonus ($15){}, or free {C:attention}Booster Pack{}"
+            }
+        }
+    }
+
+    -- Merge dynamically registered deck localizations
+    if WITCH_BREW_DECK_LOCS then
+        for k, v in pairs(WITCH_BREW_DECK_LOCS) do
+            if not deck_locs[k] then
+                deck_locs[k] = v
+            end
+        end
+    end
+
+    -- Automatically discover any SMODS.Back with key starting with Witch_brew
+    if SMODS and SMODS.Back and SMODS.Back.obj_table then
+        for k, obj in pairs(SMODS.Back.obj_table) do
+            local clean_k = tostring(obj.key or k):gsub('^b_Witch_brew_', ''):gsub('^b_', ''):gsub('^Witch_brew_', '')
+            if obj.loc_txt and not deck_locs[clean_k] then
+                deck_locs[clean_k] = {
+                    name = obj.loc_txt.name or obj.name,
+                    text = obj.loc_txt.text
+                }
+            end
+        end
+    end
+
+    for key, data in pairs(deck_locs) do
+        local keys_to_set = {
+            "b_" .. key,
+            "b_Witch_brew_" .. key,
+            key,
+            "Witch_brew_" .. key
+        }
+        for _, k in ipairs(keys_to_set) do
+            local entry = G.localization.descriptions.Back[k] or {}
+            entry.name = data.name
+            entry.text = copy_table(data.text)
+            reparse_deck_entry(entry)
+            G.localization.descriptions.Back[k] = entry
+        end
+    end
+
+    for _, b_entry in pairs(G.localization.descriptions.Back) do
+        if type(b_entry) == 'table' then
+            reparse_deck_entry(b_entry)
+        end
+    end
+
+    setmetatable(G.localization.descriptions.Back, nil)
+end
+
+inject_witch_brew_deck_localization()
+
+-- Hook init_localization to ensure decks are kept synchronized and parsed
+local orig_init_loc_decks = init_localization
+function init_localization()
+    if orig_init_loc_decks then orig_init_loc_decks() end
+    inject_witch_brew_deck_localization()
+end
+
+-- Defensive hooks for Back:init and Back:generate_UI
+if Back then
+    if Back.init then
+        local orig_back_init = Back.init
+        function Back:init(selected_back)
+            orig_back_init(self, selected_back)
+            if self.effect and not self.effect.config then
+                self.effect.config = {}
+            end
+        end
+    end
+    if Back.generate_UI then
+        local orig_back_generate_ui = Back.generate_UI
+        function Back:generate_UI(other, ui_scale, min_dims, challenge)
+            if other and not other.config then
+                other.config = {}
+            end
+            if self and self.effect and not self.effect.config then
+                self.effect.config = {}
+            end
+            local ui = orig_back_generate_ui(self, other, ui_scale, min_dims, challenge)
+            local name_to_check = other and other.name or self.name
+            if ui and ui.nodes and name_to_check ~= 'Challenge Deck' then
+                local rows = 0
+                local function scan_rows(node)
+                    if not node or type(node) ~= 'table' then return end
+                    if node.n == G.UIT.R and node.nodes then
+                        for _, c in ipairs(node.nodes) do
+                            if c.n == G.UIT.T or (c.n == G.UIT.O and c.config and c.config.object) then
+                                rows = rows + 1
+                                return
+                            end
+                        end
+                    end
+                    if node.nodes then
+                        for _, c in ipairs(node.nodes) do scan_rows(c) end
+                    end
+                end
+                scan_rows(ui)
+
+                local mult = (rows <= 1 and 1.30)
+                    or (rows <= 2 and 1.25)
+                    or (rows <= 3 and 1.20)
+                    or 1.15
+
+                local function enlarge(node)
+                    if not node or type(node) ~= 'table' then return end
+                    if node.config and node.config.scale then
+                        node.config.scale = node.config.scale * mult
+                    end
+                    if node.config and node.config.object and node.config.object.scale then
+                        node.config.object.scale = node.config.object.scale * mult
+                        if node.config.object.update_text then
+                            node.config.object:update_text(true)
+                        end
+                    end
+                    if node.nodes then
+                        for _, c in ipairs(node.nodes) do enlarge(c) end
+                    end
+                end
+                enlarge(ui)
+            end
+            return ui
+        end
+    end
+end
+
+-- Extensible Deck Event Hook Dispatcher
+if Back and not G.witch_brew_back_trigger_hooked then
+    G.witch_brew_back_trigger_hooked = true
+    local orig_trigger_effect = Back.trigger_effect
+    function Back:trigger_effect(args)
+        local ret1, ret2 = nil, nil
+        if orig_trigger_effect then
+            ret1, ret2 = orig_trigger_effect(self, args)
+        end
+        local current_key = self.effect and self.effect.center and self.effect.center.key
+        if current_key and WITCH_BREW_DECK_HOOKS then
+            local clean_k = tostring(current_key):gsub('^b_Witch_brew_', ''):gsub('^b_', ''):gsub('^Witch_brew_', '')
+            local hooks = WITCH_BREW_DECK_HOOKS[clean_k] or WITCH_BREW_DECK_HOOKS[current_key]
+            if hooks then
+                for _, fn in ipairs(hooks) do
+                    local h1, h2 = fn(self, args)
+                    if h1 ~= nil then ret1 = h1 end
+                    if h2 ~= nil then ret2 = h2 end
+                end
+            end
+        end
+        return ret1 or (args and args.chips), ret2 or (args and args.mult)
+    end
+end
+
+
