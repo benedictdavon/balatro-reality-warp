@@ -7,19 +7,19 @@
     "Reality warps around the cards. Step into the rift."
 --]]
 
-Witch_brew_MOD = SMODS.current_mod
-if Witch_brew_MOD then
-    Witch_brew_MOD.name = "Balatro: Reality Warp"
-    Witch_brew_MOD.display_name = "Balatro: Reality Warp"
-    Witch_brew_MOD.badge_name = "Reality Warp"
+reality_warp_MOD = SMODS.current_mod
+if reality_warp_MOD then
+    reality_warp_MOD.name = "Balatro: Reality Warp"
+    reality_warp_MOD.display_name = "Balatro: Reality Warp"
+    reality_warp_MOD.badge_name = "Reality Warp"
 
-    G.C.WITCH_BREW_BADGE_COL = G.C.WITCH_BREW_BADGE_COL or { 0, 0, 0, 1 }
-    G.C.WITCH_BREW_TEXT_COL = G.C.WITCH_BREW_TEXT_COL or { 1, 1, 1, 1 }
-    Witch_brew_MOD.badge_colour = G.C.WITCH_BREW_BADGE_COL
-    Witch_brew_MOD.badge_text_colour = G.C.WITCH_BREW_TEXT_COL
-    Witch_brew_MOD.set_mod_badge = function(self, card, badges)
+    G.C.reality_warp_BADGE_COL = G.C.reality_warp_BADGE_COL or { 0, 0, 0, 1 }
+    G.C.reality_warp_TEXT_COL = G.C.reality_warp_TEXT_COL or { 1, 1, 1, 1 }
+    reality_warp_MOD.badge_colour = G.C.reality_warp_BADGE_COL
+    reality_warp_MOD.badge_text_colour = G.C.reality_warp_TEXT_COL
+    reality_warp_MOD.set_mod_badge = function(self, card, badges)
         if badges and create_badge then
-            badges[#badges + 1] = create_badge('Reality Warp', G.C.WITCH_BREW_BADGE_COL, G.C.WITCH_BREW_TEXT_COL, 1.2 * 0.9)
+            badges[#badges + 1] = create_badge('Reality Warp', G.C.reality_warp_BADGE_COL, G.C.reality_warp_TEXT_COL, 1.2 * 0.9)
         end
     end
 end
@@ -69,7 +69,7 @@ for _, file in ipairs(files) do
     assert(SMODS.load_file(file))()
 end
 
-if alias_all_witch_brew_centers then
-    alias_all_witch_brew_centers()
+if alias_all_reality_warp_centers then
+    alias_all_reality_warp_centers()
 end
                                                         

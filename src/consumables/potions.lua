@@ -4,7 +4,7 @@
 --]]
 
 SMODS.Atlas {
-    key = "witch_brew_potions",
+    key = "reality_warp_potions",
     path = "potions.png",
     px = 71,
     py = 95
@@ -22,7 +22,7 @@ SMODS.ConsumableType {
     },
     shop_rate = 0.8,
     collection_rows = { 4, 5 },
-    default = 'c_Witch_brew_potion_stretch'
+    default = 'c_reality_warp_potion_stretch'
 }
 
 -- Potion Particles, Visual hooks
@@ -169,7 +169,7 @@ end
 SMODS.Consumable {
     key = 'potion_stretch',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 0, y = 0 },
     cost = 4,
     loc_txt = {
@@ -203,7 +203,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_lightning',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 1, y = 0 },
     cost = 4,
     config = { extra = { odds = 5 } },
@@ -241,7 +241,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_blizzard',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 2, y = 0 },
     cost = 4,
     loc_txt = {
@@ -309,7 +309,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_fury',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 3, y = 0 },
     cost = 4,
     loc_txt = {
@@ -360,10 +360,10 @@ local function get_valid_joker_key(k)
     if not k then return nil end
     if not G.P_CENTERS then return k end
     if G.P_CENTERS[k] then return k end
-    local clean = tostring(k):gsub('^j_Witch_brew_', ''):gsub('^j_Witch brew_', ''):gsub('^j_', '')
+    local clean = tostring(k):gsub('^j_reality_warp_', ''):gsub('^j_Witch brew_', ''):gsub('^j_', '')
     local candidates = {
         'j_Witch brew_' .. clean,
-        'j_Witch_brew_' .. clean,
+        'j_reality_warp_' .. clean,
         'j_' .. clean,
         clean
     }
@@ -436,8 +436,8 @@ local function calculate_amalgam_outcome(j1, j2)
     if not j1 then return 2, false, nil, 0, nil end
     local r1 = (j1.config and j1.config.center and j1.config.center.rarity) or 1
     local r2 = (j2 and j2.config and j2.config.center and j2.config.center.rarity) or 1
-    if type(r1) ~= 'number' then r1 = (r1 == 'Witch_brew_song' and 4) or 3 end
-    if type(r2) ~= 'number' then r2 = (r2 == 'Witch_brew_song' and 4) or 3 end
+    if type(r1) ~= 'number' then r1 = (r1 == 'reality_warp_song' and 4) or 3 end
+    if type(r2) ~= 'number' then r2 = (r2 == 'reality_warp_song' and 4) or 3 end
     local ed_b1, ed_t1 = get_card_edition_info(j1)
     local ed_b2, ed_t2 = get_card_edition_info(j2)
     local total_ed_bonus = ed_b1 + ed_b2
@@ -659,7 +659,7 @@ if G.FUNCS and G.FUNCS.exit_overlay_menu then
         G.amalgam_joker_btn_nodes = nil
         G.amalgam_combine_button = nil
         if G.AMALGAM_PENDING_REFUND then
-            local new_potion = (create_potion_card_safe and create_potion_card_safe(G.consumeables, 'amalgama_refund')) or create_card('Potion', G.consumeables, nil, nil, nil, nil, 'c_Witch_brew_potion_amalgam', 'refund')
+            local new_potion = (create_potion_card_safe and create_potion_card_safe(G.consumeables, 'amalgama_refund')) or create_card('Potion', G.consumeables, nil, nil, nil, nil, 'c_reality_warp_potion_amalgam', 'refund')
             if new_potion then
                 new_potion:add_to_deck()
                 G.consumeables:emplace(new_potion)
@@ -855,7 +855,7 @@ G.FUNCS.open_amalgam_menu = function()
     -- Robust lookup for Kyra center
     local kyra_center = nil
     if G.P_CENTERS then
-        kyra_center = G.P_CENTERS['j_Witch_brew_kyra']
+        kyra_center = G.P_CENTERS['j_reality_warp_kyra']
             or G.P_CENTERS['j_Witch brew_kyra']
             or G.P_CENTERS['j_kyra']
             or G.P_CENTERS['kyra']
@@ -959,7 +959,7 @@ end
 SMODS.Consumable {
     key = 'potion_amalgam',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 4, y = 0 },
     cost = 6,
     loc_txt = {
@@ -1004,7 +1004,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_mercury',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 0, y = 1 },
     cost = 4,
     loc_txt = {
@@ -1040,7 +1040,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_mirror',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 1, y = 1 },
     cost = 5,
     loc_txt = {
@@ -1074,7 +1074,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_clock',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 2, y = 1 },
     cost = 5,
     loc_txt = {
@@ -1130,7 +1130,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_swallow',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 3, y = 1 },
     cost = 4,
     config = { extra = { max_cards = 2, money = 5 } },
@@ -1177,7 +1177,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_tawny_owl',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 4, y = 1 },
     cost = 4,
     config = { extra = { hands = 1, discards = 2, hand_size = 1 } },
@@ -1221,7 +1221,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_petri',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 0, y = 2 },
     cost = 4,
     config = { extra = { levels = 2 } },
@@ -1269,7 +1269,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_golden_oriole',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 1, y = 2 },
     cost = 5,
     config = { extra = { money = 6 } },
@@ -1310,7 +1310,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_black_blood',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 2, y = 2 },
     cost = 5,
     config = { extra = { max_cards = 2 } },
@@ -1363,7 +1363,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_white_honey',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 3, y = 2 },
     cost = 5,
     loc_txt = {
@@ -1412,7 +1412,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_kikimore',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 4, y = 2 },
     cost = 5,
     loc_txt = {
@@ -1445,7 +1445,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_drowner',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 0, y = 3 },
     cost = 5,
     loc_txt = {
@@ -1480,7 +1480,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_thunderbolt',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 1, y = 3 },
     cost = 4,
     loc_txt = {
@@ -1513,7 +1513,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'potion_white_raffard',
     set = 'Potion',
-    atlas = 'witch_brew_potions',
+    atlas = 'reality_warp_potions',
     pos = { x = 2, y = 3 },
     cost = 4,
     loc_txt = {
@@ -1778,9 +1778,9 @@ function create_card_for_shop(area)
 
         G.GAME.potion_rate = G.GAME.potion_rate or 1.2
         local mult = 1
-        if G.GAME.used_vouchers and (G.GAME.used_vouchers.v_Witch_brew_caldero or G.GAME.used_vouchers.v_caldero or G.GAME.used_vouchers.caldero) then
+        if G.GAME.used_vouchers and (G.GAME.used_vouchers.v_reality_warp_caldero or G.GAME.used_vouchers.v_caldero or G.GAME.used_vouchers.caldero) then
             mult = 4
-        elseif G.GAME.used_vouchers and (G.GAME.used_vouchers.v_Witch_brew_embrujo or G.GAME.used_vouchers.v_embrujo or G.GAME.used_vouchers.embrujo) then
+        elseif G.GAME.used_vouchers and (G.GAME.used_vouchers.v_reality_warp_embrujo or G.GAME.used_vouchers.v_embrujo or G.GAME.used_vouchers.embrujo) then
             mult = 2
         end
 
@@ -2262,19 +2262,19 @@ end
 -- Backward compatibility aliases for Potions
 if G and G.P_CENTERS then
     local potion_aliases = {
-        ['c_Witch_brew_potion_estiramiento'] = 'c_Witch_brew_potion_stretch',
-        ['c_Witch_brew_potion_rayo'] = 'c_Witch_brew_potion_lightning',
-        ['c_Witch_brew_potion_ventisca'] = 'c_Witch_brew_potion_blizzard',
-        ['c_Witch_brew_potion_furia'] = 'c_Witch_brew_potion_fury',
-        ['c_Witch_brew_potion_amalgama'] = 'c_Witch_brew_potion_amalgam',
-        ['c_Witch_brew_potion_mercurio'] = 'c_Witch_brew_potion_mercury',
-        ['c_Witch_brew_potion_espejo'] = 'c_Witch_brew_potion_mirror',
-        ['c_Witch_brew_potion_reloj'] = 'c_Witch_brew_potion_clock',
-        ['c_Witch_brew_potion_golondrina'] = 'c_Witch_brew_potion_swallow',
-        ['c_Witch_brew_potion_lechuza'] = 'c_Witch_brew_potion_tawny_owl',
-        ['c_Witch_brew_potion_filtro_petri'] = 'c_Witch_brew_potion_petri',
-        ['c_Witch_brew_potion_oropendola'] = 'c_Witch_brew_potion_golden_oriole',
-        ['c_Witch_brew_potion_sangre_negra'] = 'c_Witch_brew_potion_black_blood',
+        ['c_reality_warp_potion_estiramiento'] = 'c_reality_warp_potion_stretch',
+        ['c_reality_warp_potion_rayo'] = 'c_reality_warp_potion_lightning',
+        ['c_reality_warp_potion_ventisca'] = 'c_reality_warp_potion_blizzard',
+        ['c_reality_warp_potion_furia'] = 'c_reality_warp_potion_fury',
+        ['c_reality_warp_potion_amalgama'] = 'c_reality_warp_potion_amalgam',
+        ['c_reality_warp_potion_mercurio'] = 'c_reality_warp_potion_mercury',
+        ['c_reality_warp_potion_espejo'] = 'c_reality_warp_potion_mirror',
+        ['c_reality_warp_potion_reloj'] = 'c_reality_warp_potion_clock',
+        ['c_reality_warp_potion_golondrina'] = 'c_reality_warp_potion_swallow',
+        ['c_reality_warp_potion_lechuza'] = 'c_reality_warp_potion_tawny_owl',
+        ['c_reality_warp_potion_filtro_petri'] = 'c_reality_warp_potion_petri',
+        ['c_reality_warp_potion_oropendola'] = 'c_reality_warp_potion_golden_oriole',
+        ['c_reality_warp_potion_sangre_negra'] = 'c_reality_warp_potion_black_blood',
     }
     for old_k, new_k in pairs(potion_aliases) do
         if G.P_CENTERS[new_k] and not G.P_CENTERS[old_k] then

@@ -1,6 +1,6 @@
 -- Direct God Combat (Idea 9), Chronos Paradox Rewind (Idea 12), and Glitch Tears (Idea 16)
 SMODS.Atlas {
-    key = "witch_brew_glitch",
+    key = "reality_warp_glitch",
     path = "glitch.png",
     px = 71,
     py = 95

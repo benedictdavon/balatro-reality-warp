@@ -84,7 +84,7 @@ if SMODS and SMODS.Achievement then
             description = 'Reach Ante 24 in Battle of Gods mode.',
         },
         unlock_condition = function(self, args)
-            return args.type == 'botg_ante_24' or args.type == 'campeon_del_coliseo' or args.type == 'ach_Witch_brew_campeon_del_coliseo'
+            return args.type == 'botg_ante_24' or args.type == 'campeon_del_coliseo' or args.type == 'ach_reality_warp_campeon_del_coliseo'
         end
     }
 
@@ -118,14 +118,14 @@ if SMODS and SMODS.Achievement then
                 description = ach.desc,
             },
             unlock_condition = function(self, args)
-                return args.type == ach.key or args.type == ('ach_Witch_brew_' .. ach.key)
+                return args.type == ach.key or args.type == ('ach_reality_warp_' .. ach.key)
             end
         }
     end
 end
 
 function register_achievement_loc(key, name, desc)
-    local full_key = 'ach_Witch_brew_' .. key
+    local full_key = 'ach_reality_warp_' .. key
     G.ACHIEVEMENTS = G.ACHIEVEMENTS or {}
     G.SETTINGS.ACHIEVEMENTS_EARNED = G.SETTINGS.ACHIEVEMENTS_EARNED or {}
 
@@ -151,7 +151,7 @@ for _, ach in ipairs(botg_basic_achievements) do
 end
 
 function botg_trigger_mod_achievement(key)
-    local full_key = 'ach_Witch_brew_' .. key
+    local full_key = 'ach_reality_warp_' .. key
     if check_for_unlock then
         pcall(function() check_for_unlock({ type = key }) end)
         pcall(function() check_for_unlock({ type = full_key }) end)
@@ -180,8 +180,8 @@ function check_olympic_god_status()
 
     for k, v in pairs(G.P_CENTERS) do
         if v.set == 'Joker' and not v.omit then
-            local is_mod_joker = (v.mod and (v.mod.id == 'Witch_brew' or v.mod.id == 'witch_brew'))
-                or string.find(k, 'Witch_brew') or string.find(k, 'witch_brew')
+            local is_mod_joker = (v.mod and (v.mod.id == 'reality_warp' or v.mod.id == 'reality_warp'))
+                or string.find(k, 'reality_warp') or string.find(k, 'reality_warp')
             if is_mod_joker then
                 total_mod_jokers = total_mod_jokers + 1
                 local win_stake = get_joker_win_sticker and get_joker_win_sticker(v, true) or 0
@@ -203,8 +203,8 @@ function check_olympic_god_plus_plus_status()
     local gold_decks = 0
     for k, v in pairs(G.P_CENTERS) do
         if v.set == 'Back' and not v.omit then
-            local is_mod_deck = (v.mod and (v.mod.id == 'Witch_brew' or v.mod.id == 'witch_brew'))
-                or string.find(k, 'Witch_brew') or string.find(k, 'witch_brew')
+            local is_mod_deck = (v.mod and (v.mod.id == 'reality_warp' or v.mod.id == 'reality_warp'))
+                or string.find(k, 'reality_warp') or string.find(k, 'reality_warp')
             if is_mod_deck then
                 total_decks = total_decks + 1
                 local stake_win = get_deck_win_stake and get_deck_win_stake(v.key) or 0
@@ -331,18 +331,18 @@ function get_new_boss_filtered(showdown)
 end
 
 local FUSED_BOSS_KEYS = {
-    'bl_Witch_brew_obelisk',
-    'bl_Witch_brew_minotaur',
-    'bl_Witch_brew_fortress',
-    'bl_Witch_brew_mind_flayer',
-    'bl_Witch_brew_leviathan',
-    'bl_Witch_brew_iron_maiden',
-    'bl_Witch_brew_cyclops',
-    'bl_Witch_brew_thorn_crown',
-    'bl_Witch_brew_ouroboros',
-    'bl_Witch_brew_nightshade',
-    'bl_Witch_brew_black_diamond',
-    'bl_Witch_brew_blood_moon'
+    'bl_reality_warp_obelisk',
+    'bl_reality_warp_minotaur',
+    'bl_reality_warp_fortress',
+    'bl_reality_warp_mind_flayer',
+    'bl_reality_warp_leviathan',
+    'bl_reality_warp_iron_maiden',
+    'bl_reality_warp_cyclops',
+    'bl_reality_warp_thorn_crown',
+    'bl_reality_warp_ouroboros',
+    'bl_reality_warp_nightshade',
+    'bl_reality_warp_black_diamond',
+    'bl_reality_warp_blood_moon'
 }
 
 function get_new_fused_boss()
@@ -414,7 +414,7 @@ if reset_blinds then
         if (G.GAME and G.GAME.battle_of_gods) or sel_fam then
             if init_botg_familiars_area then init_botg_familiars_area() end
             if sel_fam and botg_set_active_familiar and G.botg_familiars and #G.botg_familiars.cards == 0 then
-                botg_set_active_familiar('c_Witch_brew_' .. sel_fam)
+                botg_set_active_familiar('c_reality_warp_' .. sel_fam)
             end
         end
         if G.GAME and G.GAME.battle_of_gods then
@@ -675,7 +675,7 @@ if Blind and Blind.set_blind then
             if is_showdown then
                 local bname = self.name or (self.config and self.config.blind and self.config.blind.name) or ''
                 local bkey = self.key or (self.config and self.config.blind and self.config.blind.key) or ''
-                local is_purple = (bname == 'Chronos' or bname == 'Violet Vessel' or bkey == 'chronos' or bkey == 'vessel' or bkey == 'bl_vessel' or bkey == 'bl_Witch_brew_chronos' or bkey == 'bl_chronos')
+                local is_purple = (bname == 'Chronos' or bname == 'Violet Vessel' or bkey == 'chronos' or bkey == 'vessel' or bkey == 'bl_vessel' or bkey == 'bl_reality_warp_chronos' or bkey == 'bl_chronos')
                 local target_mult = is_purple and 8 or 5
                 local base_chips = get_blind_amount(G.GAME.round_resets and G.GAME.round_resets.ante or 1)
                 self.chips = math.floor(base_chips * target_mult)
@@ -723,7 +723,7 @@ if create_UIBox_blind_choice then
         local p_is_sd = p_blind and ((p_blind.showdown == true) or (type(p_blind.boss) == 'table' and p_blind.boss.showdown))
         if G.GAME and G.GAME.battle_of_gods and p_is_sd then
             orig_mult = p_blind.mult
-            local is_purple = (blind_key == 'bl_vessel' or blind_key == 'vessel' or blind_key == 'bl_chronos' or blind_key == 'chronos' or blind_key == 'bl_Witch_brew_chronos' or p_blind.key == 'chronos' or p_blind.key == 'vessel')
+            local is_purple = (blind_key == 'bl_vessel' or blind_key == 'vessel' or blind_key == 'bl_chronos' or blind_key == 'chronos' or blind_key == 'bl_reality_warp_chronos' or p_blind.key == 'chronos' or p_blind.key == 'vessel')
             p_blind.mult = is_purple and 8 or 5
         end
         local ret = orig_create_UIBox_blind_choice(blind_type, run_info)
@@ -1048,18 +1048,18 @@ G.FUNCS.confirm_battle_of_gods = function(e)
     -- Obtain Taster and Critic vouchers
     G.GAME.used_vouchers = G.GAME.used_vouchers or {}
     local v_keys = {
-        'v_Witch_brew_catador', 'v_Witch brew_catador', 'v_catador', 'catador',
-        'v_Witch_brew_critico', 'v_Witch brew_critico', 'v_critico', 'critico'
+        'v_reality_warp_catador', 'v_Witch brew_catador', 'v_catador', 'catador',
+        'v_reality_warp_critico', 'v_Witch brew_critico', 'v_critico', 'critico'
     }
     for _, k in ipairs(v_keys) do
         G.GAME.used_vouchers[k] = true
     end
 
-    if G.P_CENTERS['v_Witch_brew_catador'] and G.P_CENTERS['v_Witch_brew_catador'].redeem then
-        pcall(function() G.P_CENTERS['v_Witch_brew_catador']:redeem() end)
+    if G.P_CENTERS['v_reality_warp_catador'] and G.P_CENTERS['v_reality_warp_catador'].redeem then
+        pcall(function() G.P_CENTERS['v_reality_warp_catador']:redeem() end)
     end
-    if G.P_CENTERS['v_Witch_brew_critico'] and G.P_CENTERS['v_Witch_brew_critico'].redeem then
-        pcall(function() G.P_CENTERS['v_Witch_brew_critico']:redeem() end)
+    if G.P_CENTERS['v_reality_warp_critico'] and G.P_CENTERS['v_reality_warp_critico'].redeem then
+        pcall(function() G.P_CENTERS['v_reality_warp_critico']:redeem() end)
     end
     if botg_trigger_mod_achievement then
         botg_trigger_mod_achievement('royal_connoisseur')
@@ -1105,8 +1105,8 @@ if create_UIBox_win then
     local orig_create_UIBox_win = create_UIBox_win
     function create_UIBox_win()
         local t = orig_create_UIBox_win()
-        local cfg = (get_witch_brew_config and get_witch_brew_config())
-            or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config)
+        local cfg = (get_reality_warp_config and get_reality_warp_config())
+            or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config)
             or {}
 
         if G.GAME and G.GAME.battle_of_gods then

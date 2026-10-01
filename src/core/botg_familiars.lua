@@ -1,6 +1,6 @@
 -- Mini-Boss Familiars System (Idea 19) for Battle of Gods Mode
 SMODS.Atlas {
-    key = "witch_brew_familiars",
+    key = "reality_warp_familiars",
     path = "familiars.png",
     px = 34,
     py = 34
@@ -19,7 +19,7 @@ SMODS.ConsumableType {
     },
     shop_rate = 0.0,
     collection_rows = { 4, 7 },
-    default = 'c_Witch_brew_baby_needle',
+    default = 'c_reality_warp_baby_needle',
     unlocked = true,
     discovered = true
 }
@@ -168,8 +168,8 @@ end
 function botg_set_active_familiar(fam_key)
     if not G.botg_familiars then return end
     if G.GAME then
-        local old_bonus = (G.GAME.botg_current_familiar == 'c_Witch_brew_baby_house' or G.GAME.botg_current_familiar == 'c_Witch_brew_baby_manacle') and 1 or 0
-        local new_bonus = (fam_key == 'c_Witch_brew_baby_house' or fam_key == 'c_Witch_brew_baby_manacle') and 1 or 0
+        local old_bonus = (G.GAME.botg_current_familiar == 'c_reality_warp_baby_house' or G.GAME.botg_current_familiar == 'c_reality_warp_baby_manacle') and 1 or 0
+        local new_bonus = (fam_key == 'c_reality_warp_baby_house' or fam_key == 'c_reality_warp_baby_manacle') and 1 or 0
         local diff = new_bonus - old_bonus
         if diff ~= 0 and G.hand then
             G.hand:change_size(diff)
@@ -211,16 +211,16 @@ function botg_set_active_familiar(fam_key)
     card:juice_up(0.6, 0.6)
     play_sound('tarot1', 1.2, 0.8)
 
-    if fam_key == 'c_Witch_brew_baby_hook' and G.GAME and G.GAME.current_round then
+    if fam_key == 'c_reality_warp_baby_hook' and G.GAME and G.GAME.current_round then
         G.GAME.current_round.free_rerolls = (G.GAME.current_round.free_rerolls or 0) + 1
         if calculate_reroll_cost then calculate_reroll_cost() end
     end
-    if fam_key == 'c_Witch_brew_baby_pillar' or fam_key == 'c_Witch_brew_baby_leaf' then
+    if fam_key == 'c_reality_warp_baby_pillar' or fam_key == 'c_reality_warp_baby_leaf' then
         if G.hand and G.hand.cards then for _, c in ipairs(G.hand.cards) do c:set_debuff(false) end end
         if G.play and G.play.cards then for _, c in ipairs(G.play.cards) do c:set_debuff(false) end end
         if G.deck and G.deck.cards then for _, c in ipairs(G.deck.cards) do c:set_debuff(false) end end
     end
-    if fam_key == 'c_Witch_brew_baby_heart' or fam_key == 'c_Witch_brew_baby_leaf' then
+    if fam_key == 'c_reality_warp_baby_heart' or fam_key == 'c_reality_warp_baby_leaf' then
         if G.jokers and G.jokers.cards then for _, c in ipairs(G.jokers.cards) do c:set_debuff(false) end end
     end
 end
@@ -233,7 +233,7 @@ end
 SMODS.Consumable {
     key = 'baby_needle',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 0, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -252,7 +252,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_pillar',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 1, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -271,7 +271,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_serpent',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 2, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -291,7 +291,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_flint',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 3, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -311,7 +311,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_hook',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 4, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -331,7 +331,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_eye',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 5, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -351,7 +351,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_ox',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 6, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -371,7 +371,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_house',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 7, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -391,7 +391,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_club',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 8, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -411,7 +411,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_fish',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 9, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -431,7 +431,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_window',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 10, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -450,7 +450,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_manacle',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 11, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -469,7 +469,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_wall',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 12, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -488,7 +488,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_wheel',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 13, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -508,7 +508,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_arm',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 14, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -526,7 +526,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_psychic',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 15, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -546,7 +546,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_goad',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 16, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -566,7 +566,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_water',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 17, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -584,7 +584,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_mouth',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 18, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -604,7 +604,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_plant',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 19, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -624,7 +624,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_head',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 20, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -644,7 +644,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_tooth',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 21, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -664,7 +664,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_mark',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 22, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -683,7 +683,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_heart',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 23, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -703,7 +703,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_bell',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 24, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -723,7 +723,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_acorn',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 25, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -743,7 +743,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_leaf',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 26, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -763,7 +763,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'baby_vessel',
     set = 'Familiar',
-    atlas = 'witch_brew_familiars',
+    atlas = 'reality_warp_familiars',
     pos = { x = 27, y = 0 },
     cost = 10, unlocked = false, discovered = false,
     pixel_size = { w = 34, h = 34 },
@@ -779,65 +779,65 @@ SMODS.Consumable {
 }
 
 local FAMILIAR_KEYS = {
-    'c_Witch_brew_baby_needle',
-    'c_Witch_brew_baby_pillar',
-    'c_Witch_brew_baby_serpent',
-    'c_Witch_brew_baby_flint',
-    'c_Witch_brew_baby_hook',
-    'c_Witch_brew_baby_eye',
-    'c_Witch_brew_baby_ox',
-    'c_Witch_brew_baby_house',
-    'c_Witch_brew_baby_club',
-    'c_Witch_brew_baby_fish',
-    'c_Witch_brew_baby_window',
-    'c_Witch_brew_baby_manacle',
-    'c_Witch_brew_baby_wall',
-    'c_Witch_brew_baby_wheel',
-    'c_Witch_brew_baby_arm',
-    'c_Witch_brew_baby_psychic',
-    'c_Witch_brew_baby_goad',
-    'c_Witch_brew_baby_water',
-    'c_Witch_brew_baby_mouth',
-    'c_Witch_brew_baby_plant',
-    'c_Witch_brew_baby_head',
-    'c_Witch_brew_baby_tooth',
-    'c_Witch_brew_baby_mark',
-    'c_Witch_brew_baby_heart',
-    'c_Witch_brew_baby_bell',
-    'c_Witch_brew_baby_acorn',
-    'c_Witch_brew_baby_leaf',
-    'c_Witch_brew_baby_vessel'
+    'c_reality_warp_baby_needle',
+    'c_reality_warp_baby_pillar',
+    'c_reality_warp_baby_serpent',
+    'c_reality_warp_baby_flint',
+    'c_reality_warp_baby_hook',
+    'c_reality_warp_baby_eye',
+    'c_reality_warp_baby_ox',
+    'c_reality_warp_baby_house',
+    'c_reality_warp_baby_club',
+    'c_reality_warp_baby_fish',
+    'c_reality_warp_baby_window',
+    'c_reality_warp_baby_manacle',
+    'c_reality_warp_baby_wall',
+    'c_reality_warp_baby_wheel',
+    'c_reality_warp_baby_arm',
+    'c_reality_warp_baby_psychic',
+    'c_reality_warp_baby_goad',
+    'c_reality_warp_baby_water',
+    'c_reality_warp_baby_mouth',
+    'c_reality_warp_baby_plant',
+    'c_reality_warp_baby_head',
+    'c_reality_warp_baby_tooth',
+    'c_reality_warp_baby_mark',
+    'c_reality_warp_baby_heart',
+    'c_reality_warp_baby_bell',
+    'c_reality_warp_baby_acorn',
+    'c_reality_warp_baby_leaf',
+    'c_reality_warp_baby_vessel'
 }
 
 local FAMILIAR_BOSS_NAMES = {
-    ['c_Witch_brew_baby_needle'] = "The Needle",
-    ['c_Witch_brew_baby_pillar'] = "The Pillar",
-    ['c_Witch_brew_baby_serpent'] = "The Serpent",
-    ['c_Witch_brew_baby_flint'] = "The Flint",
-    ['c_Witch_brew_baby_hook'] = "The Hook",
-    ['c_Witch_brew_baby_eye'] = "The Eye",
-    ['c_Witch_brew_baby_ox'] = "The Ox",
-    ['c_Witch_brew_baby_house'] = "The House",
-    ['c_Witch_brew_baby_club'] = "The Club",
-    ['c_Witch_brew_baby_fish'] = "The Fish",
-    ['c_Witch_brew_baby_window'] = "The Window",
-    ['c_Witch_brew_baby_manacle'] = "The Manacle",
-    ['c_Witch_brew_baby_wall'] = "The Wall",
-    ['c_Witch_brew_baby_wheel'] = "The Wheel",
-    ['c_Witch_brew_baby_arm'] = "The Arm",
-    ['c_Witch_brew_baby_psychic'] = "The Psychic",
-    ['c_Witch_brew_baby_goad'] = "The Goad",
-    ['c_Witch_brew_baby_water'] = "The Water",
-    ['c_Witch_brew_baby_mouth'] = "The Mouth",
-    ['c_Witch_brew_baby_plant'] = "The Plant",
-    ['c_Witch_brew_baby_head'] = "The Head",
-    ['c_Witch_brew_baby_tooth'] = "The Tooth",
-    ['c_Witch_brew_baby_mark'] = "The Mark",
-    ['c_Witch_brew_baby_heart'] = "Crimson Heart",
-    ['c_Witch_brew_baby_bell'] = "Cerulean Bell",
-    ['c_Witch_brew_baby_acorn'] = "Amber Acorn",
-    ['c_Witch_brew_baby_leaf'] = "Verdant Leaf",
-    ['c_Witch_brew_baby_vessel'] = "Violet Vessel",
+    ['c_reality_warp_baby_needle'] = "The Needle",
+    ['c_reality_warp_baby_pillar'] = "The Pillar",
+    ['c_reality_warp_baby_serpent'] = "The Serpent",
+    ['c_reality_warp_baby_flint'] = "The Flint",
+    ['c_reality_warp_baby_hook'] = "The Hook",
+    ['c_reality_warp_baby_eye'] = "The Eye",
+    ['c_reality_warp_baby_ox'] = "The Ox",
+    ['c_reality_warp_baby_house'] = "The House",
+    ['c_reality_warp_baby_club'] = "The Club",
+    ['c_reality_warp_baby_fish'] = "The Fish",
+    ['c_reality_warp_baby_window'] = "The Window",
+    ['c_reality_warp_baby_manacle'] = "The Manacle",
+    ['c_reality_warp_baby_wall'] = "The Wall",
+    ['c_reality_warp_baby_wheel'] = "The Wheel",
+    ['c_reality_warp_baby_arm'] = "The Arm",
+    ['c_reality_warp_baby_psychic'] = "The Psychic",
+    ['c_reality_warp_baby_goad'] = "The Goad",
+    ['c_reality_warp_baby_water'] = "The Water",
+    ['c_reality_warp_baby_mouth'] = "The Mouth",
+    ['c_reality_warp_baby_plant'] = "The Plant",
+    ['c_reality_warp_baby_head'] = "The Head",
+    ['c_reality_warp_baby_tooth'] = "The Tooth",
+    ['c_reality_warp_baby_mark'] = "The Mark",
+    ['c_reality_warp_baby_heart'] = "Crimson Heart",
+    ['c_reality_warp_baby_bell'] = "Cerulean Bell",
+    ['c_reality_warp_baby_acorn'] = "Amber Acorn",
+    ['c_reality_warp_baby_leaf'] = "Verdant Leaf",
+    ['c_reality_warp_baby_vessel'] = "Violet Vessel",
 }
 
 for _, k in ipairs(FAMILIAR_KEYS) do
@@ -1088,7 +1088,7 @@ function botg_click_familiar(card)
 
     G.GAME.botg_fam_used = G.GAME.botg_fam_used or {}
 
-    if f_key == 'c_Witch_brew_baby_needle' then
+    if f_key == 'c_reality_warp_baby_needle' then
         if G.GAME.botg_fam_used[f_key] then
             attention_text({ text = 'Already Used This Round!', scale = 0.6, hold = 1.0, major = card, align = 'tm', offset = {x=0, y=-0.5} })
             return
@@ -1099,7 +1099,7 @@ function botg_click_familiar(card)
         play_sound('gold_seal', 1.2, 0.6)
         attention_text({ text = '+1 Hand! [Baby Needle]', scale = 0.8, hold = 1.2, backdrop_colour = G.C.BLUE, major = card, align = 'tm', offset = {x=0, y=-0.5} })
 
-    elseif f_key == 'c_Witch_brew_baby_water' then
+    elseif f_key == 'c_reality_warp_baby_water' then
         if G.GAME.botg_fam_used[f_key] then
             attention_text({ text = 'Already Used This Round!', scale = 0.6, hold = 1.0, major = card, align = 'tm', offset = {x=0, y=-0.5} })
             return
@@ -1111,7 +1111,7 @@ function botg_click_familiar(card)
         play_sound('chips2', 1.1, 0.6)
         attention_text({ text = '+' .. disc_amt .. ' Discard! [Baby Water Lv.' .. fam_level .. ']', scale = 0.8, hold = 1.2, backdrop_colour = G.C.RED, major = card, align = 'tm', offset = {x=0, y=-0.5} })
 
-    elseif f_key == 'c_Witch_brew_baby_manacle' then
+    elseif f_key == 'c_reality_warp_baby_manacle' then
         if G.GAME.botg_fam_used[f_key] then
             attention_text({ text = 'Already Used This Round!', scale = 0.6, hold = 1.0, major = card, align = 'tm', offset = {x=0, y=-0.5} })
             return
@@ -1125,7 +1125,7 @@ function botg_click_familiar(card)
         play_sound('cardSlide1', 1.0, 0.6)
         attention_text({ text = '+' .. cards_amt .. ' Cards Drawn! [Baby Manacle Lv.' .. fam_level .. ']', scale = 0.7, hold = 1.2, backdrop_colour = G.C.GREY, major = card, align = 'tm', offset = {x=0, y=-0.5} })
 
-    elseif f_key == 'c_Witch_brew_baby_ox' then
+    elseif f_key == 'c_reality_warp_baby_ox' then
         if G.GAME.botg_fam_used[f_key] then
             attention_text({ text = 'Already Used This Round!', scale = 0.6, hold = 1.0, major = card, align = 'tm', offset = {x=0, y=-0.5} })
             return
@@ -1136,7 +1136,7 @@ function botg_click_familiar(card)
         play_sound('coin3', 1.0, 0.7)
         attention_text({ text = '+$' .. fam_level .. '! [Baby Ox Lv.' .. fam_level .. ']', scale = 0.8, hold = 1.2, backdrop_colour = G.C.MONEY, major = card, align = 'tm', offset = {x=0, y=-0.5} })
 
-    elseif f_key == 'c_Witch_brew_baby_wall' then
+    elseif f_key == 'c_reality_warp_baby_wall' then
         if G.GAME.botg_fam_used[f_key] then
             attention_text({ text = 'Already Used This Round!', scale = 0.6, hold = 1.0, major = card, align = 'tm', offset = {x=0, y=-0.5} })
             return
@@ -1151,7 +1151,7 @@ function botg_click_familiar(card)
             attention_text({ text = '-' .. math.floor(red * 100) .. '% Chips! [Baby Wall Lv.' .. fam_level .. ']', scale = 0.8, hold = 1.4, backdrop_colour = HEX('8a59a5'), major = card, align = 'tm', offset = {x=0, y=-0.5} })
         end
 
-    elseif f_key == 'c_Witch_brew_baby_vessel' then
+    elseif f_key == 'c_reality_warp_baby_vessel' then
         if G.GAME.botg_fam_used[f_key] then
             attention_text({ text = 'Already Used This Round!', scale = 0.6, hold = 1.0, major = card, align = 'tm', offset = {x=0, y=-0.5} })
             return
@@ -1166,7 +1166,7 @@ function botg_click_familiar(card)
             attention_text({ text = '-' .. math.floor(red * 100) .. '% Chips! [Baby Vessel Lv.' .. fam_level .. ']', scale = 0.8, hold = 1.4, backdrop_colour = HEX('8a71e1'), major = card, align = 'tm', offset = {x=0, y=-0.5} })
         end
 
-    elseif f_key == 'c_Witch_brew_baby_arm' then
+    elseif f_key == 'c_reality_warp_baby_arm' then
         if G.GAME.botg_fam_used[f_key] then
             attention_text({ text = 'Already Used This Round!', scale = 0.6, hold = 1.0, major = card, align = 'tm', offset = {x=0, y=-0.5} })
             return
@@ -1210,7 +1210,7 @@ if reset_round then
             G.GAME.botg_drawing_from_play = nil
             if G.GAME.battle_of_gods and G.botg_familiars and G.botg_familiars.cards and G.botg_familiars.cards[1] then
                 local k = G.botg_familiars.cards[1].config and G.botg_familiars.cards[1].config.center and G.botg_familiars.cards[1].config.center.key
-                if k == 'c_Witch_brew_baby_hook' and G.GAME.current_round then
+                if k == 'c_reality_warp_baby_hook' and G.GAME.current_round then
                     G.GAME.current_round.free_rerolls = (G.GAME.current_round.free_rerolls or 0) + 1
                     if calculate_reroll_cost then calculate_reroll_cost() end
                 end
@@ -1267,7 +1267,7 @@ function botg_calculate_familiar(self, context)
     local fam_level = botg_get_familiar_level(f_key)
 
     -- 0. Baby Needle: winning in 1 hand bonus (Lv 1: +20/+3, Lv 5: +100/+15)
-    if f_key == 'c_Witch_brew_baby_needle' and context.joker_main and G.GAME.current_round.hands_played == 0 then
+    if f_key == 'c_reality_warp_baby_needle' and context.joker_main and G.GAME.current_round.hands_played == 0 then
         local chips = 20 * fam_level
         local mult = 3 * fam_level
         return {
@@ -1282,7 +1282,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 3. Baby Flint: permanent card scaling & X1.1-X1.5 base
-    if f_key == 'c_Witch_brew_baby_flint' then
+    if f_key == 'c_reality_warp_baby_flint' then
         if context.joker_main then
             local xm = 1.0 + 0.1 * fam_level
             return {
@@ -1305,7 +1305,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 4. Baby Hook: Free shop reroll
-    if f_key == 'c_Witch_brew_baby_hook' and (context.starting_shop or context.ending_shop) then
+    if f_key == 'c_reality_warp_baby_hook' and (context.starting_shop or context.ending_shop) then
         if G.GAME.current_round then
             local free_amt = (fam_level >= 4) and 2 or 1
             G.GAME.current_round.free_rerolls = (G.GAME.current_round.free_rerolls or 0) + free_amt
@@ -1318,7 +1318,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 5. Baby Eye: repeat poker hands bonus (Lv 1: X1.15, Lv 5: X1.75)
-    if f_key == 'c_Witch_brew_baby_eye' and context.joker_main and context.scoring_name then
+    if f_key == 'c_reality_warp_baby_eye' and context.joker_main and context.scoring_name then
         if G.GAME.hands[context.scoring_name] and G.GAME.hands[context.scoring_name].played > 1 then
             local xm = 1.0 + 0.15 * fam_level
             return {
@@ -1330,7 +1330,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 6. Baby Ox: most played poker hand gives $1-$5
-    if f_key == 'c_Witch_brew_baby_ox' and context.after and context.scoring_name then
+    if f_key == 'c_reality_warp_baby_ox' and context.after and context.scoring_name then
         if context.scoring_name == G.GAME.current_round.most_played_poker_hand then
             local cash = fam_level
             return {
@@ -1342,7 +1342,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 7. Baby House: first hand X1.1-X1.5 Mult
-    if f_key == 'c_Witch_brew_baby_house' and context.joker_main and G.GAME.current_round.hands_played == 0 then
+    if f_key == 'c_reality_warp_baby_house' and context.joker_main and G.GAME.current_round.hands_played == 0 then
         local xm = 1.0 + 0.1 * fam_level
         return {
             x_mult = xm,
@@ -1352,7 +1352,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 8. Baby Club: scored Clubs give +8/+1 to +40/+5
-    if f_key == 'c_Witch_brew_baby_club' and context.individual and context.cardarea == G.play and context.other_card then
+    if f_key == 'c_reality_warp_baby_club' and context.individual and context.cardarea == G.play and context.other_card then
         if context.other_card:is_suit('Clubs') then
             local chips = 8 * fam_level
             local mult = fam_level
@@ -1367,12 +1367,12 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 9. Baby Fish: extra draw after played hand
-    if f_key == 'c_Witch_brew_baby_fish' and context.after then
+    if f_key == 'c_reality_warp_baby_fish' and context.after then
         G.GAME.botg_drawing_from_play = true
     end
 
     -- 10. Baby Window: scored Diamonds give +1 to +5 Mult, +$1 at Lv 3+
-    if f_key == 'c_Witch_brew_baby_window' and context.individual and context.cardarea == G.play and context.other_card then
+    if f_key == 'c_reality_warp_baby_window' and context.individual and context.cardarea == G.play and context.other_card then
         if context.other_card:is_suit('Diamonds') then
             local mult = fam_level
             local dollars = (fam_level >= 3) and 1 or 0
@@ -1387,7 +1387,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 13. Baby Wheel: 1 in 3 chance for scored card to give +6 to +30 Mult
-    if f_key == 'c_Witch_brew_baby_wheel' and context.individual and context.cardarea == G.play and context.other_card then
+    if f_key == 'c_reality_warp_baby_wheel' and context.individual and context.cardarea == G.play and context.other_card then
         if pseudorandom('baby_wheel') < (G.GAME.probabilities.normal or 1) / 3 then
             local mult = 6 * fam_level
             return {
@@ -1400,7 +1400,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 15. Baby Psychic: hands containing 5 cards give +15/+2 to +95/+14
-    if f_key == 'c_Witch_brew_baby_psychic' and context.joker_main then
+    if f_key == 'c_reality_warp_baby_psychic' and context.joker_main then
         if (context.full_hand and #context.full_hand == 5) or (G.play and G.play.cards and #G.play.cards == 5) then
             local chips = 15 + 20 * (fam_level - 1)
             local mult = 2 + 3 * (fam_level - 1)
@@ -1417,7 +1417,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 16. Baby Goad: scored Spades give +8/+1 to +40/+5
-    if f_key == 'c_Witch_brew_baby_goad' and context.individual and context.cardarea == G.play and context.other_card then
+    if f_key == 'c_reality_warp_baby_goad' and context.individual and context.cardarea == G.play and context.other_card then
         if context.other_card:is_suit('Spades') then
             local chips = 8 * fam_level
             local mult = fam_level
@@ -1432,7 +1432,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 17. Baby Water: Start round with +1 or +2 discards
-    if f_key == 'c_Witch_brew_baby_water' and context.setting_blind then
+    if f_key == 'c_reality_warp_baby_water' and context.setting_blind then
         local disc = (fam_level >= 4) and 2 or 1
         ease_discard(disc)
         return {
@@ -1442,7 +1442,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 18. Baby Mouth: if only 1 hand type played in round (+3 to +15 Mult & +$2 to +$6)
-    if f_key == 'c_Witch_brew_baby_mouth' then
+    if f_key == 'c_reality_warp_baby_mouth' then
         local mult = 3 * fam_level
         local cash = math.min(6, fam_level + 1)
         if context.joker_main then
@@ -1476,7 +1476,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 19. Baby Plant: scored face cards give +12/+2 to +60/+10
-    if f_key == 'c_Witch_brew_baby_plant' and context.individual and context.cardarea == G.play and context.other_card then
+    if f_key == 'c_reality_warp_baby_plant' and context.individual and context.cardarea == G.play and context.other_card then
         if context.other_card:is_face() then
             local chips = 12 * fam_level
             local mult = 2 * fam_level
@@ -1491,7 +1491,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 20. Baby Head: scored Hearts give +8/+1 to +40/+5
-    if f_key == 'c_Witch_brew_baby_head' and context.individual and context.cardarea == G.play and context.other_card then
+    if f_key == 'c_reality_warp_baby_head' and context.individual and context.cardarea == G.play and context.other_card then
         if context.other_card:is_suit('Hearts') then
             local chips = 8 * fam_level
             local mult = fam_level
@@ -1506,7 +1506,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 21. Baby Tooth: scored cards give +$1 for every 5 to 1 cards
-    if f_key == 'c_Witch_brew_baby_tooth' and context.after and context.scoring_hand then
+    if f_key == 'c_reality_warp_baby_tooth' and context.after and context.scoring_hand then
         local freq = math.max(1, 6 - fam_level)
         local money_gain = math.floor(#context.scoring_hand / freq)
         if money_gain > 0 then
@@ -1519,7 +1519,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 22. Baby Mark: scored face cards give X1.1 to X1.5 Mult
-    if f_key == 'c_Witch_brew_baby_mark' and context.individual and context.cardarea == G.play and context.other_card then
+    if f_key == 'c_reality_warp_baby_mark' and context.individual and context.cardarea == G.play and context.other_card then
         if context.other_card:is_face() then
             local xm = 1.0 + 0.1 * fam_level
             return {
@@ -1532,7 +1532,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 23. Baby Heart: +2 to +10 Mult per Joker owned
-    if f_key == 'c_Witch_brew_baby_heart' and context.joker_main then
+    if f_key == 'c_reality_warp_baby_heart' and context.joker_main then
         local j_count = (G.jokers and G.jokers.cards and #G.jokers.cards) or 0
         local bonus_m = j_count * (2 * fam_level)
         if bonus_m > 0 then
@@ -1547,7 +1547,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 24. Baby Bell: retrigger scored cards (20% to 100% chance)
-    if f_key == 'c_Witch_brew_baby_bell' and context.repetition and context.cardarea == G.play then
+    if f_key == 'c_reality_warp_baby_bell' and context.repetition and context.cardarea == G.play then
         local chance = 0.2 * fam_level
         if pseudorandom('baby_bell') < chance then
             return {
@@ -1559,7 +1559,7 @@ function botg_calculate_familiar(self, context)
     end
 
     -- 25. Baby Acorn: retrigger rightmost Joker (20% to 100% chance)
-    if f_key == 'c_Witch_brew_baby_acorn' and (context.retrigger_joker_check or context.retrigger_joker) and G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
+    if f_key == 'c_reality_warp_baby_acorn' and (context.retrigger_joker_check or context.retrigger_joker) and G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
         if context.other_card == G.jokers.cards[#G.jokers.cards] then
             local chance = 0.2 * fam_level
             if pseudorandom('baby_acorn') < chance then
@@ -1579,11 +1579,11 @@ if Blind and Blind.debuff_card then
     function Blind:debuff_card(card, from_blind)
         if G.GAME and G.botg_familiars and G.botg_familiars.cards and G.botg_familiars.cards[1] then
             local k = G.botg_familiars.cards[1].config and G.botg_familiars.cards[1].config.center and G.botg_familiars.cards[1].config.center.key
-            if (k == 'c_Witch_brew_baby_pillar' or k == 'c_Witch_brew_baby_leaf') and card and card.ability and card.ability.set ~= 'Joker' then
+            if (k == 'c_reality_warp_baby_pillar' or k == 'c_reality_warp_baby_leaf') and card and card.ability and card.ability.set ~= 'Joker' then
                 card:set_debuff(false)
                 return
             end
-            if (k == 'c_Witch_brew_baby_heart' or k == 'c_Witch_brew_baby_leaf') and card and card.ability and card.ability.set == 'Joker' then
+            if (k == 'c_reality_warp_baby_heart' or k == 'c_reality_warp_baby_leaf') and card and card.ability and card.ability.set == 'Joker' then
                 card:set_debuff(false)
                 return
             end
@@ -1597,10 +1597,10 @@ if Card and Card.set_debuff then
     function Card:set_debuff(should_debuff)
         if should_debuff and G.GAME and G.botg_familiars and G.botg_familiars.cards and G.botg_familiars.cards[1] then
             local k = G.botg_familiars.cards[1].config and G.botg_familiars.cards[1].config.center and G.botg_familiars.cards[1].config.center.key
-            if (k == 'c_Witch_brew_baby_pillar' or k == 'c_Witch_brew_baby_leaf') and self.ability and self.ability.set ~= 'Joker' then
+            if (k == 'c_reality_warp_baby_pillar' or k == 'c_reality_warp_baby_leaf') and self.ability and self.ability.set ~= 'Joker' then
                 return orig_card_set_debuff(self, false)
             end
-            if (k == 'c_Witch_brew_baby_heart' or k == 'c_Witch_brew_baby_leaf') and self.ability and self.ability.set == 'Joker' then
+            if (k == 'c_reality_warp_baby_heart' or k == 'c_reality_warp_baby_leaf') and self.ability and self.ability.set == 'Joker' then
                 return orig_card_set_debuff(self, false)
             end
         end
@@ -1614,7 +1614,7 @@ if G.FUNCS and G.FUNCS.discard_cards_from_highlighted then
     G.FUNCS.discard_cards_from_highlighted = function(e, hook)
         if G.GAME and G.botg_familiars and G.botg_familiars.cards and G.botg_familiars.cards[1] then
             local k = G.botg_familiars.cards[1].config and G.botg_familiars.cards[1].config.center and G.botg_familiars.cards[1].config.center.key
-            if k == 'c_Witch_brew_baby_serpent' and G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and (G.GAME.current_round and G.GAME.current_round.discards_left or 0) > 0 then
+            if k == 'c_reality_warp_baby_serpent' and G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and (G.GAME.current_round and G.GAME.current_round.discards_left or 0) > 0 then
                 G.GAME.botg_drawing_from_discard = true
             end
         end
@@ -1632,12 +1632,12 @@ if G.FUNCS and G.FUNCS.draw_from_deck_to_hand then
             local extra = (fam_level >= 4) and 3 or ((fam_level >= 2) and 2 or 1)
 
             if G.deck and G.deck.cards and G.hand and G.hand.config and G.hand.cards then
-                if k == 'c_Witch_brew_baby_serpent' and G.GAME.botg_drawing_from_discard then
+                if k == 'c_reality_warp_baby_serpent' and G.GAME.botg_drawing_from_discard then
                     G.GAME.botg_drawing_from_discard = nil
                     G.botg_familiars.cards[1]:juice_up(0.3, 0.3)
                     e = (e or math.min(#G.deck.cards, G.hand.config.card_limit - #G.hand.cards)) + extra
                     e = math.min(#G.deck.cards, e)
-                elseif k == 'c_Witch_brew_baby_fish' and G.GAME.botg_drawing_from_play then
+                elseif k == 'c_reality_warp_baby_fish' and G.GAME.botg_drawing_from_play then
                     G.GAME.botg_drawing_from_play = nil
                     G.botg_familiars.cards[1]:juice_up(0.3, 0.3)
                     e = (e or math.min(#G.deck.cards, G.hand.config.card_limit - #G.hand.cards)) + extra
@@ -1656,7 +1656,7 @@ if ease_discard then
         orig_ease_discard(mod, instant, reset)
         if G.GAME and G.botg_familiars and G.botg_familiars.cards and G.botg_familiars.cards[1] then
             local k = G.botg_familiars.cards[1].config and G.botg_familiars.cards[1].config.center and G.botg_familiars.cards[1].config.center.key
-            if k == 'c_Witch_brew_baby_hook' then
+            if k == 'c_reality_warp_baby_hook' then
                 G.E_MANAGER:add_event(Event({
                     trigger = 'immediate',
                     func = function()
@@ -1681,7 +1681,7 @@ if Card and Card.sell_card then
         orig_sell(self)
         if G.GAME and G.botg_familiars and G.botg_familiars.cards and G.botg_familiars.cards[1] then
             local k = G.botg_familiars.cards[1].config and G.botg_familiars.cards[1].config.center and G.botg_familiars.cards[1].config.center.key
-            if k == 'c_Witch_brew_baby_leaf' and self.ability and self.ability.set == 'Joker' then
+            if k == 'c_reality_warp_baby_leaf' and self.ability and self.ability.set == 'Joker' then
                 local fam_level = botg_get_familiar_level(k)
                 local cash = 3 * fam_level
                 ease_dollars(cash)

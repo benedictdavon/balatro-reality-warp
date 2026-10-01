@@ -3,7 +3,7 @@
 -- Doctor Jo.
 SMODS.Joker {
     key = 'doctor_jo_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Doctor Jo.',
         text = {
@@ -117,7 +117,7 @@ SMODS.Joker {
 -- Symmetrical Joker
 SMODS.Joker {
     key = 'symmetrical_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Symmetrical Joker',
         text = {
@@ -160,7 +160,7 @@ SMODS.Joker {
 -- Balance
 SMODS.Joker {
     key = 'balance_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Balance',
         text = {
@@ -225,7 +225,7 @@ SMODS.Joker {
 -- Merchant
 SMODS.Joker {
     key = 'merchant_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Merchant',
@@ -286,7 +286,7 @@ SMODS.Joker {
 -- Lover
 SMODS.Joker {
     key = 'lover_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Lover',
@@ -387,7 +387,7 @@ SMODS.Joker {
 -- Blacksmith
 SMODS.Joker {
     key = 'blacksmith_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Blacksmith',
@@ -411,7 +411,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         local ex = (card and card.ability and card.ability.extra) or self.config.extra
         if info_queue then
-            local silver_seal = (G.P_SEALS and (G.P_SEALS['Witch_brew_silver'] or G.P_SEALS['silver'])) or { set = 'Seal', key = 'silver' }
+            local silver_seal = (G.P_SEALS and (G.P_SEALS['reality_warp_silver'] or G.P_SEALS['silver'])) or { set = 'Seal', key = 'silver' }
             info_queue[#info_queue + 1] = silver_seal
             info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
         end
@@ -460,7 +460,7 @@ SMODS.Joker {
                     end
                     local is_seal = SMODS.pseudorandom_probability(card, 'blacksmith_reward', 1, 2)
                     if is_seal then
-                        local silver_key = (G.P_SEALS and (G.P_SEALS['Witch_brew_silver'] and 'Witch_brew_silver' or G.P_SEALS['Witch brew_silver'] and 'Witch brew_silver' or G.P_SEALS['silver'] and 'silver')) or 'Witch_brew_silver'
+                        local silver_key = (G.P_SEALS and (G.P_SEALS['reality_warp_silver'] and 'reality_warp_silver' or G.P_SEALS['Witch brew_silver'] and 'Witch brew_silver' or G.P_SEALS['silver'] and 'silver')) or 'reality_warp_silver'
                         highest_card:set_seal(silver_key, nil, true)
                         highest_card:juice_up(0.8, 0.8)
                         return {
@@ -484,7 +484,7 @@ SMODS.Joker {
 -- Lucky One
 SMODS.Joker {
     key = 'lucky_one_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Lucky One',
@@ -562,7 +562,7 @@ SMODS.Joker {
 -- Miner
 SMODS.Joker {
     key = 'miner_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Miner',
@@ -657,7 +657,7 @@ SMODS.Joker {
 -- Joke Joker?
 SMODS.Joker {
     key = 'joke_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Joke Joker?',
@@ -703,7 +703,7 @@ SMODS.Joker {
 -- Perfectionism
 SMODS.Joker {
     key = 'perfectionism_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Perfectionism',
@@ -804,7 +804,7 @@ SMODS.Joker {
 -- Parca / Reaper Joker (Reworked)
 SMODS.Joker {
     key = 'reaper_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 3, y = 4 },
     rarity = 3,
     cost = 8,
@@ -855,7 +855,7 @@ SMODS.Joker {
 -- Infostealer Joker (Always Eternal)
 SMODS.Joker {
     key = 'infostealer_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Infostealer Joker',
         text = {
@@ -914,7 +914,7 @@ SMODS.Joker {
 -- Oversaturated Joker
 SMODS.Joker {
     key = 'oversaturated_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Oversaturated',
         text = {
@@ -966,7 +966,7 @@ SMODS.Joker {
                             end
                         }))
                     elseif chosen_type == 'seal' then
-                        local seals = { 'Gold', 'Blue', 'Red', 'Purple', 'Witch_brew_dark_green', 'Witch_brew_silver', 'Witch_brew_white' }
+                        local seals = { 'Gold', 'Blue', 'Red', 'Purple', 'reality_warp_dark_green', 'reality_warp_silver', 'reality_warp_white' }
                         local chosen_seal = pseudorandom_element(seals, pseudoseed('sobresaturado_seal'))
                         G.E_MANAGER:add_event(Event({
                             trigger = 'after',
@@ -1008,7 +1008,7 @@ SMODS.Joker {
 -- Radiation
 SMODS.Joker {
     key = 'radiation',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Radiation',
         text = {
@@ -1063,9 +1063,9 @@ SMODS.Joker {
 -- 24K Magic
 SMODS.Joker {
     key = '24k_magic',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 3, y = 5 },
-    rarity = 'Witch_brew_song',
+    rarity = 'reality_warp_song',
     cost = 8,
     blueprint_compat = true,
     set_card_type_badge = function(self, card, badges)
@@ -1120,7 +1120,7 @@ SMODS.Joker {
 -- Orchestra Director, Rare Joker
 SMODS.Joker {
     key = 'orchestra_director',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Own {C:attention}5 Jokers{} at the same time" },
     loc_txt = {
@@ -1239,7 +1239,7 @@ if Game and Game.update then
     function Game:update(dt)
         orig_game_update_met(self, dt)
         if G.STAGE == G.STAGES.RUN and G.consumeables then
-            local met_jokers = (find_joker and find_joker('meteorologist')) or (SMODS and SMODS.find_card and SMODS.find_card('j_Witch_brew_meteorologist')) or {}
+            local met_jokers = (find_joker and find_joker('meteorologist')) or (SMODS and SMODS.find_card and SMODS.find_card('j_reality_warp_meteorologist')) or {}
             if #met_jokers > 0 then
                 local cur_w = (met_jokers[1].ability and met_jokers[1].ability.extra and met_jokers[1].ability.extra.weather) or ''
                 if not G.HUD_meteorologist or G.HUD_meteorologist.REMOVED or G.HUD_meteorologist._last_weather ~= cur_w then
@@ -1259,7 +1259,7 @@ end
 -- Meteorologist, Rare Joker
 SMODS.Joker {
     key = 'meteorologist',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Defeat a blind under", "each of the 4 weather effects" },
     loc_txt = {
@@ -1282,9 +1282,9 @@ SMODS.Joker {
         return { vars = { ex.xmult or 3, w } }
     end,
     check_for_unlock = function(self, args)
-        if G.GAME and G.GAME.witch_brew_weathers_seen then
+        if G.GAME and G.GAME.reality_warp_weathers_seen then
             local count = 0
-            for _ in pairs(G.GAME.witch_brew_weathers_seen) do count = count + 1 end
+            for _ in pairs(G.GAME.reality_warp_weathers_seen) do count = count + 1 end
             return count >= 4
         end
     end,
@@ -1295,8 +1295,8 @@ SMODS.Joker {
             card.ability.extra.weather = w
             if create_meteorologist_hud then create_meteorologist_hud(w) end
             -- Track for unlock
-            G.GAME.witch_brew_weathers_seen = G.GAME.witch_brew_weathers_seen or {}
-            G.GAME.witch_brew_weathers_seen[w] = true
+            G.GAME.reality_warp_weathers_seen = G.GAME.reality_warp_weathers_seen or {}
+            G.GAME.reality_warp_weathers_seen[w] = true
 
             if w == 'Storm' then
                 ease_hands_played(-1)
@@ -1363,7 +1363,7 @@ SMODS.Joker {
 -- Mad Clockmaker, Rare Joker
 SMODS.Joker {
     key = 'mad_clockmaker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Mad Clockmaker',
         text = {
@@ -1400,7 +1400,7 @@ SMODS.Joker {
 -- Catalyst, Rare Joker
 SMODS.Joker {
     key = 'catalyst',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Have a Joker with {C:mult}X3{} or", "higher base x_mult" },
     loc_txt = {
@@ -1475,7 +1475,7 @@ SMODS.Joker {
 -- Graffiti Artist, Rare Joker
 SMODS.Joker {
     key = 'graffiti_artist',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Graffiti Artist',
         text = {
@@ -1534,7 +1534,7 @@ SMODS.Joker {
 -- Hypnotist, Rare Joker
 SMODS.Joker {
     key = 'hypnotist',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Defeat {C:attention}3 different{}", "Boss Blind types" },
     loc_txt = {
@@ -1555,12 +1555,12 @@ SMODS.Joker {
         return { vars = { prob, (card and card.ability and card.ability.extra and card.ability.extra.odds) or 3 } }
     end,
     check_for_unlock = function(self, args)
-        if G.GAME and G.GAME.witch_brew_bosses_slain_types then
+        if G.GAME and G.GAME.reality_warp_bosses_slain_types then
             local cnt = 0
-            for _ in pairs(G.GAME.witch_brew_bosses_slain_types) do cnt = cnt + 1 end
+            for _ in pairs(G.GAME.reality_warp_bosses_slain_types) do cnt = cnt + 1 end
             if cnt >= 3 then return true end
         end
-        if G.GAME and (G.GAME.witch_brew_bosses_slain or 0) >= 3 then
+        if G.GAME and (G.GAME.reality_warp_bosses_slain or 0) >= 3 then
             return true
         end
     end,
@@ -1597,7 +1597,7 @@ SMODS.Joker {
 -- Potion Brewer (Reworked from Hand Alchemist)
 SMODS.Joker {
     key = 'potion_brewer',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 0, y = 10 },
     rarity = 2,
     cost = 6,
@@ -1781,7 +1781,7 @@ SMODS.Sticker {
 -- Entomologist, Rare Joker
 SMODS.Joker {
     key = 'entomologist',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Defeat {C:attention}10 blinds{}", "in a single run" },
     loc_txt = {
@@ -1799,7 +1799,7 @@ SMODS.Joker {
     cost = 9,
     blueprint_compat = false,
     check_for_unlock = function(self, args)
-        if (args and args.type == 'entomologist') or (G.GAME and (G.GAME.witch_brew_blinds_defeated or 0) >= 10) then
+        if (args and args.type == 'entomologist') or (G.GAME and (G.GAME.reality_warp_blinds_defeated or 0) >= 10) then
             return true
         end
     end,
@@ -1824,7 +1824,7 @@ SMODS.Joker {
                 if SMODS.Stickers and SMODS.Stickers[sticker_key] then
                     SMODS.Stickers[sticker_key]:apply(target, true)
                 end
-                target.witch_brew_insect = insect
+                target.reality_warp_insect = insect
                 target:juice_up(0.4, 0.4)
                 card_eval_status_text(card, 'extra', nil, nil, nil, { message = insect:gsub("^%l", string.upper)..'!', colour = G.C.PURPLE })
             end
@@ -1833,7 +1833,7 @@ SMODS.Joker {
         -- Apply insect effects on individual card scoring (fallback for unstickered cards)
         if context.individual and context.cardarea == G.play and not context.blueprint then
             local c = context.other_card
-            local insect = c and c.witch_brew_insect
+            local insect = c and c.reality_warp_insect
             local has_sticker = c and c.ability and (c.ability.insect_beetle or c.ability.insect_butterfly or c.ability.insect_firefly or c.ability.insect_spider)
             if not has_sticker then
                 if insect == 'beetle' then
@@ -1858,7 +1858,7 @@ SMODS.Joker {
         -- Butterfly retrigger (fallback for unstickered cards)
         if context.repetition and context.cardarea == G.play and not context.blueprint then
             local c = context.other_card
-            if c and c.witch_brew_insect == 'butterfly' and not (c.ability and c.ability.insect_butterfly) then
+            if c and c.reality_warp_insect == 'butterfly' and not (c.ability and c.ability.insect_butterfly) then
                 return { repetitions = 1, card = card }
             end
         end
@@ -1868,7 +1868,7 @@ SMODS.Joker {
 -- Joker: ethernet
 SMODS.Joker {
     key = 'ethernet',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Ethernet',
         text = {
@@ -2696,7 +2696,7 @@ end
 -- Russian Roulette
 SMODS.Joker {
     key = 'russian_dice',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 1, y = 11 },
     rarity = 3,
     cost = 8,
@@ -2761,7 +2761,7 @@ SMODS.Joker {
 -- Pachinko Machine
 SMODS.Joker {
     key = 'pachinko',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 0, y = 11 },
     rarity = 3,
     cost = 8,

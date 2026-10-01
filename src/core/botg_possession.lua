@@ -1,6 +1,6 @@
 -- Boss Possession Stickers & Mechanics for Battle of Gods Mode
 SMODS.Atlas {
-    key = "witch_brew_stickers",
+    key = "reality_warp_stickers",
     path = "stickers.png",
     px = 71,
     py = 95
@@ -9,7 +9,7 @@ SMODS.Atlas {
 -- 1. Possessed: The Needle (X10 Mult on 1-hand rounds)
 SMODS.Sticker {
     key = "possessed_needle",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 0, y = 0 },
     badge_colour = HEX('e5b80b'),
     prefix_config = { key = false },
@@ -40,7 +40,7 @@ SMODS.Sticker {
 -- 2. Possessed: The Flint (Halved base stats, X2 Mult per scoring card)
 SMODS.Sticker {
     key = "possessed_flint",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 1, y = 0 },
     badge_colour = HEX('e56a2f'),
     prefix_config = { key = false },
@@ -72,7 +72,7 @@ SMODS.Sticker {
 -- 3. Possessed: The Pillar (Empowers previously played cards)
 SMODS.Sticker {
     key = "possessed_pillar",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 2, y = 0 },
     badge_colour = HEX('7e6752'),
     prefix_config = { key = false },
@@ -102,7 +102,7 @@ SMODS.Sticker {
 -- 4. Possessed: The Hook (Discards 2 cards on play, grants +X1.75 Mult)
 SMODS.Sticker {
     key = "possessed_hook",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 3, y = 0 },
     badge_colour = HEX('a84024'),
     prefix_config = { key = false },
@@ -145,7 +145,7 @@ SMODS.Sticker {
 -- 5. Possessed: The Psychic (Must play 5 cards, grants X3 Mult)
 SMODS.Sticker {
     key = "possessed_psychic",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 4, y = 0 },
     badge_colour = HEX('efc03c'),
     prefix_config = { key = false },
@@ -173,7 +173,7 @@ SMODS.Sticker {
 -- 6. Possessed: The Arm (Sacrifices 1 hand level for X4 Mult)
 SMODS.Sticker {
     key = "possessed_arm",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 0, y = 1 },
     badge_colour = HEX('6865f3'),
     prefix_config = { key = false },
@@ -204,7 +204,7 @@ SMODS.Sticker {
 -- 7. Possessed: The Eye (Restricts to 1 hand type for X3.5 Mult)
 SMODS.Sticker {
     key = "possessed_eye",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 1, y = 1 },
     badge_colour = HEX('4b71e4'),
     prefix_config = { key = false },
@@ -237,7 +237,7 @@ SMODS.Sticker {
 -- 8. Possessed: The Wall (Doubles target, awards +$25 on win)
 SMODS.Sticker {
     key = "possessed_wall",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 2, y = 1 },
     badge_colour = HEX('8a59a5'),
     prefix_config = { key = false },
@@ -271,7 +271,7 @@ SMODS.Sticker {
 -- 9. Possessed: The Serpent (Always draws 3 cards, +30 Chips per scored card)
 SMODS.Sticker {
     key = "possessed_serpent",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 3, y = 1 },
     badge_colour = HEX('439a4f'),
     prefix_config = { key = false },
@@ -303,7 +303,7 @@ SMODS.Sticker {
 -- 10. Possessed: The Water (Start with 0 discards, hands draw +4 cards)
 SMODS.Sticker {
     key = "possessed_water",
-    atlas = "witch_brew_stickers",
+    atlas = "reality_warp_stickers",
     pos = { x = 4, y = 1 },
     badge_colour = HEX('579ec2'),
     prefix_config = { key = false },

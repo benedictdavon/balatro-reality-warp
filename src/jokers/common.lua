@@ -1,6 +1,6 @@
 -- Common Jokers
 SMODS.Atlas {
-    key = "witch_brew_jokers",
+    key = "reality_warp_jokers",
     path = "jokers.png",
     px = 71,
     py = 95
@@ -8,7 +8,7 @@ SMODS.Atlas {
 -- Masterful Joker
 SMODS.Joker {
     key = 'masterful_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Masterful Joker',
         text = {
@@ -51,7 +51,7 @@ SMODS.Joker {
 -- Outstanding Joker
 SMODS.Joker {
     key = 'outstanding_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Outstanding Joker',
@@ -107,7 +107,7 @@ SMODS.Joker {
 -- Blueberry
 SMODS.Joker {
     key = 'blueberry_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Blueberry',
         text = {
@@ -161,7 +161,7 @@ SMODS.Joker {
 -- DJ Joker
 SMODS.Joker {
     key = 'dj_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'DJ Joker',
         text = {
@@ -217,7 +217,7 @@ SMODS.Joker {
 -- Designer Joker
 SMODS.Joker {
     key = 'disenador_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Designer Joker',
         text = {
@@ -249,7 +249,7 @@ SMODS.Joker {
 -- Discard Accumulator
 SMODS.Joker {
     key = 'discard_accumulator',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Discard Accumulator',
         text = {
@@ -300,9 +300,9 @@ SMODS.Joker {
 -- Beat It
 SMODS.Joker {
     key = 'beat_it',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 2, y = 5 },
-    rarity = 'Witch_brew_song',
+    rarity = 'reality_warp_song',
     cost = 6,
     blueprint_compat = false,
     set_card_type_badge = function(self, card, badges)
@@ -344,7 +344,7 @@ SMODS.Joker {
 -- Puppet, Common Joker
 SMODS.Joker {
     key = 'puppet_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Puppet',
         text = {
@@ -390,7 +390,7 @@ SMODS.Joker {
 -- Amnesia, Common Joker
 SMODS.Joker {
     key = 'amnesia_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Amnesia',
         text = {
@@ -446,7 +446,7 @@ SMODS.Joker {
 -- Photographer, Common Joker
 SMODS.Joker {
     key = 'photographer_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Photographer',
         text = {
@@ -487,7 +487,7 @@ SMODS.Joker {
 -- Unlock: Play exactly 10 cards in a single blind
 SMODS.Joker {
     key = 'countdown_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Play exactly {C:attention}10 cards", "total in a single blind" },
     loc_txt = {
@@ -509,7 +509,7 @@ SMODS.Joker {
         return { vars = { ex.counter or 10, ex.xmult or 3 } }
     end,
     check_for_unlock = function(self, args)
-        if (args and args.type == 'countdown_cards') or (G.GAME and G.GAME.witch_brew_countdown_cards and G.GAME.witch_brew_countdown_cards >= 10) then
+        if (args and args.type == 'countdown_cards') or (G.GAME and G.GAME.reality_warp_countdown_cards and G.GAME.reality_warp_countdown_cards >= 10) then
             return true
         end
     end,
@@ -518,13 +518,13 @@ SMODS.Joker {
             card.ability.extra.counter = 10
             card.ability.extra.cards_this_blind = 0
             card.ability.extra.triggered = false
-            G.GAME.witch_brew_countdown_cards = 0
+            G.GAME.reality_warp_countdown_cards = 0
         end
         if context.before and not context.blueprint then
             local played = (context.full_hand and #context.full_hand) or
                            (G.play and G.play.cards and #G.play.cards) or 0
             card.ability.extra.cards_this_blind = (card.ability.extra.cards_this_blind or 0) + played
-            G.GAME.witch_brew_countdown_cards = card.ability.extra.cards_this_blind
+            G.GAME.reality_warp_countdown_cards = card.ability.extra.cards_this_blind
             card.ability.extra.counter = card.ability.extra.counter - played
             if card.ability.extra.counter < 0 then
                 card.ability.extra.counter = 10
@@ -552,7 +552,7 @@ SMODS.Joker {
 -- Smuggler, Common Joker
 SMODS.Joker {
     key = 'smuggler_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Smuggler',
         text = {
@@ -599,7 +599,7 @@ SMODS.Joker {
 -- Sheet Music, Common Joker
 SMODS.Joker {
     key = 'sheet_music_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Sheet Music',
         text = {
@@ -634,7 +634,7 @@ SMODS.Joker {
 -- Unlock: Have $50 or more at once
 SMODS.Joker {
     key = 'blood_pact_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Have {C:money}$50{} or more at once" },
     loc_txt = {
@@ -694,7 +694,7 @@ SMODS.Joker {
 -- Saboteur, Common Joker
 SMODS.Joker {
     key = 'saboteur_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Saboteur',
         text = {
@@ -739,7 +739,7 @@ SMODS.Joker {
 -- Boomerang, Common Joker
 SMODS.Joker {
     key = 'boomerang_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Boomerang',
         text = {
@@ -797,7 +797,7 @@ SMODS.Joker {
 -- Spy, Common Joker
 SMODS.Joker {
     key = 'spy_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Spy',
         text = {
@@ -850,7 +850,7 @@ SMODS.Joker {
 -- Unlock: Tener 4 Jokers simultáneamente
 SMODS.Joker {
     key = 'apprentice_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Own {C:attention}4 Jokers{} at the same time" },
     loc_txt = {
@@ -916,7 +916,7 @@ SMODS.Joker {
 -- Upgrade Roulette, Common Joker
 SMODS.Joker {
     key = 'upgrade_roulette_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Upgrade Roulette',
         text = {
@@ -963,7 +963,7 @@ SMODS.Joker {
 -- Unlock: Ganar una ciega sin usar descarte
 SMODS.Joker {
     key = 'reversed_hermit_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Win a blind without", "using any {C:attention}discards{}" },
     loc_txt = {
@@ -986,13 +986,13 @@ SMODS.Joker {
         return { vars = { rate, d_left * rate } }
     end,
     check_for_unlock = function(self, args)
-        if (args and args.type == 'no_discard_win') or (G.GAME and G.GAME.witch_brew_no_discard_win) then
+        if (args and args.type == 'no_discard_win') or (G.GAME and G.GAME.reality_warp_no_discard_win) then
             return true
         end
     end,
     calculate = function(self, card, context)
         if context.setting_blind then
-            G.GAME.witch_brew_no_discard_win = false
+            G.GAME.reality_warp_no_discard_win = false
         end
         if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
             local discards_used = 0
@@ -1002,7 +1002,7 @@ SMODS.Joker {
             end
             local discards_left = (G.GAME and G.GAME.current_round and G.GAME.current_round.discards_left) or 0
             if discards_used == 0 then
-                G.GAME.witch_brew_no_discard_win = true
+                G.GAME.reality_warp_no_discard_win = true
             end
             if discards_left > 0 then
                 local rate = (card.ability and card.ability.extra and card.ability.extra.dollars_per_discard) or 2
@@ -1020,7 +1020,7 @@ SMODS.Joker {
 -- Unlock: Jugar 3 tipos diferentes de mano en la misma ciega
 SMODS.Joker {
     key = 'script_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Play {C:attention}3 different hand types{}", "in a single blind" },
     loc_txt = {
@@ -1043,7 +1043,7 @@ SMODS.Joker {
         return { vars = { ex.reward or 12, s[1] or '?', s[2] or '?', s[3] or '?' } }
     end,
     check_for_unlock = function(self, args)
-        if (args and args.type == 'diff_hands') or (G.GAME and G.GAME.witch_brew_diff_hands and G.GAME.witch_brew_diff_hands >= 3) then
+        if (args and args.type == 'diff_hands') or (G.GAME and G.GAME.reality_warp_diff_hands and G.GAME.reality_warp_diff_hands >= 3) then
             return true
         end
     end,
@@ -1051,8 +1051,8 @@ SMODS.Joker {
         if context.setting_blind and not context.blueprint then
             card.ability.extra.progress = 0
             card.ability.extra.completed = false
-            G.GAME.witch_brew_diff_hands = 0
-            G.GAME.witch_brew_hands_seen = {}
+            G.GAME.reality_warp_diff_hands = 0
+            G.GAME.reality_warp_hands_seen = {}
             local hand_list = {}
             if G.GAME and G.GAME.hands then
                 for k, h in pairs(G.GAME.hands) do
@@ -1075,10 +1075,10 @@ SMODS.Joker {
             local hand_name = context.scoring_name or ''
             -- Unlock tracking
             if hand_name ~= '' then
-                G.GAME.witch_brew_hands_seen = G.GAME.witch_brew_hands_seen or {}
-                if not G.GAME.witch_brew_hands_seen[hand_name] then
-                    G.GAME.witch_brew_hands_seen[hand_name] = true
-                    G.GAME.witch_brew_diff_hands = (G.GAME.witch_brew_diff_hands or 0) + 1
+                G.GAME.reality_warp_hands_seen = G.GAME.reality_warp_hands_seen or {}
+                if not G.GAME.reality_warp_hands_seen[hand_name] then
+                    G.GAME.reality_warp_hands_seen[hand_name] = true
+                    G.GAME.reality_warp_diff_hands = (G.GAME.reality_warp_diff_hands or 0) + 1
                 end
             end
             if not card.ability.extra.completed then
@@ -1111,7 +1111,7 @@ SMODS.Joker {
 -- Joker: incremental
 SMODS.Joker {
     key = 'incremental',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Incremental Joker',
         text = {
@@ -1177,7 +1177,7 @@ SMODS.Joker {
 -- Vending Machine
 SMODS.Joker {
     key = 'vending_machine',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 5, y = 11 },
     rarity = 1,
     cost = 5,
@@ -1236,7 +1236,7 @@ SMODS.Joker {
 -- Hourglass of Eternity
 SMODS.Joker {
     key = 'hourglass',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 6, y = 11 },
     rarity = 1,
     cost = 5,
@@ -1300,7 +1300,7 @@ SMODS.Joker {
 -- The Shell Game
 SMODS.Joker {
     key = 'shell_game',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 2, y = 11 },
     rarity = 1,
     cost = 5,

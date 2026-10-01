@@ -21,8 +21,8 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_slot_machine_joker', eternal = true },
-        { id = 'j_Witch_brew_shareholder_joker',  eternal = true },
+        { id = 'j_reality_warp_slot_machine_joker', eternal = true },
+        { id = 'j_reality_warp_shareholder_joker',  eternal = true },
     },
     deck = {
         type = 'Challenge Deck',
@@ -60,7 +60,7 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_reading_deficiency_joker', eternal = true },
+        { id = 'j_reality_warp_reading_deficiency_joker', eternal = true },
     },
     deck = {
         type = 'Challenge Deck',
@@ -128,8 +128,8 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_symmetrical_joker', eternal = true },
-        { id = 'j_Witch_brew_balance_joker',     eternal = true },
+        { id = 'j_reality_warp_symmetrical_joker', eternal = true },
+        { id = 'j_reality_warp_balance_joker',     eternal = true },
     },
     vouchers = {
         { id = 'v_directors_cut' },
@@ -169,7 +169,7 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_infostealer_joker', eternal = true },
+        { id = 'j_reality_warp_infostealer_joker', eternal = true },
     },
     vouchers = {
         { id = 'v_seed_money' },
@@ -198,8 +198,8 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_blacksmith_joker', eternal = true },
-        { id = 'j_Witch_brew_builder_joker',    eternal = true },
+        { id = 'j_reality_warp_blacksmith_joker', eternal = true },
+        { id = 'j_reality_warp_builder_joker',    eternal = true },
     },
     deck = {
         type = 'Challenge Deck',
@@ -264,7 +264,7 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_duel_of_value_joker', eternal = true },
+        { id = 'j_reality_warp_duel_of_value_joker', eternal = true },
     },
     deck = {
         type = 'Challenge Deck',
@@ -303,8 +303,8 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_paint_puddle_joker', eternal = true },
-        { id = 'j_Witch_brew_disenador_joker',   eternal = true },
+        { id = 'j_reality_warp_paint_puddle_joker', eternal = true },
+        { id = 'j_reality_warp_disenador_joker',   eternal = true },
     },
     deck = {
         type = 'Challenge Deck',
@@ -377,8 +377,8 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_perfectionism_joker', eternal = true },
-        { id = 'j_Witch_brew_appraiser_joker',     eternal = true },
+        { id = 'j_reality_warp_perfectionism_joker', eternal = true },
+        { id = 'j_reality_warp_appraiser_joker',     eternal = true },
     },
     vouchers = {
         { id = 'v_crystal_ball' },
@@ -429,11 +429,11 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_doctor_jo_joker', perishable = true },
-        { id = 'j_Witch_brew_doctor_jo_joker', perishable = true },
-        { id = 'j_Witch_brew_doctor_jo_joker', perishable = true },
-        { id = 'j_Witch_brew_doctor_jo_joker', perishable = true },
-        { id = 'j_Witch_brew_doctor_jo_joker', perishable = true },
+        { id = 'j_reality_warp_doctor_jo_joker', perishable = true },
+        { id = 'j_reality_warp_doctor_jo_joker', perishable = true },
+        { id = 'j_reality_warp_doctor_jo_joker', perishable = true },
+        { id = 'j_reality_warp_doctor_jo_joker', perishable = true },
+        { id = 'j_reality_warp_doctor_jo_joker', perishable = true },
     },
     deck = {
         type = 'Challenge Deck',
@@ -459,7 +459,7 @@ SMODS.Challenge {
         },
     },
     jokers = {
-        { id = 'j_Witch_brew_oversaturated_joker', eternal = true },
+        { id = 'j_reality_warp_oversaturated_joker', eternal = true },
     },
     vouchers = {
         { id = 'v_telescope' },
@@ -505,13 +505,13 @@ SMODS.Challenge {
 -- Hook for Geometria Sagrada (single random suit deck) and Code Red ER custom tallies
 local orig_game_start_run = Game.start_run
 function Game:start_run(args)
-    if alias_all_witch_brew_centers then
-        alias_all_witch_brew_centers()
+    if alias_all_reality_warp_centers then
+        alias_all_reality_warp_centers()
     end
     local ret = orig_game_start_run(self, args)
     if not (args and args.savetable) and G.GAME then
         local ch_id = (G.GAME.challenge) or (args and args.challenge and (args.challenge.id or args.challenge.key)) or ""
-        if ch_id == 'c_Witch_brew_sacred_symmetry' or ch_id == 'sacred_symmetry' or (G.GAME.challenge_tab and G.GAME.challenge_tab.id == 'c_Witch_brew_sacred_symmetry') then
+        if ch_id == 'c_reality_warp_sacred_symmetry' or ch_id == 'sacred_symmetry' or (G.GAME.challenge_tab and G.GAME.challenge_tab.id == 'c_reality_warp_sacred_symmetry') then
             if G.playing_cards and #G.playing_cards > 0 then
                 local suits = { 'Spades', 'Hearts', 'Clubs', 'Diamonds' }
                 local chosen_suit = pseudorandom_element(suits, pseudoseed('sacred_symmetry_suit'))
@@ -520,7 +520,7 @@ function Game:start_run(args)
                 end
             end
         end
-        if ch_id == 'c_Witch_brew_code_red_er' or ch_id == 'code_red_er' or (G.GAME.challenge_tab and G.GAME.challenge_tab.id == 'c_Witch_brew_code_red_er') then
+        if ch_id == 'c_reality_warp_code_red_er' or ch_id == 'code_red_er' or (G.GAME.challenge_tab and G.GAME.challenge_tab.id == 'c_reality_warp_code_red_er') then
             if G.jokers and G.jokers.cards then
                 local tallies = { 4, 4, 6, 6, 8 }
                 for idx, jk in ipairs(G.jokers.cards) do
@@ -550,31 +550,31 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 end
 
 -- Dynamic toggle synchronization for mod settings
-local witch_brew_challenge_keys = {
-    'c_Witch_brew_high_roller_casino',
-    'c_Witch_brew_absolute_silence',
-    'c_Witch_brew_sacred_symmetry',
-    'c_Witch_brew_predatory_loan',
-    'c_Witch_brew_the_forge_and_mine',
-    'c_Witch_brew_parity_duel',
-    'c_Witch_brew_living_canvas',
-    'c_Witch_brew_edition_tycoon',
-    'c_Witch_brew_code_red_er',
-    'c_Witch_brew_singular_saturation',
+local reality_warp_challenge_keys = {
+    'c_reality_warp_high_roller_casino',
+    'c_reality_warp_absolute_silence',
+    'c_reality_warp_sacred_symmetry',
+    'c_reality_warp_predatory_loan',
+    'c_reality_warp_the_forge_and_mine',
+    'c_reality_warp_parity_duel',
+    'c_reality_warp_living_canvas',
+    'c_reality_warp_edition_tycoon',
+    'c_reality_warp_code_red_er',
+    'c_reality_warp_singular_saturation',
 }
 
-function witch_brew_sync_challenges(enable)
+function reality_warp_sync_challenges(enable)
     if not G.CHALLENGES then return end
 
     for i = #G.CHALLENGES, 1, -1 do
         local ch = G.CHALLENGES[i]
-        if ch and ch.id and (string.find(ch.id, 'Witch_brew', 1, true) or string.find(ch.id, 'c_witch_brew_', 1, true)) then
+        if ch and ch.id and (string.find(ch.id, 'reality_warp', 1, true) or string.find(ch.id, 'c_reality_warp_', 1, true)) then
             table.remove(G.CHALLENGES, i)
         end
     end
 
     if enable and SMODS and SMODS.Challenges then
-        for _, k in ipairs(witch_brew_challenge_keys) do
+        for _, k in ipairs(reality_warp_challenge_keys) do
             local ch = SMODS.Challenges[k]
             if ch then
                 table.insert(G.CHALLENGES, ch)
@@ -584,10 +584,10 @@ function witch_brew_sync_challenges(enable)
 end
 
 -- Check initial config toggle
-local cfg = (get_witch_brew_config and get_witch_brew_config())
-    or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config)
+local cfg = (get_reality_warp_config and get_reality_warp_config())
+    or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config)
     or (SMODS and SMODS.current_mod and SMODS.current_mod.config)
     or {}
 if cfg.new_challenges == false then
-    witch_brew_sync_challenges(false)
+    reality_warp_sync_challenges(false)
 end

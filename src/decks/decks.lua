@@ -1,6 +1,6 @@
 -- Decks Atlas
 SMODS.Atlas {
-    key = "witch_brew_decks",
+    key = "reality_warp_decks",
     path = "decks.png",
     px = 71,
     py = 95
@@ -41,37 +41,37 @@ local function reparse_deck_entry(entry)
 end
 
 -- Global Decks Registry & Extensibility System
-WITCH_BREW_DECKS = WITCH_BREW_DECKS or {}
-WITCH_BREW_DECK_HOOKS = WITCH_BREW_DECK_HOOKS or {}
-WITCH_BREW_DECK_LOCS = WITCH_BREW_DECK_LOCS or {}
+reality_warp_DECKS = reality_warp_DECKS or {}
+reality_warp_DECK_HOOKS = reality_warp_DECK_HOOKS or {}
+reality_warp_DECK_LOCS = reality_warp_DECK_LOCS or {}
 
-function register_witch_brew_deck(deck_def)
+function register_reality_warp_deck(deck_def)
     if not deck_def or not deck_def.key then return end
-    WITCH_BREW_DECKS[deck_def.key] = deck_def
+    reality_warp_DECKS[deck_def.key] = deck_def
     if deck_def.loc_txt then
-        WITCH_BREW_DECK_LOCS[deck_def.key] = {
+        reality_warp_DECK_LOCS[deck_def.key] = {
             name = deck_def.loc_txt.name or deck_def.name,
             text = deck_def.loc_txt.text
         }
     end
     local back_obj = SMODS.Back(deck_def)
-    if inject_witch_brew_deck_localization then
-        inject_witch_brew_deck_localization()
+    if inject_reality_warp_deck_localization then
+        inject_reality_warp_deck_localization()
     end
     return back_obj
 end
 
-function add_witch_brew_deck_hook(deck_key, hook_fn)
+function add_reality_warp_deck_hook(deck_key, hook_fn)
     if not deck_key or not hook_fn then return end
-    WITCH_BREW_DECK_HOOKS[deck_key] = WITCH_BREW_DECK_HOOKS[deck_key] or {}
-    table.insert(WITCH_BREW_DECK_HOOKS[deck_key], hook_fn)
+    reality_warp_DECK_HOOKS[deck_key] = reality_warp_DECK_HOOKS[deck_key] or {}
+    table.insert(reality_warp_DECK_HOOKS[deck_key], hook_fn)
 end
 
 -- 1. Caveman Deck
 SMODS.Back {
     name = 'Caveman Deck',
     key = 'cavernicola',
-    atlas = 'witch_brew_decks',
+    atlas = 'reality_warp_decks',
     pos = { x = 0, y = 0 },
     config = {},
     unlocked = true,
@@ -129,7 +129,7 @@ SMODS.Back {
 SMODS.Back {
     name = 'Strategist Deck',
     key = 'strategist',
-    atlas = 'witch_brew_decks',
+    atlas = 'reality_warp_decks',
     pos = { x = 1, y = 0 },
     config = {},
     unlocked = true,
@@ -204,7 +204,7 @@ SMODS.Back {
 SMODS.Back {
     name = 'Overseer Deck',
     key = 'overseer',
-    atlas = 'witch_brew_decks',
+    atlas = 'reality_warp_decks',
     pos = { x = 2, y = 0 },
     config = {},
     unlocked = true,
@@ -251,13 +251,13 @@ SMODS.Back {
                     func = function()
                         local forbidden = {
                             ['c_rot'] = true,
-                            ['c_Witch_brew_rot'] = true,
+                            ['c_reality_warp_rot'] = true,
                             ['c_soul'] = true,
                             ['c_the_gang'] = true,
-                            ['c_Witch_brew_the_gang'] = true,
+                            ['c_reality_warp_the_gang'] = true,
                             ['the_gang'] = true,
                             ['c_la_muchachada'] = true,
-                            ['c_Witch_brew_la_muchachada'] = true,
+                            ['c_reality_warp_la_muchachada'] = true,
                             ['la_muchachada'] = true,
                         }
                         local valid_spectrals = {}
@@ -296,7 +296,7 @@ SMODS.Back {
 SMODS.Back {
     name = 'Friendly Deck',
     key = 'friendly',
-    atlas = 'witch_brew_decks',
+    atlas = 'reality_warp_decks',
     pos = { x = 3, y = 0 },
     config = {},
     unlocked = true,
@@ -393,7 +393,7 @@ SMODS.Back {
                             }
                             local valid_secrets = {}
                             for _, sk in ipairs(secret_keys) do
-                                local k = 'j_Witch_brew_' .. sk
+                                local k = 'j_reality_warp_' .. sk
                                 if G.P_CENTERS and G.P_CENTERS[k] then
                                     table.insert(valid_secrets, k)
                                 end
@@ -449,7 +449,7 @@ SMODS.Back {
 SMODS.Back {
     name = 'Alchemist Deck',
     key = 'alchemist',
-    atlas = 'witch_brew_decks',
+    atlas = 'reality_warp_decks',
     pos = { x = 0, y = 1 },
     config = {},
     unlocked = true,
@@ -458,7 +458,7 @@ SMODS.Back {
         name = 'Alchemist Deck',
         text = {
             "Start run with the voucher",
-            "{C:attention,T:v_Witch_brew_destilacion_recurrente}Recurring Distillation{}"
+            "{C:attention,T:v_reality_warp_destilacion_recurrente}Recurring Distillation{}"
         }
     },
     loc_vars = function(self, info_queue, back)
@@ -469,7 +469,7 @@ SMODS.Back {
             func = function()
                 G.GAME.alchemist_deck = true
                 G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-                G.GAME.used_vouchers.v_Witch_brew_destilacion_recurrente = true
+                G.GAME.used_vouchers.v_reality_warp_destilacion_recurrente = true
                 G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] = true
                 G.GAME.used_vouchers.v_destilacion_recurrente = true
                 G.GAME.used_vouchers.destilacion_recurrente = true
@@ -479,7 +479,7 @@ SMODS.Back {
                     G.GAME.alchemist_sleeve_combo = true
                     if not G.GAME.alchemist_fusion_kyra_given and G.jokers then
                         G.GAME.alchemist_fusion_kyra_given = true
-                        local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_Witch_brew_kyra', 'alchemist_fusion')
+                        local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_reality_warp_kyra', 'alchemist_fusion')
                         if not kyra_card or not kyra_card.config then
                             kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'kyra', 'alchemist_fusion_fallback')
                         end
@@ -500,7 +500,7 @@ SMODS.Back {
     calculate = function(self, back, context)
         if (context.first_hand_drawn or context.setting_blind) and not context.blueprint and not context.individual and not context.repetition then
             G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-            G.GAME.used_vouchers.v_Witch_brew_destilacion_recurrente = true
+            G.GAME.used_vouchers.v_reality_warp_destilacion_recurrente = true
             G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] = true
 
             local is_combo = G.GAME and (G.GAME.alchemist_sleeve_combo or is_sleeve_matching("alchemist"))
@@ -508,7 +508,7 @@ SMODS.Back {
                 G.GAME.alchemist_fusion_kyra_given = true
                 G.E_MANAGER:add_event(Event({
                     func = function()
-                        local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_Witch_brew_kyra', 'alchemist_fusion')
+                        local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_reality_warp_kyra', 'alchemist_fusion')
                         if not kyra_card or not kyra_card.config then
                             kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'kyra', 'alchemist_fusion_fallback')
                         end
@@ -532,7 +532,7 @@ SMODS.Back {
 SMODS.Back {
     name = 'Colosseum Deck',
     key = 'coliseo',
-    atlas = 'witch_brew_decks',
+    atlas = 'reality_warp_decks',
     pos = { x = 1, y = 1 },
     config = { dollars = 100 },
     unlocked = true,
@@ -587,19 +587,19 @@ SMODS.Back {
                 -- Vouchers: Taster (Catador), Critic (Critico), Planet Merchant (and Telescope), Seed Money, Money Tree
                 G.GAME.used_vouchers = G.GAME.used_vouchers or {}
                 local v_keys = {
-                    'v_Witch_brew_catador', 'v_Witch brew_catador', 'v_catador', 'catador',
-                    'v_Witch_brew_critico', 'v_Witch brew_critico', 'v_critico', 'critico',
+                    'v_reality_warp_catador', 'v_Witch brew_catador', 'v_catador', 'catador',
+                    'v_reality_warp_critico', 'v_Witch brew_critico', 'v_critico', 'critico',
                     'v_planet_merchant', 'planet_merchant', 'v_telescope',
                     'v_seed_money', 'seed_money', 'v_money_tree', 'money_tree'
                 }
                 for _, k in ipairs(v_keys) do
                     G.GAME.used_vouchers[k] = true
                 end
-                if G.P_CENTERS['v_Witch_brew_catador'] and G.P_CENTERS['v_Witch_brew_catador'].redeem then
-                    pcall(function() G.P_CENTERS['v_Witch_brew_catador']:redeem() end)
+                if G.P_CENTERS['v_reality_warp_catador'] and G.P_CENTERS['v_reality_warp_catador'].redeem then
+                    pcall(function() G.P_CENTERS['v_reality_warp_catador']:redeem() end)
                 end
-                if G.P_CENTERS['v_Witch_brew_critico'] and G.P_CENTERS['v_Witch_brew_critico'].redeem then
-                    pcall(function() G.P_CENTERS['v_Witch_brew_critico']:redeem() end)
+                if G.P_CENTERS['v_reality_warp_critico'] and G.P_CENTERS['v_reality_warp_critico'].redeem then
+                    pcall(function() G.P_CENTERS['v_reality_warp_critico']:redeem() end)
                 end
                 if G.P_CENTERS['v_seed_money'] and G.P_CENTERS['v_seed_money'].redeem then
                     pcall(function() G.P_CENTERS['v_seed_money']:redeem() end)
@@ -663,7 +663,7 @@ SMODS.Back {
 SMODS.Back {
     name = 'Dark Merchant Deck',
     key = 'dark_merchant',
-    atlas = 'witch_brew_decks',
+    atlas = 'reality_warp_decks',
     pos = { x = 2, y = 1 },
     config = {},
     unlocked = true,
@@ -701,7 +701,7 @@ SMODS.Back {
 SMODS.Back {
     name = 'Witcher Deck',
     key = 'witcher',
-    atlas = 'witch_brew_decks',
+    atlas = 'reality_warp_decks',
     pos = { x = 3, y = 1 },
     config = {},
     unlocked = true,
@@ -775,7 +775,7 @@ SMODS.Back {
 }
 
 -- Inject Deck localizations into G.localization.descriptions.Back with parsed entries
-function inject_witch_brew_deck_localization()
+function inject_reality_warp_deck_localization()
     if not (G.localization and G.localization.descriptions) then return end
     G.localization.descriptions.Back = G.localization.descriptions.Back or {}
 
@@ -819,7 +819,7 @@ function inject_witch_brew_deck_localization()
             name = "Alchemist Deck",
             text = {
                 "Start run with the voucher",
-                "{C:attention,T:v_Witch_brew_destilacion_recurrente}Recurring Distillation{}"
+                "{C:attention,T:v_reality_warp_destilacion_recurrente}Recurring Distillation{}"
             }
         },
         coliseo = {
@@ -906,18 +906,18 @@ function inject_witch_brew_deck_localization()
     }
 
     -- Merge dynamically registered deck localizations
-    if WITCH_BREW_DECK_LOCS then
-        for k, v in pairs(WITCH_BREW_DECK_LOCS) do
+    if reality_warp_DECK_LOCS then
+        for k, v in pairs(reality_warp_DECK_LOCS) do
             if not deck_locs[k] then
                 deck_locs[k] = v
             end
         end
     end
 
-    -- Automatically discover any SMODS.Back with key starting with Witch_brew
+    -- Automatically discover any SMODS.Back with key starting with reality_warp
     if SMODS and SMODS.Back and SMODS.Back.obj_table then
         for k, obj in pairs(SMODS.Back.obj_table) do
-            local clean_k = tostring(obj.key or k):gsub('^b_Witch_brew_', ''):gsub('^b_', ''):gsub('^Witch_brew_', '')
+            local clean_k = tostring(obj.key or k):gsub('^b_reality_warp_', ''):gsub('^b_', ''):gsub('^reality_warp_', '')
             if obj.loc_txt and not deck_locs[clean_k] then
                 deck_locs[clean_k] = {
                     name = obj.loc_txt.name or obj.name,
@@ -930,9 +930,9 @@ function inject_witch_brew_deck_localization()
     for key, data in pairs(deck_locs) do
         local keys_to_set = {
             "b_" .. key,
-            "b_Witch_brew_" .. key,
+            "b_reality_warp_" .. key,
             key,
-            "Witch_brew_" .. key
+            "reality_warp_" .. key
         }
         for _, k in ipairs(keys_to_set) do
             local entry = G.localization.descriptions.Back[k] or {}
@@ -952,13 +952,13 @@ function inject_witch_brew_deck_localization()
     setmetatable(G.localization.descriptions.Back, nil)
 end
 
-inject_witch_brew_deck_localization()
+inject_reality_warp_deck_localization()
 
 -- Hook init_localization to ensure decks are kept synchronized and parsed
 local orig_init_loc_decks = init_localization
 function init_localization()
     if orig_init_loc_decks then orig_init_loc_decks() end
-    inject_witch_brew_deck_localization()
+    inject_reality_warp_deck_localization()
 end
 
 -- Defensive hooks for Back:init and Back:generate_UI
@@ -1029,8 +1029,8 @@ if Back then
 end
 
 -- Extensible Deck Event Hook Dispatcher
-if Back and not G.witch_brew_back_trigger_hooked then
-    G.witch_brew_back_trigger_hooked = true
+if Back and not G.reality_warp_back_trigger_hooked then
+    G.reality_warp_back_trigger_hooked = true
     local orig_trigger_effect = Back.trigger_effect
     function Back:trigger_effect(args)
         local ret1, ret2 = nil, nil
@@ -1038,9 +1038,9 @@ if Back and not G.witch_brew_back_trigger_hooked then
             ret1, ret2 = orig_trigger_effect(self, args)
         end
         local current_key = self.effect and self.effect.center and self.effect.center.key
-        if current_key and WITCH_BREW_DECK_HOOKS then
-            local clean_k = tostring(current_key):gsub('^b_Witch_brew_', ''):gsub('^b_', ''):gsub('^Witch_brew_', '')
-            local hooks = WITCH_BREW_DECK_HOOKS[clean_k] or WITCH_BREW_DECK_HOOKS[current_key]
+        if current_key and reality_warp_DECK_HOOKS then
+            local clean_k = tostring(current_key):gsub('^b_reality_warp_', ''):gsub('^b_', ''):gsub('^reality_warp_', '')
+            local hooks = reality_warp_DECK_HOOKS[clean_k] or reality_warp_DECK_HOOKS[current_key]
             if hooks then
                 for _, fn in ipairs(hooks) do
                     local h1, h2 = fn(self, args)

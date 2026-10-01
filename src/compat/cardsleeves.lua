@@ -10,7 +10,7 @@
 
 -- Atlases for Custom Sleeves
 SMODS.Atlas {
-    key = "witch_brew_sleeves",
+    key = "reality_warp_sleeves",
     path = "sleeves.png",
     px = 73,
     py = 95
@@ -57,7 +57,7 @@ local function is_deck_matching(target_key)
             current = tostring(current)
             if current == target_key
                 or current == "b_" .. target_key
-                or current == "b_Witch_brew_" .. target_key
+                or current == "b_reality_warp_" .. target_key
                 or string.find(current, target_key, 1, true) ~= nil then
                 return true
             end
@@ -195,9 +195,9 @@ local function inject_sleeve_localization()
         -- Register with multiple possible prefix patterns so SMODS/CardSleeves always finds it
         local keys_to_set = {
             "sleeve_" .. key,
-            "sleeve_Witch_brew_" .. key,
+            "sleeve_reality_warp_" .. key,
             key,
-            "Witch_brew_" .. key
+            "reality_warp_" .. key
         }
         for _, k in ipairs(keys_to_set) do
             local entry = G.localization.descriptions.Sleeve[k] or {}
@@ -221,14 +221,14 @@ end
 
 -- Register CardSleeves objects
 local registered_sleeves = false
-function register_witch_brew_sleeves()
+function register_reality_warp_sleeves()
     if registered_sleeves then return end
     if not (CardSleeves and CardSleeves.Sleeve) then return end
     registered_sleeves = true
 
-    local mod_obj = (get_witch_brew_mod and get_witch_brew_mod())
-        or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'])
-        or Witch_brew_MOD
+    local mod_obj = (get_reality_warp_mod and get_reality_warp_mod())
+        or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'])
+        or reality_warp_MOD
         or SMODS.current_mod
     local prev_current_mod = SMODS.current_mod
     if mod_obj then
@@ -241,7 +241,7 @@ function register_witch_brew_sleeves()
     CardSleeves.Sleeve {
         key = "friendly",
         name = "Friendly Sleeve",
-        atlas = "witch_brew_sleeves",
+        atlas = "reality_warp_sleeves",
         pos = { x = 3, y = 0 },
         config = {},
         unlocked = true,
@@ -257,9 +257,9 @@ function register_witch_brew_sleeves()
         loc_vars = function(self, info_queue, card)
             local is_combo = is_deck_matching("friendly")
             local raw_k = (self.original_key or self.key or "friendly")
-            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_Witch_brew_", ""), "^sleeve_", "")
+            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_reality_warp_", ""), "^sleeve_", "")
             base_key = string.gsub(base_key, "_alt$", "")
-            local key = is_combo and ("sleeve_Witch_brew_" .. base_key .. "_alt") or ("sleeve_Witch_brew_" .. base_key)
+            local key = is_combo and ("sleeve_reality_warp_" .. base_key .. "_alt") or ("sleeve_reality_warp_" .. base_key)
             return { key = key, vars = {} }
         end,
         apply = function(self, sleeve)
@@ -311,7 +311,7 @@ function register_witch_brew_sleeves()
     CardSleeves.Sleeve {
         key = "cavernicola",
         name = "Caveman Sleeve",
-        atlas = "witch_brew_sleeves",
+        atlas = "reality_warp_sleeves",
         pos = { x = 0, y = 0 },
         config = {},
         unlocked = true,
@@ -327,9 +327,9 @@ function register_witch_brew_sleeves()
         loc_vars = function(self, info_queue, card)
             local is_combo = is_deck_matching("cavernicola")
             local raw_k = (self.original_key or self.key or "cavernicola")
-            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_Witch_brew_", ""), "^sleeve_", "")
+            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_reality_warp_", ""), "^sleeve_", "")
             base_key = string.gsub(base_key, "_alt$", "")
-            local key = is_combo and ("sleeve_Witch_brew_" .. base_key .. "_alt") or ("sleeve_Witch_brew_" .. base_key)
+            local key = is_combo and ("sleeve_reality_warp_" .. base_key .. "_alt") or ("sleeve_reality_warp_" .. base_key)
             return { key = key, vars = {} }
         end,
         apply = function(self, sleeve)
@@ -380,7 +380,7 @@ function register_witch_brew_sleeves()
     CardSleeves.Sleeve {
         key = "strategist",
         name = "Strategist Sleeve",
-        atlas = "witch_brew_sleeves",
+        atlas = "reality_warp_sleeves",
         pos = { x = 1, y = 0 },
         config = {},
         unlocked = true,
@@ -395,9 +395,9 @@ function register_witch_brew_sleeves()
         loc_vars = function(self, info_queue, card)
             local is_combo = is_deck_matching("strategist")
             local raw_k = (self.original_key or self.key or "strategist")
-            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_Witch_brew_", ""), "^sleeve_", "")
+            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_reality_warp_", ""), "^sleeve_", "")
             base_key = string.gsub(base_key, "_alt$", "")
-            local key = is_combo and ("sleeve_Witch_brew_" .. base_key .. "_alt") or ("sleeve_Witch_brew_" .. base_key)
+            local key = is_combo and ("sleeve_reality_warp_" .. base_key .. "_alt") or ("sleeve_reality_warp_" .. base_key)
             return { key = key, vars = {} }
         end,
         apply = function(self, sleeve)
@@ -452,7 +452,7 @@ function register_witch_brew_sleeves()
     CardSleeves.Sleeve {
         key = "overseer",
         name = "Overseer Sleeve",
-        atlas = "witch_brew_sleeves",
+        atlas = "reality_warp_sleeves",
         pos = { x = 2, y = 0 },
         config = {},
         unlocked = true,
@@ -467,9 +467,9 @@ function register_witch_brew_sleeves()
         loc_vars = function(self, info_queue, card)
             local is_combo = is_deck_matching("overseer")
             local raw_k = (self.original_key or self.key or "overseer")
-            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_Witch_brew_", ""), "^sleeve_", "")
+            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_reality_warp_", ""), "^sleeve_", "")
             base_key = string.gsub(base_key, "_alt$", "")
-            local key = is_combo and ("sleeve_Witch_brew_" .. base_key .. "_alt") or ("sleeve_Witch_brew_" .. base_key)
+            local key = is_combo and ("sleeve_reality_warp_" .. base_key .. "_alt") or ("sleeve_reality_warp_" .. base_key)
             return { key = key, vars = {} }
         end,
         apply = function(self, sleeve)
@@ -498,13 +498,13 @@ function register_witch_brew_sleeves()
                                 func = function()
                                     local forbidden = {
                                         ['c_rot'] = true,
-                                        ['c_Witch_brew_rot'] = true,
+                                        ['c_reality_warp_rot'] = true,
                                         ['c_soul'] = true,
                                         ['c_the_gang'] = true,
-                                        ['c_Witch_brew_the_gang'] = true,
+                                        ['c_reality_warp_the_gang'] = true,
                                         ['the_gang'] = true,
                                         ['c_la_muchachada'] = true,
-                                        ['c_Witch_brew_la_muchachada'] = true,
+                                        ['c_reality_warp_la_muchachada'] = true,
                                         ['la_muchachada'] = true,
                                     }
                                     local valid_spectrals = {}
@@ -545,13 +545,13 @@ function register_witch_brew_sleeves()
                             func = function()
                                 local forbidden = {
                                     ['c_rot'] = true,
-                                    ['c_Witch_brew_rot'] = true,
+                                    ['c_reality_warp_rot'] = true,
                                     ['c_soul'] = true,
                                     ['c_the_gang'] = true,
-                                    ['c_Witch_brew_the_gang'] = true,
+                                    ['c_reality_warp_the_gang'] = true,
                                     ['the_gang'] = true,
                                     ['c_la_muchachada'] = true,
-                                    ['c_Witch_brew_la_muchachada'] = true,
+                                    ['c_reality_warp_la_muchachada'] = true,
                                     ['la_muchachada'] = true,
                                 }
                                 local valid_spectrals = {}
@@ -591,7 +591,7 @@ function register_witch_brew_sleeves()
     CardSleeves.Sleeve {
         key = "alchemist",
         name = "Alchemist Sleeve",
-        atlas = "witch_brew_sleeves",
+        atlas = "reality_warp_sleeves",
         pos = { x = 0, y = 1 },
         config = {},
         unlocked = true,
@@ -607,9 +607,9 @@ function register_witch_brew_sleeves()
         loc_vars = function(self, info_queue, card)
             local is_combo = is_deck_matching("alchemist")
             local raw_k = (self.original_key or self.key or "alchemist")
-            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_Witch_brew_", ""), "^sleeve_", "")
+            local base_key = string.gsub(string.gsub(raw_k, "^sleeve_reality_warp_", ""), "^sleeve_", "")
             base_key = string.gsub(base_key, "_alt$", "")
-            local key = is_combo and ("sleeve_Witch_brew_" .. base_key .. "_alt") or ("sleeve_Witch_brew_" .. base_key)
+            local key = is_combo and ("sleeve_reality_warp_" .. base_key .. "_alt") or ("sleeve_reality_warp_" .. base_key)
             return { key = key, vars = {} }
         end,
         apply = function(self, sleeve)
@@ -618,7 +618,7 @@ function register_witch_brew_sleeves()
             if is_combo then
                 G.GAME.alchemist_sleeve_combo = true
                 G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-                G.GAME.used_vouchers.v_Witch_brew_destilacion_recurrente = true
+                G.GAME.used_vouchers.v_reality_warp_destilacion_recurrente = true
                 G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] = true
                 G.GAME.used_vouchers.v_destilacion_recurrente = true
                 G.GAME.used_vouchers.destilacion_recurrente = true
@@ -627,7 +627,7 @@ function register_witch_brew_sleeves()
                     func = function()
                         if not G.GAME.alchemist_fusion_kyra_given and G.jokers then
                             G.GAME.alchemist_fusion_kyra_given = true
-                            local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_Witch_brew_kyra', 'alchemist_fusion')
+                            local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_reality_warp_kyra', 'alchemist_fusion')
                             if not kyra_card or not kyra_card.config then
                                 kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'kyra', 'alchemist_fusion_fallback')
                             end
@@ -653,14 +653,14 @@ function register_witch_brew_sleeves()
                 -- Fusion effect: Summon Kyra (Eternal) 1 time at start of match and grant Recurring Distillation each round
                 if (context.first_hand_drawn or context.setting_blind) and not context.blueprint and not context.individual and not context.repetition then
                     G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-                    G.GAME.used_vouchers.v_Witch_brew_destilacion_recurrente = true
+                    G.GAME.used_vouchers.v_reality_warp_destilacion_recurrente = true
                     G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] = true
 
                     if not G.GAME.alchemist_fusion_kyra_given and G.jokers then
                         G.GAME.alchemist_fusion_kyra_given = true
                         G.E_MANAGER:add_event(Event({
                             func = function()
-                                local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_Witch_brew_kyra', 'alchemist_fusion')
+                                local kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_reality_warp_kyra', 'alchemist_fusion')
                                 if not kyra_card or not kyra_card.config then
                                     kyra_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'kyra', 'alchemist_fusion_fallback')
                                 end
@@ -707,7 +707,7 @@ end
 
 -- Try initial registration
 if CardSleeves and CardSleeves.Sleeve then
-    register_witch_brew_sleeves()
+    register_reality_warp_sleeves()
 end
 
 -- Hook init_localization to ensure sleeves are registered and translated
@@ -715,7 +715,7 @@ local orig_init_loc_sleeves = init_localization
 function init_localization()
     if orig_init_loc_sleeves then orig_init_loc_sleeves() end
     if CardSleeves and CardSleeves.Sleeve then
-        register_witch_brew_sleeves()
+        register_reality_warp_sleeves()
     end
     inject_sleeve_localization()
 end
@@ -738,7 +738,7 @@ function Game:start_run(args)
     args = args or {}
     if CardSleeves and CardSleeves.Sleeve then
         if not registered_sleeves then
-            register_witch_brew_sleeves()
+            register_reality_warp_sleeves()
         end
         if not args.casl_sleeve_choice then
             local prev_sleeve = G._last_selected_sleeve

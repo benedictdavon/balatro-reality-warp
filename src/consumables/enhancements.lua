@@ -9,7 +9,7 @@ SMODS.Atlas {
 -- Helper functions for Custom Enhancement Centers
 function get_custom_enhancement(name, fallback)
     if G.P_CENTERS then
-        if G.P_CENTERS['m_Witch_brew_' .. name] then return G.P_CENTERS['m_Witch_brew_' .. name] end
+        if G.P_CENTERS['m_reality_warp_' .. name] then return G.P_CENTERS['m_reality_warp_' .. name] end
         if G.P_CENTERS['m_' .. name] then return G.P_CENTERS['m_' .. name] end
         for k, v in pairs(G.P_CENTERS) do
             if type(v) == 'table' and string.find(k, name, 1, true) and v.set == 'Enhanced' then
@@ -377,9 +377,9 @@ if SMODS and SMODS.Edition then
     }
 end
 
-local function sync_witch_brew_edition_loc()
+local function sync_reality_warp_edition_loc()
     if G.localization and G.localization.descriptions and G.localization.descriptions.Edition then
-        for _, k in ipairs({ 'e_Witch_brew_blessed', 'e_blessed', 'blessed', 'e_Witch_brew_mosaic', 'e_mosaic', 'mosaic' }) do
+        for _, k in ipairs({ 'e_reality_warp_blessed', 'e_blessed', 'blessed', 'e_reality_warp_mosaic', 'e_mosaic', 'mosaic' }) do
             local e_entry = G.localization.descriptions.Edition[k]
             if e_entry and type(e_entry) == 'table' and not e_entry.text_parsed then
                 if reparse_localization_entry then
@@ -394,11 +394,11 @@ local function sync_witch_brew_edition_loc()
         end
     end
 end
-sync_witch_brew_edition_loc()
+sync_reality_warp_edition_loc()
 if G.E_MANAGER then
     G.E_MANAGER:add_event(Event({
         func = function()
-            sync_witch_brew_edition_loc()
+            sync_reality_warp_edition_loc()
             return true
         end
     }))
@@ -408,7 +408,7 @@ local function is_blessed_card(card)
     if not card then return false end
     if card.edition then
         if card.edition.blessed or card.edition.bendecido then return true end
-        if card.edition.key == 'e_Witch_brew_blessed' or card.edition.key == 'e_blessed' or card.edition.type == 'blessed' then return true end
+        if card.edition.key == 'e_reality_warp_blessed' or card.edition.key == 'e_blessed' or card.edition.type == 'blessed' then return true end
     end
     return false
 end
@@ -417,7 +417,7 @@ local function is_mosaic_card(card)
     if not card then return false end
     if card.edition then
         if card.edition.mosaic or card.edition.mosaico then return true end
-        if card.edition.key == 'e_Witch_brew_mosaic' or card.edition.key == 'e_mosaic' or card.edition.type == 'mosaic' then return true end
+        if card.edition.key == 'e_reality_warp_mosaic' or card.edition.key == 'e_mosaic' or card.edition.type == 'mosaic' then return true end
     end
     return false
 end
@@ -468,7 +468,7 @@ local function init_custom_editions_loc()
     G.localization.descriptions.Edition = G.localization.descriptions.Edition or {}
     
     -- Blessed
-    G.localization.descriptions.Edition.e_Witch_brew_blessed = {
+    G.localization.descriptions.Edition.e_reality_warp_blessed = {
         name = "Blessed",
         label = "Blessed",
         text = {
@@ -476,11 +476,11 @@ local function init_custom_editions_loc()
             "{C:attention}debuffed{}"
         }
     }
-    G.localization.descriptions.Edition.blessed = G.localization.descriptions.Edition.e_Witch_brew_blessed
-    G.localization.descriptions.Edition.e_blessed = G.localization.descriptions.Edition.e_Witch_brew_blessed
+    G.localization.descriptions.Edition.blessed = G.localization.descriptions.Edition.e_reality_warp_blessed
+    G.localization.descriptions.Edition.e_blessed = G.localization.descriptions.Edition.e_reality_warp_blessed
 
     -- Mosaic
-    G.localization.descriptions.Edition.e_Witch_brew_mosaic = {
+    G.localization.descriptions.Edition.e_reality_warp_mosaic = {
         name = "Mosaic",
         label = "Mosaic",
         text = {
@@ -488,14 +488,14 @@ local function init_custom_editions_loc()
             "{C:inactive}(Original idea from Cryptid Mod){}"
         }
     }
-    G.localization.descriptions.Edition.mosaic = G.localization.descriptions.Edition.e_Witch_brew_mosaic
-    G.localization.descriptions.Edition.e_mosaic = G.localization.descriptions.Edition.e_Witch_brew_mosaic
+    G.localization.descriptions.Edition.mosaic = G.localization.descriptions.Edition.e_reality_warp_mosaic
+    G.localization.descriptions.Edition.e_mosaic = G.localization.descriptions.Edition.e_reality_warp_mosaic
 
     G.localization.descriptions.Other = G.localization.descriptions.Other or {}
-    G.localization.descriptions.Other.blessed = G.localization.descriptions.Edition.e_Witch_brew_blessed
-    G.localization.descriptions.Other.e_Witch_brew_blessed = G.localization.descriptions.Edition.e_Witch_brew_blessed
-    G.localization.descriptions.Other.mosaic = G.localization.descriptions.Edition.e_Witch_brew_mosaic
-    G.localization.descriptions.Other.e_Witch_brew_mosaic = G.localization.descriptions.Edition.e_Witch_brew_mosaic
+    G.localization.descriptions.Other.blessed = G.localization.descriptions.Edition.e_reality_warp_blessed
+    G.localization.descriptions.Other.e_reality_warp_blessed = G.localization.descriptions.Edition.e_reality_warp_blessed
+    G.localization.descriptions.Other.mosaic = G.localization.descriptions.Edition.e_reality_warp_mosaic
+    G.localization.descriptions.Other.e_reality_warp_mosaic = G.localization.descriptions.Edition.e_reality_warp_mosaic
 end
 
 init_custom_editions_loc()

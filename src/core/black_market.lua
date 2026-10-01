@@ -475,10 +475,10 @@ local function generate_black_market_stock()
     local round = G.GAME.round or 1
 
     local secret_keys = {
-        'j_Witch_brew_esteban', 'j_Witch_brew_thiago', 'j_Witch_brew_black_hole_joker',
-        'j_Witch_brew_squele', 'j_Witch_brew_bluxdir', 'j_Witch_brew_charles', 'j_Witch_brew_mochi',
-        'j_Witch_brew_helin', 'j_Witch_brew_raytracing', 'j_Witch_brew_paco', 'j_Witch_brew_yairo',
-        'j_Witch_brew_kyra'
+        'j_reality_warp_esteban', 'j_reality_warp_thiago', 'j_reality_warp_black_hole_joker',
+        'j_reality_warp_squele', 'j_reality_warp_bluxdir', 'j_reality_warp_charles', 'j_reality_warp_mochi',
+        'j_reality_warp_helin', 'j_reality_warp_raytracing', 'j_reality_warp_paco', 'j_reality_warp_yairo',
+        'j_reality_warp_kyra'
     }
     local valid_secret_keys = {}
     for _, k in ipairs(secret_keys) do
@@ -489,7 +489,7 @@ local function generate_black_market_stock()
 
     local legendary_keys = {
         'j_caino', 'j_triboulet', 'j_yorick', 'j_chicot', 'j_perkeo',
-        'j_Witch_brew_world_devourer', 'j_Witch_brew_living_paradox', 'j_Witch_brew_star_chronicler'
+        'j_reality_warp_world_devourer', 'j_reality_warp_living_paradox', 'j_reality_warp_star_chronicler'
     }
     local valid_legendary_keys = {}
     for _, k in ipairs(legendary_keys) do
@@ -498,9 +498,9 @@ local function generate_black_market_stock()
         end
     end
 
-    local gang_key = (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_the_gang'] and 'c_Witch_brew_the_gang')
+    local gang_key = (G.P_CENTERS and G.P_CENTERS['c_reality_warp_the_gang'] and 'c_reality_warp_the_gang')
         or (G.P_CENTERS and G.P_CENTERS['c_the_gang'] and 'c_the_gang')
-        or (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_la_muchachada'] and 'c_Witch_brew_la_muchachada')
+        or (G.P_CENTERS and G.P_CENTERS['c_reality_warp_la_muchachada'] and 'c_reality_warp_la_muchachada')
 
     for slot = 1, 4 do
         local key = nil
@@ -517,7 +517,7 @@ local function generate_black_market_stock()
                 key = chosen and chosen.key
             end
             if not key or not G.P_CENTERS[key] then
-                key = 'c_Witch_brew_potion_stretch'
+                key = 'c_reality_warp_potion_stretch'
             end
         elseif slot == 2 then
             -- Slot 2: Consumables (Tarots & Spectrals)
@@ -667,7 +667,7 @@ function G.UIDEF.black_market()
     end
 
     -- Kyra Physical Joker Card for Black Market Counter
-    local kyra_center = (G.P_CENTERS and G.P_CENTERS['j_Witch_brew_kyra'])
+    local kyra_center = (G.P_CENTERS and G.P_CENTERS['j_reality_warp_kyra'])
         or (G.P_CENTERS and G.P_CENTERS['j_Witch brew_kyra'])
         or (G.P_CENTERS and G.P_CENTERS['j_kyra'])
         or (G.P_CENTERS and G.P_CENTERS['kyra'])

@@ -1,6 +1,6 @@
 -- Vouchers Atlas
 SMODS.Atlas {
-    key = "witch_brew_vouchers",
+    key = "reality_warp_vouchers",
     path = "vouchers.png",
     px = 71,
     py = 95
@@ -9,7 +9,7 @@ SMODS.Atlas {
 -- 1. Taster (Catador)
 SMODS.Voucher {
     key = 'catador',
-    atlas = 'witch_brew_vouchers',
+    atlas = 'reality_warp_vouchers',
     pos = { x = 0, y = 0 },
     cost = 10,
     loc_txt = {
@@ -21,12 +21,12 @@ SMODS.Voucher {
     },
     redeem = function(self, card)
         G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-        G.GAME.used_vouchers.v_Witch_brew_catador = true
+        G.GAME.used_vouchers.v_reality_warp_catador = true
         G.GAME.used_vouchers['v_Witch brew_catador'] = true
         G.GAME.used_vouchers.v_catador = true
         G.GAME.used_vouchers.catador = true
         if G.GAME.current_round and G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
-            G.GAME.current_round.voucher.spawn.v_Witch_brew_catador = false
+            G.GAME.current_round.voucher.spawn.v_reality_warp_catador = false
             G.GAME.current_round.voucher.spawn['v_Witch brew_catador'] = false
         end
     end
@@ -35,8 +35,8 @@ SMODS.Voucher {
 -- 2. Critic (Crítico)
 SMODS.Voucher {
     key = 'critico',
-    atlas = 'witch_brew_vouchers',
-    requires = { 'v_Witch_brew_catador' },
+    atlas = 'reality_warp_vouchers',
+    requires = { 'v_reality_warp_catador' },
     pos = { x = 1, y = 0 },
     cost = 10,
     loc_txt = {
@@ -48,12 +48,12 @@ SMODS.Voucher {
     },
     redeem = function(self, card)
         G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-        G.GAME.used_vouchers.v_Witch_brew_critico = true
+        G.GAME.used_vouchers.v_reality_warp_critico = true
         G.GAME.used_vouchers['v_Witch brew_critico'] = true
         G.GAME.used_vouchers.v_critico = true
         G.GAME.used_vouchers.critico = true
         if G.GAME.current_round and G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
-            G.GAME.current_round.voucher.spawn.v_Witch_brew_critico = false
+            G.GAME.current_round.voucher.spawn.v_reality_warp_critico = false
             G.GAME.current_round.voucher.spawn['v_Witch brew_critico'] = false
         end
     end
@@ -62,7 +62,7 @@ SMODS.Voucher {
 -- 3. Embrujo (Hex)
 SMODS.Voucher {
     key = 'embrujo',
-    atlas = 'witch_brew_vouchers',
+    atlas = 'reality_warp_vouchers',
     pos = { x = 0, y = 1 },
     cost = 10,
     loc_txt = {
@@ -74,12 +74,12 @@ SMODS.Voucher {
     },
     redeem = function(self, card)
         G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-        G.GAME.used_vouchers.v_Witch_brew_embrujo = true
+        G.GAME.used_vouchers.v_reality_warp_embrujo = true
         G.GAME.used_vouchers['v_Witch brew_embrujo'] = true
         G.GAME.used_vouchers.v_embrujo = true
         G.GAME.used_vouchers.embrujo = true
         if G.GAME.current_round and G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
-            G.GAME.current_round.voucher.spawn.v_Witch_brew_embrujo = false
+            G.GAME.current_round.voucher.spawn.v_reality_warp_embrujo = false
             G.GAME.current_round.voucher.spawn['v_Witch brew_embrujo'] = false
         end
     end
@@ -88,8 +88,8 @@ SMODS.Voucher {
 -- 4. Caldero (Cauldron)
 SMODS.Voucher {
     key = 'caldero',
-    atlas = 'witch_brew_vouchers',
-    requires = { 'v_Witch_brew_embrujo' },
+    atlas = 'reality_warp_vouchers',
+    requires = { 'v_reality_warp_embrujo' },
     pos = { x = 1, y = 1 },
     cost = 10,
     loc_txt = {
@@ -101,12 +101,12 @@ SMODS.Voucher {
     },
     redeem = function(self, card)
         G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-        G.GAME.used_vouchers.v_Witch_brew_caldero = true
+        G.GAME.used_vouchers.v_reality_warp_caldero = true
         G.GAME.used_vouchers['v_Witch brew_caldero'] = true
         G.GAME.used_vouchers.v_caldero = true
         G.GAME.used_vouchers.caldero = true
         if G.GAME.current_round and G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
-            G.GAME.current_round.voucher.spawn.v_Witch_brew_caldero = false
+            G.GAME.current_round.voucher.spawn.v_reality_warp_caldero = false
             G.GAME.current_round.voucher.spawn['v_Witch brew_caldero'] = false
         end
     end
@@ -115,7 +115,7 @@ SMODS.Voucher {
 -- 5. Destilación Recurrente (Recurring Distillation)
 SMODS.Voucher {
     key = 'destilacion_recurrente',
-    atlas = 'witch_brew_vouchers',
+    atlas = 'reality_warp_vouchers',
     pos = { x = 0, y = 2 },
     cost = 10,
     loc_txt = {
@@ -127,12 +127,12 @@ SMODS.Voucher {
     },
     redeem = function(self, card)
         G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-        G.GAME.used_vouchers.v_Witch_brew_destilacion_recurrente = true
+        G.GAME.used_vouchers.v_reality_warp_destilacion_recurrente = true
         G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] = true
         G.GAME.used_vouchers.v_destilacion_recurrente = true
         G.GAME.used_vouchers.destilacion_recurrente = true
         if G.GAME.current_round and G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
-            G.GAME.current_round.voucher.spawn.v_Witch_brew_destilacion_recurrente = false
+            G.GAME.current_round.voucher.spawn.v_reality_warp_destilacion_recurrente = false
             G.GAME.current_round.voucher.spawn['v_Witch brew_destilacion_recurrente'] = false
         end
     end
@@ -141,8 +141,8 @@ SMODS.Voucher {
 -- 6. Destilación Infinita (Infinite Distillation)
 SMODS.Voucher {
     key = 'destilacion_infinita',
-    atlas = 'witch_brew_vouchers',
-    requires = { 'v_Witch_brew_destilacion_recurrente' },
+    atlas = 'reality_warp_vouchers',
+    requires = { 'v_reality_warp_destilacion_recurrente' },
     pos = { x = 1, y = 2 },
     cost = 10,
     loc_txt = {
@@ -154,12 +154,12 @@ SMODS.Voucher {
     },
     redeem = function(self, card)
         G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-        G.GAME.used_vouchers.v_Witch_brew_destilacion_infinita = true
+        G.GAME.used_vouchers.v_reality_warp_destilacion_infinita = true
         G.GAME.used_vouchers['v_Witch brew_destilacion_infinita'] = true
         G.GAME.used_vouchers.v_destilacion_infinita = true
         G.GAME.used_vouchers.destilacion_infinita = true
         if G.GAME.current_round and G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
-            G.GAME.current_round.voucher.spawn.v_Witch_brew_destilacion_infinita = false
+            G.GAME.current_round.voucher.spawn.v_reality_warp_destilacion_infinita = false
             G.GAME.current_round.voucher.spawn['v_Witch brew_destilacion_infinita'] = false
         end
     end
@@ -171,9 +171,9 @@ if Card and Card.use_consumeable then
     function Card:use_consumeable(area, copier)
         local voucher_chance = 0
         if G.GAME and G.GAME.used_vouchers then
-            if G.GAME.used_vouchers.v_Witch_brew_destilacion_infinita or G.GAME.used_vouchers['v_Witch brew_destilacion_infinita'] or G.GAME.used_vouchers.v_destilacion_infinita or G.GAME.used_vouchers.destilacion_infinita then
+            if G.GAME.used_vouchers.v_reality_warp_destilacion_infinita or G.GAME.used_vouchers['v_Witch brew_destilacion_infinita'] or G.GAME.used_vouchers.v_destilacion_infinita or G.GAME.used_vouchers.destilacion_infinita then
                 voucher_chance = 45
-            elseif G.GAME.used_vouchers.v_Witch_brew_destilacion_recurrente or G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] or G.GAME.used_vouchers.v_destilacion_recurrente or G.GAME.used_vouchers.destilacion_recurrente then
+            elseif G.GAME.used_vouchers.v_reality_warp_destilacion_recurrente or G.GAME.used_vouchers['v_Witch brew_destilacion_recurrente'] or G.GAME.used_vouchers.v_destilacion_recurrente or G.GAME.used_vouchers.destilacion_recurrente then
                 voucher_chance = 15
             end
         end
@@ -219,7 +219,7 @@ end
 -- Voucher: ambrosia
 SMODS.Voucher {
     key = 'ambrosia',
-    atlas = 'witch_brew_vouchers',
+    atlas = 'reality_warp_vouchers',
     pos = { x = 0, y = 3 },
     cost = 10,
     config = { extra = { dollars = 20 } },
@@ -235,12 +235,12 @@ SMODS.Voucher {
     end,
     redeem = function(self, card)
         G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-        G.GAME.used_vouchers.v_Witch_brew_ambrosia = true
+        G.GAME.used_vouchers.v_reality_warp_ambrosia = true
         G.GAME.used_vouchers['v_Witch brew_ambrosia'] = true
         G.GAME.used_vouchers.v_ambrosia = true
         G.GAME.used_vouchers.ambrosia = true
         if G.GAME.current_round and G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
-            G.GAME.current_round.voucher.spawn.v_Witch_brew_ambrosia = false
+            G.GAME.current_round.voucher.spawn.v_reality_warp_ambrosia = false
             G.GAME.current_round.voucher.spawn['v_Witch brew_ambrosia'] = false
         end
     end
@@ -249,8 +249,8 @@ SMODS.Voucher {
 -- Voucher: nectar
 SMODS.Voucher {
     key = 'nectar',
-    atlas = 'witch_brew_vouchers',
-    requires = { 'v_Witch_brew_ambrosia' },
+    atlas = 'reality_warp_vouchers',
+    requires = { 'v_reality_warp_ambrosia' },
     pos = { x = 1, y = 3 },
     cost = 10,
     config = { extra = { blind_reduction = 5, hand_size = 1, vouchers = 1, shop_space = 1, hands = 1 } },
@@ -275,12 +275,12 @@ SMODS.Voucher {
     end,
     redeem = function(self, card)
         G.GAME.used_vouchers = G.GAME.used_vouchers or {}
-        G.GAME.used_vouchers.v_Witch_brew_nectar = true
+        G.GAME.used_vouchers.v_reality_warp_nectar = true
         G.GAME.used_vouchers['v_Witch brew_nectar'] = true
         G.GAME.used_vouchers.v_nectar = true
         G.GAME.used_vouchers.nectar = true
         if G.GAME.current_round and G.GAME.current_round.voucher and G.GAME.current_round.voucher.spawn then
-            G.GAME.current_round.voucher.spawn.v_Witch_brew_nectar = false
+            G.GAME.current_round.voucher.spawn.v_reality_warp_nectar = false
             G.GAME.current_round.voucher.spawn['v_Witch brew_nectar'] = false
         end
         if G.hand and G.hand.change_size then
@@ -313,7 +313,7 @@ SMODS.Voucher {
 if G.FUNCS and G.FUNCS.cash_out then
     local orig_cash_out_ambrosia = G.FUNCS.cash_out
     G.FUNCS.cash_out = function(e)
-        if G.GAME and G.GAME.used_vouchers and (G.GAME.used_vouchers.v_Witch_brew_ambrosia or G.GAME.used_vouchers['v_Witch brew_ambrosia'] or G.GAME.used_vouchers.v_ambrosia or G.GAME.used_vouchers.ambrosia) then
+        if G.GAME and G.GAME.used_vouchers and (G.GAME.used_vouchers.v_reality_warp_ambrosia or G.GAME.used_vouchers['v_Witch brew_ambrosia'] or G.GAME.used_vouchers.v_ambrosia or G.GAME.used_vouchers.ambrosia) then
             ease_dollars(20)
             if G.HUD and G.HUD:get_UIE_by_ID('dollar_text_UI') then
                 card_eval_status_text(G.HUD:get_UIE_by_ID('dollar_text_UI'), 'extra', nil, nil, nil, { message = '+$20 Ambrosia!', colour = G.C.MONEY })
@@ -328,7 +328,7 @@ if Blind and Blind.set_blind then
     local orig_blind_set_blind_nectar = Blind.set_blind
     function Blind:set_blind(blind, reset, silent)
         local ret = orig_blind_set_blind_nectar(self, blind, reset, silent)
-        if G.GAME and G.GAME.used_vouchers and (G.GAME.used_vouchers.v_Witch_brew_nectar or G.GAME.used_vouchers.v_nectar or G.GAME.used_vouchers.nectar) then
+        if G.GAME and G.GAME.used_vouchers and (G.GAME.used_vouchers.v_reality_warp_nectar or G.GAME.used_vouchers.v_nectar or G.GAME.used_vouchers.nectar) then
             if self.chips then
                 self.chips = math.max(1, math.floor(self.chips * 0.95))
                 self.chip_text = number_format(self.chips)
@@ -343,7 +343,7 @@ if G.UIDEF and G.UIDEF.shop then
     local orig_uidef_shop_nectar = G.UIDEF.shop
     G.UIDEF.shop = function()
         local ret = orig_uidef_shop_nectar()
-        if G.GAME and G.GAME.used_vouchers and (G.GAME.used_vouchers.v_Witch_brew_nectar or G.GAME.used_vouchers.v_nectar or G.GAME.used_vouchers.nectar) then
+        if G.GAME and G.GAME.used_vouchers and (G.GAME.used_vouchers.v_reality_warp_nectar or G.GAME.used_vouchers.v_nectar or G.GAME.used_vouchers.nectar) then
             if G.shop_vouchers and G.shop_vouchers.cards then
                 G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
                 local v_key = get_next_voucher_key and get_next_voucher_key(true)

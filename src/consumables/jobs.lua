@@ -13,23 +13,23 @@ SMODS.ConsumableType {
     },
     shop_rate = 0.0,
     collection_rows = { 2, 7 },
-    default = 'c_Witch_brew_miner_job'
+    default = 'c_reality_warp_miner_job'
 }
 
 local JOB_CARD_KEYS = {
-    'c_Witch_brew_miner_job',
-    'c_Witch_brew_gardener_job',
-    'c_Witch_brew_banker_job',
-    'c_Witch_brew_surgeon_job',
-    'c_Witch_brew_alchemist_job',
-    'c_Witch_brew_butcher_job',
-    'c_Witch_brew_detective_job',
-    'c_Witch_brew_chef_job',
-    'c_Witch_brew_archaeologist_job',
-    'c_Witch_brew_jeweler_job',
-    'c_Witch_brew_apothecary_job',
-    'c_Witch_brew_bounty_hunter_job',
-    'c_Witch_brew_croupier_job'
+    'c_reality_warp_miner_job',
+    'c_reality_warp_gardener_job',
+    'c_reality_warp_banker_job',
+    'c_reality_warp_surgeon_job',
+    'c_reality_warp_alchemist_job',
+    'c_reality_warp_butcher_job',
+    'c_reality_warp_detective_job',
+    'c_reality_warp_chef_job',
+    'c_reality_warp_archaeologist_job',
+    'c_reality_warp_jeweler_job',
+    'c_reality_warp_apothecary_job',
+    'c_reality_warp_bounty_hunter_job',
+    'c_reality_warp_croupier_job'
 }
 
 local function create_job_card_for_pack(key_append)
@@ -48,7 +48,7 @@ local function create_job_card_for_pack(key_append)
             end
         end
         local chosen_key = (#valid_keys > 0) and pseudorandom_element(valid_keys, pseudoseed(key_append or 'job_pack_valid')) or pseudorandom_element(JOB_CARD_KEYS, pseudoseed(key_append or 'job_pack_fallback'))
-        local center = (G.P_CENTERS and G.P_CENTERS[chosen_key]) or (G.P_CENTERS and G.P_CENTERS[string.gsub(chosen_key, 'c_Witch_brew_', 'c_')])
+        local center = (G.P_CENTERS and G.P_CENTERS[chosen_key]) or (G.P_CENTERS and G.P_CENTERS[string.gsub(chosen_key, 'c_reality_warp_', 'c_')])
         if center then
             card_obj = Card(G.pack_cards.T.x + G.pack_cards.T.w/2, G.pack_cards.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, center, {bypass_discovery_center = true, bypass_discovery_ui = true})
         end
@@ -584,7 +584,7 @@ SMODS.Consumable {
         }
     },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -627,7 +627,7 @@ SMODS.Consumable {
         }
     },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -683,7 +683,7 @@ SMODS.Consumable {
         return { vars = {} }
     end,
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -729,7 +729,7 @@ SMODS.Consumable {
         }
     },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 2
@@ -809,7 +809,7 @@ SMODS.Consumable {
         return { vars = {} }
     end,
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -865,7 +865,7 @@ SMODS.Consumable {
         return { vars = {} }
     end,
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         if G.hand and G.hand.highlighted and #G.hand.highlighted == 1 then
@@ -951,7 +951,7 @@ SMODS.Consumable {
         return { vars = {} }
     end,
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -1008,7 +1008,7 @@ SMODS.Consumable {
         return { vars = {} }
     end,
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1 and G.hand.highlighted[1]:is_face()
@@ -1068,7 +1068,7 @@ SMODS.Consumable {
         return { vars = {} }
     end,
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -1120,7 +1120,7 @@ SMODS.Consumable {
         }
     },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -1164,7 +1164,7 @@ SMODS.Consumable {
         }
     },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -1207,7 +1207,7 @@ SMODS.Consumable {
         }
     },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -1251,7 +1251,7 @@ SMODS.Consumable {
         }
     },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
@@ -1298,7 +1298,7 @@ SMODS.Booster {
     kind = 'Job',
     group_key = 'k_job_pack',
     draw_hand = true,
-    in_pool = function(self, args) return is_witch_brew_spectrals_jobs_enabled() end,
+    in_pool = function(self, args) return is_reality_warp_spectrals_jobs_enabled() end,
     loc_txt = {
         name = 'Job Application',
         group_name = 'Job Application',
@@ -1327,7 +1327,7 @@ SMODS.Booster {
     kind = 'Job',
     group_key = 'k_job_pack',
     draw_hand = true,
-    in_pool = function(self, args) return is_witch_brew_spectrals_jobs_enabled() end,
+    in_pool = function(self, args) return is_reality_warp_spectrals_jobs_enabled() end,
     loc_txt = {
         name = 'Job Application',
         group_name = 'Job Application',
@@ -1356,7 +1356,7 @@ SMODS.Booster {
     kind = 'Job',
     group_key = 'k_job_pack',
     draw_hand = true,
-    in_pool = function(self, args) return is_witch_brew_spectrals_jobs_enabled() end,
+    in_pool = function(self, args) return is_reality_warp_spectrals_jobs_enabled() end,
     loc_txt = {
         name = 'Jumbo Job Application',
         group_name = 'Job Application',
@@ -1385,7 +1385,7 @@ SMODS.Booster {
     kind = 'Job',
     group_key = 'k_job_pack',
     draw_hand = true,
-    in_pool = function(self, args) return is_witch_brew_spectrals_jobs_enabled() end,
+    in_pool = function(self, args) return is_reality_warp_spectrals_jobs_enabled() end,
     loc_txt = {
         name = 'Mega Job Application',
         group_name = 'Job Application',

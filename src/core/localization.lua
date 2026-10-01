@@ -3,16 +3,16 @@
     Localization & Mod Configuration System (English Only)
 --]]
 
-function get_witch_brew_mod()
-    if SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] then
-        return SMODS.Mods['Witch_brew']
+function get_reality_warp_mod()
+    if SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] then
+        return SMODS.Mods['reality_warp']
     end
     if SMODS and SMODS.findMod then
-        local found = SMODS.findMod('Witch_brew')
+        local found = SMODS.findMod('reality_warp')
         if found and found[1] then return found[1] end
     end
-    if Witch_brew_MOD then
-        return Witch_brew_MOD
+    if reality_warp_MOD then
+        return reality_warp_MOD
     end
     if SMODS and SMODS.current_mod then
         return SMODS.current_mod
@@ -20,23 +20,23 @@ function get_witch_brew_mod()
     return nil
 end
 
-function get_witch_brew_config()
-    local mod = get_witch_brew_mod()
+function get_reality_warp_config()
+    local mod = get_reality_warp_mod()
     if mod and mod.config then
         return mod.config
     end
-    if SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config then
-        return SMODS.Mods['Witch_brew'].config
+    if SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config then
+        return SMODS.Mods['reality_warp'].config
     end
     return {}
 end
 
-function save_witch_brew_config()
-    local mod = get_witch_brew_mod()
+function save_reality_warp_config()
+    local mod = get_reality_warp_mod()
     if SMODS and SMODS.save_mod_config and mod then
         pcall(function() SMODS.save_mod_config(mod) end)
     end
-    local cfg = get_witch_brew_config()
+    local cfg = get_reality_warp_config()
     local new_runs = cfg.new_runs == true
     local new_challenges = cfg.new_challenges ~= false
     local new_spectrals_and_jobs = cfg.new_spectrals_and_jobs ~= false
@@ -64,74 +64,74 @@ end
 -- English Challenge Names, Localization map
 
 local ENGLISH_CHALLENGE_NAMES = {
-    ['c_witch_brew_high_roller_casino'] = "High Roller's Casino",
-    ['c_Witch_brew_high_roller_casino'] = "High Roller's Casino",
+    ['c_reality_warp_high_roller_casino'] = "High Roller's Casino",
+    ['c_reality_warp_high_roller_casino'] = "High Roller's Casino",
     ['high_roller_casino'] = "High Roller's Casino",
-    ['c_witch_brew_casino_roller'] = "High Roller's Casino",
-    ['c_Witch_brew_casino_roller'] = "High Roller's Casino",
+    ['c_reality_warp_casino_roller'] = "High Roller's Casino",
+    ['c_reality_warp_casino_roller'] = "High Roller's Casino",
     ['casino_roller'] = "High Roller's Casino",
 
-    ['c_witch_brew_absolute_silence'] = 'Absolute Silence',
-    ['c_Witch_brew_absolute_silence'] = 'Absolute Silence',
+    ['c_reality_warp_absolute_silence'] = 'Absolute Silence',
+    ['c_reality_warp_absolute_silence'] = 'Absolute Silence',
     ['absolute_silence'] = 'Absolute Silence',
-    ['c_witch_brew_silencio_absoluto'] = 'Absolute Silence',
-    ['c_Witch_brew_silencio_absoluto'] = 'Absolute Silence',
+    ['c_reality_warp_silencio_absoluto'] = 'Absolute Silence',
+    ['c_reality_warp_silencio_absoluto'] = 'Absolute Silence',
     ['silencio_absoluto'] = 'Absolute Silence',
 
-    ['c_witch_brew_sacred_symmetry'] = 'Sacred Symmetry',
-    ['c_Witch_brew_sacred_symmetry'] = 'Sacred Symmetry',
+    ['c_reality_warp_sacred_symmetry'] = 'Sacred Symmetry',
+    ['c_reality_warp_sacred_symmetry'] = 'Sacred Symmetry',
     ['sacred_symmetry'] = 'Sacred Symmetry',
-    ['c_witch_brew_geometria_sagrada'] = 'Sacred Symmetry',
-    ['c_Witch_brew_geometria_sagrada'] = 'Sacred Symmetry',
+    ['c_reality_warp_geometria_sagrada'] = 'Sacred Symmetry',
+    ['c_reality_warp_geometria_sagrada'] = 'Sacred Symmetry',
     ['geometria_sagrada'] = 'Sacred Symmetry',
 
-    ['c_witch_brew_predatory_loan'] = 'Predatory Loan',
-    ['c_Witch_brew_predatory_loan'] = 'Predatory Loan',
+    ['c_reality_warp_predatory_loan'] = 'Predatory Loan',
+    ['c_reality_warp_predatory_loan'] = 'Predatory Loan',
     ['predatory_loan'] = 'Predatory Loan',
-    ['c_witch_brew_deuda_extrema'] = 'Predatory Loan',
-    ['c_Witch_brew_deuda_extrema'] = 'Predatory Loan',
+    ['c_reality_warp_deuda_extrema'] = 'Predatory Loan',
+    ['c_reality_warp_deuda_extrema'] = 'Predatory Loan',
     ['deuda_extrema'] = 'Predatory Loan',
 
-    ['c_witch_brew_the_forge_and_mine'] = 'The Forge & The Mine',
-    ['c_Witch_brew_the_forge_and_mine'] = 'The Forge & The Mine',
+    ['c_reality_warp_the_forge_and_mine'] = 'The Forge & The Mine',
+    ['c_reality_warp_the_forge_and_mine'] = 'The Forge & The Mine',
     ['the_forge_and_mine'] = 'The Forge & The Mine',
-    ['c_witch_brew_forja_y_mina'] = 'The Forge & The Mine',
-    ['c_Witch_brew_forja_y_mina'] = 'The Forge & The Mine',
+    ['c_reality_warp_forja_y_mina'] = 'The Forge & The Mine',
+    ['c_reality_warp_forja_y_mina'] = 'The Forge & The Mine',
     ['forja_y_mina'] = 'The Forge & The Mine',
 
-    ['c_witch_brew_parity_duel'] = 'Parity Duel',
-    ['c_Witch_brew_parity_duel'] = 'Parity Duel',
+    ['c_reality_warp_parity_duel'] = 'Parity Duel',
+    ['c_reality_warp_parity_duel'] = 'Parity Duel',
     ['parity_duel'] = 'Parity Duel',
-    ['c_witch_brew_duelo_numerico'] = 'Parity Duel',
-    ['c_Witch_brew_duelo_numerico'] = 'Parity Duel',
+    ['c_reality_warp_duelo_numerico'] = 'Parity Duel',
+    ['c_reality_warp_duelo_numerico'] = 'Parity Duel',
     ['duelo_numerico'] = 'Parity Duel',
 
-    ['c_witch_brew_living_canvas'] = 'The Living Canvas',
-    ['c_Witch_brew_living_canvas'] = 'The Living Canvas',
+    ['c_reality_warp_living_canvas'] = 'The Living Canvas',
+    ['c_reality_warp_living_canvas'] = 'The Living Canvas',
     ['living_canvas'] = 'The Living Canvas',
-    ['c_witch_brew_lienzo_vivo'] = 'The Living Canvas',
-    ['c_Witch_brew_lienzo_vivo'] = 'The Living Canvas',
+    ['c_reality_warp_lienzo_vivo'] = 'The Living Canvas',
+    ['c_reality_warp_lienzo_vivo'] = 'The Living Canvas',
     ['lienzo_vivo'] = 'The Living Canvas',
 
-    ['c_witch_brew_edition_tycoon'] = 'Edition Tycoon',
-    ['c_Witch_brew_edition_tycoon'] = 'Edition Tycoon',
+    ['c_reality_warp_edition_tycoon'] = 'Edition Tycoon',
+    ['c_reality_warp_edition_tycoon'] = 'Edition Tycoon',
     ['edition_tycoon'] = 'Edition Tycoon',
-    ['c_Witch_brew_coleccionista_brillos'] = 'Edition Tycoon',
-    ['c_witch_brew_coleccionista_brillos'] = 'Edition Tycoon',
+    ['c_reality_warp_coleccionista_brillos'] = 'Edition Tycoon',
+    ['c_reality_warp_coleccionista_brillos'] = 'Edition Tycoon',
     ['coleccionista_brillos'] = 'Edition Tycoon',
 
-    ['c_witch_brew_code_red_er'] = 'Code Red ER',
-    ['c_Witch_brew_code_red_er'] = 'Code Red ER',
+    ['c_reality_warp_code_red_er'] = 'Code Red ER',
+    ['c_reality_warp_code_red_er'] = 'Code Red ER',
     ['code_red_er'] = 'Code Red ER',
-    ['c_Witch_brew_urgencias_medicas'] = 'Code Red ER',
-    ['c_witch_brew_urgencias_medicas'] = 'Code Red ER',
+    ['c_reality_warp_urgencias_medicas'] = 'Code Red ER',
+    ['c_reality_warp_urgencias_medicas'] = 'Code Red ER',
     ['urgencias_medicas'] = 'Code Red ER',
 
-    ['c_witch_brew_singular_saturation'] = 'Singular Saturation',
-    ['c_Witch_brew_singular_saturation'] = 'Singular Saturation',
+    ['c_reality_warp_singular_saturation'] = 'Singular Saturation',
+    ['c_reality_warp_singular_saturation'] = 'Singular Saturation',
     ['singular_saturation'] = 'Singular Saturation',
-    ['c_Witch_brew_sobresaturacion'] = 'Singular Saturation',
-    ['c_witch_brew_sobresaturacion'] = 'Singular Saturation',
+    ['c_reality_warp_sobresaturacion'] = 'Singular Saturation',
+    ['c_reality_warp_sobresaturacion'] = 'Singular Saturation',
     ['sobresaturacion'] = 'Singular Saturation',
 
     ['c_omelette_1'] = 'The Omelette',
@@ -216,7 +216,7 @@ local SPANISH_TRANSLATIONS = {
     }
 }
 
-function apply_witch_brew_language()
+function apply_reality_warp_language()
     local lang = G.SETTINGS and G.SETTINGS.language or 'en-us'
     if lang ~= 'es_419' and lang ~= 'es_ES' then return end
 
@@ -239,7 +239,7 @@ function apply_witch_brew_language()
     end
 end
 
-local function init_witch_brew_localization()
+local function init_reality_warp_localization()
     if not G.localization then return end
 
     -- Safeguard Sleeve and Back entries
@@ -308,25 +308,25 @@ local function init_witch_brew_localization()
         end
     end
 
-    apply_witch_brew_language()
+    apply_reality_warp_language()
 
     -- Immunity to automatic translation functions for all Witcher Brew items
-    if protect_witch_brew_from_auto_translation then
-        protect_witch_brew_from_auto_translation()
+    if protect_reality_warp_from_auto_translation then
+        protect_reality_warp_from_auto_translation()
     end
 
-    if alias_all_witch_brew_centers then
-        alias_all_witch_brew_centers()
+    if alias_all_reality_warp_centers then
+        alias_all_reality_warp_centers()
     end
 end
 
 -- Protect Witcher Brew centers, jokers, consumables, and objects from automatic translation
-function protect_witch_brew_from_auto_translation()
+function protect_reality_warp_from_auto_translation()
     if not G.localization or not G.localization.descriptions then return end
     if G.P_CENTERS then
         for k, v in pairs(G.P_CENTERS) do
             local str = tostring(k)
-            if (string.find(str, 'witch_brew', 1, true) or string.find(str, 'Witch_brew', 1, true)) and v.loc_txt then
+            if (string.find(str, 'reality_warp', 1, true) or string.find(str, 'reality_warp', 1, true)) and v.loc_txt then
                 local set_name = v.set or 'Joker'
                 G.localization.descriptions[set_name] = G.localization.descriptions[set_name] or {}
                 local entry = G.localization.descriptions[set_name][k]
@@ -344,7 +344,7 @@ if type(auto_translate) == 'function' then
     local _orig_auto_trans = auto_translate
     auto_translate = function(text, key, ...)
         local str = tostring(key or '')
-        if string.find(str, 'witch_brew', 1, true) or string.find(str, 'Witch_brew', 1, true) then
+        if string.find(str, 'reality_warp', 1, true) or string.find(str, 'reality_warp', 1, true) then
             return text
         end
         return _orig_auto_trans(text, key, ...)
@@ -354,13 +354,13 @@ end
 local original_init_loc = init_localization
 function init_localization()
     if original_init_loc then original_init_loc() end
-    init_witch_brew_localization()
+    init_reality_warp_localization()
 end
 
 -- Config Tab, Settings UI definition
 
-local function build_witch_brew_config_tab()
-    local cfg = get_witch_brew_config()
+local function build_reality_warp_config_tab()
+    local cfg = get_reality_warp_config()
 
     local title_sub = "Control Panel & Customization"
     local quote_text = "Reading is recommended... and if you dislike reading, too bad XD"
@@ -492,7 +492,7 @@ local function build_witch_brew_config_tab()
                                         ref_table = cfg,
                                         ref_value = "new_runs",
                                         callback = function(val)
-                                            save_witch_brew_config()
+                                            save_reality_warp_config()
                                         end,
                                         info = {
                                             "Optional. Seeds generate divergent",
@@ -507,9 +507,9 @@ local function build_witch_brew_config_tab()
                                         ref_table = cfg,
                                         ref_value = "new_challenges",
                                         callback = function(val)
-                                            save_witch_brew_config()
-                                            if witch_brew_sync_challenges then
-                                                witch_brew_sync_challenges(cfg.new_challenges)
+                                            save_reality_warp_config()
+                                            if reality_warp_sync_challenges then
+                                                reality_warp_sync_challenges(cfg.new_challenges)
                                             end
                                         end,
                                         info = {
@@ -525,7 +525,7 @@ local function build_witch_brew_config_tab()
                                         ref_table = cfg,
                                         ref_value = "new_spectrals_and_jobs",
                                         callback = function(val)
-                                            save_witch_brew_config()
+                                            save_reality_warp_config()
                                         end,
                                         info = {
                                             "Toggles custom Job cards and new",
@@ -540,7 +540,7 @@ local function build_witch_brew_config_tab()
                                         ref_table = cfg,
                                         ref_value = "new_boss_blinds",
                                         callback = function(val)
-                                            save_witch_brew_config()
+                                            save_reality_warp_config()
                                         end,
                                         info = {
                                             "Enables Witch Brew Expansion's 11 Boss Blinds",
@@ -555,7 +555,7 @@ local function build_witch_brew_config_tab()
                                         ref_table = cfg,
                                         ref_value = "battle_of_gods",
                                         callback = function(val)
-                                            save_witch_brew_config()
+                                            save_reality_warp_config()
                                         end,
                                         info = {
                                             "Post-Ante 8 Battle of Gods mode.",
@@ -591,9 +591,9 @@ local function build_witch_brew_config_tab()
                                         ref_table = cfg,
                                         ref_value = "custom_menu_bg",
                                         callback = function(val)
-                                            save_witch_brew_config()
-                                            if apply_witch_brew_menu_bg then
-                                                apply_witch_brew_menu_bg(val)
+                                            save_reality_warp_config()
+                                            if apply_reality_warp_menu_bg then
+                                                apply_reality_warp_menu_bg(val)
                                             end
                                         end,
                                         info = {
@@ -609,7 +609,7 @@ local function build_witch_brew_config_tab()
                                         ref_table = cfg,
                                         ref_value = "fast_animations",
                                         callback = function(val)
-                                            save_witch_brew_config()
+                                            save_reality_warp_config()
                                         end,
                                         info = {
                                             "Reduces delays on custom mechanics",
@@ -625,7 +625,7 @@ local function build_witch_brew_config_tab()
                                         ref_value = "botg_music",
                                         callback = function(val)
                                             cfg.secret_power_theme = val
-                                            save_witch_brew_config()
+                                            save_reality_warp_config()
                                         end,
                                         info = {
                                             "Battle of Gods Soundtrack",
@@ -658,7 +658,7 @@ local function build_witch_brew_config_tab()
     }
 end
 
-local mod_init = get_witch_brew_mod()
+local mod_init = get_reality_warp_mod()
 if mod_init then
     mod_init.config = mod_init.config or {}
     if mod_init.config.new_runs == nil then mod_init.config.new_runs = false end
@@ -676,8 +676,8 @@ if mod_init then
     end
     if mod_init.config.secret_power_theme == nil then mod_init.config.secret_power_theme = true end
     if mod_init.config.battle_of_gods == nil then mod_init.config.battle_of_gods = true end
-    mod_init.config_tab = build_witch_brew_config_tab
+    mod_init.config_tab = build_reality_warp_config_tab
 end
 if SMODS and SMODS.current_mod then
-    SMODS.current_mod.config_tab = build_witch_brew_config_tab
+    SMODS.current_mod.config_tab = build_reality_warp_config_tab
 end

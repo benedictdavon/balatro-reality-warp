@@ -12,7 +12,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 0, y = 0 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Hierarchy',
@@ -91,7 +91,7 @@ SMODS.Consumable {
         ease_hands_played(-1)
         if G.GAME and G.GAME.round_resets then
             G.GAME.round_resets.hands = math.max(1, G.GAME.round_resets.hands - 1)
-            G.GAME.witch_brew_hierarchy_penalties = (G.GAME.witch_brew_hierarchy_penalties or 0) + 1
+            G.GAME.reality_warp_hierarchy_penalties = (G.GAME.reality_warp_hierarchy_penalties or 0) + 1
         end
     end
 }
@@ -100,11 +100,11 @@ if ease_ante then
     local orig_ease_ante_hier = ease_ante
     function ease_ante(mod)
         local ret = orig_ease_ante_hier(mod)
-        if G.GAME and G.GAME.witch_brew_hierarchy_penalties and G.GAME.witch_brew_hierarchy_penalties > 0 then
+        if G.GAME and G.GAME.reality_warp_hierarchy_penalties and G.GAME.reality_warp_hierarchy_penalties > 0 then
             if G.GAME.round_resets then
-                G.GAME.round_resets.hands = G.GAME.round_resets.hands + G.GAME.witch_brew_hierarchy_penalties
+                G.GAME.round_resets.hands = G.GAME.round_resets.hands + G.GAME.reality_warp_hierarchy_penalties
             end
-            G.GAME.witch_brew_hierarchy_penalties = 0
+            G.GAME.reality_warp_hierarchy_penalties = 0
         end
         return ret
     end
@@ -117,7 +117,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 1, y = 0 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Order',
@@ -128,7 +128,7 @@ SMODS.Consumable {
     },
     loc_vars = function(self, info_queue, card)
         if info_queue then
-            local dark_green_seal = (G.P_SEALS and (G.P_SEALS['Witch_brew_dark_green'] or G.P_SEALS['dark_green'])) or { set = 'Seal', key = 'Witch_brew_dark_green' }
+            local dark_green_seal = (G.P_SEALS and (G.P_SEALS['reality_warp_dark_green'] or G.P_SEALS['dark_green'])) or { set = 'Seal', key = 'reality_warp_dark_green' }
             info_queue[#info_queue + 1] = dark_green_seal
         end
         return { vars = {} }
@@ -151,7 +151,7 @@ SMODS.Consumable {
             trigger = 'after',
             delay = 0.2,
             func = function()
-                local seal_key = (G.P_SEALS and (G.P_SEALS['Witch_brew_dark_green'] and 'Witch_brew_dark_green' or G.P_SEALS['Witch brew_dark_green'] and 'Witch brew_dark_green' or G.P_SEALS['dark_green'] and 'dark_green')) or 'Witch_brew_dark_green'
+                local seal_key = (G.P_SEALS and (G.P_SEALS['reality_warp_dark_green'] and 'reality_warp_dark_green' or G.P_SEALS['Witch brew_dark_green'] and 'Witch brew_dark_green' or G.P_SEALS['dark_green'] and 'dark_green')) or 'reality_warp_dark_green'
                 target:set_seal(seal_key, nil, true)
                 target:juice_up(0.5, 0.5)
                 card_eval_status_text(target, 'extra', nil, nil, nil, { message = 'Dark Green Seal!', colour = HEX('1b4d2e') })
@@ -169,7 +169,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 2, y = 0 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled() and not (G.GAME and G.GAME.witch_brew_rot_used)
+        return is_reality_warp_spectrals_jobs_enabled() and not (G.GAME and G.GAME.reality_warp_rot_used)
     end,
     loc_txt = {
         name = 'Rot',
@@ -188,10 +188,10 @@ SMODS.Consumable {
         return { vars = {} }
     end,
     can_use = function(self, card)
-        return G.jokers and #G.jokers.cards > 0 and not (G.GAME and G.GAME.witch_brew_rot_used)
+        return G.jokers and #G.jokers.cards > 0 and not (G.GAME and G.GAME.reality_warp_rot_used)
     end,
     use = function(self, card, area, copier)
-        if G.GAME then G.GAME.witch_brew_rot_used = true end
+        if G.GAME then G.GAME.reality_warp_rot_used = true end
         ease_discard(-1)
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
@@ -299,7 +299,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 3, y = 0 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Catastrophic',
@@ -342,7 +342,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 0, y = 1 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Intensity',
@@ -459,10 +459,10 @@ SMODS.Consumable {
             delay = 0.4,
             func = function()
                 local secret_keys = {
-                    'j_Witch_brew_esteban', 'j_Witch_brew_thiago', 'j_Witch_brew_black_hole_joker',
-                    'j_Witch_brew_squele', 'j_Witch_brew_bluxdir', 'j_Witch_brew_charles', 'j_Witch_brew_mochi',
-                    'j_Witch_brew_helin', 'j_Witch_brew_raytracing', 'j_Witch_brew_paco', 'j_Witch_brew_yairo',
-                    'j_Witch_brew_kyra'
+                    'j_reality_warp_esteban', 'j_reality_warp_thiago', 'j_reality_warp_black_hole_joker',
+                    'j_reality_warp_squele', 'j_reality_warp_bluxdir', 'j_reality_warp_charles', 'j_reality_warp_mochi',
+                    'j_reality_warp_helin', 'j_reality_warp_raytracing', 'j_reality_warp_paco', 'j_reality_warp_yairo',
+                    'j_reality_warp_kyra'
                 }
                 local valid_secret_keys = {}
                 for _, k in ipairs(secret_keys) do
@@ -488,7 +488,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 2, y = 1 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Reinforcement',
@@ -499,7 +499,7 @@ SMODS.Consumable {
     },
     loc_vars = function(self, info_queue, card)
         if info_queue then
-            local silver_seal = (G.P_SEALS and (G.P_SEALS['Witch_brew_silver'] or G.P_SEALS['silver'])) or { set = 'Seal', key = 'Witch_brew_silver' }
+            local silver_seal = (G.P_SEALS and (G.P_SEALS['reality_warp_silver'] or G.P_SEALS['silver'])) or { set = 'Seal', key = 'reality_warp_silver' }
             info_queue[#info_queue + 1] = silver_seal
         end
         return { vars = {} }
@@ -522,7 +522,7 @@ SMODS.Consumable {
             trigger = 'after',
             delay = 0.2,
             func = function()
-                local seal_key = (G.P_SEALS and (G.P_SEALS['Witch_brew_silver'] and 'Witch_brew_silver' or G.P_SEALS['Witch brew_silver'] and 'Witch brew_silver' or G.P_SEALS['silver'] and 'silver')) or 'Witch_brew_silver'
+                local seal_key = (G.P_SEALS and (G.P_SEALS['reality_warp_silver'] and 'reality_warp_silver' or G.P_SEALS['Witch brew_silver'] and 'Witch brew_silver' or G.P_SEALS['silver'] and 'silver')) or 'reality_warp_silver'
                 play_sound('gold_seal')
                 target:set_seal(seal_key, nil, true)
                 target:juice_up(0.5, 0.5)
@@ -541,7 +541,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 3, y = 1 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Supernova',
@@ -552,7 +552,7 @@ SMODS.Consumable {
     },
     loc_vars = function(self, info_queue, card)
         if info_queue then
-            local white_seal = (G.P_SEALS and (G.P_SEALS['Witch_brew_white'] or G.P_SEALS['white'])) or { set = 'Seal', key = 'Witch_brew_white' }
+            local white_seal = (G.P_SEALS and (G.P_SEALS['reality_warp_white'] or G.P_SEALS['white'])) or { set = 'Seal', key = 'reality_warp_white' }
             info_queue[#info_queue + 1] = white_seal
         end
         return { vars = {} }
@@ -575,7 +575,7 @@ SMODS.Consumable {
             trigger = 'after',
             delay = 0.2,
             func = function()
-                local seal_key = (G.P_SEALS and (G.P_SEALS['Witch_brew_white'] and 'Witch_brew_white' or G.P_SEALS['Witch brew_white'] and 'Witch brew_white' or G.P_SEALS['white'] and 'white')) or 'Witch_brew_white'
+                local seal_key = (G.P_SEALS and (G.P_SEALS['reality_warp_white'] and 'reality_warp_white' or G.P_SEALS['Witch brew_white'] and 'Witch brew_white' or G.P_SEALS['white'] and 'white')) or 'reality_warp_white'
                 play_sound('tarot2')
                 target:set_seal(seal_key, nil, true)
                 target:juice_up(0.5, 0.5)
@@ -594,7 +594,7 @@ if Card and Card.sell_card then
         if self.ability and self.ability.set == 'Joker' and G.GAME then
             local j_key = (self.config and self.config.center and self.config.center.key) or self.ability.name
             if j_key and j_key ~= '' then
-                G.GAME.witch_brew_last_destroyed_joker = {
+                G.GAME.reality_warp_last_destroyed_joker = {
                     key = j_key,
                     edition = self.edition and copy_table(self.edition) or nil
                 }
@@ -610,7 +610,7 @@ if Card and Card.start_dissolve then
         if self.ability and self.ability.set == 'Joker' and G.GAME and not self.getting_sliced_from_sell then
             local j_key = (self.config and self.config.center and self.config.center.key) or self.ability.name
             if j_key and j_key ~= '' then
-                G.GAME.witch_brew_last_destroyed_joker = {
+                G.GAME.reality_warp_last_destroyed_joker = {
                     key = j_key,
                     edition = self.edition and copy_table(self.edition) or nil
                 }
@@ -627,7 +627,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 0, y = 2 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Necromancy',
@@ -643,8 +643,8 @@ SMODS.Consumable {
             info_queue[#info_queue + 1] = { key = 'perishable', set = 'Other', vars = { p_rounds, p_rounds } }
         end
         local target_name = "None"
-        if G.GAME and G.GAME.witch_brew_last_destroyed_joker then
-            local k = G.GAME.witch_brew_last_destroyed_joker.key
+        if G.GAME and G.GAME.reality_warp_last_destroyed_joker then
+            local k = G.GAME.reality_warp_last_destroyed_joker.key
             if G.P_CENTERS and G.P_CENTERS[k] then
                 target_name = localize{type = 'name_text', key = k, set = 'Joker'}
             else
@@ -654,10 +654,10 @@ SMODS.Consumable {
         return { vars = { target_name } }
     end,
     can_use = function(self, card)
-        return G.jokers and #G.jokers.cards < G.jokers.config.card_limit and G.GAME and G.GAME.witch_brew_last_destroyed_joker ~= nil
+        return G.jokers and #G.jokers.cards < G.jokers.config.card_limit and G.GAME and G.GAME.reality_warp_last_destroyed_joker ~= nil
     end,
     use = function(self, card, area, copier)
-        local target_data = G.GAME and G.GAME.witch_brew_last_destroyed_joker
+        local target_data = G.GAME and G.GAME.reality_warp_last_destroyed_joker
         if not target_data then return end
 
         G.E_MANAGER:add_event(Event({
@@ -693,7 +693,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 1, y = 2 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Exorcism',
@@ -757,7 +757,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 2, y = 2 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Eradication',
@@ -800,7 +800,7 @@ SMODS.Consumable {
     atlas = 'c_spectrals',
     pos = { x = 3, y = 2 },
     in_pool = function(self, args)
-        return is_witch_brew_spectrals_jobs_enabled()
+        return is_reality_warp_spectrals_jobs_enabled()
     end,
     loc_txt = {
         name = 'Transmutation',

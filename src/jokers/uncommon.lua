@@ -3,7 +3,7 @@
 -- Shareholder Joker
 SMODS.Joker {
     key = 'shareholder_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Shareholder Joker',
@@ -91,7 +91,7 @@ SMODS.Joker {
 -- Builder Joker
 SMODS.Joker {
     key = 'builder_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Builder Joker',
@@ -168,7 +168,7 @@ SMODS.Joker {
 -- Banquet
 SMODS.Joker {
     key = 'banquet_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Banquet',
         text = {
@@ -228,7 +228,7 @@ SMODS.Joker {
 -- Appraiser
 SMODS.Joker {
     key = 'appraiser_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Appraiser',
         text = {
@@ -269,7 +269,7 @@ SMODS.Joker {
 -- Runway
 SMODS.Joker {
     key = 'runway_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Runway',
@@ -355,7 +355,7 @@ local function get_slot_machine_pos(r1, r2, r3)
 end
 
 SMODS.Atlas {
-    key = "witch_brew_slot_machine",
+    key = "reality_warp_slot_machine",
     path = "slot_machine.png",
     px = 71,
     py = 95
@@ -363,7 +363,7 @@ SMODS.Atlas {
 
 SMODS.Joker {
     key = 'slot_machine_joker',
-    atlas = 'witch_brew_slot_machine',
+    atlas = 'reality_warp_slot_machine',
     unlocked = false,
     loc_txt = {
         name = 'Slot Machine',
@@ -584,7 +584,7 @@ SMODS.Joker {
 -- Duel of Value
 SMODS.Joker {
     key = 'duel_of_value_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Duel of Value',
@@ -648,7 +648,7 @@ SMODS.Joker {
 -- Falta de Lectura
 SMODS.Joker {
     key = 'reading_deficiency_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     loc_txt = {
         name = 'Reading Deficiency',
@@ -734,7 +734,7 @@ end
 
 SMODS.Joker {
     key = 'chameleon_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Chameleon',
         text = {
@@ -787,7 +787,7 @@ SMODS.Joker {
 -- Motorized Joker (Joker Motorizado)
 SMODS.Joker {
     key = 'motorized_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Motorized Joker',
         text = {
@@ -843,7 +843,7 @@ SMODS.Joker {
 -- Hired Joker (Joker Contratado)
 SMODS.Joker {
     key = 'hired_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Hired Joker',
         text = {
@@ -872,10 +872,10 @@ SMODS.Joker {
                         func = function()
                             play_sound('tarot1')
                             local job_keys = {
-                                'c_Witch_brew_miner_job', 'c_Witch_brew_gardener_job', 'c_Witch_brew_banker_job',
-                                'c_Witch_brew_surgeon_job', 'c_Witch_brew_alchemist_job', 'c_Witch_brew_butcher_job',
-                                'c_Witch_brew_detective_job', 'c_Witch_brew_chef_job', 'c_Witch_brew_archaeologist_job',
-                                'c_Witch_brew_jeweler_job'
+                                'c_reality_warp_miner_job', 'c_reality_warp_gardener_job', 'c_reality_warp_banker_job',
+                                'c_reality_warp_surgeon_job', 'c_reality_warp_alchemist_job', 'c_reality_warp_butcher_job',
+                                'c_reality_warp_detective_job', 'c_reality_warp_chef_job', 'c_reality_warp_archaeologist_job',
+                                'c_reality_warp_jeweler_job'
                             }
                             local chosen_job = pseudorandom_element(job_keys, pseudoseed('contratado_spawn'))
                             local new_card = SMODS.add_card { set = 'Job', key = chosen_job, key_append = 'contratado' }
@@ -896,7 +896,7 @@ SMODS.Joker {
 -- Seal of Approval (Sello de Aprobación)
 SMODS.Joker {
     key = 'seal_of_approval_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Seal of Approval',
         text = {
@@ -914,7 +914,7 @@ SMODS.Joker {
             local play_count = (context.full_hand and #context.full_hand) or (context.scoring_hand and #context.scoring_hand) or (G.play and G.play.cards and #G.play.cards) or 0
             if play_count == 1 and context.scoring_hand and #context.scoring_hand == 1 then
                 local target_card = context.scoring_hand[1]
-                local seals = { 'Gold', 'Blue', 'Red', 'Purple', 'Witch_brew_dark_green', 'Witch_brew_silver', 'Witch_brew_white' }
+                local seals = { 'Gold', 'Blue', 'Red', 'Purple', 'reality_warp_dark_green', 'reality_warp_silver', 'reality_warp_white' }
                 local chosen_seal = pseudorandom_element(seals, pseudoseed('sello_aprobacion'))
                 G.E_MANAGER:add_event(Event({
                     trigger = 'after',
@@ -945,7 +945,7 @@ end
 
 SMODS.Joker {
     key = 'paint_puddle_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Paint Puddle',
         text = {
@@ -1002,7 +1002,7 @@ SMODS.Joker {
 -- Injured Joker (Joker Lesionado)
 SMODS.Joker {
     key = 'injured_joker',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Injured Joker',
         text = {
@@ -1025,7 +1025,7 @@ SMODS.Joker {
         if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
             local odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 5
             if SMODS.pseudorandom_probability(card, 'injured_joker', 1, odds) then
-                local motorized_key = (G.P_CENTERS and G.P_CENTERS['j_Witch_brew_motorized_joker']) and 'j_Witch_brew_motorized_joker' or (G.P_CENTERS and G.P_CENTERS['j_Witch_brew_motorizado_joker']) and 'j_Witch_brew_motorizado_joker' or 'j_motorized_joker'
+                local motorized_key = (G.P_CENTERS and G.P_CENTERS['j_reality_warp_motorized_joker']) and 'j_reality_warp_motorized_joker' or (G.P_CENTERS and G.P_CENTERS['j_reality_warp_motorizado_joker']) and 'j_reality_warp_motorizado_joker' or 'j_motorized_joker'
                 local msg_rock = "Let's rock!"
                 local msg_cursed = 'Cursed!'
                 local transform_options = {
@@ -1064,7 +1064,7 @@ SMODS.Joker {
 -- Extended Hand
 SMODS.Joker {
     key = 'extended_hand',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Extended Hand',
         text = {
@@ -1110,7 +1110,7 @@ SMODS.Joker {
 -- Bonfire
 SMODS.Joker {
     key = 'bonfire',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Bonfire',
         text = {
@@ -1166,9 +1166,9 @@ SMODS.Joker {
 -- Billie Jean
 SMODS.Joker {
     key = 'billie_jean',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 1, y = 5 },
-    rarity = 'Witch_brew_song',
+    rarity = 'reality_warp_song',
     cost = 7,
     blueprint_compat = true,
     set_card_type_badge = function(self, card, badges)
@@ -1190,7 +1190,7 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         if info_queue then
-            local diamond_center = (get_diamond_enhancement_center and get_diamond_enhancement_center()) or (G.P_CENTERS and G.P_CENTERS.m_Witch_brew_diamond)
+            local diamond_center = (get_diamond_enhancement_center and get_diamond_enhancement_center()) or (G.P_CENTERS and G.P_CENTERS.m_reality_warp_diamond)
             if diamond_center then
                 info_queue[#info_queue + 1] = diamond_center
             end
@@ -1211,7 +1211,7 @@ SMODS.Joker {
                     trigger = 'after',
                     delay = 0.15,
                     func = function()
-                        local center = (get_diamond_enhancement_center and get_diamond_enhancement_center()) or (G.P_CENTERS and G.P_CENTERS.m_Witch_brew_diamond)
+                        local center = (get_diamond_enhancement_center and get_diamond_enhancement_center()) or (G.P_CENTERS and G.P_CENTERS.m_reality_warp_diamond)
                         if center then
                             other:set_ability(center)
                         end
@@ -1238,7 +1238,7 @@ SMODS.Joker {
 -- Temporal Rift, Uncommon Joker
 SMODS.Joker {
     key = 'temporal_rift',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Temporal Rift',
         text = {
@@ -1282,7 +1282,7 @@ SMODS.Joker {
 -- Polarity Inversion, Uncommon Joker
 SMODS.Joker {
     key = 'polarity_inversion',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Defeat a {C:attention}Boss Blind{}", "without using any discards" },
     loc_txt = {
@@ -1303,7 +1303,7 @@ SMODS.Joker {
         return { vars = { bm, bm } }
     end,
     check_for_unlock = function(self, args)
-        if (args and args.type == 'boss_nodiscard') or (G.GAME and G.GAME.witch_brew_boss_nodiscard) then
+        if (args and args.type == 'boss_nodiscard') or (G.GAME and G.GAME.reality_warp_boss_nodiscard) then
             return true
         end
     end,
@@ -1312,7 +1312,7 @@ SMODS.Joker {
             if G.GAME and G.GAME.blind and G.GAME.blind.boss then
                 local disc_used = (G.GAME.current_round and G.GAME.current_round.discards_used) or 0
                 if disc_used == 0 then
-                    G.GAME.witch_brew_boss_nodiscard = true
+                    G.GAME.reality_warp_boss_nodiscard = true
                 end
             end
             card.ability.extra.inverted_count = 0
@@ -1347,7 +1347,7 @@ SMODS.Joker {
 -- Inheritance, Uncommon Joker
 SMODS.Joker {
     key = 'inheritance',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Inheritance',
         text = {
@@ -1441,7 +1441,7 @@ end
 
 SMODS.Joker {
     key = 'ecosystem',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Ecosystem',
         text = {
@@ -1486,7 +1486,7 @@ SMODS.Joker {
 -- Auctioneer, Uncommon Joker
 SMODS.Joker {
     key = 'auctioneer',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Auctioneer',
         text = {
@@ -1558,7 +1558,7 @@ local function get_auction_bidders()
     local pool = {}
     if G.P_CENTERS then
         for k, v in pairs(G.P_CENTERS) do
-            if v.set == 'Joker' and not v.no_pool_flag and k ~= 'j_Witch_brew_auctioneer' and k ~= 'j_auctioneer' then
+            if v.set == 'Joker' and not v.no_pool_flag and k ~= 'j_reality_warp_auctioneer' and k ~= 'j_auctioneer' then
                 pool[#pool + 1] = k
             end
         end
@@ -2095,7 +2095,7 @@ end
 -- Parasitic, Uncommon Joker
 SMODS.Joker {
     key = 'parasitic',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Parasitic',
         text = {
@@ -2172,7 +2172,7 @@ SMODS.Joker {
 -- Mercenary, Uncommon Joker
 SMODS.Joker {
     key = 'mercenary',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Defeat {C:attention}5 Boss Blinds{}", "in a single run" },
     loc_txt = {
@@ -2208,7 +2208,7 @@ SMODS.Joker {
         }}
     end,
     check_for_unlock = function(self, args)
-        if args.type == 'mercenary' or (G.GAME and ((G.GAME.witch_brew_bosses_slain or 0) >= 5 or (G.GAME.round_resets and (G.GAME.round_resets.boss_defeats or 0) >= 5))) then
+        if args.type == 'mercenary' or (G.GAME and ((G.GAME.reality_warp_bosses_slain or 0) >= 5 or (G.GAME.round_resets and (G.GAME.round_resets.boss_defeats or 0) >= 5))) then
             return true
         end
     end,
@@ -2279,7 +2279,7 @@ SMODS.Joker {
 
         -- Unlock check
         if ex.boss_defeats and ex.boss_defeats >= 5 then
-            G.GAME.witch_brew_merc_unlocked = true
+            G.GAME.reality_warp_merc_unlocked = true
         end
     end
 }
@@ -2287,7 +2287,7 @@ SMODS.Joker {
 -- Cascade, Uncommon Joker
 SMODS.Joker {
     key = 'cascade',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     unlocked = false,
     unlock = { "Score {C:attention}double{} or more", "of a blind's requirement" },
     loc_txt = {
@@ -2309,7 +2309,7 @@ SMODS.Joker {
         return { vars = { (card and card.ability.extra.stored_chips) or 0 } }
     end,
     check_for_unlock = function(self, args)
-        if (args and args.type == 'cascade_double') or (G.GAME and (G.GAME.witch_brew_cascade_double or G.GAME.witch_brew_cascada_double)) then
+        if (args and args.type == 'cascade_double') or (G.GAME and (G.GAME.reality_warp_cascade_double or G.GAME.reality_warp_cascada_double)) then
             return true
         end
     end,
@@ -2337,8 +2337,8 @@ SMODS.Joker {
                     local new_val = math.min(max_cap, cur + excess)
                     local diff = new_val - cur
                     card.ability.extra.stored_chips = new_val
-                    G.GAME.witch_brew_cascade_double = true
-                    G.GAME.witch_brew_cascada_double = true
+                    G.GAME.reality_warp_cascade_double = true
+                    G.GAME.reality_warp_cascada_double = true
                     if diff > 0 then
                         return { message = 'Stored +'..diff..' Chips!', colour = G.C.CHIPS, card = card }
                     else
@@ -2353,7 +2353,7 @@ SMODS.Joker {
 -- Joker: scripter
 SMODS.Joker {
     key = 'scripter',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     loc_txt = {
         name = 'Scripter',
         text = {
@@ -2386,7 +2386,7 @@ SMODS.Joker {
 -- Prism Shifter
 SMODS.Joker {
     key = 'prism_shifter',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 0, y = 12 },
     rarity = 2,
     cost = 6,
@@ -2437,7 +2437,7 @@ SMODS.Joker {
 -- Echo Chamber
 SMODS.Joker {
     key = 'echo_chamber',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 1, y = 12 },
     rarity = 2,
     cost = 6,
@@ -2481,7 +2481,7 @@ SMODS.Joker {
 -- Claw Machine
 SMODS.Joker {
     key = 'claw_machine',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 3, y = 11 },
     rarity = 2,
     cost = 6,
@@ -2511,7 +2511,7 @@ SMODS.Joker {
 -- Blackjack Table
 SMODS.Joker {
     key = 'blackjack_dealer',
-    atlas = 'witch_brew_jokers',
+    atlas = 'reality_warp_jokers',
     pos = { x = 4, y = 11 },
     rarity = 2,
     cost = 7,

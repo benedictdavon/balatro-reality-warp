@@ -1,7 +1,7 @@
 -- Legendary Jokers, Mod definitions
 
 SMODS.Atlas {
-    key = "witch_brew_legendary",
+    key = "reality_warp_legendary",
     path = "legendary_jokers.png",
     px = 71,
     py = 95
@@ -10,7 +10,7 @@ SMODS.Atlas {
 -- World Devourer, Legendary Joker
 SMODS.Joker {
     key = 'world_devourer',
-    atlas = 'witch_brew_legendary',
+    atlas = 'reality_warp_legendary',
     unlocked = false,
     unlock = { "Defeat {C:attention}10 Boss Blinds{}", "in a single run" },
     loc_txt = {
@@ -37,7 +37,7 @@ SMODS.Joker {
         return { vars = { ex.xmult or 1 } }
     end,
     check_for_unlock = function(self, args)
-        if (args and args.type == 'world_devourer') or (G.GAME and ((G.GAME.witch_brew_bosses_slain or 0) >= 10 or (G.GAME.round_resets and (G.GAME.round_resets.boss_defeats or 0) >= 10))) then
+        if (args and args.type == 'world_devourer') or (G.GAME and ((G.GAME.reality_warp_bosses_slain or 0) >= 10 or (G.GAME.round_resets and (G.GAME.round_resets.boss_defeats or 0) >= 10))) then
             return true
         end
     end,
@@ -69,7 +69,7 @@ local function get_next_paradox_joker()
     local pool = {}
     if G.P_CENTER_POOLS and G.P_CENTER_POOLS.Joker then
         for _, j in ipairs(G.P_CENTER_POOLS.Joker) do
-            if j.key and j.key ~= 'j_Witch_brew_living_paradox' then
+            if j.key and j.key ~= 'j_reality_warp_living_paradox' then
                 table.insert(pool, j.key)
             end
         end
@@ -83,7 +83,7 @@ end
 -- Living Paradox, Legendary Joker
 SMODS.Joker {
     key = 'living_paradox',
-    atlas = 'witch_brew_legendary',
+    atlas = 'reality_warp_legendary',
     unlocked = false,
     unlock = { "Defeat a {C:attention}Boss Blind{}", "to discover this Joker" },
     loc_txt = {
@@ -102,7 +102,7 @@ SMODS.Joker {
     cost = 20,
     blueprint_compat = false,
     check_for_unlock = function(self, args)
-        if (args and (args.type == 'defeat_blind' and G.GAME.blind and G.GAME.blind.boss)) or (G.GAME and G.GAME.witch_brew_boss_defeated) then
+        if (args and (args.type == 'defeat_blind' and G.GAME.blind and G.GAME.blind.boss)) or (G.GAME and G.GAME.reality_warp_boss_defeated) then
             return true
         end
     end,
@@ -125,7 +125,7 @@ SMODS.Joker {
 
         if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
             if G.GAME and G.GAME.blind and G.GAME.blind.boss then
-                G.GAME.witch_brew_boss_defeated = true
+                G.GAME.reality_warp_boss_defeated = true
                 local chosen_key = card.ability.extra.next_joker or get_next_paradox_joker()
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -148,7 +148,7 @@ SMODS.Joker {
 -- Star Chronicler, Legendary Joker
 SMODS.Joker {
     key = 'star_chronicler',
-    atlas = 'witch_brew_legendary',
+    atlas = 'reality_warp_legendary',
     unlocked = false,
     unlock = { "Win a complete run", "{C:attention}(Defeat Ante 8+){}" },
     loc_txt = {
@@ -186,7 +186,7 @@ SMODS.Joker {
         return { vars = { ex.xmult_per_planet or 0.5, string.format('%.1f', total_xm) } }
     end,
     check_for_unlock = function(self, args)
-        if (args and (args.type == 'win_game' or args.type == 'win_custom')) or (G.GAME and (G.GAME.witch_brew_run_won or G.GAME.won)) then
+        if (args and (args.type == 'win_game' or args.type == 'win_custom')) or (G.GAME and (G.GAME.reality_warp_run_won or G.GAME.won)) then
             return true
         end
     end,
@@ -225,7 +225,7 @@ SMODS.Joker {
 -- Joker: creepy_shadow
 SMODS.Joker {
     key = 'creepy_shadow',
-    atlas = 'witch_brew_legendary',
+    atlas = 'reality_warp_legendary',
     unlocked = true,
     discovered = true,
     loc_txt = {
@@ -287,7 +287,7 @@ SMODS.Joker {
 -- Joker: ouroboros
 SMODS.Joker {
     key = 'ouroboros',
-    atlas = 'witch_brew_legendary',
+    atlas = 'reality_warp_legendary',
     unlocked = true,
     discovered = true,
     loc_txt = {
@@ -332,7 +332,7 @@ SMODS.Joker {
 -- Joker: chrono_weaver
 SMODS.Joker {
     key = 'chrono_weaver',
-    atlas = 'witch_brew_legendary',
+    atlas = 'reality_warp_legendary',
     unlocked = true,
     discovered = true,
     loc_txt = {
@@ -418,7 +418,7 @@ SMODS.Joker {
 -- Joker: philosopher
 SMODS.Joker {
     key = 'philosopher',
-    atlas = 'witch_brew_legendary',
+    atlas = 'reality_warp_legendary',
     unlocked = true,
     discovered = true,
     loc_txt = {
@@ -464,7 +464,7 @@ SMODS.Joker {
 -- Joker: void_monarch
 SMODS.Joker {
     key = 'void_monarch',
-    atlas = 'witch_brew_legendary',
+    atlas = 'reality_warp_legendary',
     unlocked = true,
     discovered = true,
     loc_txt = {
@@ -525,7 +525,7 @@ SMODS.Joker {
 local _old_win = Game.win_run
 if _old_win then
     Game.win_run = function(self, ...)
-        if G.GAME then G.GAME.witch_brew_run_won = true end
+        if G.GAME then G.GAME.reality_warp_run_won = true end
         return _old_win(self, ...)
     end
 end

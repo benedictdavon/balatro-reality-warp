@@ -1,5 +1,5 @@
 --[[
-    JokerDisplay Integration for Witch_Brew
+    JokerDisplay Integration for reality_warp
     Full Native Display Suite for all 44 Jokers
     Minimalist & Clean Numbers-Only Edition
     Compatible with JokerDisplay >= 1.8.0 & SMODS
@@ -28,7 +28,7 @@ end
 -- Common Jokers, JokerDisplay definitions
 
 -- 1. Masterful Joker
-jd_def["j_Witch_brew_masterful_joker"] = {
+jd_def["j_reality_warp_masterful_joker"] = {
     text = {
         { text = "+1 Tarot" }
     },
@@ -50,7 +50,7 @@ jd_def["j_Witch_brew_masterful_joker"] = {
 
 
 -- 2. Outstanding Joker
-jd_def["j_Witch_brew_outstanding_joker"] = {
+jd_def["j_reality_warp_outstanding_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "retrigger_str" }
     },
@@ -112,7 +112,7 @@ jd_def["j_Witch_brew_outstanding_joker"] = {
 }
 
 -- 3. Blueberry
-jd_def["j_Witch_brew_blueberry_joker"] = {
+jd_def["j_reality_warp_blueberry_joker"] = {
     text = {
         { text = "+1 Hand", colour = G.C.BLUE }
     },
@@ -128,7 +128,7 @@ jd_def["j_Witch_brew_blueberry_joker"] = {
 }
 
 -- 4. DJ Joker
-jd_def["j_Witch_brew_dj_joker"] = {
+jd_def["j_reality_warp_dj_joker"] = {
     text = {
         { text = "Remix", colour = G.C.SECONDARY_SET.Enhanced }
     },
@@ -150,7 +150,7 @@ jd_def["j_Witch_brew_dj_joker"] = {
 }
 
 -- 5. Designer Joker
-jd_def["j_Witch_brew_disenador_joker"] = {
+jd_def["j_reality_warp_disenador_joker"] = {
     text = {
         { text = "+$" },
         { ref_table = "card.joker_display_values", ref_value = "dollars", retrigger_type = "mult" }
@@ -180,7 +180,7 @@ jd_def["j_Witch_brew_disenador_joker"] = {
 }
 
 -- 6. TTS Joker
-jd_def["j_Witch_brew_tts_joker"] = {
+jd_def["j_reality_warp_tts_joker"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS, retrigger_type = "mult" },
@@ -211,7 +211,7 @@ jd_def["j_Witch_brew_tts_joker"] = {
 }
 
 -- Joker Descartador
-jd_def["j_Witch_brew_joker_descartador"] = {
+jd_def["j_reality_warp_joker_descartador"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS },
@@ -235,7 +235,7 @@ jd_def["j_Witch_brew_joker_descartador"] = {
 -- Uncommon Jokers, JokerDisplay definitions
 
 -- 7. Shareholder Joker
-jd_def["j_Witch_brew_shareholder_joker"] = {
+jd_def["j_reality_warp_shareholder_joker"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
@@ -264,7 +264,7 @@ jd_def["j_Witch_brew_shareholder_joker"] = {
 }
 
 -- 8. Builder Joker
-jd_def["j_Witch_brew_builder_joker"] = {
+jd_def["j_reality_warp_builder_joker"] = {
     text = {
         {
             border_nodes = {
@@ -313,7 +313,7 @@ jd_def["j_Witch_brew_builder_joker"] = {
 }
 
 -- 9. Banquet
-jd_def["j_Witch_brew_banquet_joker"] = {
+jd_def["j_reality_warp_banquet_joker"] = {
     text = {
         {
             border_nodes = {
@@ -349,7 +349,7 @@ jd_def["j_Witch_brew_banquet_joker"] = {
 }
 
 -- 10. Appraiser
-jd_def["j_Witch_brew_appraiser_joker"] = {
+jd_def["j_reality_warp_appraiser_joker"] = {
     text = {
         { text = "+$" },
         { ref_table = "card.joker_display_values", ref_value = "dollars" }
@@ -376,7 +376,7 @@ jd_def["j_Witch_brew_appraiser_joker"] = {
 }
 
 -- 11. Runway
-jd_def["j_Witch_brew_runway_joker"] = {
+jd_def["j_reality_warp_runway_joker"] = {
     text = {
         {
             border_nodes = {
@@ -395,7 +395,7 @@ jd_def["j_Witch_brew_runway_joker"] = {
 }
 
 -- 12. Slot Machine
-jd_def["j_Witch_brew_slot_machine_joker"] = {
+jd_def["j_reality_warp_slot_machine_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "score_text" }
     },
@@ -438,7 +438,7 @@ jd_def["j_Witch_brew_slot_machine_joker"] = {
 }
 
 -- 13. Duel of Value
-jd_def["j_Witch_brew_duel_of_value_joker"] = {
+jd_def["j_reality_warp_duel_of_value_joker"] = {
     text = {
         {
             border_nodes = {
@@ -482,7 +482,7 @@ jd_def["j_Witch_brew_duel_of_value_joker"] = {
 }
 
 -- 14. Reading Deficiency (Falta de Lectura)
-jd_def["j_Witch_brew_falta_de_lectura_joker"] = {
+jd_def["j_reality_warp_falta_de_lectura_joker"] = {
     text = {
         {
             border_nodes = {
@@ -517,7 +517,7 @@ jd_def["j_Witch_brew_falta_de_lectura_joker"] = {
 }
 
 -- 15. Chameleon Joker
-jd_def["j_Witch_brew_chameleon_joker"] = {
+jd_def["j_reality_warp_chameleon_joker"] = {
     text = {
         { text = "Copy Blind Tag", colour = G.C.PURPLE }
     },
@@ -527,17 +527,17 @@ jd_def["j_Witch_brew_chameleon_joker"] = {
 }
 
 -- 16. Motorized Joker
-jd_def["j_Witch_brew_motorized_joker"] = {
+jd_def["j_reality_warp_motorized_joker"] = {
     text = {
         { text = "+" },
         { ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" }
     },
     text_config = { colour = G.C.MULT }
 }
-jd_def["j_Witch_brew_motorizado_joker"] = jd_def["j_Witch_brew_motorized_joker"]
+jd_def["j_reality_warp_motorizado_joker"] = jd_def["j_reality_warp_motorized_joker"]
 
 -- 17. Hired Joker (Joker Contratado)
-jd_def["j_Witch_brew_hired_joker"] = {
+jd_def["j_reality_warp_hired_joker"] = {
     text = {
         { text = "Job Card", colour = HEX('5c1e11') }
     },
@@ -545,10 +545,10 @@ jd_def["j_Witch_brew_hired_joker"] = {
         { text = "(1/3)" }
     }
 }
-jd_def["j_Witch_brew_contratado_joker"] = jd_def["j_Witch_brew_hired_joker"]
+jd_def["j_reality_warp_contratado_joker"] = jd_def["j_reality_warp_hired_joker"]
 
 -- 18. Seal of Approval (Sello de Aprobación)
-jd_def["j_Witch_brew_seal_of_approval_joker"] = {
+jd_def["j_reality_warp_seal_of_approval_joker"] = {
     text = {
         { text = "+Seal", colour = G.C.GOLD }
     },
@@ -573,10 +573,10 @@ jd_def["j_Witch_brew_seal_of_approval_joker"] = {
         end
     end
 }
-jd_def["j_Witch_brew_sello_aprobacion_joker"] = jd_def["j_Witch_brew_seal_of_approval_joker"]
+jd_def["j_reality_warp_sello_aprobacion_joker"] = jd_def["j_reality_warp_seal_of_approval_joker"]
 
 -- 19. Paint Puddle (Charco de Pintura)
-jd_def["j_Witch_brew_paint_puddle_joker"] = {
+jd_def["j_reality_warp_paint_puddle_joker"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
@@ -604,10 +604,10 @@ jd_def["j_Witch_brew_paint_puddle_joker"] = {
         card.joker_display_values.mult = total_mult
     end
 }
-jd_def["j_Witch_brew_charco_pintura_joker"] = jd_def["j_Witch_brew_paint_puddle_joker"]
+jd_def["j_reality_warp_charco_pintura_joker"] = jd_def["j_reality_warp_paint_puddle_joker"]
 
 -- 20. Injured Joker (Joker Lesionado)
-jd_def["j_Witch_brew_injured_joker"] = {
+jd_def["j_reality_warp_injured_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "prob_text" }
     },
@@ -622,10 +622,10 @@ jd_def["j_Witch_brew_injured_joker"] = {
         card.joker_display_values.rem_text = "(End of round)"
     end
 }
-jd_def["j_Witch_brew_lesionado_joker"] = jd_def["j_Witch_brew_injured_joker"]
+jd_def["j_reality_warp_lesionado_joker"] = jd_def["j_reality_warp_injured_joker"]
 
 -- Extended Hand
-jd_def["j_Witch_brew_extended_hand"] = {
+jd_def["j_reality_warp_extended_hand"] = {
     text = {
         {
             border_nodes = {
@@ -648,10 +648,10 @@ jd_def["j_Witch_brew_extended_hand"] = {
         end
     end
 }
-jd_def["j_Witch_brew_mano_extendida"] = jd_def["j_Witch_brew_extended_hand"]
+jd_def["j_reality_warp_mano_extendida"] = jd_def["j_reality_warp_extended_hand"]
 
 -- Bonfire
-jd_def["j_Witch_brew_bonfire"] = {
+jd_def["j_reality_warp_bonfire"] = {
     text = {
         {
             border_nodes = {
@@ -674,12 +674,12 @@ jd_def["j_Witch_brew_bonfire"] = {
         end
     end
 }
-jd_def["j_Witch_brew_hoguera"] = jd_def["j_Witch_brew_bonfire"]
+jd_def["j_reality_warp_hoguera"] = jd_def["j_reality_warp_bonfire"]
 
 -- Rare Jokers, JokerDisplay definitions
 
 -- 21. Doctor Jo.
-jd_def["j_Witch_brew_doctor_jo_joker"] = {
+jd_def["j_reality_warp_doctor_jo_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "status" }
     },
@@ -706,7 +706,7 @@ jd_def["j_Witch_brew_doctor_jo_joker"] = {
 }
 
 -- 22. Symmetrical Joker
-jd_def["j_Witch_brew_symmetrical_joker"] = {
+jd_def["j_reality_warp_symmetrical_joker"] = {
     text = {
         {
             border_nodes = {
@@ -749,7 +749,7 @@ jd_def["j_Witch_brew_symmetrical_joker"] = {
 }
 
 -- 23. Balance
-jd_def["j_Witch_brew_balance_joker"] = {
+jd_def["j_reality_warp_balance_joker"] = {
     text = {
         { text = "+2 Spectrals", colour = G.C.SECONDARY_SET.Spectral }
     },
@@ -783,7 +783,7 @@ jd_def["j_Witch_brew_balance_joker"] = {
 }
 
 -- 24. Merchant
-jd_def["j_Witch_brew_merchant_joker"] = {
+jd_def["j_reality_warp_merchant_joker"] = {
     text = {
         { text = "-$" },
         { ref_table = "card.ability.extra", ref_value = "cost_per_shop" }
@@ -792,7 +792,7 @@ jd_def["j_Witch_brew_merchant_joker"] = {
 }
 
 -- 25. Lover (Soulmates)
-jd_def["j_Witch_brew_lover_joker"] = {
+jd_def["j_reality_warp_lover_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "main_text" }
     },
@@ -836,7 +836,7 @@ jd_def["j_Witch_brew_lover_joker"] = {
 }
 
 -- 26. Blacksmith
-jd_def["j_Witch_brew_blacksmith_joker"] = {
+jd_def["j_reality_warp_blacksmith_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "heat_status" }
     },
@@ -874,7 +874,7 @@ jd_def["j_Witch_brew_blacksmith_joker"] = {
 }
 
 -- 27. Lucky One
-jd_def["j_Witch_brew_lucky_one_joker"] = {
+jd_def["j_reality_warp_lucky_one_joker"] = {
     text = {
         {
             border_nodes = {
@@ -907,7 +907,7 @@ jd_def["j_Witch_brew_lucky_one_joker"] = {
 }
 
 -- 28. Miner
-jd_def["j_Witch_brew_miner_joker"] = {
+jd_def["j_reality_warp_miner_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "bonus_str" }
     },
@@ -950,14 +950,14 @@ jd_def["j_Witch_brew_miner_joker"] = {
 }
 
 -- 29. Joke Joker
-jd_def["j_Witch_brew_joke_joker"] = {
+jd_def["j_reality_warp_joke_joker"] = {
     text = {
         { text = "+1 Slot", colour = G.C.SECONDARY_SET.Voucher }
     }
 }
 
 -- 30. Perfectionism
-jd_def["j_Witch_brew_perfectionism_joker"] = {
+jd_def["j_reality_warp_perfectionism_joker"] = {
     text = {
         { text = "+Polychrome", colour = G.C.DARK_EDITION }
     },
@@ -984,7 +984,7 @@ jd_def["j_Witch_brew_perfectionism_joker"] = {
 }
 
 -- 31. Reaper Joker / Parca (Reworked)
-jd_def["j_Witch_brew_reaper_joker"] = {
+jd_def["j_reality_warp_reaper_joker"] = {
     text = {
         { text = "-30% Blind", colour = G.C.RED }
     },
@@ -1004,11 +1004,11 @@ jd_def["j_Witch_brew_reaper_joker"] = {
         end
     end
 }
-jd_def["j_Witch_brew_parca_joker"] = jd_def["j_Witch_brew_reaper_joker"]
-jd_def["j_Witch_brew_parca"] = jd_def["j_Witch_brew_reaper_joker"]
+jd_def["j_reality_warp_parca_joker"] = jd_def["j_reality_warp_reaper_joker"]
+jd_def["j_reality_warp_parca"] = jd_def["j_reality_warp_reaper_joker"]
 
 -- Potion Brewer (Reworked from Hand Alchemist)
-jd_def["j_Witch_brew_potion_brewer"] = {
+jd_def["j_reality_warp_potion_brewer"] = {
     text = {
         { text = "+" },
         { ref_table = "card.ability.extra", ref_value = "chips", retrigger_type = "mult" }
@@ -1018,7 +1018,7 @@ jd_def["j_Witch_brew_potion_brewer"] = {
 
 
 -- 32. Infostealer Joker
-jd_def["j_Witch_brew_infostealer_joker"] = {
+jd_def["j_reality_warp_infostealer_joker"] = {
     text = {
         {
             border_nodes = {
@@ -1030,7 +1030,7 @@ jd_def["j_Witch_brew_infostealer_joker"] = {
 }
 
 -- 33. Supersaturated Joker (Sobresaturado)
-jd_def["j_Witch_brew_oversaturated_joker"] = {
+jd_def["j_reality_warp_oversaturated_joker"] = {
     text = {
         { text = "+Enh / Seal / Ed", colour = G.C.SECONDARY_SET.Enhanced }
     },
@@ -1050,10 +1050,10 @@ jd_def["j_Witch_brew_oversaturated_joker"] = {
         end
     end
 }
-jd_def["j_Witch_brew_sobresaturado_joker"] = jd_def["j_Witch_brew_oversaturated_joker"]
+jd_def["j_reality_warp_sobresaturado_joker"] = jd_def["j_reality_warp_oversaturated_joker"]
 
 -- Radiation
-jd_def["j_Witch_brew_radiation"] = {
+jd_def["j_reality_warp_radiation"] = {
     text = {
         {
             border_nodes = {
@@ -1073,12 +1073,12 @@ jd_def["j_Witch_brew_radiation"] = {
         card.joker_display_values.debuff_risk = "" .. prob .. " in " .. odds .. " debuff"
     end
 }
-jd_def["j_Witch_brew_radiacion"] = jd_def["j_Witch_brew_radiation"]
+jd_def["j_reality_warp_radiacion"] = jd_def["j_reality_warp_radiation"]
 
 -- Secret Jokers, JokerDisplay definitions
 
 -- 34. Esteban
-jd_def["j_Witch_brew_esteban"] = {
+jd_def["j_reality_warp_esteban"] = {
     text = {
         {
             border_nodes = {
@@ -1112,7 +1112,7 @@ jd_def["j_Witch_brew_esteban"] = {
 }
 
 -- 35. Thiago
-jd_def["j_Witch_brew_thiago"] = {
+jd_def["j_reality_warp_thiago"] = {
     text = {
         {
             border_nodes = {
@@ -1150,7 +1150,7 @@ jd_def["j_Witch_brew_thiago"] = {
 }
 
 -- 36. Black Hole
-jd_def["j_Witch_brew_black_hole_joker"] = {
+jd_def["j_reality_warp_black_hole_joker"] = {
     text = {
         {
             border_nodes = {
@@ -1163,7 +1163,7 @@ jd_def["j_Witch_brew_black_hole_joker"] = {
 }
 
 -- 37. Squele
-jd_def["j_Witch_brew_squele"] = {
+jd_def["j_reality_warp_squele"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "mult", colour = G.C.MULT, retrigger_type = "mult" },
@@ -1200,7 +1200,7 @@ jd_def["j_Witch_brew_squele"] = {
 }
 
 -- 38. Bluxdir
-jd_def["j_Witch_brew_bluxdir"] = {
+jd_def["j_reality_warp_bluxdir"] = {
     text = {
         { text = "+1 Level", colour = G.C.ATTENTION }
     },
@@ -1210,7 +1210,7 @@ jd_def["j_Witch_brew_bluxdir"] = {
 }
 
 -- 39. Charles
-jd_def["j_Witch_brew_charles"] = {
+jd_def["j_reality_warp_charles"] = {
     text = {
         {
             border_nodes = {
@@ -1258,7 +1258,7 @@ jd_def["j_Witch_brew_charles"] = {
 }
 
 -- 40. Mochi
-jd_def["j_Witch_brew_mochi"] = {
+jd_def["j_reality_warp_mochi"] = {
     text = {
         {
             border_nodes = {
@@ -1286,7 +1286,7 @@ jd_def["j_Witch_brew_mochi"] = {
 }
 
 -- 41. Helin
-jd_def["j_Witch_brew_helin"] = {
+jd_def["j_reality_warp_helin"] = {
     text = {
         {
             border_nodes = {
@@ -1302,7 +1302,7 @@ jd_def["j_Witch_brew_helin"] = {
 }
 
 -- 42. RayTracing
-jd_def["j_Witch_brew_raytracing"] = {
+jd_def["j_reality_warp_raytracing"] = {
     text = {
         { text = "+2 Spectrals", colour = G.C.DARK_EDITION }
     },
@@ -1312,7 +1312,7 @@ jd_def["j_Witch_brew_raytracing"] = {
 }
 
 -- 43. Paco
-jd_def["j_Witch_brew_paco"] = {
+jd_def["j_reality_warp_paco"] = {
     text = {
         {
             border_nodes = {
@@ -1341,7 +1341,7 @@ jd_def["j_Witch_brew_paco"] = {
 }
 
 -- 44. Yairo
-jd_def["j_Witch_brew_yairo"] = {
+jd_def["j_reality_warp_yairo"] = {
     text = {
         {
             border_nodes = {
@@ -1391,7 +1391,7 @@ jd_def["j_Witch_brew_yairo"] = {
 }
 
 -- Kyra (Secret)
-jd_def["j_Witch_brew_kyra"] = {
+jd_def["j_reality_warp_kyra"] = {
     text = {
         { text = "Brew Potion", colour = G.C.GREEN }
     },
@@ -1414,7 +1414,7 @@ jd_def["j_Witch_brew_kyra"] = {
 -- Additional Jokers, JokerDisplay definitions
 
 -- Discard Accumulator
-jd_def["j_Witch_brew_discard_accumulator"] = {
+jd_def["j_reality_warp_discard_accumulator"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "chips", retrigger_type = "chips" },
@@ -1437,7 +1437,7 @@ jd_def["j_Witch_brew_discard_accumulator"] = {
 }
 
 -- Beat It
-jd_def["j_Witch_brew_beat_it"] = {
+jd_def["j_reality_warp_beat_it"] = {
     text = {
         { text = "-50% Blind", colour = G.C.FILTER }
     },
@@ -1447,7 +1447,7 @@ jd_def["j_Witch_brew_beat_it"] = {
 }
 
 -- Puppet Joker
-jd_def["j_Witch_brew_puppet_joker"] = {
+jd_def["j_reality_warp_puppet_joker"] = {
     text = {
         { text = "Puppet Active", colour = G.C.PURPLE }
     },
@@ -1457,7 +1457,7 @@ jd_def["j_Witch_brew_puppet_joker"] = {
 }
 
 -- Amnesia Joker
-jd_def["j_Witch_brew_amnesia_joker"] = {
+jd_def["j_reality_warp_amnesia_joker"] = {
     text = {
         { text = "Amnesia", colour = G.C.SECONDARY_SET.Enhanced }
     },
@@ -1467,7 +1467,7 @@ jd_def["j_Witch_brew_amnesia_joker"] = {
 }
 
 -- Photographer Joker
-jd_def["j_Witch_brew_photographer_joker"] = {
+jd_def["j_reality_warp_photographer_joker"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
@@ -1483,7 +1483,7 @@ jd_def["j_Witch_brew_photographer_joker"] = {
 }
 
 -- Countdown Joker
-jd_def["j_Witch_brew_countdown_joker"] = {
+jd_def["j_reality_warp_countdown_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "count_str" }
     },
@@ -1504,7 +1504,7 @@ jd_def["j_Witch_brew_countdown_joker"] = {
 }
 
 -- Smuggler Joker
-jd_def["j_Witch_brew_smuggler_joker"] = {
+jd_def["j_reality_warp_smuggler_joker"] = {
     text = {
         { text = "+1 Enhance", colour = G.C.GREEN }
     },
@@ -1514,7 +1514,7 @@ jd_def["j_Witch_brew_smuggler_joker"] = {
 }
 
 -- Sheet Music Joker
-jd_def["j_Witch_brew_sheet_music_joker"] = {
+jd_def["j_reality_warp_sheet_music_joker"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "chips", retrigger_type = "chips" },
@@ -1533,7 +1533,7 @@ jd_def["j_Witch_brew_sheet_music_joker"] = {
 }
 
 -- Blood Pact Joker
-jd_def["j_Witch_brew_blood_pact_joker"] = {
+jd_def["j_reality_warp_blood_pact_joker"] = {
     text = {
         { text = "+1 Edition", colour = G.C.DARK_EDITION }
     },
@@ -1543,7 +1543,7 @@ jd_def["j_Witch_brew_blood_pact_joker"] = {
 }
 
 -- Saboteur Joker
-jd_def["j_Witch_brew_saboteur_joker"] = {
+jd_def["j_reality_warp_saboteur_joker"] = {
     text = {
         { text = "Debt " },
         { ref_table = "card.joker_display_values", ref_value = "debt_str" }
@@ -1558,7 +1558,7 @@ jd_def["j_Witch_brew_saboteur_joker"] = {
 }
 
 -- Boomerang Joker
-jd_def["j_Witch_brew_boomerang_joker"] = {
+jd_def["j_reality_warp_boomerang_joker"] = {
     text = {
         { text = "Boomerang", colour = G.C.BLUE }
     },
@@ -1568,7 +1568,7 @@ jd_def["j_Witch_brew_boomerang_joker"] = {
 }
 
 -- Spy Joker
-jd_def["j_Witch_brew_spy_joker"] = {
+jd_def["j_reality_warp_spy_joker"] = {
     text = {
         { text = "Spy 3 Cards", colour = G.C.SECONDARY_SET.Enhanced }
     },
@@ -1578,7 +1578,7 @@ jd_def["j_Witch_brew_spy_joker"] = {
 }
 
 -- Apprentice Joker
-jd_def["j_Witch_brew_apprentice_joker"] = {
+jd_def["j_reality_warp_apprentice_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "cast_str" }
     },
@@ -1592,7 +1592,7 @@ jd_def["j_Witch_brew_apprentice_joker"] = {
 }
 
 -- Upgrade Roulette Joker
-jd_def["j_Witch_brew_upgrade_roulette_joker"] = {
+jd_def["j_reality_warp_upgrade_roulette_joker"] = {
     text = {
         { text = "Roulette Upgrade", colour = G.C.PURPLE }
     },
@@ -1602,7 +1602,7 @@ jd_def["j_Witch_brew_upgrade_roulette_joker"] = {
 }
 
 -- Reversed Hermit Joker
-jd_def["j_Witch_brew_reversed_hermit_joker"] = {
+jd_def["j_reality_warp_reversed_hermit_joker"] = {
     text = {
         { text = "+$" },
         { ref_table = "card.joker_display_values", ref_value = "dollars" }
@@ -1620,7 +1620,7 @@ jd_def["j_Witch_brew_reversed_hermit_joker"] = {
 }
 
 -- Script Joker
-jd_def["j_Witch_brew_script_joker"] = {
+jd_def["j_reality_warp_script_joker"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "step_str" }
     },
@@ -1642,7 +1642,7 @@ jd_def["j_Witch_brew_script_joker"] = {
 }
 
 -- Reading Deficiency Joker (English / Legacy alias)
-jd_def["j_Witch_brew_reading_deficiency_joker"] = jd_def["j_Witch_brew_falta_de_lectura_joker"] or {
+jd_def["j_reality_warp_reading_deficiency_joker"] = jd_def["j_reality_warp_falta_de_lectura_joker"] or {
     text = {
         {
             border_nodes = {
@@ -1667,7 +1667,7 @@ jd_def["j_Witch_brew_reading_deficiency_joker"] = jd_def["j_Witch_brew_falta_de_
 }
 
 -- Billie Jean
-jd_def["j_Witch_brew_billie_jean"] = {
+jd_def["j_reality_warp_billie_jean"] = {
     text = {
         { text = "1/8 Polychrome", colour = G.C.DARK_EDITION }
     },
@@ -1677,7 +1677,7 @@ jd_def["j_Witch_brew_billie_jean"] = {
 }
 
 -- Temporal Rift
-jd_def["j_Witch_brew_temporal_rift"] = {
+jd_def["j_reality_warp_temporal_rift"] = {
     text = {
         { text = "Rewind Defeat", colour = G.C.ORANGE }
     },
@@ -1687,7 +1687,7 @@ jd_def["j_Witch_brew_temporal_rift"] = {
 }
 
 -- Polarity Inversion
-jd_def["j_Witch_brew_polarity_inversion"] = {
+jd_def["j_reality_warp_polarity_inversion"] = {
     text = {
         { text = "+10 Mult Invert", colour = G.C.MULT }
     },
@@ -1697,7 +1697,7 @@ jd_def["j_Witch_brew_polarity_inversion"] = {
 }
 
 -- Inheritance
-jd_def["j_Witch_brew_inheritance"] = {
+jd_def["j_reality_warp_inheritance"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
@@ -1713,7 +1713,7 @@ jd_def["j_Witch_brew_inheritance"] = {
 }
 
 -- Ecosystem
-jd_def["j_Witch_brew_ecosystem"] = {
+jd_def["j_reality_warp_ecosystem"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "eco_str" }
     },
@@ -1729,7 +1729,7 @@ jd_def["j_Witch_brew_ecosystem"] = {
 }
 
 -- Auctioneer
-jd_def["j_Witch_brew_auctioneer"] = {
+jd_def["j_reality_warp_auctioneer"] = {
     text = {
         { text = "Auction", colour = G.C.GOLD }
     },
@@ -1739,7 +1739,7 @@ jd_def["j_Witch_brew_auctioneer"] = {
 }
 
 -- Parasitic
-jd_def["j_Witch_brew_parasitic"] = {
+jd_def["j_reality_warp_parasitic"] = {
     text = {
         { text = "X1.75 Host Joker", colour = G.C.XMULT }
     },
@@ -1749,7 +1749,7 @@ jd_def["j_Witch_brew_parasitic"] = {
 }
 
 -- Mercenary
-jd_def["j_Witch_brew_mercenary"] = {
+jd_def["j_reality_warp_mercenary"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "contract_str" }
     },
@@ -1768,7 +1768,7 @@ jd_def["j_Witch_brew_mercenary"] = {
 }
 
 -- Cascade
-jd_def["j_Witch_brew_cascade"] = {
+jd_def["j_reality_warp_cascade"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "chips", retrigger_type = "chips" }
@@ -1784,7 +1784,7 @@ jd_def["j_Witch_brew_cascade"] = {
 }
 
 -- 24K Magic
-jd_def["j_Witch_brew_24k_magic"] = {
+jd_def["j_reality_warp_24k_magic"] = {
     text = {
         {
             border_nodes = {
@@ -1812,7 +1812,7 @@ jd_def["j_Witch_brew_24k_magic"] = {
 }
 
 -- Orchestra Director
-jd_def["j_Witch_brew_orchestra_director"] = {
+jd_def["j_reality_warp_orchestra_director"] = {
     text = {
         { text = "Free Shop Joker", colour = G.C.MONEY }
     },
@@ -1822,7 +1822,7 @@ jd_def["j_Witch_brew_orchestra_director"] = {
 }
 
 -- Meteorologist
-jd_def["j_Witch_brew_meteorologist"] = {
+jd_def["j_reality_warp_meteorologist"] = {
     text = {
         {
             border_nodes = {
@@ -1848,7 +1848,7 @@ jd_def["j_Witch_brew_meteorologist"] = {
 }
 
 -- Mad Clockmaker
-jd_def["j_Witch_brew_mad_clockmaker"] = {
+jd_def["j_reality_warp_mad_clockmaker"] = {
     text = {
         { text = "+" },
         { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
@@ -1866,7 +1866,7 @@ jd_def["j_Witch_brew_mad_clockmaker"] = {
 }
 
 -- Catalyst
-jd_def["j_Witch_brew_catalyst"] = {
+jd_def["j_reality_warp_catalyst"] = {
     text = {
         {
             border_nodes = {
@@ -1890,7 +1890,7 @@ jd_def["j_Witch_brew_catalyst"] = {
 }
 
 -- Graffiti Artist
-jd_def["j_Witch_brew_graffiti_artist"] = {
+jd_def["j_reality_warp_graffiti_artist"] = {
     text = {
         { text = "X1.5", colour = G.C.XMULT }
     },
@@ -1900,7 +1900,7 @@ jd_def["j_Witch_brew_graffiti_artist"] = {
 }
 
 -- Hypnotist
-jd_def["j_Witch_brew_hypnotist"] = {
+jd_def["j_reality_warp_hypnotist"] = {
     text = {
         { text = "Disable Boss Blind", colour = G.C.PURPLE }
     },
@@ -1910,10 +1910,10 @@ jd_def["j_Witch_brew_hypnotist"] = {
 }
 
 -- Hand Alchemist (Alias for Potion Brewer)
-jd_def["j_Witch_brew_hand_alchemist"] = jd_def["j_Witch_brew_potion_brewer"]
+jd_def["j_reality_warp_hand_alchemist"] = jd_def["j_reality_warp_potion_brewer"]
 
 -- Entomologist
-jd_def["j_Witch_brew_entomologist"] = {
+jd_def["j_reality_warp_entomologist"] = {
     text = {
         { text = "Insect Tokens", colour = G.C.GREEN }
     },
@@ -1923,7 +1923,7 @@ jd_def["j_Witch_brew_entomologist"] = {
 }
 
 -- World Devourer (Legendary)
-jd_def["j_Witch_brew_world_devourer"] = {
+jd_def["j_reality_warp_world_devourer"] = {
     text = {
         {
             border_nodes = {
@@ -1945,7 +1945,7 @@ jd_def["j_Witch_brew_world_devourer"] = {
 }
 
 -- Living Paradox (Legendary)
-jd_def["j_Witch_brew_living_paradox"] = {
+jd_def["j_reality_warp_living_paradox"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "next_str", colour = G.C.DARK_EDITION }
     },
@@ -1964,7 +1964,7 @@ jd_def["j_Witch_brew_living_paradox"] = {
 }
 
 -- Star Chronicler (Legendary)
-jd_def["j_Witch_brew_star_chronicler"] = {
+jd_def["j_reality_warp_star_chronicler"] = {
     text = {
         {
             border_nodes = {
@@ -1993,7 +1993,7 @@ jd_def["j_Witch_brew_star_chronicler"] = {
 -- Secrets and Amalgams, JokerDisplay definitions
 
 -- Astra
-jd_def["j_Witch_brew_astra"] = {
+jd_def["j_reality_warp_astra"] = {
     text = {
         { text = "2X Planets", colour = G.C.SECONDARY_SET.Planet }
     },
@@ -2003,7 +2003,7 @@ jd_def["j_Witch_brew_astra"] = {
 }
 
 -- Marie
-jd_def["j_Witch_brew_marie"] = {
+jd_def["j_reality_warp_marie"] = {
     text = {
         {
             border_nodes = {
@@ -2046,7 +2046,7 @@ jd_def["j_Witch_brew_marie"] = {
 }
 
 -- Callie
-jd_def["j_Witch_brew_callie"] = {
+jd_def["j_reality_warp_callie"] = {
     text = {
         { text = "Random Upgrade", colour = G.C.GOLD }
     },
@@ -2056,7 +2056,7 @@ jd_def["j_Witch_brew_callie"] = {
 }
 
 -- Sally
-jd_def["j_Witch_brew_sally"] = {
+jd_def["j_reality_warp_sally"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "quest_str" }
     },
@@ -2077,7 +2077,7 @@ jd_def["j_Witch_brew_sally"] = {
 }
 
 -- Brainprint (Brainstorm + Blueprint)
-jd_def["j_Witch_brew_brainprint"] = {
+jd_def["j_reality_warp_brainprint"] = {
     text = {
         { text = "Copies Left & Right", colour = G.C.BLUE }
     },
@@ -2110,7 +2110,7 @@ jd_def["j_Witch_brew_brainprint"] = {
 }
 
 -- Vampiric Midas (Vampire + Midas)
-jd_def["j_Witch_brew_vampiric_midas"] = {
+jd_def["j_reality_warp_vampiric_midas"] = {
     text = {
         {
             border_nodes = {
@@ -2129,7 +2129,7 @@ jd_def["j_Witch_brew_vampiric_midas"] = {
 }
 
 -- Certified Programming (Certificate + Coding)
-jd_def["j_Witch_brew_certified_programming"] = {
+jd_def["j_reality_warp_certified_programming"] = {
     text = {
         {
             border_nodes = {
@@ -2148,7 +2148,7 @@ jd_def["j_Witch_brew_certified_programming"] = {
 }
 
 -- Galactic Traveler (Astronomer + Satellite)
-jd_def["j_Witch_brew_galactic_traveler"] = {
+jd_def["j_reality_warp_galactic_traveler"] = {
     text = {
         {
             border_nodes = {
@@ -2167,7 +2167,7 @@ jd_def["j_Witch_brew_galactic_traveler"] = {
 }
 
 -- Colorful Street (Four Fingers + Shortcut + Smeared)
-jd_def["j_Witch_brew_colorful_street"] = {
+jd_def["j_reality_warp_colorful_street"] = {
     text = {
         { text = "4-Card Straights & Flushes", colour = G.C.ATTENTION }
     },
@@ -2177,7 +2177,7 @@ jd_def["j_Witch_brew_colorful_street"] = {
 }
 
 -- Mime King (Baron + Mime)
-jd_def["j_Witch_brew_mime_king"] = {
+jd_def["j_reality_warp_mime_king"] = {
     text = {
         {
             border_nodes = {
@@ -2213,7 +2213,7 @@ jd_def["j_Witch_brew_mime_king"] = {
 }
 
 -- Photo Album (Photograph + Hanging Chad)
-jd_def["j_Witch_brew_photo_album"] = {
+jd_def["j_reality_warp_photo_album"] = {
     text = {
         {
             border_nodes = {
@@ -2260,7 +2260,7 @@ jd_def["j_Witch_brew_photo_album"] = {
 }
 
 -- Pirate Egg (Egg + Swashbuckler)
-jd_def["j_Witch_brew_pirate_egg"] = {
+jd_def["j_reality_warp_pirate_egg"] = {
     text = {
         {
             border_nodes = {
@@ -2289,7 +2289,7 @@ jd_def["j_Witch_brew_pirate_egg"] = {
 }
 
 -- Reinforced Boots (Bootstraps + Bull)
-jd_def["j_Witch_brew_reinforced_boots"] = {
+jd_def["j_reality_warp_reinforced_boots"] = {
     text = {
         { text = "+", colour = G.C.CHIPS },
         { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS, retrigger_type = "chips" },
@@ -2307,7 +2307,7 @@ jd_def["j_Witch_brew_reinforced_boots"] = {
 }
 
 -- Wee Comedian (Wee Joker + Comedian)
-jd_def["j_Witch_brew_wee_comedian"] = {
+jd_def["j_reality_warp_wee_comedian"] = {
     text = {
         { text = "+", colour = G.C.CHIPS },
         { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS, retrigger_type = "chips" },
@@ -2342,7 +2342,7 @@ jd_def["j_Witch_brew_wee_comedian"] = {
 }
 
 -- Golden Lucky Cat (Lucky Cat + Golden Joker)
-jd_def["j_Witch_brew_golden_lucky_cat"] = {
+jd_def["j_reality_warp_golden_lucky_cat"] = {
     text = {
         {
             border_nodes = {
@@ -2361,7 +2361,7 @@ jd_def["j_Witch_brew_golden_lucky_cat"] = {
 }
 
 -- Unrecognizable Antique (Ancient Joker + Smeared Joker)
-jd_def["j_Witch_brew_unrecognizable_antique"] = {
+jd_def["j_reality_warp_unrecognizable_antique"] = {
     text = {
         {
             border_nodes = {
@@ -2406,7 +2406,7 @@ jd_def["j_Witch_brew_unrecognizable_antique"] = {
 }
 
 -- Macabre Emoji (Scary Face + Smiley Face)
-jd_def["j_Witch_brew_macabre_emoji"] = {
+jd_def["j_reality_warp_macabre_emoji"] = {
     text = {
         { text = "+", colour = G.C.CHIPS },
         { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS, retrigger_type = "chips" },
@@ -2443,7 +2443,7 @@ jd_def["j_Witch_brew_macabre_emoji"] = {
 }
 
 -- Incremental Joker
-jd_def["j_Witch_brew_incremental"] = {
+jd_def["j_reality_warp_incremental"] = {
     text = {
         { text = "+" },
         { ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" }
@@ -2460,7 +2460,7 @@ jd_def["j_Witch_brew_incremental"] = {
 }
 
 -- Scripter
-jd_def["j_Witch_brew_scripter"] = {
+jd_def["j_reality_warp_scripter"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "status_text" }
     },
@@ -2485,7 +2485,7 @@ jd_def["j_Witch_brew_scripter"] = {
 }
 
 -- Ethernet
-jd_def["j_Witch_brew_ethernet"] = {
+jd_def["j_reality_warp_ethernet"] = {
     text = {
         { text = "+" },
         { ref_table = "card.ability.extra", ref_value = "current_mult", retrigger_type = "mult" }
@@ -2497,7 +2497,7 @@ jd_def["j_Witch_brew_ethernet"] = {
 }
 
 -- Creepy Shadow
-jd_def["j_Witch_brew_creepy_shadow"] = {
+jd_def["j_reality_warp_creepy_shadow"] = {
     text = {
         {
             border_nodes = {
@@ -2512,7 +2512,7 @@ jd_def["j_Witch_brew_creepy_shadow"] = {
 }
 
 -- Marina
-jd_def["j_Witch_brew_marina"] = {
+jd_def["j_reality_warp_marina"] = {
     text = {
         {
             border_nodes = {
@@ -2587,7 +2587,7 @@ jd_def["j_Witch_brew_marina"] = {
 }
 
 -- Perla
-jd_def["j_Witch_brew_perla"] = {
+jd_def["j_reality_warp_perla"] = {
     text = {
         { text = "+$" },
         { ref_table = "card.joker_display_values", ref_value = "interest" }
@@ -2605,7 +2605,7 @@ jd_def["j_Witch_brew_perla"] = {
 }
 
 -- Espectro del Balance
-jd_def["j_Witch_brew_espectro_del_balance"] = {
+jd_def["j_reality_warp_espectro_del_balance"] = {
     text = {
         { text = "=" },
         { ref_table = "card.joker_display_values", ref_value = "balanced_val" }
@@ -2663,7 +2663,7 @@ local cross_aliases = {
     ['macabre_emoji'] = 'emoji_macabro',
 }
 
-jd_def["j_Witch_brew_pachinko"] = {
+jd_def["j_reality_warp_pachinko"] = {
     text = {
         {
             border_nodes = {
@@ -2692,7 +2692,7 @@ jd_def["j_Witch_brew_pachinko"] = {
     end
 }
 
-jd_def["j_Witch_brew_shell_game"] = {
+jd_def["j_reality_warp_shell_game"] = {
     text = {
         {
             border_nodes = {
@@ -2707,7 +2707,7 @@ jd_def["j_Witch_brew_shell_game"] = {
     end
 }
 
-jd_def["j_Witch_brew_claw_machine"] = {
+jd_def["j_reality_warp_claw_machine"] = {
     text = {
         { text = "Arcade Crane" }
     }
@@ -2715,15 +2715,15 @@ jd_def["j_Witch_brew_claw_machine"] = {
 
 local new_entries = {}
 for k, v in pairs(jd_def) do
-    if string.sub(k, 1, 15) == "j_Witch_brew_" then
+    if string.sub(k, 1, 15) == "j_reality_warp_" then
         local raw = string.sub(k, 16)
         new_entries["j_" .. raw] = v
-        new_entries["j_witch_brew_" .. raw] = v
+        new_entries["j_reality_warp_" .. raw] = v
         new_entries[raw] = v
         if cross_aliases[raw] then
             local target = cross_aliases[raw]
-            new_entries["j_Witch_brew_" .. target] = v
-            new_entries["j_witch_brew_" .. target] = v
+            new_entries["j_reality_warp_" .. target] = v
+            new_entries["j_reality_warp_" .. target] = v
             new_entries["j_" .. target] = v
             new_entries[target] = v
         end

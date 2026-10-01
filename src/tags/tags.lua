@@ -1,6 +1,6 @@
 -- Tags Atlas
 SMODS.Atlas {
-    key = "witch_brew_tags",
+    key = "reality_warp_tags",
     path = "tags.png",
     px = 34,
     py = 34
@@ -9,7 +9,7 @@ SMODS.Atlas {
 -- Discord Tag
 SMODS.Tag {
     key = 'discord',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 0, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -29,7 +29,7 @@ SMODS.Tag {
             tag:yep('+', G.C.SECONDARY_SET.Spectral, function()
                 if pseudorandom('discord_tag') < ((G.GAME and G.GAME.probabilities.normal or 1) / 4) then
                     if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
-                        local tag_muchachada_key = (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_the_gang'] and 'c_Witch_brew_the_gang') or (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_la_muchachada'] and 'c_Witch_brew_la_muchachada') or 'c_the_gang'
+                        local tag_muchachada_key = (G.P_CENTERS and G.P_CENTERS['c_reality_warp_the_gang'] and 'c_reality_warp_the_gang') or (G.P_CENTERS and G.P_CENTERS['c_reality_warp_la_muchachada'] and 'c_reality_warp_la_muchachada') or 'c_the_gang'
                         local card = create_card('Spectral', G.consumeables, nil, nil, nil, nil, tag_muchachada_key, 'discord_tag')
                         card:add_to_deck()
                         G.consumeables:emplace(card)
@@ -46,7 +46,7 @@ SMODS.Tag {
 -- Witchcraft Tag (Tag de Brujería)
 SMODS.Tag {
     key = 'brujeria',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 1, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -85,7 +85,7 @@ SMODS.Tag {
 -- Sale Tag (Tag de Oferta)
 SMODS.Tag {
     key = 'oferta',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 2, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -128,7 +128,7 @@ SMODS.Tag {
 -- 4. Brew Tag
 SMODS.Tag {
     key = 'brew',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 3, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -159,7 +159,7 @@ SMODS.Tag {
 -- 5. Mutagen Tag
 SMODS.Tag {
     key = 'mutagen',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 4, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -200,7 +200,7 @@ SMODS.Tag {
 -- 6. Silver Tag
 SMODS.Tag {
     key = 'silver',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 5, y = 0 },
     min_ante = 2,
     loc_txt = {
@@ -230,7 +230,7 @@ SMODS.Tag {
 -- 7. Bounty Tag
 SMODS.Tag {
     key = 'bounty',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 6, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -260,7 +260,7 @@ SMODS.Tag {
 -- 8. Amalgam Tag
 SMODS.Tag {
     key = 'amalgam',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 7, y = 0 },
     min_ante = 2,
     loc_txt = {
@@ -316,7 +316,7 @@ SMODS.Tag {
             if info_queue and G.P_CENTERS then
                 if G.P_CENTERS[k1] then table.insert(info_queue, G.P_CENTERS[k1]) end
                 if G.P_CENTERS[k2] then table.insert(info_queue, G.P_CENTERS[k2]) end
-                local pot_k = (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_potion_amalgam'] and 'c_Witch_brew_potion_amalgam') or (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_potion_amalgama'] and 'c_Witch_brew_potion_amalgama') or 'c_potion_amalgam'
+                local pot_k = (G.P_CENTERS and G.P_CENTERS['c_reality_warp_potion_amalgam'] and 'c_reality_warp_potion_amalgam') or (G.P_CENTERS and G.P_CENTERS['c_reality_warp_potion_amalgama'] and 'c_reality_warp_potion_amalgama') or 'c_potion_amalgam'
                 if G.P_CENTERS[pot_k] then table.insert(info_queue, G.P_CENTERS[pot_k]) end
             end
             return { vars = { name1, name2 } }
@@ -327,7 +327,7 @@ SMODS.Tag {
         if context.type == 'shop_start' then
             local untriggered_amalgams = 0
             for _, t in ipairs(G.GAME.tags or {}) do
-                if (t.key == 'tag_Witch_brew_amalgam' or t.key == 'amalgam') and not t.triggered then
+                if (t.key == 'tag_reality_warp_amalgam' or t.key == 'amalgam') and not t.triggered then
                     untriggered_amalgams = untriggered_amalgams + 1
                 end
             end
@@ -364,7 +364,7 @@ SMODS.Tag {
                 tag:yep('+', G.C.PURPLE, function()
                     if card1 then card1:start_materialize() end
                     if card2 then card2:start_materialize() end
-                    local pot_key = (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_potion_amalgam'] and 'c_Witch_brew_potion_amalgam') or (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_potion_amalgama'] and 'c_Witch_brew_potion_amalgama') or 'c_potion_amalgam'
+                    local pot_key = (G.P_CENTERS and G.P_CENTERS['c_reality_warp_potion_amalgam'] and 'c_reality_warp_potion_amalgam') or (G.P_CENTERS and G.P_CENTERS['c_reality_warp_potion_amalgama'] and 'c_reality_warp_potion_amalgama') or 'c_potion_amalgam'
                     if G.consumeables then
                         if #G.consumeables.cards >= G.consumeables.config.card_limit then
                             G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
@@ -383,7 +383,7 @@ SMODS.Tag {
             local card1 = tag.ability.card1
             tag:yep('+', G.C.PURPLE, function()
                 if card1 then card1:start_materialize() end
-                local pot_key = (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_potion_amalgam'] and 'c_Witch_brew_potion_amalgam') or (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_potion_amalgama'] and 'c_Witch_brew_potion_amalgama') or 'c_potion_amalgam'
+                local pot_key = (G.P_CENTERS and G.P_CENTERS['c_reality_warp_potion_amalgam'] and 'c_reality_warp_potion_amalgam') or (G.P_CENTERS and G.P_CENTERS['c_reality_warp_potion_amalgama'] and 'c_reality_warp_potion_amalgama') or 'c_potion_amalgam'
                 if G.consumeables then
                     if #G.consumeables.cards >= G.consumeables.config.card_limit then
                         G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
@@ -404,7 +404,7 @@ SMODS.Tag {
 -- 9. Dark Alchemy Tag
 SMODS.Tag {
     key = 'alquimia_oscura',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 8, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -439,10 +439,10 @@ SMODS.Tag {
 -- 10. Contractor Tag
 SMODS.Tag {
     key = 'contratista',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 9, y = 0 },
     min_ante = 2,
-    in_pool = function(self) return is_witch_brew_spectrals_jobs_enabled() end,
+    in_pool = function(self) return is_reality_warp_spectrals_jobs_enabled() end,
     loc_txt = {
         name = 'Contractor Tag',
         text = {
@@ -451,7 +451,7 @@ SMODS.Tag {
         }
     },
     loc_vars = function(self, info_queue, tag)
-        local pack_center = G.P_CENTERS['p_Witch_brew_job_pack_4'] or G.P_CENTERS['job_pack_4'] or G.P_CENTERS['p_job_pack_4']
+        local pack_center = G.P_CENTERS['p_reality_warp_job_pack_4'] or G.P_CENTERS['job_pack_4'] or G.P_CENTERS['p_job_pack_4']
         if pack_center then
             table.insert(info_queue, pack_center)
         end
@@ -460,7 +460,7 @@ SMODS.Tag {
     apply = function(self, tag, context)
         if context.type == 'new_blind_choice' then
             tag:yep('+', G.C.WHITE, function()
-                local pack_center = G.P_CENTERS['p_Witch_brew_job_pack_4'] or G.P_CENTERS['job_pack_4'] or G.P_CENTERS['p_job_pack_4'] or G.P_CENTERS['p_Witch_brew_job_pack_3'] or G.P_CENTERS['job_pack_3']
+                local pack_center = G.P_CENTERS['p_reality_warp_job_pack_4'] or G.P_CENTERS['job_pack_4'] or G.P_CENTERS['p_job_pack_4'] or G.P_CENTERS['p_reality_warp_job_pack_3'] or G.P_CENTERS['job_pack_3']
                 if pack_center then
                     local pack = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2, G.play.T.y + G.play.T.h/2 - G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, pack_center, {bypass_discovery_center = true, bypass_discovery_ui = true})
                     pack.cost = 0
@@ -479,7 +479,7 @@ SMODS.Tag {
 -- 11. DNA Tag (Tag ADN)
 SMODS.Tag {
     key = 'dna',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 10, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -510,7 +510,7 @@ SMODS.Tag {
 -- 12. Echo Tag
 SMODS.Tag {
     key = 'echo',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 11, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -528,7 +528,7 @@ SMODS.Tag {
 -- 13. Black Market Tag
 SMODS.Tag {
     key = 'black_market',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 12, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -570,7 +570,7 @@ SMODS.Tag {
 -- 14. Prismatic Tag
 SMODS.Tag {
     key = 'prismatic',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 13, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -595,7 +595,7 @@ SMODS.Tag {
 -- 15. Adrenaline Tag
 SMODS.Tag {
     key = 'adrenaline',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 14, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -621,7 +621,7 @@ SMODS.Tag {
 -- 16. Catalyst Tag
 SMODS.Tag {
     key = 'catalyst',
-    atlas = 'witch_brew_tags',
+    atlas = 'reality_warp_tags',
     pos = { x = 15, y = 0 },
     min_ante = 1,
     loc_txt = {
@@ -662,10 +662,10 @@ SMODS.Tag {
 local orig_add_tag = add_tag
 function add_tag(tag)
     orig_add_tag(tag)
-    if G.GAME and G.GAME.tags and tag and tag.key ~= 'tag_Witch_brew_echo' and tag.key ~= 'echo' then
+    if G.GAME and G.GAME.tags and tag and tag.key ~= 'tag_reality_warp_echo' and tag.key ~= 'echo' then
         for i = #G.GAME.tags, 1, -1 do
             local t = G.GAME.tags[i]
-            if t and (t.key == 'tag_Witch_brew_echo' or t.key == 'echo') and not t.triggered then
+            if t and (t.key == 'tag_reality_warp_echo' or t.key == 'echo') and not t.triggered then
                 t:yep('+', G.C.CYAN, function()
                     orig_add_tag(Tag(tag.key))
                     orig_add_tag(Tag(tag.key))
@@ -703,7 +703,7 @@ end
 local orig_tag_generate_ui = Tag.generate_UI
 function Tag:generate_UI(_size)
     local tab, sprite = orig_tag_generate_ui(self, _size)
-    if self.key and (self.key == 'tag_Witch_brew_dna' or self.key == 'tag_witch_brew_dna' or self.key == 'dna' or self.key == 'tag_dna') then
+    if self.key and (self.key == 'tag_reality_warp_dna' or self.key == 'tag_reality_warp_dna' or self.key == 'dna' or self.key == 'tag_dna') then
         if sprite then
             sprite.states.click.can = true
             sprite.click = function(_self)

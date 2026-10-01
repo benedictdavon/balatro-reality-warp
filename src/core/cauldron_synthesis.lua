@@ -5,11 +5,11 @@ Witcher_Cauldron = {
         -- Tarot + Tarot -> Random Job Card
         ['Tarot_Tarot'] = function(c1, c2)
             local job_keys = {
-                'c_Witch_brew_miner_job', 'c_Witch_brew_gardener_job', 'c_Witch_brew_banker_job',
-                'c_Witch_brew_surgeon_job', 'c_Witch_brew_alchemist_job', 'c_Witch_brew_butcher_job',
-                'c_Witch_brew_detective_job', 'c_Witch_brew_chef_job', 'c_Witch_brew_archaeologist_job',
-                'c_Witch_brew_jeweler_job', 'c_Witch_brew_apothecary_job', 'c_Witch_brew_bounty_hunter_job',
-                'c_Witch_brew_croupier_job'
+                'c_reality_warp_miner_job', 'c_reality_warp_gardener_job', 'c_reality_warp_banker_job',
+                'c_reality_warp_surgeon_job', 'c_reality_warp_alchemist_job', 'c_reality_warp_butcher_job',
+                'c_reality_warp_detective_job', 'c_reality_warp_chef_job', 'c_reality_warp_archaeologist_job',
+                'c_reality_warp_jeweler_job', 'c_reality_warp_apothecary_job', 'c_reality_warp_bounty_hunter_job',
+                'c_reality_warp_croupier_job'
             }
             local chosen = pseudorandom_element(job_keys, pseudoseed('cauldron_job'))
             local card = create_card('Job', G.consumeables, nil, nil, nil, nil, chosen, 'cauldron')

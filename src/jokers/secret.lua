@@ -85,7 +85,7 @@ local SECRET_JOKER_PALETTES = {
 local function get_secret_palette(card, center)
     local key = (center and (center.key or center.name)) or (card and get_card_key and get_card_key(card)) or ''
     key = string.lower(tostring(key))
-    local clean_key = key:gsub('^j_witch_brew_', ''):gsub('^j_', '')
+    local clean_key = key:gsub('^j_reality_warp_', ''):gsub('^j_', '')
     if SECRET_JOKER_PALETTES[clean_key] then
         return SECRET_JOKER_PALETTES[clean_key]
     end
@@ -548,7 +548,7 @@ register_secret_joker {
                     local spectral_cards = {}
                     if G.P_CENTER_POOLS and G.P_CENTER_POOLS['Spectral'] then
                         for _, center in ipairs(G.P_CENTER_POOLS['Spectral']) do
-                            if center.key ~= 'c_Witch_brew_la_muchachada' and center.key ~= 'c_la_muchachada' and center.key ~= 'la_muchachada' then
+                            if center.key ~= 'c_reality_warp_la_muchachada' and center.key ~= 'c_la_muchachada' and center.key ~= 'la_muchachada' then
                                 table.insert(spectral_cards, center.key)
                             end
                         end
@@ -1538,7 +1538,7 @@ register_secret_joker {
                     local has_marie = false
                     if G.jokers and G.jokers.cards then
                         for _, jk in ipairs(G.jokers.cards) do
-                            if jk.config and jk.config.center and (jk.config.center.key == 'j_witch_brew_marie' or jk.config.center.key == 'marie' or (jk.config.center.key and string.find(jk.config.center.key:lower(), 'marie'))) then
+                            if jk.config and jk.config.center and (jk.config.center.key == 'j_reality_warp_marie' or jk.config.center.key == 'marie' or (jk.config.center.key and string.find(jk.config.center.key:lower(), 'marie'))) then
                                 has_marie = true; break
                             end
                         end

@@ -1,12 +1,12 @@
 -- Fused Boss Blinds for Battle of Gods Mode (Ante 12+)
 SMODS.Atlas {
-    key = "witch_brew_fused_blinds",
+    key = "reality_warp_fused_blinds",
     path = "fused_blinds.png",
     px = 34,
     py = 34
 }
 
-G.Witch_brew_BLIND_THEMES = G.Witch_brew_BLIND_THEMES or {}
+G.reality_warp_BLIND_THEMES = G.reality_warp_BLIND_THEMES or {}
 
 local fused_themes = {
     ['obelisk'] = {
@@ -108,19 +108,19 @@ local fused_themes = {
 }
 
 for k, v in pairs(fused_themes) do
-    G.Witch_brew_BLIND_THEMES[k] = v
-    G.Witch_brew_BLIND_THEMES['bl_Witch_brew_' .. k] = v
+    G.reality_warp_BLIND_THEMES[k] = v
+    G.reality_warp_BLIND_THEMES['bl_reality_warp_' .. k] = v
     if G.C and G.C.BLIND then
-        G.C.BLIND['bl_Witch_brew_' .. k] = v.boss_colour
+        G.C.BLIND['bl_reality_warp_' .. k] = v.boss_colour
     end
 end
 
 local function sync_fused_blind_atlases()
-    local atlas_obj = (SMODS and SMODS.Atlases and SMODS.Atlases['witch_brew_fused_blinds']) or (G.ASSET_ATLAS and G.ASSET_ATLAS['witch_brew_fused_blinds']) or (G.ANIMATION_ATLAS and G.ANIMATION_ATLAS['witch_brew_fused_blinds'])
+    local atlas_obj = (SMODS and SMODS.Atlases and SMODS.Atlases['reality_warp_fused_blinds']) or (G.ASSET_ATLAS and G.ASSET_ATLAS['reality_warp_fused_blinds']) or (G.ANIMATION_ATLAS and G.ANIMATION_ATLAS['reality_warp_fused_blinds'])
     if atlas_obj then
         atlas_obj.frames = 21
-        if G.ASSET_ATLAS and not G.ASSET_ATLAS['witch_brew_fused_blinds'] then G.ASSET_ATLAS['witch_brew_fused_blinds'] = atlas_obj end
-        if G.ANIMATION_ATLAS and not G.ANIMATION_ATLAS['witch_brew_fused_blinds'] then G.ANIMATION_ATLAS['witch_brew_fused_blinds'] = atlas_obj end
+        if G.ASSET_ATLAS and not G.ASSET_ATLAS['reality_warp_fused_blinds'] then G.ASSET_ATLAS['reality_warp_fused_blinds'] = atlas_obj end
+        if G.ANIMATION_ATLAS and not G.ANIMATION_ATLAS['reality_warp_fused_blinds'] then G.ANIMATION_ATLAS['reality_warp_fused_blinds'] = atlas_obj end
     end
 end
 
@@ -135,7 +135,7 @@ G.E_MANAGER:add_event(Event({
 -- 1. The Obelisk (Needle + Pillar)
 SMODS.Blind {
     key = 'obelisk',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 0 },
     dollars = 5,
     mult = 2,
@@ -177,7 +177,7 @@ SMODS.Blind {
 -- 2. The Minotaur (Ox + Hook)
 SMODS.Blind {
     key = 'minotaur',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 1 },
     dollars = 5,
     mult = 2,
@@ -242,7 +242,7 @@ SMODS.Blind {
 -- 3. The Fortress (Wall + Flint)
 SMODS.Blind {
     key = 'fortress',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 2 },
     dollars = 5,
     mult = 3,
@@ -274,7 +274,7 @@ SMODS.Blind {
 -- 4. The Mind Flayer (Psychic + Arm)
 SMODS.Blind {
     key = 'mind_flayer',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 3 },
     dollars = 5,
     mult = 2,
@@ -312,7 +312,7 @@ SMODS.Blind {
 -- 5. The Leviathan (Water + Fish)
 SMODS.Blind {
     key = 'leviathan',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 4 },
     dollars = 5,
     mult = 2,
@@ -368,7 +368,7 @@ SMODS.Blind {
 -- 6. The Iron Maiden (Manacle + Tooth)
 SMODS.Blind {
     key = 'iron_maiden',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 5 },
     dollars = 5,
     mult = 2,
@@ -424,7 +424,7 @@ SMODS.Blind {
 -- 7. The Cyclops (Eye + Mouth)
 SMODS.Blind {
     key = 'cyclops',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 6 },
     dollars = 5,
     mult = 2,
@@ -463,7 +463,7 @@ SMODS.Blind {
 -- 8. The Thorn Crown (Mark + Plant)
 SMODS.Blind {
     key = 'thorn_crown',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 7 },
     dollars = 5,
     mult = 2,
@@ -503,7 +503,7 @@ SMODS.Blind {
 -- 9. The Ouroboros (Wheel + Serpent)
 SMODS.Blind {
     key = 'ouroboros',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 8 },
     dollars = 5,
     mult = 2,
@@ -548,7 +548,7 @@ if G.FUNCS and G.FUNCS.draw_from_deck_to_hand then
     local orig_draw_from_deck_to_hand = G.FUNCS.draw_from_deck_to_hand
     G.FUNCS.draw_from_deck_to_hand = function(e)
         if G.GAME and G.GAME.blind and not G.GAME.blind.disabled and
-           (G.GAME.blind.name == 'The Ouroboros' or (G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key == 'bl_Witch_brew_ouroboros')) and
+           (G.GAME.blind.name == 'The Ouroboros' or (G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key == 'bl_reality_warp_ouroboros')) and
            (G.GAME.current_round.hands_played > 0 or G.GAME.current_round.discards_used > 0) and not e then
             return orig_draw_from_deck_to_hand(math.min(#G.deck.cards, 3))
         end
@@ -559,7 +559,7 @@ end
 -- 10. The Nightshade (House + Goad)
 SMODS.Blind {
     key = 'nightshade',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 9 },
     dollars = 5,
     mult = 2,
@@ -598,7 +598,7 @@ SMODS.Blind {
 -- 11. The Black Diamond (Window + Club)
 SMODS.Blind {
     key = 'black_diamond',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 10 },
     dollars = 5,
     mult = 2,
@@ -627,7 +627,7 @@ SMODS.Blind {
 -- 12. The Blood Moon (Head + Goad)
 SMODS.Blind {
     key = 'blood_moon',
-    atlas = 'witch_brew_fused_blinds',
+    atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 11 },
     dollars = 5,
     mult = 2,

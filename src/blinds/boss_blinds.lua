@@ -1,12 +1,12 @@
 -- Boss Blinds Atlas
 SMODS.Atlas {
-    key = "witch_brew_blinds",
+    key = "reality_warp_blinds",
     path = "blinds.png",
     px = 34,
     py = 34
 }
 -- Boss Blinds
-G.Witch_brew_BLIND_THEMES = {
+G.reality_warp_BLIND_THEMES = {
     ['pole'] = {
         name = 'The Pole',
         boss_colour = HEX('868686'),
@@ -217,8 +217,8 @@ G.Witch_brew_BLIND_THEMES = {
     }
 }
 
-function get_witch_brew_blind_theme(blind)
-    if not blind or not G.Witch_brew_BLIND_THEMES then return nil end
+function get_reality_warp_blind_theme(blind)
+    if not blind or not G.reality_warp_BLIND_THEMES then return nil end
     local key = ''
     local bname = ''
     if type(blind) == 'string' then
@@ -232,25 +232,25 @@ function get_witch_brew_blind_theme(blind)
             or ''
         bname = blind.name or ''
     end
-    key = string.gsub(key, '^bl_Witch_brew_', '')
-    key = string.gsub(key, '^b_Witch_brew_', '')
+    key = string.gsub(key, '^bl_reality_warp_', '')
+    key = string.gsub(key, '^b_reality_warp_', '')
     key = string.gsub(key, '^bl_', '')
     key = string.gsub(key, '^b_', '')
 
-    local theme = G.Witch_brew_BLIND_THEMES[key] or (bname ~= '' and G.Witch_brew_BLIND_THEMES[bname])
+    local theme = G.reality_warp_BLIND_THEMES[key] or (bname ~= '' and G.reality_warp_BLIND_THEMES[bname])
     if not theme then
         local lkey = string.lower(key)
         local lbname = string.lower(bname)
         if string.find(lkey, 'doppel', 1, true) or string.find(lbname, 'doppel', 1, true) then
-            return G.Witch_brew_BLIND_THEMES['doppelganger']
+            return G.reality_warp_BLIND_THEMES['doppelganger']
         end
         if string.find(lkey, 'void', 1, true) or string.find(lbname, 'void', 1, true) then
-            return G.Witch_brew_BLIND_THEMES['void']
+            return G.reality_warp_BLIND_THEMES['void']
         end
         if string.find(lkey, 'pinza', 1, true) or string.find(lkey, 'pincer', 1, true) or string.find(lbname, 'pincer', 1, true) or string.find(lbname, 'pinza', 1, true) then
-            return G.Witch_brew_BLIND_THEMES['pinza']
+            return G.reality_warp_BLIND_THEMES['pinza']
         end
-        for k, v in pairs(G.Witch_brew_BLIND_THEMES) do
+        for k, v in pairs(G.reality_warp_BLIND_THEMES) do
             if string.find(key, k, 1, true) or (bname ~= '' and (string.find(bname, v.name, 1, true) or string.find(bname, k, 1, true))) then
                 theme = v
                 break
@@ -261,7 +261,7 @@ function get_witch_brew_blind_theme(blind)
 end
 
 function ease_custom_blind_background(blind)
-    local theme = get_witch_brew_blind_theme(blind)
+    local theme = get_reality_warp_blind_theme(blind)
     if not theme then return end
 
     G.GAME.blind_color = theme.special_colour or theme.boss_colour
@@ -285,16 +285,16 @@ function ease_custom_blind_background(blind)
         special_colour = theme.special_colour,
         tertiary_colour = theme.tertiary_colour,
         contrast = theme.contrast or 2,
-        _is_witch_brew_theme = true
+        _is_reality_warp_theme = true
     }
 end
 
-local function sync_witch_brew_blind_colours()
-    if not G.C or not G.C.BLIND or not G.Witch_brew_BLIND_THEMES then return end
-    for key, data in pairs(G.Witch_brew_BLIND_THEMES) do
+local function sync_reality_warp_blind_colours()
+    if not G.C or not G.C.BLIND or not G.reality_warp_BLIND_THEMES then return end
+    for key, data in pairs(G.reality_warp_BLIND_THEMES) do
         G.C.BLIND[key] = data.boss_colour
-        G.C.BLIND['b_Witch_brew_' .. key] = data.boss_colour
-        G.C.BLIND['bl_Witch_brew_' .. key] = data.boss_colour
+        G.C.BLIND['b_reality_warp_' .. key] = data.boss_colour
+        G.C.BLIND['bl_reality_warp_' .. key] = data.boss_colour
         if data.name then
             G.C.BLIND[data.name] = data.boss_colour
         end
@@ -304,7 +304,7 @@ end
 -- 1. The Pole
 SMODS.Blind {
     key = 'pole',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 0, y = 0 },
     dollars = 5,
     mult = 2,
@@ -334,7 +334,7 @@ SMODS.Blind {
 -- 2. The Rod
 SMODS.Blind {
     key = 'stick',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 1, y = 0 },
     dollars = 5,
     mult = 2,
@@ -360,7 +360,7 @@ SMODS.Blind {
 -- 3. The Magician
 SMODS.Blind {
     key = 'wizard',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 2, y = 0 },
     dollars = 5,
     mult = 2,
@@ -394,7 +394,7 @@ SMODS.Blind {
 -- 4. The Mountain
 SMODS.Blind {
     key = 'mountain',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 3, y = 0 },
     dollars = 5,
     mult = 2,
@@ -429,7 +429,7 @@ SMODS.Blind {
 -- 5. The Door
 SMODS.Blind {
     key = 'door',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 4, y = 0 },
     dollars = 5,
     mult = 2,
@@ -455,7 +455,7 @@ SMODS.Blind {
 -- 6. The Triangle
 SMODS.Blind {
     key = 'triangle',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 5, y = 0 },
     dollars = 5,
     mult = 2,
@@ -481,7 +481,7 @@ SMODS.Blind {
 -- 7. The Cube
 SMODS.Blind {
     key = 'cube',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 0, y = 1 },
     dollars = 5,
     mult = 2,
@@ -533,7 +533,7 @@ SMODS.Blind {
 -- 8. The Void (Showdown)
 SMODS.Blind {
     key = 'void',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 1, y = 1 },
     dollars = 8,
     mult = 2,
@@ -568,7 +568,7 @@ SMODS.Blind {
 -- 9. The Guitar (La Guitarra)
 SMODS.Blind {
     key = 'guitar',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 2, y = 1 },
     dollars = 5,
     mult = 2,
@@ -594,7 +594,7 @@ SMODS.Blind {
 -- 10. The Phone (El Teléfono)
 SMODS.Blind {
     key = 'phone',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 3, y = 1 },
     dollars = 5,
     mult = 2,
@@ -631,17 +631,17 @@ SMODS.Blind {
         end
     end,
     defeat = function(self)
-        if clear_witch_brew_phone_debuffs then clear_witch_brew_phone_debuffs() end
+        if clear_reality_warp_phone_debuffs then clear_reality_warp_phone_debuffs() end
     end,
     disable = function(self)
-        if clear_witch_brew_phone_debuffs then clear_witch_brew_phone_debuffs() end
+        if clear_reality_warp_phone_debuffs then clear_reality_warp_phone_debuffs() end
     end
 }
 
 -- 11. The Pincer (La Pinza - Showdown Boss)
 SMODS.Blind {
     key = 'pinza',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 4, y = 1 },
     dollars = 8,
     mult = 2,
@@ -667,7 +667,7 @@ SMODS.Blind {
                 local destroys_cards = {
                     ['j_trading'] = true,
                     ['j_sixth_sense'] = true,
-                    ['c_Witch_brew_butcher_job'] = true,
+                    ['c_reality_warp_butcher_job'] = true,
                     ['j_c_butcher'] = true
                 }
                 if not destroys_cards[key] then
@@ -683,7 +683,7 @@ SMODS.Blind {
             local destroys_cards = {
                 ['j_trading'] = true,
                 ['j_sixth_sense'] = true,
-                ['c_Witch_brew_butcher_job'] = true,
+                ['c_reality_warp_butcher_job'] = true,
                 ['j_c_butcher'] = true
             }
             if destroys_cards[key] then return false end
@@ -750,7 +750,7 @@ end
 -- 12. The Doppelgänger (El Doppelgänger - Showdown Boss)
 SMODS.Blind {
     key = 'doppelganger',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 5, y = 1 },
     dollars = 8,
     mult = 2,
@@ -897,7 +897,7 @@ SMODS.Blind {
         end
         G.GAME.doppelganger_target = nil
         G.GAME.doppelganger_target_name = nil
-        reset_witch_brew_boss_ui()
+        reset_reality_warp_boss_ui()
     end,
     disable = function(self)
         if G.jokers and G.jokers.cards then
@@ -915,14 +915,14 @@ SMODS.Blind {
         end
         G.GAME.doppelganger_target = nil
         G.GAME.doppelganger_target_name = nil
-        reset_witch_brew_boss_ui()
+        reset_reality_warp_boss_ui()
     end
 }
 
 -- 12. Chronos (Supreme Showdown Boss)
 SMODS.Blind {
     key = 'chronos',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 0, y = 2 },
     dollars = 10,
     mult = 4,
@@ -970,7 +970,7 @@ SMODS.Blind {
 -- 13. Ares (Supreme Showdown Boss)
 SMODS.Blind {
     key = 'ares',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 1, y = 2 },
     dollars = 10,
     mult = 4,
@@ -1036,7 +1036,7 @@ SMODS.Blind {
 -- 14. Athena (Supreme Showdown Boss)
 SMODS.Blind {
     key = 'athena',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 2, y = 2 },
     dollars = 10,
     mult = 4,
@@ -1086,7 +1086,7 @@ SMODS.Blind {
         local matches = (text == self.target_hand)
         if G.jokers and G.jokers.cards then
             for _, j in ipairs(G.jokers.cards) do
-                if not (j.edition and (j.edition.blessed or j.edition.bendecido or j.edition.key == 'e_Witch_brew_blessed' or j.edition.key == 'e_blessed')) then
+                if not (j.edition and (j.edition.blessed or j.edition.bendecido or j.edition.key == 'e_reality_warp_blessed' or j.edition.key == 'e_blessed')) then
                     j:set_debuff(not matches)
                 else
                     j:set_debuff(false)
@@ -1139,7 +1139,7 @@ SMODS.Blind {
                 j:set_debuff(false)
             end
         end
-        reset_witch_brew_boss_ui()
+        reset_reality_warp_boss_ui()
     end,
     disable = function(self)
         self.target_hand = nil
@@ -1149,14 +1149,14 @@ SMODS.Blind {
                 j:set_debuff(false)
             end
         end
-        reset_witch_brew_boss_ui()
+        reset_reality_warp_boss_ui()
     end
 }
 
 -- 15. Hades (Supreme Showdown Boss)
 SMODS.Blind {
     key = 'hades',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 3, y = 2 },
     dollars = 10,
     mult = 4,
@@ -1256,7 +1256,7 @@ SMODS.Blind {
 -- 16. Zeus (Supreme Showdown Boss)
 SMODS.Blind {
     key = 'zeus',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 4, y = 2 },
     dollars = 10,
     mult = 4,
@@ -1298,7 +1298,7 @@ SMODS.Blind {
 -- 17. The Arrow (La Flecha - Showdown Boss)
 SMODS.Blind {
     key = 'arrow',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 0, y = 3 },
     dollars = 8,
     mult = 2,
@@ -1351,7 +1351,7 @@ SMODS.Blind {
 -- 18. The Guillotine (La Guillotina - Showdown Boss)
 SMODS.Blind {
     key = 'guillotine',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 1, y = 3 },
     dollars = 8,
     mult = 2,
@@ -1399,7 +1399,7 @@ SMODS.Blind {
 -- 19. The Net (La Red - Showdown Boss)
 SMODS.Blind {
     key = 'net',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 2, y = 3 },
     dollars = 8,
     mult = 2,
@@ -1457,7 +1457,7 @@ SMODS.Blind {
 -- 20. The Poison (El Veneno - Showdown Boss)
 SMODS.Blind {
     key = 'poison',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 3, y = 3 },
     dollars = 8,
     mult = 2,
@@ -1497,7 +1497,7 @@ SMODS.Blind {
 -- 21. The Code (El Código - Showdown Boss)
 SMODS.Blind {
     key = 'code',
-    atlas = 'witch_brew_blinds',
+    atlas = 'reality_warp_blinds',
     pos = { x = 4, y = 3 },
     dollars = 8,
     mult = 2,
@@ -1544,13 +1544,13 @@ SMODS.Blind {
 }
 
 local function sync_blind_atlases()
-    local atlas_obj = (SMODS and SMODS.Atlases and SMODS.Atlases['witch_brew_blinds']) or (G.ASSET_ATLAS and G.ASSET_ATLAS['witch_brew_blinds']) or (G.ANIMATION_ATLAS and G.ANIMATION_ATLAS['witch_brew_blinds'])
+    local atlas_obj = (SMODS and SMODS.Atlases and SMODS.Atlases['reality_warp_blinds']) or (G.ASSET_ATLAS and G.ASSET_ATLAS['reality_warp_blinds']) or (G.ANIMATION_ATLAS and G.ANIMATION_ATLAS['reality_warp_blinds'])
     if atlas_obj then
         atlas_obj.frames = 1
-        if G.ASSET_ATLAS and not G.ASSET_ATLAS['witch_brew_blinds'] then G.ASSET_ATLAS['witch_brew_blinds'] = atlas_obj end
-        if G.ANIMATION_ATLAS and not G.ANIMATION_ATLAS['witch_brew_blinds'] then G.ANIMATION_ATLAS['witch_brew_blinds'] = atlas_obj end
+        if G.ASSET_ATLAS and not G.ASSET_ATLAS['reality_warp_blinds'] then G.ASSET_ATLAS['reality_warp_blinds'] = atlas_obj end
+        if G.ANIMATION_ATLAS and not G.ANIMATION_ATLAS['reality_warp_blinds'] then G.ANIMATION_ATLAS['reality_warp_blinds'] = atlas_obj end
     end
-    sync_witch_brew_blind_colours()
+    sync_reality_warp_blind_colours()
 end
 
 sync_blind_atlases()

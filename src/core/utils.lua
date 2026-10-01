@@ -1,4 +1,4 @@
--- Core Utilities & Engine Hooks for Witch_Brew
+-- Core Utilities & Engine Hooks for reality_warp
 
 if not to_number then
     function to_number(x)
@@ -395,25 +395,25 @@ if Card.generate_card_ui then
 end
 
 -- Dynamic Mod Badge Colors (cycling between black and white)
-G.C.WITCH_BREW_BADGE_COL = G.C.WITCH_BREW_BADGE_COL or { 0, 0, 0, 1 }
-G.C.WITCH_BREW_TEXT_COL = G.C.WITCH_BREW_TEXT_COL or { 1, 1, 1, 1 }
+G.C.reality_warp_BADGE_COL = G.C.reality_warp_BADGE_COL or { 0, 0, 0, 1 }
+G.C.reality_warp_TEXT_COL = G.C.reality_warp_TEXT_COL or { 1, 1, 1, 1 }
 
-if not G.witch_brew_badge_timer_hooked and Game and Game.update then
-    G.witch_brew_badge_timer_hooked = true
+if not G.reality_warp_badge_timer_hooked and Game and Game.update then
+    G.reality_warp_badge_timer_hooked = true
     local orig_game_update = Game.update
     function Game:update(dt)
         orig_game_update(self, dt)
         if G.TIMERS and G.TIMERS.REAL then
             local t = (math.sin(G.TIMERS.REAL * 2.5) + 1) * 0.5
-            G.C.WITCH_BREW_BADGE_COL[1] = t
-            G.C.WITCH_BREW_BADGE_COL[2] = t
-            G.C.WITCH_BREW_BADGE_COL[3] = t
-            G.C.WITCH_BREW_BADGE_COL[4] = 1
+            G.C.reality_warp_BADGE_COL[1] = t
+            G.C.reality_warp_BADGE_COL[2] = t
+            G.C.reality_warp_BADGE_COL[3] = t
+            G.C.reality_warp_BADGE_COL[4] = 1
 
-            G.C.WITCH_BREW_TEXT_COL[1] = 1 - t
-            G.C.WITCH_BREW_TEXT_COL[2] = 1 - t
-            G.C.WITCH_BREW_TEXT_COL[3] = 1 - t
-            G.C.WITCH_BREW_TEXT_COL[4] = 1
+            G.C.reality_warp_TEXT_COL[1] = 1 - t
+            G.C.reality_warp_TEXT_COL[2] = 1 - t
+            G.C.reality_warp_TEXT_COL[3] = 1 - t
+            G.C.reality_warp_TEXT_COL[4] = 1
         end
     end
 end
@@ -426,10 +426,10 @@ function create_badge(text, badge_colour, text_colour, scale)
     end
     if type(text) == 'string' then
         local t_lower = string.lower(text)
-        if t_lower == 'witch_brew' or t_lower == 'witch_brew_expansion' or t_lower == 'witcher_brew_expansion' or t_lower == 'witcher brew expansion' or t_lower == 'reality warp' or t_lower == 'balatro: reality warp' or string.find(t_lower, 'witch.*brew') or string.find(t_lower, 'reality.*warp') then
+        if t_lower == 'reality_warp' or t_lower == 'reality_warp_expansion' or t_lower == 'reality_warp_expansion' or t_lower == 'witcher brew expansion' or t_lower == 'reality warp' or t_lower == 'balatro: reality warp' or string.find(t_lower, 'witch.*brew') or string.find(t_lower, 'reality.*warp') then
             text = 'Reality Warp'
-            badge_colour = G.C.WITCH_BREW_BADGE_COL
-            text_colour = G.C.WITCH_BREW_TEXT_COL
+            badge_colour = G.C.reality_warp_BADGE_COL
+            text_colour = G.C.reality_warp_TEXT_COL
         end
     end
     if G.GAME_IS_RENDERING_SECRET_CARD and (text == 'Legendary' or text == 'Legendario' or text == 'Secret' or text == 'Secreto' or text == 'Outsider' or (localize and text == localize('k_legendary'))) then
@@ -457,7 +457,7 @@ function check_witcher_joker_achievements()
     for _, j in ipairs(G.jokers.cards) do
         local k = (j.config and j.config.center and j.config.center.key) or ''
         local rarity = (j.config and j.config.center and j.config.center.rarity) or 1
-        local is_mod = string.find(k, 'Witch_brew') or string.find(k, 'witch')
+        local is_mod = string.find(k, 'reality_warp') or string.find(k, 'witch')
 
         if is_mod then
             mod_joker_count = mod_joker_count + 1
@@ -525,7 +525,7 @@ function Card:open()
     local is_mod_pack = self.ability and self.ability.set == 'Booster' and (
         is_job_pack or
         (self.ability.name and (string.find(self.ability.name, 'witch') or string.find(self.ability.name, 'alchemy') or string.find(self.ability.name, 'potion'))) or
-        (self.config and self.config.center and self.config.center.key and (string.find(self.config.center.key, 'Witch_brew') or string.find(self.config.center.key, 'witch') or string.find(self.config.center.key, 'alchemy')))
+        (self.config and self.config.center and self.config.center.key and (string.find(self.config.center.key, 'reality_warp') or string.find(self.config.center.key, 'witch') or string.find(self.config.center.key, 'alchemy')))
     )
     if is_mod_pack and botg_trigger_mod_achievement then
         botg_trigger_mod_achievement('herb_forager')
@@ -603,13 +603,13 @@ end
 local card_redeem_ref = Card.redeem
 function Card:redeem(...)
     local key = (self.config and self.config.center and self.config.center.key) or self.config.center_key or (self.ability and self.ability.name)
-    if key == 'v_blank' or key == 'v_Witch_brew_blank' or key == 'blank' then
+    if key == 'v_blank' or key == 'v_reality_warp_blank' or key == 'blank' then
         if G.PROFILES and G.SETTINGS and G.SETTINGS.profile and G.PROFILES[G.SETTINGS.profile] then
             G.PROFILES[G.SETTINGS.profile].blank_vouchers_bought = (G.PROFILES[G.SETTINGS.profile].blank_vouchers_bought or 0) + 1
         end
         check_for_unlock({ type = 'blank_voucher_bought' })
     end
-    if key and (string.find(key, 'catador') or string.find(key, 'critico') or string.find(key, 'Witch_brew')) then
+    if key and (string.find(key, 'catador') or string.find(key, 'critico') or string.find(key, 'reality_warp')) then
         if botg_trigger_mod_achievement then botg_trigger_mod_achievement('royal_connoisseur') end
     end
 
@@ -621,11 +621,11 @@ function Card:redeem(...)
         local keys_to_mark = {
             raw_key,
             c_key,
-            string.gsub(raw_key, 'Witch_brew_', 'Witch brew_'),
-            string.gsub(raw_key, 'Witch brew_', 'Witch_brew_'),
-            string.gsub(raw_key, 'v_Witch_brew_', 'v_'),
+            string.gsub(raw_key, 'reality_warp_', 'Witch brew_'),
+            string.gsub(raw_key, 'Witch brew_', 'reality_warp_'),
+            string.gsub(raw_key, 'v_reality_warp_', 'v_'),
             string.gsub(raw_key, 'v_Witch brew_', 'v_'),
-            string.gsub(raw_key, 'v_Witch_brew_', ''),
+            string.gsub(raw_key, 'v_reality_warp_', ''),
             string.gsub(raw_key, 'v_Witch brew_', '')
         }
         if G.GAME then
@@ -652,7 +652,7 @@ end
 if eval_card then
     local eval_card_ref = eval_card
     function eval_card(card, context)
-        if G.GAME and G.GAME.witch_brew_hand_debuffed and context and (context.after or context.joker_main or context.before) then
+        if G.GAME and G.GAME.reality_warp_hand_debuffed and context and (context.after or context.joker_main or context.before) then
             return {}, {}
         end
         local ret, post_trig = eval_card_ref(card, context)
@@ -666,7 +666,7 @@ end
 
 -- Blind hook for Stick Penalty & Custom Boss Backgrounds
 -- Helper to reset UI and background colors back to Balatro originals after Boss Blind
-function reset_witch_brew_boss_ui(state)
+function reset_reality_warp_boss_ui(state)
     -- If currently in an active, non-disabled blind during round gameplay, NEVER reset!
     if G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
         local cur_state = state or (G and G.STATE)
@@ -730,19 +730,19 @@ end
 if ease_background_colour then
     local orig_ease_bg = ease_background_colour
     function ease_background_colour(args)
-        if args and not args._is_witch_brew_theme and G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
+        if args and not args._is_reality_warp_theme and G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
             local is_pack = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or
                              G.STATE == G.STATES.STANDARD_PACK or G.STATE == G.STATES.BUFFOON_PACK or
                              G.STATE == G.STATES.PLANET_PACK)
             local not_in_menu = (G.STATE ~= G.STATES.SHOP and G.STATE ~= G.STATES.ROUND_EVAL and G.STATE ~= G.STATES.BLIND_SELECT)
             if not_in_menu and not is_pack then
-                local theme = get_witch_brew_blind_theme and get_witch_brew_blind_theme(G.GAME.blind)
+                local theme = get_reality_warp_blind_theme and get_reality_warp_blind_theme(G.GAME.blind)
                 if theme then
                     args.new_colour = theme.new_colour
                     args.special_colour = theme.special_colour
                     args.tertiary_colour = theme.tertiary_colour
                     args.contrast = theme.contrast or 2
-                    args._is_witch_brew_theme = true
+                    args._is_reality_warp_theme = true
                 elseif G.GAME.blind.boss then
                     local def_small = (G.C and G.C.BLIND and G.C.BLIND['Small'])
                     local is_default_bg = (args.new_colour == def_small) or (type(args.new_colour) == 'table' and def_small and args.new_colour[1] == def_small[1] and args.new_colour[2] == def_small[2] and args.new_colour[3] == def_small[3])
@@ -754,12 +754,12 @@ if ease_background_colour then
     end
 end
 
--- Hook Blind:change_colour to apply Witch_brew theme or fallback cleanly
+-- Hook Blind:change_colour to apply reality_warp theme or fallback cleanly
 if Blind and Blind.change_colour then
     local orig_blind_change_colour = Blind.change_colour
     function Blind:change_colour(blind_col)
         if self.boss and not self.disabled then
-            local theme = get_witch_brew_blind_theme and get_witch_brew_blind_theme(self)
+            local theme = get_reality_warp_blind_theme and get_reality_warp_blind_theme(self)
             if theme then
                 if G.C and G.C.DYN_UI then
                     if theme.boss_colour then ease_colour(G.C.DYN_UI.BOSS_MAIN, theme.boss_colour) end
@@ -785,12 +785,12 @@ if ease_background_colour_blind then
                          state == G.STATES.STANDARD_PACK or state == G.STATES.BUFFOON_PACK or
                          state == G.STATES.PLANET_PACK)
 
-        -- Check if current active blind is a Witch_brew Boss Blind
+        -- Check if current active blind is a reality_warp Boss Blind
         local theme = nil
         if not is_pack and blind and blind.boss and not blind.disabled then
-            theme = get_witch_brew_blind_theme and get_witch_brew_blind_theme(blind)
+            theme = get_reality_warp_blind_theme and get_reality_warp_blind_theme(blind)
         elseif not is_pack and blindname ~= '' and blindname ~= 'Small Blind' and blindname ~= 'Big Blind' then
-            theme = get_witch_brew_blind_theme and get_witch_brew_blind_theme(blindname)
+            theme = get_reality_warp_blind_theme and get_reality_warp_blind_theme(blindname)
         end
 
         if theme and state ~= G.STATES.SHOP and state ~= G.STATES.ROUND_EVAL then
@@ -801,7 +801,7 @@ if ease_background_colour_blind then
         orig_ease_bg_blind(state, blind_override)
 
         if state == G.STATES.ROUND_EVAL or state == G.STATES.BLIND_SELECT or state == G.STATES.SHOP or blind_override == '' then
-            reset_witch_brew_boss_ui(state)
+            reset_reality_warp_boss_ui(state)
         end
     end
 end
@@ -829,7 +829,7 @@ local function reset_sale_tag_effects()
             end
             if G.jokers and G.jokers.cards then
                 for _, j in ipairs(G.jokers.cards) do
-                    if j.config and j.config.center and (j.config.center.key == 'j_Witch_brew_merchant_joker' or j.config.center.key == 'j_crack_businessman' or j.config.center.name == 'Merchant' or j.config.center.name == 'Businessman') then
+                    if j.config and j.config.center and (j.config.center.key == 'j_reality_warp_merchant_joker' or j.config.center.key == 'j_crack_businessman' or j.config.center.name == 'Merchant' or j.config.center.name == 'Businessman') then
                         legitimate_discount = legitimate_discount + 25
                     end
                 end
@@ -847,7 +847,7 @@ if G.FUNCS and G.FUNCS.toggle_shop then
     G.FUNCS.toggle_shop = function(e)
         reset_sale_tag_effects()
         local ret = orig_toggle_shop(e)
-        reset_witch_brew_boss_ui(G.STATES.BLIND_SELECT)
+        reset_reality_warp_boss_ui(G.STATES.BLIND_SELECT)
         return ret
     end
 end
@@ -872,12 +872,12 @@ function Blind:set_blind(blind, reset, silent)
     end
 
     if blind and self.boss and not self.disabled then
-        local theme = get_witch_brew_blind_theme and get_witch_brew_blind_theme(self)
+        local theme = get_reality_warp_blind_theme and get_reality_warp_blind_theme(self)
         if theme and ease_custom_blind_background then
             ease_custom_blind_background(self)
         end
     elseif not blind or not self.boss or self.disabled then
-        reset_witch_brew_boss_ui()
+        reset_reality_warp_boss_ui()
     end
 
     return ret
@@ -888,7 +888,7 @@ if Blind.disable then
     local blind_disable_ref = Blind.disable
     function Blind:disable()
         local ret = blind_disable_ref(self)
-        reset_witch_brew_boss_ui()
+        reset_reality_warp_boss_ui()
         return ret
     end
 end
@@ -898,12 +898,12 @@ if Blind.defeat then
     local blind_defeat_ref = Blind.defeat
     function Blind:defeat(silent)
         local ret = blind_defeat_ref(self, silent)
-        reset_witch_brew_boss_ui()
+        reset_reality_warp_boss_ui()
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
             delay = 0.5,
             func = function()
-                reset_witch_brew_boss_ui()
+                reset_reality_warp_boss_ui()
                 return true
             end
         }))
@@ -912,7 +912,7 @@ if Blind.defeat then
         if self.boss and G.GAME and G.GAME.current_round and (G.GAME.current_round.hands_played or 0) <= 1 then
             local b_key = (self.config and self.config.blind and self.config.blind.key) or (G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key)
             local suffix = b_key and b_key:match('^bl_(.+)$')
-            local fam_key = suffix and ('c_Witch_brew_baby_' .. suffix)
+            local fam_key = suffix and ('c_reality_warp_baby_' .. suffix)
             local center = fam_key and G.P_CENTERS[fam_key]
             if center and (center.unlocked == false or not center.discovered) then
                 unlock_card(center)
@@ -937,33 +937,33 @@ if Blind.defeat then
 
         -- Mod Joker Unlock tracking upon Blind defeat
         if G.GAME then
-            G.GAME.witch_brew_blinds_defeated = (G.GAME.witch_brew_blinds_defeated or 0) + 1
+            G.GAME.reality_warp_blinds_defeated = (G.GAME.reality_warp_blinds_defeated or 0) + 1
             if G.GAME.chips and self.chips and G.GAME.chips >= (self.chips * 2) then
-                G.GAME.witch_brew_cascade_double = true
-                G.GAME.witch_brew_cascada_double = true
+                G.GAME.reality_warp_cascade_double = true
+                G.GAME.reality_warp_cascada_double = true
             end
             local disc_used = (G.GAME.current_round and G.GAME.current_round.discards_used) or 0
             if disc_used == 0 then
-                G.GAME.witch_brew_no_discard_win = true
+                G.GAME.reality_warp_no_discard_win = true
             end
             if self.boss then
-                G.GAME.witch_brew_boss_defeated = true
-                G.GAME.witch_brew_bosses_slain = (G.GAME.witch_brew_bosses_slain or 0) + 1
-                G.GAME.witch_brew_bosses_slain_types = G.GAME.witch_brew_bosses_slain_types or {}
+                G.GAME.reality_warp_boss_defeated = true
+                G.GAME.reality_warp_bosses_slain = (G.GAME.reality_warp_bosses_slain or 0) + 1
+                G.GAME.reality_warp_bosses_slain_types = G.GAME.reality_warp_bosses_slain_types or {}
                 local bkey = (self.config and self.config.blind and self.config.blind.key) or (self.name or 'Boss')
-                G.GAME.witch_brew_bosses_slain_types[bkey] = true
+                G.GAME.reality_warp_bosses_slain_types[bkey] = true
                 if disc_used == 0 then
-                    G.GAME.witch_brew_boss_nodiscard = true
+                    G.GAME.reality_warp_boss_nodiscard = true
                 end
             end
             if check_for_unlock then
                 check_for_unlock({ type = 'defeat_blind', blind = self })
-                if G.GAME.witch_brew_cascade_double then check_for_unlock({ type = 'cascade_double' }) end
-                if G.GAME.witch_brew_no_discard_win then check_for_unlock({ type = 'no_discard_win' }) end
-                if G.GAME.witch_brew_boss_nodiscard then check_for_unlock({ type = 'boss_nodiscard' }) end
-                if G.GAME.witch_brew_bosses_slain and G.GAME.witch_brew_bosses_slain >= 5 then check_for_unlock({ type = 'mercenary' }) end
-                if G.GAME.witch_brew_bosses_slain and G.GAME.witch_brew_bosses_slain >= 10 then check_for_unlock({ type = 'world_devourer' }) end
-                if G.GAME.witch_brew_blinds_defeated and G.GAME.witch_brew_blinds_defeated >= 10 then check_for_unlock({ type = 'entomologist' }) end
+                if G.GAME.reality_warp_cascade_double then check_for_unlock({ type = 'cascade_double' }) end
+                if G.GAME.reality_warp_no_discard_win then check_for_unlock({ type = 'no_discard_win' }) end
+                if G.GAME.reality_warp_boss_nodiscard then check_for_unlock({ type = 'boss_nodiscard' }) end
+                if G.GAME.reality_warp_bosses_slain and G.GAME.reality_warp_bosses_slain >= 5 then check_for_unlock({ type = 'mercenary' }) end
+                if G.GAME.reality_warp_bosses_slain and G.GAME.reality_warp_bosses_slain >= 10 then check_for_unlock({ type = 'world_devourer' }) end
+                if G.GAME.reality_warp_blinds_defeated and G.GAME.reality_warp_blinds_defeated >= 10 then check_for_unlock({ type = 'entomologist' }) end
             end
         end
 
@@ -995,20 +995,20 @@ if G.FUNCS and G.FUNCS.evaluate_play then
     local orig_eval_play = G.FUNCS.evaluate_play
     G.FUNCS.evaluate_play = function(e)
         if G.GAME and G.play and G.play.cards then
-            G.GAME.witch_brew_countdown_cards = (G.GAME.witch_brew_countdown_cards or 0) + #G.play.cards
+            G.GAME.reality_warp_countdown_cards = (G.GAME.reality_warp_countdown_cards or 0) + #G.play.cards
             local hand_text = G.FUNCS.get_poker_hand_info and G.FUNCS.get_poker_hand_info(G.play.cards)
             if hand_text then
-                G.GAME.witch_brew_diff_hands_map = G.GAME.witch_brew_diff_hands_map or {}
-                G.GAME.witch_brew_diff_hands_map[hand_text] = true
+                G.GAME.reality_warp_diff_hands_map = G.GAME.reality_warp_diff_hands_map or {}
+                G.GAME.reality_warp_diff_hands_map[hand_text] = true
                 local d_cnt = 0
-                for _ in pairs(G.GAME.witch_brew_diff_hands_map) do d_cnt = d_cnt + 1 end
-                G.GAME.witch_brew_diff_hands = d_cnt
+                for _ in pairs(G.GAME.reality_warp_diff_hands_map) do d_cnt = d_cnt + 1 end
+                G.GAME.reality_warp_diff_hands = d_cnt
             end
             if check_for_unlock then
-                if G.GAME.witch_brew_countdown_cards == 10 then
+                if G.GAME.reality_warp_countdown_cards == 10 then
                     check_for_unlock({ type = 'countdown_cards' })
                 end
-                if G.GAME.witch_brew_diff_hands and G.GAME.witch_brew_diff_hands >= 3 then
+                if G.GAME.reality_warp_diff_hands and G.GAME.reality_warp_diff_hands >= 3 then
                     check_for_unlock({ type = 'diff_hands' })
                 end
                 if G.jokers and G.jokers.cards and #G.jokers.cards == 0 then
@@ -1025,12 +1025,12 @@ if reset_round then
     function reset_round()
         orig_reset_round()
         if G.GAME then
-            G.GAME.witch_brew_countdown_cards = 0
-            G.GAME.witch_brew_diff_hands_map = {}
-            G.GAME.witch_brew_diff_hands = 0
-            G.GAME.witch_brew_cascade_double = nil
-            G.GAME.witch_brew_cascada_double = nil
-            G.GAME.witch_brew_no_discard_win = nil
+            G.GAME.reality_warp_countdown_cards = 0
+            G.GAME.reality_warp_diff_hands_map = {}
+            G.GAME.reality_warp_diff_hands = 0
+            G.GAME.reality_warp_cascade_double = nil
+            G.GAME.reality_warp_cascada_double = nil
+            G.GAME.reality_warp_no_discard_win = nil
         end
     end
 end
@@ -1039,7 +1039,7 @@ if win_game then
     local orig_win_game = win_game
     function win_game(...)
         if G.GAME then
-            G.GAME.witch_brew_run_won = true
+            G.GAME.reality_warp_run_won = true
             if check_for_unlock then
                 check_for_unlock({ type = 'win_game' })
             end
@@ -1066,7 +1066,7 @@ end
 -- Mountain Blind consumable check & Layered SFX for Consumables
 local use_card_ref = Card.use_consumeable
 function Card:use_consumeable(area, copier)
-    if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'b_Witch_brew_mountain' or G.GAME.blind.name == 'mountain' or G.GAME.blind.key == 'b_Witch_brew_mountain' or G.GAME.blind.name == 'The Mountain') and not G.GAME.blind.disabled then
+    if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'b_reality_warp_mountain' or G.GAME.blind.name == 'mountain' or G.GAME.blind.key == 'b_reality_warp_mountain' or G.GAME.blind.name == 'The Mountain') and not G.GAME.blind.disabled then
         G.GAME.mountain_disabled_hand = true
         if G.GAME.blind.wiggle then G.GAME.blind:wiggle() end
         if G.hand and G.hand.parse_highlighted then
@@ -1078,7 +1078,7 @@ function Card:use_consumeable(area, copier)
     local set = (self.ability and self.ability.set) or (self.config and self.config.center and self.config.center.set)
     local ckey = (self.config and self.config.center and self.config.center.key) or (self.config and self.config.center_key) or ''
 
-    if set == 'Potion' and (ckey == 'c_Witch_brew_potion_amalgam' or ckey == 'potion_amalgam' or ckey == 'c_Witch_brew_potion_amalgama' or ckey == 'potion_amalgama' or string.find(ckey, 'amalgam', 1, true) or string.find(ckey, 'amalgama', 1, true)) then
+    if set == 'Potion' and (ckey == 'c_reality_warp_potion_amalgam' or ckey == 'potion_amalgam' or ckey == 'c_reality_warp_potion_amalgama' or ckey == 'potion_amalgama' or string.find(ckey, 'amalgam', 1, true) or string.find(ckey, 'amalgama', 1, true)) then
         -- Amalgam Potion: Resonant deep thud + magical prism chord
         if botg_trigger_mod_achievement then
             botg_trigger_mod_achievement('witcher_amalgam')
@@ -1103,7 +1103,7 @@ function Card:use_consumeable(area, copier)
         play_sound('crumple1', 0.9, 0.9)
         play_sound('tarot1', 0.7, 0.85)
         play_sound('coin6', 1.45, 0.75)
-    elseif set == 'Spectral' and (string.find(ckey, 'Witch_brew') or (self.config and self.config.center and self.config.center.atlas == 'c_spectrals')) then
+    elseif set == 'Spectral' and (string.find(ckey, 'reality_warp') or (self.config and self.config.center and self.config.center.atlas == 'c_spectrals')) then
         -- Mod Spectrals: Deep ethereal gong + spectral chime
         if botg_trigger_mod_achievement then
             botg_trigger_mod_achievement('mutagenic_trial')
@@ -1118,7 +1118,7 @@ function Card:use_consumeable(area, copier)
     -- Ensure custom/boss blind background is preserved when using any consumable during round gameplay
     if G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
         local blind = G.GAME.blind
-        local theme = get_witch_brew_blind_theme and get_witch_brew_blind_theme(blind)
+        local theme = get_reality_warp_blind_theme and get_reality_warp_blind_theme(blind)
         if G.E_MANAGER then
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
@@ -1162,7 +1162,7 @@ function Card:set_ability(center, initial, delay_sprites)
             self.config.center_key = center.key
         end
         local ckey = tostring(center.key or '')
-        if string.find(ckey, 'Witch_brew') or string.find(ckey, 'Witch brew') then
+        if string.find(ckey, 'reality_warp') or string.find(ckey, 'Witch brew') then
             local clean_name = (center.loc_txt and center.loc_txt.name) or (center.name and not string.find(center.name, '^[jvc]_') and center.name)
             if clean_name then
                 self.label = clean_name
@@ -1197,9 +1197,9 @@ function Card:update(dt)
         local discards_used = (G.GAME and G.GAME.current_round and G.GAME.current_round.discards_used) or 0
 
         local should_tremble = false
-        if key == 'j_Witch_brew_bluxdir' and hands_played == 0 then
+        if key == 'j_reality_warp_bluxdir' and hands_played == 0 then
             should_tremble = true
-        elseif (key == 'j_Witch_brew_extended_hand' or key == 'j_Witch_brew_mano_extendida') and discards_used == 0 then
+        elseif (key == 'j_reality_warp_extended_hand' or key == 'j_reality_warp_mano_extendida') and discards_used == 0 then
             should_tremble = true
         elseif (key == 'j_dna' or key == 'j_trading_card' or key == 'j_sixth_sense' or key == 'j_seance' or key == 'j_superposition') and hands_played == 0 then
             should_tremble = true
@@ -1294,7 +1294,7 @@ end
 -- Silver Seal Hand XMult Hook (Steel card with Silver Seal gives X2.5 in hand)
 local card_get_chip_h_x_mult_ref = Card.get_chip_h_x_mult
 function Card:get_chip_h_x_mult()
-    local is_silver = (self.seal == 'silver' or self.seal == 'Witch_brew_silver')
+    local is_silver = (self.seal == 'silver' or self.seal == 'reality_warp_silver')
     local is_steel = (self.ability and self.ability.name == 'Steel Card') or (self.config and self.config.center == G.P_CENTERS.m_steel)
     if is_silver and is_steel then
         return 2.5
@@ -1351,12 +1351,12 @@ end
 -- Voucher & Rarity calculation helpers
 local function has_taster_voucher()
     if not G.GAME or not G.GAME.used_vouchers then return false end
-    return G.GAME.used_vouchers.v_Witch_brew_catador or G.GAME.used_vouchers.v_catador or G.GAME.used_vouchers.catador
+    return G.GAME.used_vouchers.v_reality_warp_catador or G.GAME.used_vouchers.v_catador or G.GAME.used_vouchers.catador
 end
 
 local function has_critic_voucher()
     if not G.GAME or not G.GAME.used_vouchers then return false end
-    return G.GAME.used_vouchers.v_Witch_brew_critico or G.GAME.used_vouchers.v_critico or G.GAME.used_vouchers.critico
+    return G.GAME.used_vouchers.v_reality_warp_critico or G.GAME.used_vouchers.v_critico or G.GAME.used_vouchers.critico
 end
 
 local function is_common_rarity(r)
@@ -1518,7 +1518,7 @@ function create_card(type, area, legendary, _rarity, skip_materialize, soulable,
     end
 
     if not forced_key and type == 'Spectral' and (area == G.pack_cards or key_append == 'spe' or (G.pack_cards and area == G.pack_cards)) then
-        local muchachada_center_key = (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_the_gang'] and 'c_Witch_brew_the_gang') or (G.P_CENTERS and G.P_CENTERS['c_Witch_brew_la_muchachada'] and 'c_Witch_brew_la_muchachada') or 'c_the_gang'
+        local muchachada_center_key = (G.P_CENTERS and G.P_CENTERS['c_reality_warp_the_gang'] and 'c_reality_warp_the_gang') or (G.P_CENTERS and G.P_CENTERS['c_reality_warp_la_muchachada'] and 'c_reality_warp_la_muchachada') or 'c_the_gang'
         local allow_spawn = not (G.GAME and G.GAME.used_jokers and G.GAME.used_jokers[muchachada_center_key]) or player_has_showman()
         if allow_spawn then
             local ante = (G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante) or 1
@@ -1605,7 +1605,7 @@ function Card:calculate_joker(context, ...)
 
     -- Doppelgänger: Track if the possessed Joker triggers during hand scoring
     local is_doppel_active = G.GAME and G.GAME.blind and not G.GAME.blind.disabled and 
-        (G.GAME.blind.name == 'doppelganger' or G.GAME.blind.name == 'The Doppelgänger' or G.GAME.blind.key == 'b_Witch_brew_doppelganger' or G.GAME.blind.key == 'doppelganger' or (G.GAME.blind.config and G.GAME.blind.config.blind and (G.GAME.blind.config.blind.key == 'doppelganger' or G.GAME.blind.config.blind.key == 'b_Witch_brew_doppelganger')))
+        (G.GAME.blind.name == 'doppelganger' or G.GAME.blind.name == 'The Doppelgänger' or G.GAME.blind.key == 'b_reality_warp_doppelganger' or G.GAME.blind.key == 'doppelganger' or (G.GAME.blind.config and G.GAME.blind.config.blind and (G.GAME.blind.config.blind.key == 'doppelganger' or G.GAME.blind.config.blind.key == 'b_reality_warp_doppelganger')))
 
     local ret, post = calculate_joker_ref(self, context, ...)
 
@@ -1621,7 +1621,7 @@ function Card:calculate_joker(context, ...)
 
     if ret and type(ret) == 'table' and next(ret) and not self.debuff and context and not context.falta_de_lectura_check then
         local key = (self.config and self.config.center and self.config.center.key) or self.config.center_key or (self.ability and self.ability.name)
-        local is_self = (key == 'j_Witch_brew_falta_de_lectura_joker' or key == 'falta_de_lectura_joker' or key == 'j_falta_de_lectura_joker' or key == 'falta_de_lectura' or card_has_key(self, 'reading_deficiency_joker'))
+        local is_self = (key == 'j_reality_warp_falta_de_lectura_joker' or key == 'falta_de_lectura_joker' or key == 'j_falta_de_lectura_joker' or key == 'falta_de_lectura' or card_has_key(self, 'reading_deficiency_joker'))
         if not is_self then
             if context.joker_main or context.individual or context.before or context.repetition then
                 if ret.mult or ret.chips or ret.Xmult or ret.x_mult or ret.dollars or ret.x_chips or ret.p_dollars or ret.message or ret.swap then
@@ -1712,7 +1712,7 @@ function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_sou
         local doctor_card = nil
         for _, j in ipairs(G.jokers.cards) do
             local key_j = (j.config and j.config.center and j.config.center.key) or j.config.center_key or j.ability.name
-            local is_doctor = (key_j == 'j_Witch_brew_doctor_jo_joker' or key_j == 'doctor_jo_joker' or key_j == 'j_doctor_jo_joker')
+            local is_doctor = (key_j == 'j_reality_warp_doctor_jo_joker' or key_j == 'doctor_jo_joker' or key_j == 'j_doctor_jo_joker')
             if is_doctor and j ~= self and not j.getting_sliced and not j.debuff then
                 doctor_card = j
                 break
@@ -1722,7 +1722,7 @@ function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_sou
         if doctor_card then
             local key_self = (self.config and self.config.center and self.config.center.key) or self.config.center_key or self.ability.name
             local incompatible = {
-                ['j_Witch_brew_doctor_jo_joker'] = true,
+                ['j_reality_warp_doctor_jo_joker'] = true,
                 ['doctor_jo_joker'] = true,
                 ['j_doctor_jo_joker'] = true,
                 ['j_mr_bones'] = true,
@@ -1778,7 +1778,7 @@ function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_sou
 
     -- Pinza Showdown card destruction check
     if (self.playing_card or (self.ability and (self.ability.set == 'Enhanced' or self.ability.set == 'Default')) or self.base) then
-        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_Witch_brew_pinza' or G.GAME.blind.name == 'b_Witch_brew_pinza' or G.GAME.blind.name == 'The Pincer') then
+        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_reality_warp_pinza' or G.GAME.blind.name == 'b_reality_warp_pinza' or G.GAME.blind.name == 'The Pincer') then
             if not G.GAME.pinza_card_destroyed then
                 G.GAME.pinza_card_destroyed = true
                 G.E_MANAGER:add_event(Event({
@@ -1809,9 +1809,9 @@ end
 -- Ensure Custom Seals Discovery in UI and Collection and alias keys
 function ensure_custom_seals_discovered()
     local seal_groups = {
-        { 'silver', 'Witch_brew_silver', 'Witch brew_silver' },
-        { 'dark_green', 'Witch_brew_dark_green', 'Witch brew_dark_green' },
-        { 'white', 'Witch_brew_white', 'Witch brew_white' }
+        { 'silver', 'reality_warp_silver', 'Witch brew_silver' },
+        { 'dark_green', 'reality_warp_dark_green', 'Witch brew_dark_green' },
+        { 'white', 'reality_warp_white', 'Witch brew_white' }
     }
     if G and G.P_SEALS then
         for _, grp in ipairs(seal_groups) do
@@ -1856,12 +1856,12 @@ ensure_custom_seals_discovered()
 local card_set_seal_ref = Card.set_seal
 function Card:set_seal(_seal, silent, immediate)
     if _seal then
-        if _seal == 'silver' or _seal == 'Witch_brew_silver' or _seal == 'Witch brew_silver' then
-            _seal = (G.P_SEALS and (G.P_SEALS['Witch_brew_silver'] and 'Witch_brew_silver' or G.P_SEALS['Witch brew_silver'] and 'Witch brew_silver' or G.P_SEALS['silver'] and 'silver')) or 'Witch_brew_silver'
-        elseif _seal == 'dark_green' or _seal == 'Witch_brew_dark_green' or _seal == 'Witch brew_dark_green' then
-            _seal = (G.P_SEALS and (G.P_SEALS['Witch_brew_dark_green'] and 'Witch_brew_dark_green' or G.P_SEALS['Witch brew_dark_green'] and 'Witch brew_dark_green' or G.P_SEALS['dark_green'] and 'dark_green')) or 'Witch_brew_dark_green'
-        elseif _seal == 'white' or _seal == 'Witch_brew_white' or _seal == 'Witch brew_white' then
-            _seal = (G.P_SEALS and (G.P_SEALS['Witch_brew_white'] and 'Witch_brew_white' or G.P_SEALS['Witch brew_white'] and 'Witch brew_white' or G.P_SEALS['white'] and 'white')) or 'Witch_brew_white'
+        if _seal == 'silver' or _seal == 'reality_warp_silver' or _seal == 'Witch brew_silver' then
+            _seal = (G.P_SEALS and (G.P_SEALS['reality_warp_silver'] and 'reality_warp_silver' or G.P_SEALS['Witch brew_silver'] and 'Witch brew_silver' or G.P_SEALS['silver'] and 'silver')) or 'reality_warp_silver'
+        elseif _seal == 'dark_green' or _seal == 'reality_warp_dark_green' or _seal == 'Witch brew_dark_green' then
+            _seal = (G.P_SEALS and (G.P_SEALS['reality_warp_dark_green'] and 'reality_warp_dark_green' or G.P_SEALS['Witch brew_dark_green'] and 'Witch brew_dark_green' or G.P_SEALS['dark_green'] and 'dark_green')) or 'reality_warp_dark_green'
+        elseif _seal == 'white' or _seal == 'reality_warp_white' or _seal == 'Witch brew_white' then
+            _seal = (G.P_SEALS and (G.P_SEALS['reality_warp_white'] and 'reality_warp_white' or G.P_SEALS['Witch brew_white'] and 'Witch brew_white' or G.P_SEALS['white'] and 'white')) or 'reality_warp_white'
         end
     end
     return card_set_seal_ref(self, _seal, silent, immediate)
@@ -1936,34 +1936,34 @@ local _joker_key_renames = {
     ['duelo_de_valores_joker'] = 'duel_of_value_joker',
 }
 
-local _witch_brew_key_renames = {
-    ['c_Witch_brew_potion_estiramiento'] = 'c_Witch_brew_potion_stretch',
-    ['c_Witch_brew_potion_rayo'] = 'c_Witch_brew_potion_lightning',
-    ['c_Witch_brew_potion_ventisca'] = 'c_Witch_brew_potion_blizzard',
-    ['c_Witch_brew_potion_furia'] = 'c_Witch_brew_potion_fury',
-    ['c_Witch_brew_potion_amalgama'] = 'c_Witch_brew_potion_amalgam',
-    ['c_Witch_brew_potion_mercurio'] = 'c_Witch_brew_potion_mercury',
-    ['c_Witch_brew_potion_espejo'] = 'c_Witch_brew_potion_mirror',
-    ['c_Witch_brew_potion_reloj'] = 'c_Witch_brew_potion_clock',
-    ['c_Witch_brew_potion_golondrina'] = 'c_Witch_brew_potion_swallow',
-    ['c_Witch_brew_potion_lechuza'] = 'c_Witch_brew_potion_tawny_owl',
-    ['c_Witch_brew_potion_filtro_petri'] = 'c_Witch_brew_potion_petri',
-    ['c_Witch_brew_potion_oropendola'] = 'c_Witch_brew_potion_golden_oriole',
-    ['c_Witch_brew_potion_sangre_negra'] = 'c_Witch_brew_potion_black_blood',
-    ['c_Witch_brew_refuerzo'] = 'c_Witch_brew_reinforcement',
-    ['c_Witch_brew_nigromancia'] = 'c_Witch_brew_necromancy',
-    ['c_Witch_brew_erradicacion'] = 'c_Witch_brew_eradication',
-    ['c_Witch_brew_transmutacion'] = 'c_Witch_brew_transmutation',
-    ['c_Witch_brew_la_muchachada'] = 'c_Witch_brew_the_gang',
-    ['c_Witch_brew_minero_job'] = 'c_Witch_brew_miner_job',
+local _reality_warp_key_renames = {
+    ['c_reality_warp_potion_estiramiento'] = 'c_reality_warp_potion_stretch',
+    ['c_reality_warp_potion_rayo'] = 'c_reality_warp_potion_lightning',
+    ['c_reality_warp_potion_ventisca'] = 'c_reality_warp_potion_blizzard',
+    ['c_reality_warp_potion_furia'] = 'c_reality_warp_potion_fury',
+    ['c_reality_warp_potion_amalgama'] = 'c_reality_warp_potion_amalgam',
+    ['c_reality_warp_potion_mercurio'] = 'c_reality_warp_potion_mercury',
+    ['c_reality_warp_potion_espejo'] = 'c_reality_warp_potion_mirror',
+    ['c_reality_warp_potion_reloj'] = 'c_reality_warp_potion_clock',
+    ['c_reality_warp_potion_golondrina'] = 'c_reality_warp_potion_swallow',
+    ['c_reality_warp_potion_lechuza'] = 'c_reality_warp_potion_tawny_owl',
+    ['c_reality_warp_potion_filtro_petri'] = 'c_reality_warp_potion_petri',
+    ['c_reality_warp_potion_oropendola'] = 'c_reality_warp_potion_golden_oriole',
+    ['c_reality_warp_potion_sangre_negra'] = 'c_reality_warp_potion_black_blood',
+    ['c_reality_warp_refuerzo'] = 'c_reality_warp_reinforcement',
+    ['c_reality_warp_nigromancia'] = 'c_reality_warp_necromancy',
+    ['c_reality_warp_erradicacion'] = 'c_reality_warp_eradication',
+    ['c_reality_warp_transmutacion'] = 'c_reality_warp_transmutation',
+    ['c_reality_warp_la_muchachada'] = 'c_reality_warp_the_gang',
+    ['c_reality_warp_minero_job'] = 'c_reality_warp_miner_job',
 }
 for old_k, new_k in pairs(_joker_key_renames) do
-    _witch_brew_key_renames['j_Witch_brew_' .. old_k] = 'j_Witch_brew_' .. new_k
-    _witch_brew_key_renames['j_' .. old_k] = 'j_Witch_brew_' .. new_k
+    _reality_warp_key_renames['j_reality_warp_' .. old_k] = 'j_reality_warp_' .. new_k
+    _reality_warp_key_renames['j_' .. old_k] = 'j_reality_warp_' .. new_k
 end
 
 -- Universal center aliasing and clean display name normalization for Witcher Brew centers
-function alias_all_witch_brew_centers()
+function alias_all_reality_warp_centers()
     if G and G.P_CENTERS then
         -- Provide transparent metatable index fallback so 'Witch brew' accesses resolve without creating duplicate keys
         local mt = getmetatable(G.P_CENTERS)
@@ -1971,7 +1971,7 @@ function alias_all_witch_brew_centers()
             mt = {}
             setmetatable(G.P_CENTERS, mt)
         end
-        if not mt._witch_brew_fallback then
+        if not mt._reality_warp_fallback then
             local orig_index = mt.__index
             mt.__index = function(t, k)
                 if orig_index then
@@ -1980,16 +1980,16 @@ function alias_all_witch_brew_centers()
                 end
                 if type(k) == 'string' then
                     if string.find(k, 'Witch brew') then
-                        local clean_k = string.gsub(k, 'Witch brew', 'Witch_brew')
+                        local clean_k = string.gsub(k, 'Witch brew', 'reality_warp')
                         return rawget(t, clean_k)
                     end
-                    if _witch_brew_key_renames[k] then
-                        return rawget(t, _witch_brew_key_renames[k])
+                    if _reality_warp_key_renames[k] then
+                        return rawget(t, _reality_warp_key_renames[k])
                     end
                 end
                 return nil
             end
-            mt._witch_brew_fallback = true
+            mt._reality_warp_fallback = true
         end
 
         -- Purge duplicate alias keys that cause cards to appear twice in game data and collection
@@ -1997,7 +1997,7 @@ function alias_all_witch_brew_centers()
             if type(k) == 'string' then
                 if string.find(k, 'Witch brew_') then
                     G.P_CENTERS[k] = nil
-                elseif type(v) == 'table' and string.find(k, 'Witch_brew_') then
+                elseif type(v) == 'table' and string.find(k, 'reality_warp_') then
                     local clean_name = (v.loc_txt and v.loc_txt.name)
                     if not clean_name and G.localization and G.localization.descriptions then
                         local set_desc = G.localization.descriptions[v.set or 'Joker']
@@ -2022,7 +2022,7 @@ function alias_all_witch_brew_centers()
             if type(k) == 'string' then
                 if string.find(k, 'Witch brew_') then
                     SMODS.Centers[k] = nil
-                elseif type(v) == 'table' and string.find(k, 'Witch_brew_') then
+                elseif type(v) == 'table' and string.find(k, 'reality_warp_') then
                     local clean_name = (v.loc_txt and v.loc_txt.name) or (v.name and not string.find(v.name, '^[jvc]_') and v.name)
                     if clean_name then
                         v.name = clean_name
@@ -2039,7 +2039,7 @@ function alias_all_witch_brew_centers()
             if type(k) == 'string' then
                 if string.find(k, 'Witch brew_') then
                     SMODS.Jokers[k] = nil
-                elseif type(v) == 'table' and string.find(k, 'Witch_brew_') then
+                elseif type(v) == 'table' and string.find(k, 'reality_warp_') then
                     local clean_name = (v.loc_txt and v.loc_txt.name) or (v.name and not string.find(v.name, '^[jvc]_') and v.name)
                     if clean_name then
                         v.name = clean_name
@@ -2060,7 +2060,7 @@ function alias_all_witch_brew_centers()
                     local c = pool[i]
                     local k = c and (c.key or c.name)
                     if k then
-                        local norm_k = string.gsub(k, 'Witch brew', 'Witch_brew')
+                        local norm_k = string.gsub(k, 'Witch brew', 'reality_warp')
                         if string.find(k, 'Witch brew_') or seen[norm_k] then
                             table.remove(pool, i)
                         else
@@ -2075,20 +2075,20 @@ function alias_all_witch_brew_centers()
     -- Purge any duplicate alias keys so they never appear in pairs(G.P_CENTERS) or spawn/debug menus
     if G and G.P_CENTERS then
         for old_k, _ in pairs(_joker_key_renames) do
-            G.P_CENTERS['j_Witch_brew_' .. old_k] = nil
+            G.P_CENTERS['j_reality_warp_' .. old_k] = nil
             G.P_CENTERS['j_' .. old_k] = nil
         end
-        G.P_CENTERS['c_Witch_brew_refuerzo'] = nil
-        G.P_CENTERS['c_Witch_brew_nigromancia'] = nil
-        G.P_CENTERS['c_Witch_brew_erradicacion'] = nil
-        G.P_CENTERS['c_Witch_brew_transmutacion'] = nil
-        G.P_CENTERS['c_Witch_brew_la_muchachada'] = nil
-        G.P_CENTERS['c_Witch_brew_minero_job'] = nil
+        G.P_CENTERS['c_reality_warp_refuerzo'] = nil
+        G.P_CENTERS['c_reality_warp_nigromancia'] = nil
+        G.P_CENTERS['c_reality_warp_erradicacion'] = nil
+        G.P_CENTERS['c_reality_warp_transmutacion'] = nil
+        G.P_CENTERS['c_reality_warp_la_muchachada'] = nil
+        G.P_CENTERS['c_reality_warp_minero_job'] = nil
 
         -- If profile has Unlock All enabled, guarantee all Witcher Brew centers are discovered & unlocked
         if G.PROFILES and G.SETTINGS and G.SETTINGS.profile and G.PROFILES[G.SETTINGS.profile] and G.PROFILES[G.SETTINGS.profile].all_unlocked then
             for k, v in pairs(G.P_CENTERS) do
-                if type(k) == 'string' and (string.find(k, 'Witch_brew') or string.find(k, 'witch_brew')) then
+                if type(k) == 'string' and (string.find(k, 'reality_warp') or string.find(k, 'reality_warp')) then
                     v.unlocked = true
                     v.discovered = true
                     v.alerted = true
@@ -2104,19 +2104,19 @@ if localize then
     function localize(args, misc_cat)
         if args and type(args) == 'table' and args.type == 'name_text' and args.key then
             local key = tostring(args.key)
-            if string.find(key, 'Witch_brew') or string.find(key, 'Witch brew') or string.find(key, 'witch_brew') then
-                local c = G.P_CENTERS and (G.P_CENTERS[key] or G.P_CENTERS['j_' .. key] or G.P_CENTERS[string.gsub(key, 'Witch brew', 'Witch_brew')])
+            if string.find(key, 'reality_warp') or string.find(key, 'Witch brew') or string.find(key, 'reality_warp') then
+                local c = G.P_CENTERS and (G.P_CENTERS[key] or G.P_CENTERS['j_' .. key] or G.P_CENTERS[string.gsub(key, 'Witch brew', 'reality_warp')])
                 if c and c.loc_txt and c.loc_txt.name then
                     return c.loc_txt.name
                 end
-                if c and c.name and not string.find(c.name, '^[jvc]_') and not string.find(c.name, 'Witch_brew') and not string.find(c.name, 'Witch brew') then
+                if c and c.name and not string.find(c.name, '^[jvc]_') and not string.find(c.name, 'reality_warp') and not string.find(c.name, 'Witch brew') then
                     return c.name
                 end
                 if G.localization and G.localization.descriptions then
                     local set = args.set or (c and c.set) or 'Joker'
                     local set_desc = G.localization.descriptions[set]
                     if set_desc then
-                        local entry = set_desc[key] or set_desc['j_' .. key] or set_desc[string.gsub(key, 'Witch brew', 'Witch_brew')]
+                        local entry = set_desc[key] or set_desc['j_' .. key] or set_desc[string.gsub(key, 'Witch brew', 'reality_warp')]
                         if entry and entry.name then
                             return entry.name
                         end
@@ -2130,17 +2130,17 @@ end
 
 local card_load_ref = Card.load
 function Card:load(cardTable, other_card)
-    alias_all_witch_brew_centers()
+    alias_all_reality_warp_centers()
     if cardTable then
         if cardTable.save_fields then
             for k, v in pairs(cardTable.save_fields) do
                 if type(v) == 'string' and string.find(v, 'Witch brew') then
-                    cardTable.save_fields[k] = string.gsub(v, 'Witch brew', 'Witch_brew')
+                    cardTable.save_fields[k] = string.gsub(v, 'Witch brew', 'reality_warp')
                 end
             end
         end
         if type(cardTable.label) == 'string' and string.find(cardTable.label, 'Witch brew') then
-            cardTable.label = string.gsub(cardTable.label, 'Witch brew', 'Witch_brew')
+            cardTable.label = string.gsub(cardTable.label, 'Witch brew', 'reality_warp')
         end
     end
     return card_load_ref(self, cardTable, other_card)
@@ -2347,7 +2347,7 @@ function Card:spectral_shatter()
     self:juice_up(0.8, 0.5)
 
     -- Pinza Showdown card destruction check
-    if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_Witch_brew_pinza' or G.GAME.blind.name == 'b_Witch_brew_pinza' or G.GAME.blind.name == 'The Pincer') then
+    if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_reality_warp_pinza' or G.GAME.blind.name == 'b_reality_warp_pinza' or G.GAME.blind.name == 'The Pincer') then
         if not G.GAME.pinza_card_destroyed then
             G.GAME.pinza_card_destroyed = true
             G.E_MANAGER:add_event(Event({
@@ -2464,7 +2464,7 @@ function Card:spectral_shatter()
 end
 
 -- Helper to purge any corrupted/ghost cards from hand or deck
-function purge_witch_brew_ghost_cards()
+function purge_reality_warp_ghost_cards()
     if G.hand and G.hand.cards then
         local removed_any = false
         for i = #G.hand.cards, 1, -1 do
@@ -2501,10 +2501,10 @@ end
 if Card.shatter then
     local card_shatter_ref = Card.shatter
     function Card:shatter()
-        if (self.seal and (self.seal == 'dark_green' or self.seal == 'Witch_brew_dark_green')) or self.dark_green_broken then
+        if (self.seal and (self.seal == 'dark_green' or self.seal == 'reality_warp_dark_green')) or self.dark_green_broken then
             return self:spectral_shatter()
         end
-        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_Witch_brew_pinza' or G.GAME.blind.name == 'b_Witch_brew_pinza' or G.GAME.blind.name == 'The Pincer') then
+        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_reality_warp_pinza' or G.GAME.blind.name == 'b_reality_warp_pinza' or G.GAME.blind.name == 'The Pincer') then
             if not G.GAME.pinza_card_destroyed then
                 G.GAME.pinza_card_destroyed = true
                 G.E_MANAGER:add_event(Event({
@@ -2529,13 +2529,13 @@ end
 
 -- Boss Blinds Debuff, Hand validation warnings
 
-function is_witch_brew_blind(blind, target_key)
+function is_reality_warp_blind(blind, target_key)
     if not blind then return false end
     local k = (blind.config and blind.config.blind and (blind.config.blind.key or blind.config.blind.name))
               or (blind.config and blind.config.center and (blind.config.center.key or blind.config.center.name))
               or blind.key or blind.name or ''
-    k = string.gsub(k, '^bl_Witch_brew_', '')
-    k = string.gsub(k, '^b_Witch_brew_', '')
+    k = string.gsub(k, '^bl_reality_warp_', '')
+    k = string.gsub(k, '^b_reality_warp_', '')
     k = string.gsub(k, '^bl_', '')
     k = string.gsub(k, '^b_', '')
     if target_key then
@@ -2544,7 +2544,7 @@ function is_witch_brew_blind(blind, target_key)
     return k
 end
 
-function clear_witch_brew_phone_debuffs()
+function clear_reality_warp_phone_debuffs()
     local areas = { G.hand, G.play, G.deck, G.discard }
     for _, area in ipairs(areas) do
         if area and area.cards then
@@ -2578,7 +2578,7 @@ if Blind and Blind.debuff_hand then
         local debuffed = false
 
         -- 1. The Mountain: Consumables disable scoring on the next hand
-        if is_witch_brew_blind(self, 'mountain') then
+        if is_reality_warp_blind(self, 'mountain') then
             if G.GAME and G.GAME.mountain_disabled_hand then
                 if not check then
                     G.GAME.mountain_disabled_hand = nil
@@ -2586,17 +2586,17 @@ if Blind and Blind.debuff_hand then
                 debuffed = true
             end
         -- 2. The Door: Hands with odd number of cards (1, 3, 5) do not score
-        elseif is_witch_brew_blind(self, 'door') then
+        elseif is_reality_warp_blind(self, 'door') then
             if cards and #cards > 0 and (#cards % 2 ~= 0) then
                 debuffed = true
             end
         -- 3. The Triangle: Hands with even number of cards (2, 4) do not score
-        elseif is_witch_brew_blind(self, 'triangle') then
+        elseif is_reality_warp_blind(self, 'triangle') then
             if cards and #cards > 0 and (#cards % 2 == 0) then
                 debuffed = true
             end
         -- 4. The Guitar: Hands containing 5 cards do not score
-        elseif is_witch_brew_blind(self, 'guitar') then
+        elseif is_reality_warp_blind(self, 'guitar') then
             if cards and #cards == 5 then
                 debuffed = true
             end
@@ -2612,7 +2612,7 @@ if Blind and Blind.debuff_hand then
         if debuffed then
             self.triggered = true
             if not check then
-                G.GAME.witch_brew_hand_debuffed = true
+                G.GAME.reality_warp_hand_debuffed = true
             end
             return true
         end
@@ -2625,19 +2625,19 @@ end
 if Blind and Blind.get_loc_debuff_text then
     local get_loc_debuff_text_ref = Blind.get_loc_debuff_text
     function Blind:get_loc_debuff_text()
-        if is_witch_brew_blind(self, 'door') then
+        if is_reality_warp_blind(self, 'door') then
             return (self.loc_debuff_text and self.loc_debuff_text ~= '') and self.loc_debuff_text or "Hands with odd number of cards do not score"
         end
-        if is_witch_brew_blind(self, 'triangle') then
+        if is_reality_warp_blind(self, 'triangle') then
             return (self.loc_debuff_text and self.loc_debuff_text ~= '') and self.loc_debuff_text or "Hands with even number of cards do not score"
         end
-        if is_witch_brew_blind(self, 'guitar') then
+        if is_reality_warp_blind(self, 'guitar') then
             return (self.loc_debuff_text and self.loc_debuff_text ~= '') and self.loc_debuff_text or "Hands containing 5 cards do not score"
         end
-        if is_witch_brew_blind(self, 'mountain') then
+        if is_reality_warp_blind(self, 'mountain') then
             return (self.loc_debuff_text and self.loc_debuff_text ~= '') and self.loc_debuff_text or "Using consumables disables scoring on the next hand"
         end
-        if is_witch_brew_blind(self, 'wizard') then
+        if is_reality_warp_blind(self, 'wizard') then
             return (self.loc_debuff_text and self.loc_debuff_text ~= '') and self.loc_debuff_text or "All Enhanced cards are debuffed"
         end
         return get_loc_debuff_text_ref(self)
@@ -2648,7 +2648,7 @@ end
 if Blind and Blind.debuff_card then
     local debuff_card_ref = Blind.debuff_card
     function Blind:debuff_card(card, from_blind)
-        if not self.disabled and is_witch_brew_blind(self, 'wizard') then
+        if not self.disabled and is_reality_warp_blind(self, 'wizard') then
             if card and card.area ~= G.jokers then
                 local is_enhanced = (card.ability and card.ability.set == 'Enhanced') or
                                    (card.config and card.config.center and card.config.center.set == 'Enhanced') or
@@ -2667,7 +2667,7 @@ end
 if CardArea and CardArea.parse_highlighted then
     local parse_highlighted_ref = CardArea.parse_highlighted
     function CardArea:parse_highlighted()
-        if self == G.hand and G.GAME and G.GAME.blind and is_witch_brew_blind(G.GAME.blind, 'phone') and not G.GAME.blind.disabled then
+        if self == G.hand and G.GAME and G.GAME.blind and is_reality_warp_blind(G.GAME.blind, 'phone') and not G.GAME.blind.disabled then
             -- Reset previous phone debuffs in hand first
             if self.cards then
                 for _, c in ipairs(self.cards) do
@@ -2709,7 +2709,7 @@ function is_lead_card(card)
     if not card then return false end
     if card.config and card.config.center then
         local k = card.config.center.key
-        if k == 'lead' or k == 'm_Witch_brew_lead' or k == 'm_lead' then return true end
+        if k == 'lead' or k == 'm_reality_warp_lead' or k == 'm_lead' then return true end
     end
     if SMODS and SMODS.has_enhancement and SMODS.has_enhancement(card, 'lead') then return true end
     if card.ability and (card.ability.name == 'Lead Card' or card.ability.effect == 'Lead Card') then return true end
@@ -2799,10 +2799,10 @@ if G and G.FUNCS and G.FUNCS.draw_from_play_to_discard then
 
         -- Clean up debuff flags and ghost cards
         if G.GAME then
-            G.GAME.witch_brew_hand_debuffed = nil
+            G.GAME.reality_warp_hand_debuffed = nil
         end
-        clear_witch_brew_phone_debuffs()
-        purge_witch_brew_ghost_cards()
+        clear_reality_warp_phone_debuffs()
+        purge_reality_warp_ghost_cards()
 
         return draw_from_play_to_discard_ref(e)
     end
@@ -2848,11 +2848,11 @@ end
 if G and G.FUNCS and G.FUNCS.draw_from_deck_to_hand then
     local draw_from_deck_to_hand_ref = G.FUNCS.draw_from_deck_to_hand
     G.FUNCS.draw_from_deck_to_hand = function(e)
-        purge_witch_brew_ghost_cards()
+        purge_reality_warp_ghost_cards()
         if G.GAME then
-            G.GAME.witch_brew_hand_debuffed = nil
+            G.GAME.reality_warp_hand_debuffed = nil
         end
-        clear_witch_brew_phone_debuffs()
+        clear_reality_warp_phone_debuffs()
         if G.playing_cards then
             for _, c in ipairs(G.playing_cards) do
                 c.dark_green_scored_this_hand = nil
@@ -3486,7 +3486,7 @@ if G and G.FUNCS then
 
     G.FUNCS.shell_game_set_prize = function(e)
         local prize = e.config.ref_table and e.config.ref_table.prize
-        local session = G.GAME and G.GAME.witch_brew_shell_session
+        local session = G.GAME and G.GAME.reality_warp_shell_session
         if session and prize and session.stage == 'choose' then
             session.target_prize = prize
             if session.card and session.card.ability and session.card.ability.extra then
@@ -3498,7 +3498,7 @@ if G and G.FUNCS then
     end
 
     G.FUNCS.shell_game_start_shuffle = function(e)
-        local session = G.GAME and G.GAME.witch_brew_shell_session
+        local session = G.GAME and G.GAME.reality_warp_shell_session
         if not session or session.stage ~= 'choose' then return end
 
         session.stage = 'shuffling'
@@ -3519,8 +3519,8 @@ if G and G.FUNCS then
                 trigger = 'after',
                 delay = 0.5,
                 func = function()
-                    if not (G.GAME and G.GAME.witch_brew_shell_session) then return true end
-                    local sess = G.GAME.witch_brew_shell_session
+                    if not (G.GAME and G.GAME.reality_warp_shell_session) then return true end
+                    local sess = G.GAME.reality_warp_shell_session
                     local a, b = sw.a, sw.b
                     sess.cups[a], sess.cups[b] = sess.cups[b], sess.cups[a]
                     if sess.real_pos == a then sess.real_pos = b
@@ -3538,8 +3538,8 @@ if G and G.FUNCS then
             trigger = 'after',
             delay = 0.6,
             func = function()
-                if not (G.GAME and G.GAME.witch_brew_shell_session) then return true end
-                local sess = G.GAME.witch_brew_shell_session
+                if not (G.GAME and G.GAME.reality_warp_shell_session) then return true end
+                local sess = G.GAME.reality_warp_shell_session
                 sess.stage = 'pick'
                 sess.status_text = "Shuffle complete! Pick the cup hiding the Default Joker!"
                 play_sound('chips1', 1.2, 0.8)
@@ -3551,7 +3551,7 @@ if G and G.FUNCS then
 
     G.FUNCS.shell_game_pick_cup = function(e)
         local cup_idx = e.config.ref_table and e.config.ref_table.cup_idx
-        local session = G.GAME and G.GAME.witch_brew_shell_session
+        local session = G.GAME and G.GAME.reality_warp_shell_session
         if not session or session.stage ~= 'pick' or not cup_idx then return end
 
         session.picked_idx = cup_idx
@@ -3610,7 +3610,7 @@ if G and G.FUNCS then
     end
 
     G.UIDEF.shell_game_overlay = function()
-        local session = G.GAME and G.GAME.witch_brew_shell_session
+        local session = G.GAME and G.GAME.reality_warp_shell_session
         if not session then return {} end
 
         local cup_nodes = {}
@@ -3909,7 +3909,7 @@ if G and G.FUNCS then
             if c.type == 'real' then real_pos = idx break end
         end
 
-        G.GAME.witch_brew_shell_session = {
+        G.GAME.reality_warp_shell_session = {
             card = card,
             target_prize = card.ability.extra.target_prize or 'money',
             stage = 'choose',
@@ -3948,7 +3948,7 @@ if G and G.FUNCS then
     end
 
     G.FUNCS.claw_machine_aim_left = function(e)
-        local session = G.GAME and G.GAME.witch_brew_claw_session
+        local session = G.GAME and G.GAME.reality_warp_claw_session
         if session and session.stage == 'aim' then
             session.crane_pos = math.max(1, (session.crane_pos or 3) - 1)
             play_sound('button', 1.2, 0.6)
@@ -3957,7 +3957,7 @@ if G and G.FUNCS then
     end
 
     G.FUNCS.claw_machine_aim_right = function(e)
-        local session = G.GAME and G.GAME.witch_brew_claw_session
+        local session = G.GAME and G.GAME.reality_warp_claw_session
         if session and session.stage == 'aim' then
             session.crane_pos = math.min(5, (session.crane_pos or 3) + 1)
             play_sound('button', 1.2, 0.6)
@@ -3966,7 +3966,7 @@ if G and G.FUNCS then
     end
 
     G.FUNCS.claw_machine_drop = function(e)
-        local session = G.GAME and G.GAME.witch_brew_claw_session
+        local session = G.GAME and G.GAME.reality_warp_claw_session
         if not session or session.stage ~= 'aim' then return end
 
         session.stage = 'dropping'
@@ -3978,8 +3978,8 @@ if G and G.FUNCS then
             trigger = 'after',
             delay = 0.6,
             func = function()
-                if not (G.GAME and G.GAME.witch_brew_claw_session) then return true end
-                local sess = G.GAME.witch_brew_claw_session
+                if not (G.GAME and G.GAME.reality_warp_claw_session) then return true end
+                local sess = G.GAME.reality_warp_claw_session
                 sess.status_text = "The claw clamps shut! Lifting prize..."
                 play_sound('chips1', 1.2, 0.8)
                 G.FUNCS.overlay_menu{ definition = G.UIDEF.claw_machine_overlay() }
@@ -3991,8 +3991,8 @@ if G and G.FUNCS then
             trigger = 'after',
             delay = 0.7,
             func = function()
-                if not (G.GAME and G.GAME.witch_brew_claw_session) then return true end
-                local sess = G.GAME.witch_brew_claw_session
+                if not (G.GAME and G.GAME.reality_warp_claw_session) then return true end
+                local sess = G.GAME.reality_warp_claw_session
                 sess.stage = 'result'
                 local target = sess.prizes[sess.crane_pos]
                 local card = sess.card
@@ -4066,7 +4066,7 @@ if G and G.FUNCS then
     end
 
     G.UIDEF.claw_machine_overlay = function()
-        local session = G.GAME and G.GAME.witch_brew_claw_session
+        local session = G.GAME and G.GAME.reality_warp_claw_session
         if not session then return {} end
 
         local crane_pos = session.crane_pos or 3
@@ -4284,7 +4284,7 @@ if G and G.FUNCS then
             { id = 5, type = 'cash_plus', name = "$15 Big Prize", sub = "Heavy Capsule", col = G.C.MONEY, icon = "[$15]" },
         }
 
-        G.GAME.witch_brew_claw_session = {
+        G.GAME.reality_warp_claw_session = {
             card = card,
             crane_pos = 3,
             stage = 'aim',
@@ -4306,14 +4306,14 @@ end
 
 -- Config Integration, Game engine hooks
 
-function is_witch_brew_spectrals_jobs_enabled()
+function is_reality_warp_spectrals_jobs_enabled()
     -- Check run-specific variable so ongoing runs are NOT affected by mid-run config changes
-    if G and G.GAME and G.GAME.witch_brew_spectrals_jobs ~= nil then
-        return G.GAME.witch_brew_spectrals_jobs
+    if G and G.GAME and G.GAME.reality_warp_spectrals_jobs ~= nil then
+        return G.GAME.reality_warp_spectrals_jobs
     end
     -- Fallback to mod config
-    local cfg = (get_witch_brew_config and get_witch_brew_config())
-        or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config)
+    local cfg = (get_reality_warp_config and get_reality_warp_config())
+        or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config)
         or (SMODS and SMODS.current_mod and SMODS.current_mod.config)
         or {}
     if cfg.new_spectrals_and_jobs ~= nil then
@@ -4322,12 +4322,12 @@ function is_witch_brew_spectrals_jobs_enabled()
     return true
 end
 
-function is_witch_brew_boss_blinds_enabled()
-    if G and G.GAME and G.GAME.witch_brew_boss_blinds ~= nil then
-        return G.GAME.witch_brew_boss_blinds
+function is_reality_warp_boss_blinds_enabled()
+    if G and G.GAME and G.GAME.reality_warp_boss_blinds ~= nil then
+        return G.GAME.reality_warp_boss_blinds
     end
-    local cfg = (get_witch_brew_config and get_witch_brew_config())
-        or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config)
+    local cfg = (get_reality_warp_config and get_reality_warp_config())
+        or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config)
         or (SMODS and SMODS.current_mod and SMODS.current_mod.config)
         or {}
     if cfg.new_boss_blinds ~= nil then
@@ -4336,20 +4336,20 @@ function is_witch_brew_boss_blinds_enabled()
     return true
 end
 
-function is_witch_brew_fast_animations_enabled()
-    local cfg = (get_witch_brew_config and get_witch_brew_config())
-        or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config)
+function is_reality_warp_fast_animations_enabled()
+    local cfg = (get_reality_warp_config and get_reality_warp_config())
+        or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config)
         or (SMODS and SMODS.current_mod and SMODS.current_mod.config)
         or {}
     return cfg.fast_animations == true
 end
 
--- Hook SMODS.Blind.in_pool to disable Witch_Brew Boss Blinds when toggled off
+-- Hook SMODS.Blind.in_pool to disable reality_warp Boss Blinds when toggled off
 if SMODS and SMODS.Blind then
     local orig_blind_in_pool = SMODS.Blind.in_pool
     function SMODS.Blind:in_pool(args)
-        if (self.mod and self.mod.id == 'Witch_brew') or (self.key and G.Witch_brew_BLIND_THEMES and G.Witch_brew_BLIND_THEMES[self.key]) then
-            if not is_witch_brew_boss_blinds_enabled() then
+        if (self.mod and self.mod.id == 'reality_warp') or (self.key and G.reality_warp_BLIND_THEMES and G.reality_warp_BLIND_THEMES[self.key]) then
+            if not is_reality_warp_boss_blinds_enabled() then
                 return false
             end
         end
@@ -4365,19 +4365,19 @@ if Game and Game.init_game_object then
     local orig_game_init_game_object = Game.init_game_object
     function Game:init_game_object(args)
         local ret = orig_game_init_game_object(self, args)
-        local cfg = (get_witch_brew_config and get_witch_brew_config())
-            or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config)
+        local cfg = (get_reality_warp_config and get_reality_warp_config())
+            or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config)
             or (SMODS and SMODS.current_mod and SMODS.current_mod.config)
             or {}
 
         -- Lock in spectrals & jobs setting for this run (does not affect runs in progress)
-        if self.GAME and self.GAME.witch_brew_spectrals_jobs == nil then
-            self.GAME.witch_brew_spectrals_jobs = (cfg.new_spectrals_and_jobs ~= false)
+        if self.GAME and self.GAME.reality_warp_spectrals_jobs == nil then
+            self.GAME.reality_warp_spectrals_jobs = (cfg.new_spectrals_and_jobs ~= false)
         end
 
         -- Lock in custom boss blinds setting for this run
-        if self.GAME and self.GAME.witch_brew_boss_blinds == nil then
-            self.GAME.witch_brew_boss_blinds = (cfg.new_boss_blinds ~= false)
+        if self.GAME and self.GAME.reality_warp_boss_blinds == nil then
+            self.GAME.reality_warp_boss_blinds = (cfg.new_boss_blinds ~= false)
         end
 
         -- New Runs: when active, seeds generate different outcomes/variations between mod and vanilla Balatro
@@ -4402,9 +4402,9 @@ end
 
 -- Intro Background, Custom shaders
 
-function apply_witch_brew_intro_bg(force)
-    local cfg = (get_witch_brew_config and get_witch_brew_config())
-        or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config)
+function apply_reality_warp_intro_bg(force)
+    local cfg = (get_reality_warp_config and get_reality_warp_config())
+        or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config)
         or {}
     if force or cfg.custom_menu_bg ~= false then
         G.C.WARP_BG_BLACK = G.C.WARP_BG_BLACK or HEX('08080a')
@@ -4434,9 +4434,9 @@ end
 
 -- Menu Background, Ambient shaders
 
-function apply_witch_brew_menu_bg(force, change_context)
-    local cfg = (get_witch_brew_config and get_witch_brew_config())
-        or (SMODS and SMODS.Mods and SMODS.Mods['Witch_brew'] and SMODS.Mods['Witch_brew'].config)
+function apply_reality_warp_menu_bg(force, change_context)
+    local cfg = (get_reality_warp_config and get_reality_warp_config())
+        or (SMODS and SMODS.Mods and SMODS.Mods['reality_warp'] and SMODS.Mods['reality_warp'].config)
         or {}
     if force or cfg.custom_menu_bg ~= false then
         G.C.WARP_BG_BLACK = G.C.WARP_BG_BLACK or HEX('08080a')
@@ -4489,20 +4489,20 @@ if Game and Game.splash_screen then
     local orig_splash_screen = Game.splash_screen
     function Game:splash_screen()
         orig_splash_screen(self)
-        apply_witch_brew_intro_bg()
+        apply_reality_warp_intro_bg()
         G.E_MANAGER:add_event(Event({
             trigger = 'immediate',
             func = function()
                 local mod_jokers = {}
                 local mod_enhancements = {}
                 for k, v in pairs(G.P_CENTERS) do
-                    if v.set == 'Joker' and (string.find(k, 'Witch_brew') or string.find(k, 'witch_brew')) then
+                    if v.set == 'Joker' and (string.find(k, 'reality_warp') or string.find(k, 'reality_warp')) then
                         table.insert(mod_jokers, v)
-                    elseif v.set == 'Enhanced' and (string.find(k, 'Witch_brew') or string.find(k, 'witch_brew')) then
+                    elseif v.set == 'Enhanced' and (string.find(k, 'reality_warp') or string.find(k, 'reality_warp')) then
                         table.insert(mod_enhancements, v)
                     end
                 end
-                local mod_seals = { 'Witch_brew_dark_green', 'Witch_brew_white', 'Witch_brew_silver' }
+                local mod_seals = { 'reality_warp_dark_green', 'reality_warp_white', 'reality_warp_silver' }
 
                 make_splash_card = function(args)
                     args = args or {}
@@ -4572,7 +4572,7 @@ if Game and Game.main_menu then
     local orig_game_main_menu = Game.main_menu
     function Game:main_menu(change_context)
         orig_game_main_menu(self, change_context)
-        apply_witch_brew_menu_bg(nil, change_context)
+        apply_reality_warp_menu_bg(nil, change_context)
         spawn_main_menu_secret_joker()
     end
 end
@@ -4595,28 +4595,28 @@ function spawn_main_menu_secret_joker()
         return
     end
     -- If already replaced by our secret joker, do not replace repeatedly
-    if G.title_top.cards[1] and G.title_top.cards[1].is_witch_brew_menu_joker then
-        create_witch_brew_title_label()
+    if G.title_top.cards[1] and G.title_top.cards[1].is_reality_warp_menu_joker then
+        create_reality_warp_title_label()
         return
     end
 
     local secret_keys = {
-        'j_Witch_brew_esteban',
-        'j_Witch_brew_thiago',
-        'j_Witch_brew_black_hole_joker',
-        'j_Witch_brew_squele',
-        'j_Witch_brew_bluxdir',
-        'j_Witch_brew_charles',
-        'j_Witch_brew_mochi',
-        'j_Witch_brew_helin',
-        'j_Witch_brew_raytracing',
-        'j_Witch_brew_paco',
-        'j_Witch_brew_yairo',
-        'j_Witch_brew_kyra',
-        'j_Witch_brew_brainprint'
+        'j_reality_warp_esteban',
+        'j_reality_warp_thiago',
+        'j_reality_warp_black_hole_joker',
+        'j_reality_warp_squele',
+        'j_reality_warp_bluxdir',
+        'j_reality_warp_charles',
+        'j_reality_warp_mochi',
+        'j_reality_warp_helin',
+        'j_reality_warp_raytracing',
+        'j_reality_warp_paco',
+        'j_reality_warp_yairo',
+        'j_reality_warp_kyra',
+        'j_reality_warp_brainprint'
     }
     local chosen_key = secret_keys[math.random(1, #secret_keys)]
-    local center = (G.P_CENTERS and (G.P_CENTERS[chosen_key] or G.P_CENTERS[string.gsub(chosen_key, 'Witch_brew', 'Witch brew')])) or (G.P_CENTERS and G.P_CENTERS.j_joker)
+    local center = (G.P_CENTERS and (G.P_CENTERS[chosen_key] or G.P_CENTERS[string.gsub(chosen_key, 'reality_warp', 'Witch brew')])) or (G.P_CENTERS and G.P_CENTERS.j_joker)
     if center then
         local scale = 1.35
         local card_w = G.CARD_W * scale
@@ -4640,7 +4640,7 @@ function spawn_main_menu_secret_joker()
             G.P_CARDS.empty,
             center
         )
-        secret_card.is_witch_brew_menu_joker = true
+        secret_card.is_reality_warp_menu_joker = true
         secret_card.facing = 'front'
         secret_card.sprite_facing = 'front'
         secret_card.ambient_tilt = 0.8
@@ -4650,30 +4650,30 @@ function spawn_main_menu_secret_joker()
             set_screen_positions()
         end
     end
-    create_witch_brew_title_label()
+    create_reality_warp_title_label()
 end
 
 -- Small title label removed per user specification
-function create_witch_brew_title_label()
-    if G.WITCH_BREW_TITLE_LABEL then
-        G.WITCH_BREW_TITLE_LABEL:remove()
-        G.WITCH_BREW_TITLE_LABEL = nil
+function create_reality_warp_title_label()
+    if G.reality_warp_TITLE_LABEL then
+        G.reality_warp_TITLE_LABEL:remove()
+        G.reality_warp_TITLE_LABEL = nil
     end
 end
 
 local function get_or_load_title_image()
-    if G.WITCH_BREW_TITLE_IMAGE then return G.WITCH_BREW_TITLE_IMAGE end
+    if G.reality_warp_TITLE_IMAGE then return G.reality_warp_TITLE_IMAGE end
     if G.ASSET_ATLAS then
         for k, v in pairs(G.ASSET_ATLAS) do
             if string.find(string.lower(k), "title") and v.image then
-                G.WITCH_BREW_TITLE_IMAGE = v.image
+                G.reality_warp_TITLE_IMAGE = v.image
                 return v.image
             end
         end
     end
     local nfs = NFS or (SMODS and SMODS.NFS)
     if nfs then
-        local raw_path = (Witch_brew_MOD and Witch_brew_MOD.path) or (SMODS and SMODS.current_mod and SMODS.current_mod.path) or "Mods/Witcher Brew Expansion/"
+        local raw_path = (reality_warp_MOD and reality_warp_MOD.path) or (SMODS and SMODS.current_mod and SMODS.current_mod.path) or "Mods/Witcher Brew Expansion/"
         local mod_path = (string.sub(raw_path, -1) == '/' or string.sub(raw_path, -1) == '\\') and raw_path or (raw_path .. '/')
         local scale = (G.SETTINGS and G.SETTINGS.GRAPHICS and G.SETTINGS.GRAPHICS.texture_scaling) or 1
         local candidates = {
@@ -4686,8 +4686,8 @@ local function get_or_load_title_image()
                 local file_data = nfs.newFileData(full_path)
                 if file_data then
                     local img_data = love.image.newImageData(file_data)
-                    G.WITCH_BREW_TITLE_IMAGE = love.graphics.newImage(img_data, { mipmaps = true, dpiscale = scale })
-                    return G.WITCH_BREW_TITLE_IMAGE
+                    G.reality_warp_TITLE_IMAGE = love.graphics.newImage(img_data, { mipmaps = true, dpiscale = scale })
+                    return G.reality_warp_TITLE_IMAGE
                 end
             end
         end
@@ -4695,7 +4695,7 @@ local function get_or_load_title_image()
     return nil
 end
 
-function apply_witch_brew_title_asset()
+function apply_reality_warp_title_asset()
     local title_img = get_or_load_title_image()
     if not title_img then return end
 
@@ -4714,11 +4714,11 @@ if Game and Game.update then
     function Game:update(dt)
         orig_game_update(self, dt)
         if G.STAGE == G.STAGES.MAIN_MENU and G.SPLASH_LOGO then
-            apply_witch_brew_title_asset()
+            apply_reality_warp_title_asset()
         end
-        if G.WITCH_BREW_TITLE_LABEL and (not G.STAGE or G.STAGE ~= G.STAGES.MAIN_MENU) then
-            G.WITCH_BREW_TITLE_LABEL:remove()
-            G.WITCH_BREW_TITLE_LABEL = nil
+        if G.reality_warp_TITLE_LABEL and (not G.STAGE or G.STAGE ~= G.STAGES.MAIN_MENU) then
+            G.reality_warp_TITLE_LABEL:remove()
+            G.reality_warp_TITLE_LABEL = nil
         end
         if G.nursery_tab_active and G.OVERLAY_MENU then
             G.nursery_tick_timer = (G.nursery_tick_timer or 0) + dt
@@ -4737,7 +4737,7 @@ end
 
 -- Custom Title Atlas (Witcher Brew - Purple & Green Title)
 SMODS.Atlas {
-    key = "witch_brew_title",
+    key = "reality_warp_title",
     path = "title.png",
     px = 333,
     py = 216
@@ -4746,9 +4746,9 @@ SMODS.Atlas {
 if Game and Game.main_menu then
     local orig_game_main_menu = Game.main_menu
     function Game:main_menu(change_context)
-        apply_witch_brew_title_asset()
+        apply_reality_warp_title_asset()
         local res = orig_game_main_menu(self, change_context)
-        apply_witch_brew_title_asset()
+        apply_reality_warp_title_asset()
         return res
     end
 end
@@ -4757,10 +4757,10 @@ if set_main_menu_UI then
     local orig_set_main_menu_UI = set_main_menu_UI
     function set_main_menu_UI(base_background)
         orig_set_main_menu_UI(base_background)
-        apply_witch_brew_menu_bg()
-        apply_witch_brew_title_asset()
+        apply_reality_warp_menu_bg()
+        apply_reality_warp_title_asset()
         spawn_main_menu_secret_joker()
-        create_witch_brew_title_label()
+        create_reality_warp_title_label()
     end
 end
 
@@ -5116,7 +5116,7 @@ local function set_nursery_cooldown(fam_key, action, duration)
 end
 
 local function is_nursery_fam_discovered(fam)
-    local c_key = 'c_Witch_brew_' .. fam.key
+    local c_key = 'c_reality_warp_' .. fam.key
     if G.PROFILES and G.PROFILES[G.SETTINGS.profile] then
         local p = G.PROFILES[G.SETTINGS.profile]
         if p.all_unlocked then return true end
@@ -5132,7 +5132,7 @@ end
 
 function get_nursery_data(fam_key)
     if not fam_key then return { level = 1, exp = 0, max_exp = 100 } end
-    local clean_key = tostring(fam_key):gsub('^c_Witch_brew_', ''):gsub('^c_', '')
+    local clean_key = tostring(fam_key):gsub('^c_reality_warp_', ''):gsub('^c_', '')
     if not G.PROFILES or not G.SETTINGS or not G.SETTINGS.profile then
         return { level = 1, exp = 0, max_exp = 100 }
     end
@@ -5172,7 +5172,7 @@ end
 G.add_nursery_exp = add_nursery_exp
 
 -- Joker Unlock & Collection Display Systems
-local WITCH_BREW_CUSTOM_UNLOCKS = {
+local reality_warp_CUSTOM_UNLOCKS = {
     ['countdown_joker'] = true,
     ['reversed_hermit_joker'] = true,
     ['script_joker'] = true,
@@ -5206,28 +5206,28 @@ local WITCH_BREW_CUSTOM_UNLOCKS = {
     ['star_chronicler'] = true,
 }
 
-local function is_witch_brew_shop_joker(_c)
+local function is_reality_warp_shop_joker(_c)
     if not _c or _c.set ~= 'Joker' then return false end
     if _c.is_secret or _c.rarity == 'Secret' or _c.rarity == 4 then return false end
-    local is_wb = (_c.key and string.find(_c.key, 'Witch_brew')) or
-                  (_c.atlas and (string.find(_c.atlas, 'witch_brew') or string.find(_c.atlas, 'witchbrew'))) or
-                  (_c.mod and _c.mod.id == 'Witch_brew')
+    local is_wb = (_c.key and string.find(_c.key, 'reality_warp')) or
+                  (_c.atlas and (string.find(_c.atlas, 'reality_warp') or string.find(_c.atlas, 'witchbrew'))) or
+                  (_c.mod and _c.mod.id == 'reality_warp')
     if not is_wb then return false end
 
-    local raw_key = tostring(_c.key or ''):gsub('^j_Witch_brew_', ''):gsub('^j_', '')
-    local full_key = 'j_Witch_brew_' .. raw_key
-    if WITCH_BREW_CUSTOM_UNLOCKS[raw_key] or WITCH_BREW_CUSTOM_UNLOCKS[full_key] or WITCH_BREW_CUSTOM_UNLOCKS[_c.key] then
+    local raw_key = tostring(_c.key or ''):gsub('^j_reality_warp_', ''):gsub('^j_', '')
+    local full_key = 'j_reality_warp_' .. raw_key
+    if reality_warp_CUSTOM_UNLOCKS[raw_key] or reality_warp_CUSTOM_UNLOCKS[full_key] or reality_warp_CUSTOM_UNLOCKS[_c.key] then
         return false
     end
     return true
 end
 
-function setup_witch_brew_shop_unlocks()
+function setup_reality_warp_shop_unlocks()
     if not G or not G.P_CENTERS then return end
     for k, v in pairs(G.P_CENTERS) do
-        if is_witch_brew_shop_joker(v) then
+        if is_reality_warp_shop_joker(v) then
             v.unlocked = true
-            v.witch_brew_shop_unlock = true
+            v.reality_warp_shop_unlock = true
             v.unlock = { "Buy this card from the shop", "to view in Collection" }
             v.locked_loc_txt = { "Buy this card from the shop", "to view in Collection" }
         end
@@ -5235,15 +5235,15 @@ function setup_witch_brew_shop_unlocks()
 end
 
 -- Hook generate_card_ui for displaying Familiar level and Shop purchase requirement in Collection
-if not G.witch_brew_fam_ui_hooked and generate_card_ui then
-    G.witch_brew_fam_ui_hooked = true
+if not G.reality_warp_fam_ui_hooked and generate_card_ui then
+    G.reality_warp_fam_ui_hooked = true
     local orig_generate_card_ui = generate_card_ui
     function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card, ...)
         local ret = orig_generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card, ...)
 
         -- Familiar level display in Collection and tooltips
         if _c and (_c.set == 'Familiar' or (_c.key and string.find(_c.key, 'baby_'))) and ret and ret.main then
-            local fam_key = tostring(_c.key or ''):gsub('^c_Witch_brew_', ''):gsub('^c_', '')
+            local fam_key = tostring(_c.key or ''):gsub('^c_reality_warp_', ''):gsub('^c_', '')
             local n_data = get_nursery_data(fam_key)
             local lvl = n_data and n_data.level or 1
             local exp = n_data and n_data.exp or 0
@@ -5263,7 +5263,7 @@ if not G.witch_brew_fam_ui_hooked and generate_card_ui then
         end
 
         -- Requirement to buy in shop for jokers without special unlock methods
-        if is_witch_brew_shop_joker(_c) and ret and ret.main then
+        if is_reality_warp_shop_joker(_c) and ret and ret.main then
             if card_type == 'Locked' or card_type == 'Undiscovered' or hide_desc then
                 ret.main = {
                     {
@@ -5286,14 +5286,14 @@ if not G.witch_brew_fam_ui_hooked and generate_card_ui then
 end
 
 -- Hook card purchase to instantly discover & unlock shop-requirement jokers
-if not G.witch_brew_buy_unlock_hooked and G.FUNCS and G.FUNCS.buy_from_shop then
-    G.witch_brew_buy_unlock_hooked = true
+if not G.reality_warp_buy_unlock_hooked and G.FUNCS and G.FUNCS.buy_from_shop then
+    G.reality_warp_buy_unlock_hooked = true
     local orig_buy_from_shop = G.FUNCS.buy_from_shop
     G.FUNCS.buy_from_shop = function(e)
         local c1 = e and e.config and e.config.ref_table
         if c1 and c1:is(Card) and c1.config and c1.config.center then
             local center = c1.config.center
-            if is_witch_brew_shop_joker(center) then
+            if is_reality_warp_shop_joker(center) then
                 if discover_card then discover_card(center) end
                 if unlock_card and not center.unlocked then unlock_card(center) end
                 c1.discovered = true
@@ -5303,13 +5303,13 @@ if not G.witch_brew_buy_unlock_hooked and G.FUNCS and G.FUNCS.buy_from_shop then
     end
 end
 
-if not G.witch_brew_add_to_deck_shop_unlock and Card and Card.add_to_deck then
-    G.witch_brew_add_to_deck_shop_unlock = true
+if not G.reality_warp_add_to_deck_shop_unlock and Card and Card.add_to_deck then
+    G.reality_warp_add_to_deck_shop_unlock = true
     local orig_add_to_deck = Card.add_to_deck
     function Card:add_to_deck(from_debuff)
         if not from_debuff and self.config and self.config.center then
             local center = self.config.center
-            if is_witch_brew_shop_joker(center) then
+            if is_reality_warp_shop_joker(center) then
                 if discover_card then discover_card(center) end
                 if unlock_card and not center.unlocked then unlock_card(center) end
                 self.discovered = true
@@ -5321,7 +5321,7 @@ end
 
 -- Nursery Rooms Atlas (28 Themed Familiars + 1 Lights-Out Room)
 SMODS.Atlas {
-    key = "witch_brew_nursery_rooms",
+    key = "reality_warp_nursery_rooms",
     path = "nursery_rooms.png",
     px = 140,
     py = 80
@@ -5399,7 +5399,7 @@ G.UIDEF.nursery_tab = function(args)
         local row1_nodes = {}
         local row2_nodes = {}
 
-        local fam_atlas = G.ASSET_ATLAS['witch_brew_familiars'] or G.ASSET_ATLAS['Witch_brew_witch_brew_familiars']
+        local fam_atlas = G.ASSET_ATLAS['reality_warp_familiars'] or G.ASSET_ATLAS['reality_warp_reality_warp_familiars']
 
         for i = start_i, end_i do
             local f = G.NURSERY_ROOMS[i]
@@ -5582,8 +5582,8 @@ G.UIDEF.nursery_tab = function(args)
     }
 
     -- Room Background & Familiar Sprite Moveable
-    local room_atlas = G.ASSET_ATLAS['witch_brew_nursery_rooms'] or G.ASSET_ATLAS['Witch_brew_witch_brew_nursery_rooms']
-    local fam_atlas = G.ASSET_ATLAS['witch_brew_familiars'] or G.ASSET_ATLAS['Witch_brew_witch_brew_familiars']
+    local room_atlas = G.ASSET_ATLAS['reality_warp_nursery_rooms'] or G.ASSET_ATLAS['reality_warp_reality_warp_nursery_rooms']
+    local fam_atlas = G.ASSET_ATLAS['reality_warp_familiars'] or G.ASSET_ATLAS['reality_warp_reality_warp_familiars']
     local room_pos = { x = current_idx - 1, y = 0 }
 
     local room_view = Moveable(0, 0, 6.4, 3.65)
@@ -5600,7 +5600,7 @@ G.UIDEF.nursery_tab = function(args)
         fam_view.states.drag.can = true
         fam_view.states.collide.can = true
 
-        local c_key = 'c_Witch_brew_' .. sel_fam.key
+        local c_key = 'c_reality_warp_' .. sel_fam.key
         local center = G.P_CENTERS[c_key]
 
         function fam_view:hover()
@@ -6156,8 +6156,8 @@ end
 if create_tabs then
     local orig_create_tabs = create_tabs
     function create_tabs(args)
-        if setup_witch_brew_shop_unlocks then
-            pcall(setup_witch_brew_shop_unlocks)
+        if setup_reality_warp_shop_unlocks then
+            pcall(setup_reality_warp_shop_unlocks)
         end
         if args and args.tabs then
             local is_run_setup = false
@@ -6187,15 +6187,15 @@ if create_tabs then
 end
 
 
-if setup_witch_brew_shop_unlocks then
-    pcall(setup_witch_brew_shop_unlocks)
+if setup_reality_warp_shop_unlocks then
+    pcall(setup_reality_warp_shop_unlocks)
 end
 
 if G and G.STAGE == G.STAGES.MAIN_MENU then
-    apply_witch_brew_menu_bg()
-    apply_witch_brew_title_asset()
+    apply_reality_warp_menu_bg()
+    apply_reality_warp_title_asset()
     spawn_main_menu_secret_joker()
-    create_witch_brew_title_label()
+    create_reality_warp_title_label()
 end
 
 -- Custom Rarity: Song (Song Jokers)
@@ -6210,7 +6210,7 @@ if SMODS.Rarity then
         pools = { ['Joker'] = true }
     }
     if SMODS.Rarities then
-        SMODS.Rarities['Witch_brew_cancion'] = SMODS.Rarities['Witch_brew_song']
+        SMODS.Rarities['reality_warp_cancion'] = SMODS.Rarities['reality_warp_song']
     end
 end
 
@@ -6279,7 +6279,7 @@ local function is_excluded_music_state()
 end
 
 local function is_secret_music_enabled()
-    local cfg = (get_witch_brew_config and get_witch_brew_config())
+    local cfg = (get_reality_warp_config and get_reality_warp_config())
     if cfg and (cfg.botg_music == false or cfg.secret_power_theme == false) then
         return false
     end
@@ -6431,7 +6431,7 @@ local sally_endgame_quotes = {
 local function get_endgame_character_center(name)
     if not G.P_CENTERS then return nil end
     local candidates = {
-        'j_Witch_brew_' .. name,
+        'j_reality_warp_' .. name,
         'j_Witch brew_' .. name,
         'j_' .. name,
         name
@@ -6575,7 +6575,7 @@ if Back and Back.trigger_effect then
             local bkey = G.GAME.blind.key or (G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key)
 
             -- Chronos: If final score is >= requirement, multiply Chips and Mult by 0.90
-            local is_chronos = (bname == 'Chronos' or bkey == 'chronos' or bkey == 'bl_chronos' or bkey == 'bl_Witch_brew_chronos')
+            local is_chronos = (bname == 'Chronos' or bkey == 'chronos' or bkey == 'bl_chronos' or bkey == 'bl_reality_warp_chronos')
             if is_chronos then
                 local check_chips = nu_chip or args.chips or 0
                 local check_mult = nu_mult or args.mult or 0
@@ -6598,7 +6598,7 @@ if Back and Back.trigger_effect then
             end
 
             -- The Guillotine: 1 in 5 chance to reduce final score to 0
-            local is_guillotine = (bname == 'The Guillotine' or bname == 'guillotine' or bkey == 'guillotine' or bkey == 'bl_guillotine' or bkey == 'bl_Witch_brew_guillotine')
+            local is_guillotine = (bname == 'The Guillotine' or bname == 'guillotine' or bkey == 'guillotine' or bkey == 'bl_guillotine' or bkey == 'bl_reality_warp_guillotine')
             if is_guillotine and pseudorandom('guillotine') < ((G.GAME and G.GAME.probabilities.normal or 1) / 5) then
                 nu_chip = mod_chips(0)
                 nu_mult = mod_mult(0)
@@ -6615,7 +6615,7 @@ if Back and Back.trigger_effect then
             end
 
             -- The Doppelgänger: If the possessed Joker triggered during the hand, divide Chips & Mult by 4
-            local is_doppel = (bname == 'The Doppelgänger' or bname == 'doppelganger' or bkey == 'doppelganger' or bkey == 'bl_doppelganger' or bkey == 'bl_Witch_brew_doppelganger')
+            local is_doppel = (bname == 'The Doppelgänger' or bname == 'doppelganger' or bkey == 'doppelganger' or bkey == 'bl_doppelganger' or bkey == 'bl_reality_warp_doppelganger')
             if is_doppel and G.GAME.doppel_triggered_in_hand then
                 G.GAME.doppel_triggered_in_hand = nil
                 local check_c = nu_chip or args.chips or 0
@@ -6644,7 +6644,7 @@ if Card and Card.use_consumeable then
     local orig_use_consumeable_code = Card.use_consumeable
     function Card:use_consumeable(area, copier)
         local ret = orig_use_consumeable_code(self, area, copier)
-        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'The Code' or G.GAME.blind.key == 'bl_Witch_brew_code' or (G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key == 'bl_Witch_brew_code')) and not G.GAME.blind.disabled then
+        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'The Code' or G.GAME.blind.key == 'bl_reality_warp_code' or (G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key == 'bl_reality_warp_code')) and not G.GAME.blind.disabled then
             if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
                 local destroyable = {}
                 for _, j in ipairs(G.jokers.cards) do
@@ -6766,7 +6766,7 @@ function prompt_charles_coliseo_choice()
         type = 'title',
         highlight_limit = 0
     })
-    local c_center = (get_endgame_character_center and get_endgame_character_center('charles')) or (G.P_CENTERS and G.P_CENTERS.j_Witch_brew_charles) or (G.P_CENTERS and G.P_CENTERS.j_joker)
+    local c_center = (get_endgame_character_center and get_endgame_character_center('charles')) or (G.P_CENTERS and G.P_CENTERS.j_reality_warp_charles) or (G.P_CENTERS and G.P_CENTERS.j_joker)
     local c_card = Card(0, 0, G.CARD_W * 1.05, G.CARD_H * 1.05, G.P_CARDS.empty, c_center, { bypass_discovery_center = true, bypass_discovery_ui = true })
     c_card.states.hover.can = false
     c_card.states.click.can = false
@@ -6984,12 +6984,12 @@ if AnimatedSprite then
     local orig_anim_set_sprite_pos = AnimatedSprite.set_sprite_pos
     function AnimatedSprite:set_sprite_pos(sprite_pos)
         local is_witch_blind = self.atlas and (
-            self.atlas.name == 'witch_brew_blinds' or self.atlas.key == 'witch_brew_blinds' or
-            (self.atlas.name and string.find(self.atlas.name, 'witch_brew_blinds')) or
-            (self.atlas.key and string.find(self.atlas.key, 'witch_brew_blinds'))
+            self.atlas.name == 'reality_warp_blinds' or self.atlas.key == 'reality_warp_blinds' or
+            (self.atlas.name and string.find(self.atlas.name, 'reality_warp_blinds')) or
+            (self.atlas.key and string.find(self.atlas.key, 'reality_warp_blinds'))
         )
         local is_witch_fam = self.atlas and (
-            self.atlas.name == 'witch_brew_familiars' or self.atlas.key == 'witch_brew_familiars' or
+            self.atlas.name == 'reality_warp_familiars' or self.atlas.key == 'reality_warp_familiars' or
             (self.atlas.name and string.find(self.atlas.name, 'familiars')) or
             (self.atlas.key and string.find(self.atlas.key, 'familiars'))
         )
@@ -7031,12 +7031,12 @@ if AnimatedSprite then
     local orig_anim_draw_self = AnimatedSprite.draw_self
     function AnimatedSprite:draw_self(...)
         local is_witch_blind = self.atlas and (
-            self.atlas.name == 'witch_brew_blinds' or self.atlas.key == 'witch_brew_blinds' or
-            (self.atlas.name and string.find(self.atlas.name, 'witch_brew_blinds')) or
-            (self.atlas.key and string.find(self.atlas.key, 'witch_brew_blinds'))
+            self.atlas.name == 'reality_warp_blinds' or self.atlas.key == 'reality_warp_blinds' or
+            (self.atlas.name and string.find(self.atlas.name, 'reality_warp_blinds')) or
+            (self.atlas.key and string.find(self.atlas.key, 'reality_warp_blinds'))
         )
         local is_witch_fam = self.atlas and (
-            self.atlas.name == 'witch_brew_familiars' or self.atlas.key == 'witch_brew_familiars' or
+            self.atlas.name == 'reality_warp_familiars' or self.atlas.key == 'reality_warp_familiars' or
             (self.atlas.name and string.find(self.atlas.name, 'familiars')) or
             (self.atlas.key and string.find(self.atlas.key, 'familiars'))
         )
@@ -7071,12 +7071,12 @@ if Sprite then
     local orig_sprite_draw_self = Sprite.draw_self
     function Sprite:draw_self(overlay, ...)
         local is_witch_blind = self.atlas and (
-            self.atlas.name == 'witch_brew_blinds' or self.atlas.key == 'witch_brew_blinds' or
-            (self.atlas.name and string.find(self.atlas.name, 'witch_brew_blinds')) or
-            (self.atlas.key and string.find(self.atlas.key, 'witch_brew_blinds'))
+            self.atlas.name == 'reality_warp_blinds' or self.atlas.key == 'reality_warp_blinds' or
+            (self.atlas.name and string.find(self.atlas.name, 'reality_warp_blinds')) or
+            (self.atlas.key and string.find(self.atlas.key, 'reality_warp_blinds'))
         )
         local is_witch_fam = self.atlas and (
-            self.atlas.name == 'witch_brew_familiars' or self.atlas.key == 'witch_brew_familiars' or
+            self.atlas.name == 'reality_warp_familiars' or self.atlas.key == 'reality_warp_familiars' or
             (self.atlas.name and string.find(self.atlas.name, 'familiars')) or
             (self.atlas.key and string.find(self.atlas.key, 'familiars'))
         )
