@@ -4,15 +4,6 @@ A massive overhaul and content expansion for **Balatro**, featuring reality-bend
 
 ---
 
-## ⚡ What is Reality Warp? (v1.0.0)
-* **The Cosmic Reset**: Welcome to **Balatro: Reality Warp v1.0.0** — a fresh beginning with cleaned architecture, modernized SMODS implementations, and streamlined mechanics.
-* **Dynamic Void Aesthetics**: Custom black-and-red vortex shader background and dynamic cycling mod tags.
-* **The Outsiders**: High-tier cosmic Jokers (formerly Secrets) that break conventional game rules, summoned through the **Warp Portal** or forbidden alchemy.
-* **Cauldron & Potion Synthesis**: Combine brews and Jokers into powerful fused Amalgams.
-* **Battle of Gods Mode**: Post-Ante 8 pantheon showdowns featuring Olympian bosses, fused blinds, and Familiar companions.
-
----
-
 ## 📦 Requirements & Installation
 1. Install **[Steamodded](https://github.com/Steamodded/smods)** (`v1.0.0+`) and **[Lovely](https://github.com/ethangreen-dev/lovely-injector)** (`v0.7.1+`).
 2. Place `RealityWarp` (or download the release) into your Balatro `Mods` folder:
@@ -74,8 +65,8 @@ A massive overhaul and content expansion for **Balatro**, featuring reality-bend
 
 ## 🤝 Mod Compatibility
 * **[JokerDisplay](https://github.com/nhandev/JokerDisplay)**: Real-time calculation tooltips for custom Jokers.
-* **[CardSleeves](https://github.com/)**: Custom deck sleeves and unique sleeve-deck fusion effects.
-* **[Amulet](https://github.com/)**: Enables the Battle of Gods post-game mode.
+* **[CardSleeves](https://github.com/larswijn/CardSleeves)**: Custom deck sleeves and unique sleeve-deck fusion effects.
+* **[Amulet](https://github.com/frostice482/amulet)**: Enables the Battle of Gods post-game mode.
 
 ---
 
