@@ -17,11 +17,6 @@ if reality_warp_MOD then
     G.C.reality_warp_TEXT_COL = G.C.reality_warp_TEXT_COL or { 1, 1, 1, 1 }
     reality_warp_MOD.badge_colour = G.C.reality_warp_BADGE_COL
     reality_warp_MOD.badge_text_colour = G.C.reality_warp_TEXT_COL
-    reality_warp_MOD.set_mod_badge = function(self, card, badges)
-        if badges and create_badge then
-            badges[#badges + 1] = create_badge('Reality Warp', G.C.reality_warp_BADGE_COL, G.C.reality_warp_TEXT_COL, 1.2 * 0.9)
-        end
-    end
 end
 
 local files = {

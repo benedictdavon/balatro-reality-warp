@@ -774,6 +774,281 @@ SMODS.Back {
     end
 }
 
+-- 9. Contractor Deck (Baraja Contratista)
+SMODS.Back {
+    name = 'Contractor Deck',
+    key = 'contractor',
+    atlas = 'reality_warp_decks',
+    pos = { x = 0, y = 2 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Contractor Deck',
+        text = {
+            "Start run with a {C:attention}Mega Job Application{} pack",
+            "and the {C:attention}Hired Joker{}"
+        }
+    },
+    apply = function(self, back)
+        G.GAME.contractor_deck = true
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                local joker = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_reality_warp_hired_joker', 'contractor_deck')
+                if joker then
+                    joker:add_to_deck()
+                    G.jokers:emplace(joker)
+                    joker:juice_up(0.5, 0.5)
+                end
+                local pack_center = G.P_CENTERS['p_reality_warp_job_pack_4'] or G.P_CENTERS['p_job_pack_4'] or G.P_CENTERS['p_reality_warp_job_pack_3'] or G.P_CENTERS['p_job_pack_3']
+                if pack_center then
+                    local pack = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2, G.play.T.y + G.play.T.h/2 - G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, pack_center, {bypass_discovery_center = true, bypass_discovery_ui = true})
+                    pack.cost = 0
+                    pack.from_tag = true
+                    G.FUNCS.use_card({config = {ref_table = pack}})
+                    pack:start_materialize()
+                end
+                return true
+            end
+        }))
+    end
+}
+
+-- 10. Gambler's Deck (Baraja del Apostador)
+SMODS.Back {
+    name = "Gambler's Deck",
+    key = 'gambler',
+    atlas = 'reality_warp_decks',
+    pos = { x = 1, y = 2 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = "Gambler's Deck",
+        text = {
+            "All {C:green}probabilities{} are",
+            "divided in {C:attention}half{}",
+            "{C:inactive}(ex: {C:green}1 in 4{C:inactive} -> {C:green}1 in 2{C:inactive}){}"
+        }
+    },
+    apply = function(self, back)
+        G.GAME.gambler_deck = true
+        if G.GAME.probabilities then
+            for k, v in pairs(G.GAME.probabilities) do
+                G.GAME.probabilities[k] = v * 2
+            end
+        else
+            G.GAME.probabilities = { normal = 2 }
+        end
+    end
+}
+
+-- 11. Academic Deck (Baraja Académica)
+SMODS.Back {
+    name = 'Academic Deck',
+    key = 'academic',
+    atlas = 'reality_warp_decks',
+    pos = { x = 2, y = 2 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Academic Deck',
+        text = {
+            "All {C:attention}Face cards{} in your starting deck",
+            "begin with a random {C:attention}Job Sticker{}"
+        }
+    },
+    apply = function(self, back)
+        G.GAME.academic_deck = true
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                local job_list = {
+                    'gardener_job', 'detective_job', 'chef_job',
+                    'archaeologist_job', 'miner_job', 'jeweler_job',
+                    'apothecary_job', 'bounty_hunter_job', 'croupier_job'
+                }
+                if G.playing_cards then
+                    for _, card in ipairs(G.playing_cards) do
+                        if card:is_face() then
+                            local chosen_job = pseudorandom_element(job_list, pseudoseed('academic_job'))
+                            if SMODS.Stickers and SMODS.Stickers[chosen_job] then
+                                SMODS.Stickers[chosen_job]:apply(card, true)
+                            end
+                            card.ability = card.ability or {}
+                            card.ability[chosen_job] = true
+                        end
+                    end
+                end
+                return true
+            end
+        }))
+    end
+}
+
+-- 12. Minigame Deck (Baraja de Minijuegos)
+SMODS.Back {
+    name = 'Minigame Deck',
+    key = 'minigames',
+    atlas = 'reality_warp_decks',
+    pos = { x = 3, y = 2 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Minigame Deck',
+        text = {
+            "Start run with a random {C:attention}Minigame Joker{}",
+            "{C:inactive}(Pachinko, Ethernet, Shell Game, Claw Machine){},",
+            "{C:red}-1{} Discard"
+        }
+    },
+    apply = function(self, back)
+        G.GAME.minigame_deck = true
+        G.GAME.round_resets.discards = math.max(1, (G.GAME.round_resets.discards or 3) - 1)
+        ease_discard(-1)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                local minigame_keys = {
+                    'j_reality_warp_pachinko',
+                    'j_reality_warp_ethernet',
+                    'j_reality_warp_shell_game',
+                    'j_reality_warp_claw_machine'
+                }
+                local chosen = pseudorandom_element(minigame_keys, pseudoseed('minigame_deck'))
+                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, chosen, 'minigame_deck')
+                if card then
+                    card:add_to_deck()
+                    G.jokers:emplace(card)
+                    card:juice_up(0.5, 0.5)
+                end
+                return true
+            end
+        }))
+    end
+}
+
+-- 13. Deck of Wishes (Baraja de Deseos)
+SMODS.Back {
+    name = 'Deck of Wishes',
+    key = 'wishes',
+    atlas = 'reality_warp_decks',
+    pos = { x = 0, y = 3 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Deck of Wishes',
+        text = {
+            "Gain a random {C:attention}Consumable{} at end of round,",
+            "{C:attention}+2 Choices{} in all Booster Packs"
+        }
+    },
+    apply = function(self, back)
+        G.GAME.wishes_deck = true
+        G.GAME.modifiers.booster_choice_mod = (G.GAME.modifiers.booster_choice_mod or 0) + 2
+    end,
+    calculate = function(self, back, context)
+        if context.end_of_round and not context.individual and not context.repetition then
+            if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        local pool = {'Tarot', 'Planet', 'Spectral', 'Potion'}
+                        local c_type = pseudorandom_element(pool, pseudoseed('wishes_deck_cons'))
+                        local card = (c_type == 'Potion' and ((create_potion_card_safe and create_potion_card_safe(G.consumeables, 'wishes_deck')) or create_card('Potion', G.consumeables, nil, nil, nil, nil, nil, 'wishes_deck')))
+                            or create_card(c_type, G.consumeables, nil, nil, nil, nil, nil, 'wishes_deck')
+                        if card then
+                            card:add_to_deck()
+                            G.consumeables:emplace(card)
+                            card:juice_up(0.5, 0.5)
+                            card_eval_status_text(card, 'extra', nil, nil, nil, { message = 'Wish Granted!', colour = G.C.PURPLE })
+                        end
+                        return true
+                    end
+                }))
+            end
+        end
+    end
+}
+
+-- Hook Card:open to ensure all booster packs award +2 choices for Deck of Wishes
+if Card and not Card.reality_warp_wishes_hooked then
+    Card.reality_warp_wishes_hooked = true
+    local orig_card_open = Card.open
+    function Card:open()
+        local res = orig_card_open(self)
+        if G.GAME and G.GAME.wishes_deck and G.GAME.pack_choices then
+            G.GAME.pack_choices = G.GAME.pack_choices + 2
+        end
+        return res
+    end
+end
+
+-- 14. Bounty Hunter Deck (Baraja de Cazarrecompensas)
+SMODS.Back {
+    name = 'Bounty Hunter Deck',
+    key = 'bounty_hunter',
+    atlas = 'reality_warp_decks',
+    pos = { x = 1, y = 3 },
+    config = {},
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = 'Bounty Hunter Deck',
+        text = {
+            "Defeating a {C:attention}Boss Blind{} awards a random",
+            "{C:attention}Bounty{}: {C:money}Cash ($15){}, {C:tarot}Tarot{},",
+            "{C:spectral}Spectral Card{}, or {C:attention}Tag{}"
+        }
+    },
+    apply = function(self, back)
+        G.GAME.bounty_hunter_deck = true
+    end,
+    calculate = function(self, back, context)
+        if context.end_of_round and G.GAME and G.GAME.blind and G.GAME.blind.boss and not context.individual and not context.repetition then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    local roll = pseudorandom('bounty_hunter_reward')
+                    if roll < 0.3 then
+                        ease_dollars(15)
+                        card_eval_status_text(G.deck and G.deck.cards[1] or G.play, 'extra', nil, nil, nil, { message = 'Bounty: +$15!', colour = G.C.MONEY })
+                    elseif roll < 0.6 then
+                        if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                            local card = create_card('Spectral', G.consumeables, nil, nil, nil, nil, nil, 'bounty_hunter')
+                            if card then
+                                card:add_to_deck()
+                                G.consumeables:emplace(card)
+                                card:juice_up(0.5, 0.5)
+                                card_eval_status_text(card, 'extra', nil, nil, nil, { message = 'Bounty Spectral!', colour = G.C.SECONDARY_SET.Spectral })
+                            end
+                        else
+                            ease_dollars(15)
+                        end
+                    elseif roll < 0.85 then
+                        if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                            local card = create_card('Tarot', G.consumeables, nil, nil, nil, nil, nil, 'bounty_hunter')
+                            if card then
+                                card:add_to_deck()
+                                G.consumeables:emplace(card)
+                                card:juice_up(0.5, 0.5)
+                                card_eval_status_text(card, 'extra', nil, nil, nil, { message = 'Bounty Tarot!', colour = G.C.SECONDARY_SET.Tarot })
+                            end
+                        else
+                            ease_dollars(15)
+                        end
+                    else
+                        local tag_pool = get_current_pool('Tag')
+                        local tag_key = pseudorandom_element(tag_pool, pseudoseed('bounty_hunter_tag'))
+                        add_tag(Tag(tag_key))
+                        play_sound('generic1', 0.9 + 0.2*math.random(), 0.8)
+                    end
+                    return true
+                end
+            }))
+        end
+    end
+}
+
 -- Inject Deck localizations into G.localization.descriptions.Back with parsed entries
 function inject_reality_warp_deck_localization()
     if not (G.localization and G.localization.descriptions) then return end
@@ -853,54 +1128,94 @@ function inject_reality_warp_deck_localization()
                 "{C:red}-1{} Hand size"
             }
         },
-        auction_deck = {
-            name = "The Auction Deck",
+        contractor = {
+            name = "Contractor Deck",
             text = {
-                "Start run with {C:money}$15{} and",
-                "immediately open a",
-                "{C:attention}Mega Job Application{} pack"
+                "Start run with a {C:attention}Mega Job Application{} pack",
+                "and the {C:attention}Hired Joker{}"
             }
         },
-        arcade_deck = {
-            name = "The Arcade Deck",
+        contratista = {
+            name = "Contractor Deck",
             text = {
-                "Start run with a random {C:attention}Minigame Joker{}",
-                "{C:inactive}(Ethernet, Pachinko Machine, Claw Machine, etc.){}.",
-                "Gains {C:chips}+10 Chips{} permanently each time",
-                "a minigame is completed"
+                "Start run with a {C:attention}Mega Job Application{} pack",
+                "and the {C:attention}Hired Joker{}"
             }
         },
-        guild_deck = {
-            name = "The Guildmaster Deck",
+        gambler = {
+            name = "Gambler's Deck",
+            text = {
+                "All {C:green}probabilities{} are",
+                "divided in {C:attention}half{}",
+                "{C:inactive}(ex: {C:green}1 in 4{C:inactive} -> {C:green}1 in 2{C:inactive}){}"
+            }
+        },
+        apostador = {
+            name = "Gambler's Deck",
+            text = {
+                "All {C:green}probabilities{} are",
+                "divided in {C:attention}half{}",
+                "{C:inactive}(ex: {C:green}1 in 4{C:inactive} -> {C:green}1 in 2{C:inactive}){}"
+            }
+        },
+        academic = {
+            name = "Academic Deck",
             text = {
                 "All {C:attention}Face cards{} in your starting deck",
-                "begin with random {C:attention}Job Stickers{} pre-applied",
-                "{C:inactive}(Gardener, Detective, Chef, Archaeologist, Miner, Jeweler){}"
+                "begin with a random {C:attention}Job Sticker{}"
             }
         },
-        high_roller_deck = {
-            name = "The High Roller Deck",
+        academica = {
+            name = "Academic Deck",
             text = {
-                "Start with {C:money}$25{}.",
-                "Max interest cap is doubled to {C:money}$10{} per round {C:inactive}($50 threshold){}.",
-                "Shop rerolls begin at {C:money}$8{}, but reduce by {C:money}-$1{}",
-                "for every hand won in a single turn"
+                "All {C:attention}Face cards{} in your starting deck",
+                "begin with a random {C:attention}Job Sticker{}"
             }
         },
-        mirage_deck = {
-            name = "The Mirage Deck",
+        minigames = {
+            name = "Minigame Deck",
             text = {
-                "Start with {C:blue}+1 Hand{} and {C:red}-1 Discard{}.",
-                "Through Ante 3, you only fight titanic Bosses:",
-                "{C:attention}The Wall{} and {C:attention}Violet Vessel{}"
+                "Start run with a random {C:attention}Minigame Joker{}",
+                "{C:inactive}(Pachinko, Ethernet, Shell Game, Claw Machine){},",
+                "{C:red}-1{} Discard"
             }
         },
-        bounty_deck = {
-            name = "The Bounty Deck",
+        minijuegos = {
+            name = "Minigame Deck",
             text = {
-                "Each time you defeat a {C:attention}Boss Blind{},",
-                "claims a royal bounty: awards a random",
-                "{C:attention}Tag{}, {C:money}cash bonus ($15){}, or free {C:attention}Booster Pack{}"
+                "Start run with a random {C:attention}Minigame Joker{}",
+                "{C:inactive}(Pachinko, Ethernet, Shell Game, Claw Machine){},",
+                "{C:red}-1{} Discard"
+            }
+        },
+        wishes = {
+            name = "Deck of Wishes",
+            text = {
+                "Gain a random {C:attention}Consumable{} at end of round,",
+                "{C:attention}+2 Choices{} in all Booster Packs"
+            }
+        },
+        deseos = {
+            name = "Deck of Wishes",
+            text = {
+                "Gain a random {C:attention}Consumable{} at end of round,",
+                "{C:attention}+2 Choices{} in all Booster Packs"
+            }
+        },
+        bounty_hunter = {
+            name = "Bounty Hunter Deck",
+            text = {
+                "Defeating a {C:attention}Boss Blind{} awards a random",
+                "{C:attention}Bounty{}: {C:money}Cash ($15){}, {C:tarot}Tarot{},",
+                "{C:spectral}Spectral Card{}, or {C:attention}Tag{}"
+            }
+        },
+        cazarecompensas = {
+            name = "Bounty Hunter Deck",
+            text = {
+                "Defeating a {C:attention}Boss Blind{} awards a random",
+                "{C:attention}Bounty{}: {C:money}Cash ($15){}, {C:tarot}Tarot{},",
+                "{C:spectral}Spectral Card{}, or {C:attention}Tag{}"
             }
         }
     }

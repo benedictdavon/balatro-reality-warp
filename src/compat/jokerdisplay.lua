@@ -2487,13 +2487,27 @@ jd_def["j_reality_warp_scripter"] = {
 -- Ethernet
 jd_def["j_reality_warp_ethernet"] = {
     text = {
-        { text = "+" },
-        { ref_table = "card.ability.extra", ref_value = "current_mult", retrigger_type = "mult" }
+        {
+            border_nodes = {
+                { text = "+" },
+                { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
+            }
+        }
     },
-    text_config = { colour = G.C.MULT },
     reminder_text = {
-        { text = "(+10 / Minigame)" }
-    }
+        { ref_table = "card.joker_display_values", ref_value = "status" }
+    },
+    calc_function = function(card)
+        local ex = card.ability.extra or {}
+        card.joker_display_values.mult = ex.current_mult or 0
+        card.joker_display_values.status = ex.played_this_round and "(Played)" or "(Ready: +10)"
+    end,
+    style_function = function(card, text, reminder_text, extra)
+        if reminder_text and reminder_text.children and reminder_text.children[1] then
+            local ex = card.ability.extra or {}
+            reminder_text.children[1].config.colour = ex.played_this_round and G.C.UI.TEXT_INACTIVE or G.C.BLUE
+        end
+    end
 }
 
 -- Creepy Shadow
@@ -2684,11 +2698,21 @@ jd_def["j_reality_warp_pachinko"] = {
             }
         }
     },
+    reminder_text = {
+        { ref_table = "card.joker_display_values", ref_value = "status" }
+    },
     calc_function = function(card)
         local ex = card.ability.extra or {}
         card.joker_display_values.chips = ex.chips or 0
         card.joker_display_values.mult = ex.mult or 0
         card.joker_display_values.x_mult = string.format("%.2f", ex.x_mult or 1.0)
+        card.joker_display_values.status = ex.played_this_round and "(Played)" or "(Ready)"
+    end,
+    style_function = function(card, text, reminder_text, extra)
+        if reminder_text and reminder_text.children and reminder_text.children[1] then
+            local ex = card.ability.extra or {}
+            reminder_text.children[1].config.colour = ex.played_this_round and G.C.UI.TEXT_INACTIVE or G.C.GREEN
+        end
     end
 }
 
@@ -2701,16 +2725,40 @@ jd_def["j_reality_warp_shell_game"] = {
             }
         }
     },
+    reminder_text = {
+        { ref_table = "card.joker_display_values", ref_value = "status" }
+    },
     calc_function = function(card)
         local ex = card.ability.extra or {}
         card.joker_display_values.mult = ex.mult or 12
+        card.joker_display_values.status = ex.played_this_round and "(Played)" or "(Ready: Acorn)"
+    end,
+    style_function = function(card, text, reminder_text, extra)
+        if reminder_text and reminder_text.children and reminder_text.children[1] then
+            local ex = card.ability.extra or {}
+            reminder_text.children[1].config.colour = ex.played_this_round and G.C.UI.TEXT_INACTIVE or G.C.ORANGE
+        end
     end
 }
 
 jd_def["j_reality_warp_claw_machine"] = {
     text = {
-        { text = "Arcade Crane" }
-    }
+        { text = "Claw: $2" }
+    },
+    text_config = { colour = G.C.ORANGE },
+    reminder_text = {
+        { ref_table = "card.joker_display_values", ref_value = "status" }
+    },
+    calc_function = function(card)
+        local ex = card.ability.extra or {}
+        card.joker_display_values.status = ex.played_this_round and "(Played)" or "(Ready: Surprise)"
+    end,
+    style_function = function(card, text, reminder_text, extra)
+        if reminder_text and reminder_text.children and reminder_text.children[1] then
+            local ex = card.ability.extra or {}
+            reminder_text.children[1].config.colour = ex.played_this_round and G.C.UI.TEXT_INACTIVE or G.C.GREEN
+        end
+    end
 }
 
 local new_entries = {}

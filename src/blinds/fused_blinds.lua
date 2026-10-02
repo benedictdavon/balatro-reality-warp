@@ -117,10 +117,12 @@ end
 
 local function sync_fused_blind_atlases()
     local atlas_obj = (SMODS and SMODS.Atlases and SMODS.Atlases['reality_warp_fused_blinds']) or (G.ASSET_ATLAS and G.ASSET_ATLAS['reality_warp_fused_blinds']) or (G.ANIMATION_ATLAS and G.ANIMATION_ATLAS['reality_warp_fused_blinds'])
-    if atlas_obj then
-        atlas_obj.frames = 21
+    if atlas_obj and atlas_obj.image then
+        atlas_obj.frames = 1
         if G.ASSET_ATLAS and not G.ASSET_ATLAS['reality_warp_fused_blinds'] then G.ASSET_ATLAS['reality_warp_fused_blinds'] = atlas_obj end
         if G.ANIMATION_ATLAS and not G.ANIMATION_ATLAS['reality_warp_fused_blinds'] then G.ANIMATION_ATLAS['reality_warp_fused_blinds'] = atlas_obj end
+    elseif G.ASSET_ATLAS and G.ASSET_ATLAS['reality_warp_fused_blinds'] and not G.ASSET_ATLAS['reality_warp_fused_blinds'].image then
+        G.ASSET_ATLAS['reality_warp_fused_blinds'] = nil
     end
 end
 

@@ -1545,10 +1545,12 @@ SMODS.Blind {
 
 local function sync_blind_atlases()
     local atlas_obj = (SMODS and SMODS.Atlases and SMODS.Atlases['reality_warp_blinds']) or (G.ASSET_ATLAS and G.ASSET_ATLAS['reality_warp_blinds']) or (G.ANIMATION_ATLAS and G.ANIMATION_ATLAS['reality_warp_blinds'])
-    if atlas_obj then
+    if atlas_obj and atlas_obj.image then
         atlas_obj.frames = 1
         if G.ASSET_ATLAS and not G.ASSET_ATLAS['reality_warp_blinds'] then G.ASSET_ATLAS['reality_warp_blinds'] = atlas_obj end
         if G.ANIMATION_ATLAS and not G.ANIMATION_ATLAS['reality_warp_blinds'] then G.ANIMATION_ATLAS['reality_warp_blinds'] = atlas_obj end
+    elseif G.ASSET_ATLAS and G.ASSET_ATLAS['reality_warp_blinds'] and not G.ASSET_ATLAS['reality_warp_blinds'].image then
+        G.ASSET_ATLAS['reality_warp_blinds'] = nil
     end
     sync_reality_warp_blind_colours()
 end

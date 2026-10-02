@@ -1140,10 +1140,24 @@ function Card:use_consumeable(area, copier)
     return ret
 end
 
--- Safety guard for Card:update_alert when ability is nil or card is uninitialized
+-- Safety guard for Card:update_alert & suppression of sticker alerts
 local card_update_alert_ref = Card.update_alert
 function Card:update_alert()
     if not self or not self.ability then return end
+    local center = self.config and self.config.center
+    if (self.ability and self.ability.set == 'Sticker')
+        or (center and (center.set == 'Sticker' or (SMODS and SMODS.Stickers and SMODS.Stickers[center.key])
+            or (type(center.key) == 'string' and (string.find(center.key, '_job') or string.find(center.key, 'insect_') or string.find(center.key, 'possession_'))))) then
+        if center then
+            center.alerted = true
+            center.no_alert = true
+        end
+        if self.children and self.children.alert then
+            self.children.alert:remove()
+            self.children.alert = nil
+        end
+        return
+    end
     return card_update_alert_ref(self)
 end
 
@@ -2085,16 +2099,53 @@ function alias_all_reality_warp_centers()
         G.P_CENTERS['c_reality_warp_la_muchachada'] = nil
         G.P_CENTERS['c_reality_warp_minero_job'] = nil
 
-        -- If profile has Unlock All enabled, guarantee all Witcher Brew centers are discovered & unlocked
+        -- Suppress alerts for all custom and mod stickers
+        if suppress_all_sticker_alerts then suppress_all_sticker_alerts() end
+
+        -- If profile has Unlock All enabled, guarantee all mod centers are discovered & unlocked
         if G.PROFILES and G.SETTINGS and G.SETTINGS.profile and G.PROFILES[G.SETTINGS.profile] and G.PROFILES[G.SETTINGS.profile].all_unlocked then
             for k, v in pairs(G.P_CENTERS) do
-                if type(k) == 'string' and (string.find(k, 'reality_warp') or string.find(k, 'reality_warp')) then
+                if type(k) == 'string' and (string.find(k, 'reality_warp') or string.find(k, '_job') or string.find(k, 'insect_') or string.find(k, 'possession_') or (v and v.set == 'Sticker')) then
                     v.unlocked = true
                     v.discovered = true
                     v.alerted = true
+                    v.no_alert = true
                 end
             end
+            if suppress_all_sticker_alerts then suppress_all_sticker_alerts() end
         end
+    end
+end
+
+-- Universal sticker alert suppressor (removes sticker alert spam on boot and on Unlock All)
+function suppress_all_sticker_alerts()
+    if G and G.P_CENTERS then
+        for k, v in pairs(G.P_CENTERS) do
+            if v and (v.set == 'Sticker' or (SMODS and SMODS.Stickers and SMODS.Stickers[k])
+                or (type(k) == 'string' and (string.find(k, '_job') or string.find(k, 'insect_') or string.find(k, 'possession_')))) then
+                v.alerted = true
+                v.discovered = true
+                v.unlocked = true
+                v.no_alert = true
+            end
+        end
+    end
+    if SMODS and SMODS.Stickers then
+        for k, v in pairs(SMODS.Stickers) do
+            v.alerted = true
+            v.discovered = true
+            v.unlocked = true
+            v.no_alert = true
+        end
+    end
+end
+
+-- Hook G.FUNCS.unlock_all to prevent stickers from alerting upon "Unlock All" / "Obtener todo"
+if G and G.FUNCS and G.FUNCS.unlock_all then
+    local orig_unlock_all = G.FUNCS.unlock_all
+    G.FUNCS.unlock_all = function(e)
+        orig_unlock_all(e)
+        suppress_all_sticker_alerts()
     end
 end
 
@@ -2982,9 +3033,9 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
             -- Pachinko Machine "Play" button
             if card_has_key(card, 'pachinko') then
                 local ex = card.ability and card.ability.extra
-                local can_play = ex and not ex.played_this_round and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.SHOP)
+                local can_play = ex and not ex.played_this_round and not card.debuff and (G.STATE == G.STATES.SELECTING_HAND)
                 local btn_col = can_play and G.C.GREEN or G.C.UI.BACKGROUND_INACTIVE
-                local btn_txt = can_play and "Play" or "Played"
+                local btn_txt = (G.STATE ~= G.STATES.SELECTING_HAND and "In Round Only") or (ex and ex.played_this_round and "Played" or "Play")
 
                 table.insert(base_background.nodes[1].nodes, {
                     n = G.UIT.R,
@@ -3012,14 +3063,14 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                                     nodes = {
                                         { n = G.UIT.B, config = { w = 0.1, h = 0.6 } },
                                         {
-                                            n = G.UIT.C,
+                                             n = G.UIT.C,
                                             config = { align = "tm" },
                                             nodes = {
                                                 {
                                                     n = G.UIT.R,
                                                     config = { align = "cm", maxw = 1.25 },
                                                     nodes = {
-                                                        { n = G.UIT.T, config = { text = btn_txt, colour = G.C.WHITE, scale = 0.38, shadow = true } }
+                                                        { n = G.UIT.T, config = { text = btn_txt, colour = G.C.WHITE, scale = 0.36, shadow = true } }
                                                     }
                                                 }
                                             }
@@ -3032,12 +3083,12 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                 })
             end
 
-            -- Shell Game "Cups" button
+            -- Shell Game "Play" button
             if card_has_key(card, 'shell_game') then
                 local ex = card.ability and card.ability.extra
-                local can_play = ex and not ex.played_this_round and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.SHOP)
+                local can_play = ex and not ex.played_this_round and not card.debuff and (G.STATE == G.STATES.SELECTING_HAND)
                 local btn_col = can_play and G.C.PURPLE or G.C.UI.BACKGROUND_INACTIVE
-                local btn_txt = can_play and "Cups" or "Played"
+                local btn_txt = (G.STATE ~= G.STATES.SELECTING_HAND and "In Round Only") or (ex and ex.played_this_round and "Played" or "Play")
 
                 table.insert(base_background.nodes[1].nodes, {
                     n = G.UIT.R,
@@ -3056,6 +3107,8 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                                         r = 0.08,
                                         minw = 1.25,
                                         minh = 0.6,
+                                        hover = can_play,
+                                        shadow = true,
                                         colour = btn_col,
                                         one_press = true,
                                         button = can_play and 'shell_game_play' or nil,
@@ -3071,7 +3124,7 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                                                     n = G.UIT.R,
                                                     config = { align = "cm", maxw = 1.25 },
                                                     nodes = {
-                                                        { n = G.UIT.T, config = { text = btn_txt, colour = G.C.WHITE, scale = 0.38, shadow = true } }
+                                                        { n = G.UIT.T, config = { text = btn_txt, colour = G.C.WHITE, scale = 0.36, shadow = true } }
                                                     }
                                                 }
                                             }
@@ -3089,9 +3142,9 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                 local ex = card.ability and card.ability.extra
                 local cur_d = (to_number and to_number(G.GAME and G.GAME.dollars)) or tonumber(G.GAME and G.GAME.dollars) or 0
                 local cost = (ex and ex.cost) or 2
-                local can_play = (not ex or (ex.plays_left or 1) > 0) and cur_d >= cost and (G.STATE == G.STATES.SHOP or G.STATE == G.STATES.SELECTING_HAND)
+                local can_play = ex and not ex.played_this_round and not card.debuff and cur_d >= cost and (G.STATE == G.STATES.SELECTING_HAND)
                 local btn_col = can_play and G.C.ORANGE or G.C.UI.BACKGROUND_INACTIVE
-                local btn_txt = can_play and "Claw" or (cur_d < cost and "$2 Req" or "Played")
+                local btn_txt = (G.STATE ~= G.STATES.SELECTING_HAND and "In Round Only") or (ex and ex.played_this_round and "Played") or (cur_d < cost and "$2 Req" or "Claw")
 
                 table.insert(base_background.nodes[1].nodes, {
                     n = G.UIT.R,
@@ -3110,6 +3163,7 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                                         r = 0.08,
                                         minw = 1.25,
                                         minh = 0.6,
+                                        hover = can_play,
                                         colour = btn_col,
                                         one_press = true,
                                         button = can_play and 'claw_machine_play' or nil,
@@ -3125,7 +3179,7 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                                                     n = G.UIT.R,
                                                     config = { align = "cm", maxw = 1.25 },
                                                     nodes = {
-                                                        { n = G.UIT.T, config = { text = btn_txt, colour = G.C.WHITE, scale = 0.38, shadow = true } }
+                                                        { n = G.UIT.T, config = { text = btn_txt, colour = G.C.WHITE, scale = 0.36, shadow = true } }
                                                     }
                                                 }
                                             }
@@ -3239,7 +3293,7 @@ if G and G.FUNCS then
         local card = e.config.ref_table
         if card and card.ability and card.ability.extra then
             local ex = card.ability.extra
-            if not ex.played_this_round and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.SHOP) then
+            if not ex.played_this_round and not card.debuff and G.STATE == G.STATES.SELECTING_HAND then
                 e.config.colour = G.C.GREEN
                 e.config.button = 'pachinko_play'
             else
@@ -3249,220 +3303,545 @@ if G and G.FUNCS then
         end
     end
 
+    local function update_pachinko_ui()
+        if not (G.OVERLAY_MENU and G.OVERLAY_MENU.get_UIE_by_ID) then return end
+        local e = G.OVERLAY_MENU:get_UIE_by_ID('pachinko_contents')
+        if e then
+            if e.config.object then
+                e.config.object:remove()
+                e.config.object = nil
+            end
+            e.config.object = UIBox{
+                definition = G.UIDEF.pachinko_inner_content(),
+                config = { offset = { x = 0, y = 0 }, align = 'cm', parent = e }
+            }
+            if G.OVERLAY_MENU.recalculate then
+                G.OVERLAY_MENU:recalculate()
+            end
+        else
+            if G.OVERLAY_MENU then G.FUNCS.overlay_menu{ definition = G.UIDEF.pachinko_overlay() } end
+        end
+    end
+
+    G.UIDEF.pachinko_inner_content = function()
+        local session = G.GAME and G.GAME.reality_warp_pachinko_session
+        if not session then return { n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {} } end
+
+        local function make_peg_row(row_idx, count, is_staggered)
+            local nodes = {}
+            local hit_col = session.steps_cols and session.steps_cols[row_idx]
+            local is_active_row = (session.step == row_idx)
+            local substep = session.substep or 'hit'
+            local dir = (session.steps_dirs and session.steps_dirs[row_idx]) or 1
+
+            for p = 1, count do
+                local is_hit = (is_active_row and p == hit_col)
+                local peg_cell_content = nil
+
+                if is_hit then
+                    local hit_peg = {
+                        n = G.UIT.C,
+                        config = {
+                            align = "cm",
+                            minw = 0.22,
+                            minh = 0.22,
+                            r = 0.11,
+                            colour = G.C.GOLD,
+                            outline = 2,
+                            outline_colour = G.C.WHITE
+                        },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = "*", scale = 0.20, colour = G.C.WHITE, shadow = true } }
+                        }
+                    }
+
+                    local ball_node = {
+                        n = G.UIT.C,
+                        config = {
+                            align = "cm",
+                            minw = 0.32,
+                            minh = 0.32,
+                            r = 0.16,
+                            colour = G.C.RED,
+                            outline = 2,
+                            outline_colour = G.C.WHITE
+                        },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = "O", scale = 0.20, colour = G.C.WHITE, shadow = true } }
+                        }
+                    }
+
+                    if substep == 'hit' then
+                        peg_cell_content = {
+                            n = G.UIT.C,
+                            config = { align = "cm" },
+                            nodes = {
+                                ball_node,
+                                { n = G.UIT.B, config = { w = 0.02, h = 0.02 } },
+                                hit_peg
+                            }
+                        }
+                    else
+                        -- Deflecting / bouncing to the left or right of the silver peg
+                        if dir < 0 then
+                            peg_cell_content = {
+                                n = G.UIT.R,
+                                config = { align = "cm" },
+                                nodes = {
+                                    ball_node,
+                                    { n = G.UIT.B, config = { w = 0.04, h = 0.02 } },
+                                    hit_peg
+                                }
+                            }
+                        else
+                            peg_cell_content = {
+                                n = G.UIT.R,
+                                config = { align = "cm" },
+                                nodes = {
+                                    hit_peg,
+                                    { n = G.UIT.B, config = { w = 0.04, h = 0.02 } },
+                                    ball_node
+                                }
+                            }
+                        end
+                    end
+                else
+                    -- Standard silver peg (palito plateado)
+                    peg_cell_content = {
+                        n = G.UIT.C,
+                        config = {
+                            align = "cm",
+                            minw = 0.22,
+                            minh = 0.22,
+                            r = 0.11,
+                            colour = { 0.82, 0.84, 0.90, 0.95 },
+                            outline = 1,
+                            outline_colour = { 0.38, 0.40, 0.48, 0.9 }
+                        },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = "-", scale = 0.16, colour = { 0.95, 0.95, 1.0, 0.7 } } }
+                        }
+                    }
+                end
+
+                table.insert(nodes, {
+                    n = G.UIT.C,
+                    config = {
+                        align = "cm",
+                        padding = 0.02,
+                        minw = is_staggered and 0.74 or 0.88,
+                        minh = 0.50,
+                        colour = G.C.CLEAR
+                    },
+                    nodes = { peg_cell_content }
+                })
+            end
+            return { n = G.UIT.R, config = { align = "cm", padding = 0.02 }, nodes = nodes }
+        end
+
+        local pocket_nodes = {}
+        for b = 1, 5 do
+            local won = (session.step == 5 and b == session.final_pocket)
+            local p_info = (session.pocket_prizes and session.pocket_prizes[b]) or {
+                label = "POCKET " .. b,
+                text = (b == 3 and "+X0.50 Mult" or (b % 2 == 1 and "+50 Chips" or "+10 Mult")),
+                col = (b == 3 and G.C.GOLD or (b % 2 == 1 and G.C.CHIPS or G.C.MULT))
+            }
+            local col = won and p_info.col or { 0.12, 0.13, 0.18, 0.95 }
+            local border_col = won and G.C.WHITE or { 0.25, 0.25, 0.35, 0.6 }
+
+            table.insert(pocket_nodes, {
+                n = G.UIT.C,
+                config = {
+                    align = "cm",
+                    padding = 0.05,
+                    r = 0.08,
+                    colour = col,
+                    outline = won and 2 or 1,
+                    outline_colour = border_col,
+                    minw = 1.35,
+                    minh = 0.76
+                },
+                nodes = {
+                    { n = G.UIT.R, config = { align = "cm" }, nodes = {
+                        { n = G.UIT.T, config = { text = p_info.label, scale = 0.18, colour = won and G.C.WHITE or G.C.UI.TEXT_INACTIVE } }
+                    } },
+                    { n = G.UIT.R, config = { align = "cm" }, nodes = {
+                        { n = G.UIT.T, config = { text = p_info.text, scale = won and 0.26 or 0.22, colour = won and G.C.WHITE or p_info.col, shadow = won } }
+                    } },
+                    won and { n = G.UIT.R, config = { align = "cm" }, nodes = {
+                        { n = G.UIT.T, config = { text = "WINNER!", scale = 0.20, colour = G.C.WHITE, shadow = true } }
+                    } } or nil
+                }
+            })
+        end
+
+        local launcher_node = {
+            n = G.UIT.R,
+            config = { align = "cm", padding = 0.03 },
+            nodes = {
+                (session.step == 0) and {
+                    n = G.UIT.C,
+                    config = {
+                        align = "cm",
+                        padding = 0.04,
+                        minw = 0.48,
+                        minh = 0.48,
+                        r = 0.24,
+                        colour = G.C.RED,
+                        outline = 2,
+                        outline_colour = G.C.GOLD
+                    },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = "V", scale = 0.28, colour = G.C.WHITE, shadow = true } }
+                    }
+                } or {
+                    n = G.UIT.T,
+                    config = { text = ".  .  .", scale = 0.28, colour = { 0.45, 0.45, 0.55, 0.5 } }
+                }
+            }
+        }
+
+        local status_text = session.status_text or "Dropping steel ball into pins..."
+        local status_col = (session.step == 5) and (session.prize_colour or G.C.GOLD) or (session.step > 0 and G.C.RED or G.C.GOLD)
+
+        local btn_nodes = {}
+        if session.step == 5 then
+            table.insert(btn_nodes, UIBox_button({
+                label = { "Collect & Continue" },
+                button = 'exit_overlay_menu',
+                colour = G.C.BLUE,
+                minw = 3.2,
+                minh = 0.6,
+                scale = 0.38,
+                col = true
+            }))
+        else
+            table.insert(btn_nodes, UIBox_button({
+                label = { "Bouncing Ball..." },
+                colour = G.C.UI.BACKGROUND_INACTIVE,
+                minw = 3.2,
+                minh = 0.6,
+                scale = 0.35,
+                col = true
+            }))
+        end
+
+        return {
+            n = G.UIT.ROOT,
+            config = { align = "cm", colour = G.C.CLEAR },
+            nodes = {
+                {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.08 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = "PACHINKO MACHINE", scale = 0.6, colour = G.C.GOLD, shadow = true } }
+                    }
+                },
+                {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.03 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = "Impulse Launch Force: " .. session.force .. "%", scale = 0.32, colour = G.C.UI.TEXT_LIGHT } }
+                    }
+                },
+                {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.1, r = 0.12, colour = { 0.07, 0.07, 0.11, 0.96 }, outline = 2, outline_colour = G.C.GOLD, minw = 7.5 },
+                    nodes = {
+                        launcher_node,
+                        make_peg_row(1, 5, false),
+                        make_peg_row(2, 6, true),
+                        make_peg_row(3, 5, false),
+                        make_peg_row(4, 6, true),
+                        { n = G.UIT.R, config = { align = "cm", padding = 0.04 }, nodes = {} },
+                        { n = G.UIT.R, config = { align = "cm", padding = 0.03 }, nodes = pocket_nodes }
+                    }
+                },
+                {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.06 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = status_text, scale = 0.36, colour = status_col, shadow = true } }
+                    }
+                },
+                {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.03 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = "Permanent Total: +" .. session.cur_chips .. " Chips | +" .. session.cur_mult .. " Mult | X" .. session.cur_xmult .. " Mult", scale = 0.28, colour = G.C.WHITE } }
+                    }
+                },
+                {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.08 },
+                    nodes = btn_nodes
+                }
+            }
+        }
+    end
+
+    G.UIDEF.pachinko_overlay = function()
+        local session = G.GAME and G.GAME.reality_warp_pachinko_session
+        if not session then return {} end
+
+        return create_UIBox_generic_options({
+            back_func = 'exit_overlay_menu',
+            contents = {
+                {
+                    n = G.UIT.O,
+                    config = {
+                        id = 'pachinko_contents',
+                        object = UIBox{
+                            definition = G.UIDEF.pachinko_inner_content(),
+                            config = { offset = { x = 0, y = 0 }, align = 'cm' }
+                        },
+                        align = 'cm'
+                    }
+                }
+            }
+        })
+    end
+
     G.FUNCS.pachinko_play = function(e)
         local card = e.config.ref_table
-        if not card or not card.ability or not card.ability.extra or card.ability.extra.played_this_round then return end
+        if not card or not card.ability or not card.ability.extra or card.ability.extra.played_this_round or card.debuff or G.STATE ~= G.STATES.SELECTING_HAND then return end
         card.ability.extra.played_this_round = true
         if e.UIBox then e.UIBox:recalculate(true) end
 
         -- Random launch impulse force (70% - 130%)
         local force = pseudorandom('pachinko_force', 70, 130)
 
-        -- Simulate ball bounce through 4 peg levels
+        -- Pre-simulate ball bounce through 4 peg levels
         local pos = 3.0 + (force - 100) / 35.0
-        local bounce_steps = {}
-        for step = 1, 4 do
-            local roll = pseudorandom('pachinko_deflect')
-            local delta = (roll > 0.5) and 0.5 or -0.5
-            pos = math.max(1.0, math.min(5.0, pos + delta))
-            table.insert(bounce_steps, pos)
+        local c1 = math.max(1, math.min(5, math.floor(pos + 0.5)))
+
+        local roll2 = pseudorandom('pachinko_deflect')
+        local dir2 = (roll2 > 0.5) and 1 or -1
+        pos = math.max(1.0, math.min(6.0, pos + dir2 * 0.5))
+        local c2 = math.max(1, math.min(6, math.floor(pos + 0.5)))
+
+        local roll3 = pseudorandom('pachinko_deflect')
+        local dir3 = (roll3 > 0.5) and 1 or -1
+        pos = math.max(1.0, math.min(5.0, pos + dir3 * 0.5))
+        local c3 = math.max(1, math.min(5, math.floor(pos + 0.5)))
+
+        local roll4 = pseudorandom('pachinko_deflect')
+        local dir4 = (roll4 > 0.5) and 1 or -1
+        pos = math.max(1.0, math.min(6.0, pos + dir4 * 0.5))
+        local c4 = math.max(1, math.min(6, math.floor(pos + 0.5)))
+
+        local final_pocket = math.max(1, math.min(5, math.floor(pos + 0.5)))
+
+        -- Pre-generate exact prizes for all 5 pockets so labels match awarded values 100%
+        local pocket_prizes = {
+            [1] = { type = 'chips', val = pseudorandom('pachinko_val', 40, 75), label = "POCKET 1", col = G.C.CHIPS },
+            [2] = { type = 'mult',  val = pseudorandom('pachinko_val', 6, 12),  label = "POCKET 2", col = G.C.MULT },
+            [3] = { type = 'x_mult', val = pseudorandom('pachinko_val', 25, 50) / 100.0, label = "JACKPOT", col = G.C.GOLD },
+            [4] = { type = 'chips', val = pseudorandom('pachinko_val', 50, 90), label = "POCKET 4", col = G.C.CHIPS },
+            [5] = { type = 'mult',  val = pseudorandom('pachinko_val', 8, 15),  label = "POCKET 5", col = G.C.MULT },
+        }
+        for b = 1, 5 do
+            local p = pocket_prizes[b]
+            if p.type == 'chips' then
+                p.text = '+' .. p.val .. ' Chips'
+            elseif p.type == 'mult' then
+                p.text = '+' .. p.val .. ' Mult'
+            else
+                p.text = '+X' .. string.format('%.2f', p.val) .. ' Mult'
+            end
         end
 
-        local final_pocket = math.floor(pos + 0.5)
-        if final_pocket < 1 then final_pocket = 1 end
-        if final_pocket > 5 then final_pocket = 5 end
-
-        -- Pocket prizes:
-        -- Pocket 1: Chips (+40 to +75 Chips)
-        -- Pocket 2: Mult (+6 to +12 Mult)
-        -- Pocket 3 (Golden Center): XMult (+X0.25 to +X0.50 Mult)
-        -- Pocket 4: Chips (+50 to +90 Chips)
-        -- Pocket 5: Mult (+8 to +15 Mult)
-        local prize_type = ''
-        local prize_msg = ''
-        local prize_colour = G.C.GOLD
-
-        if final_pocket == 1 then
-            local val = pseudorandom('pachinko_val', 40, 75)
-            prize_type = 'chips'
-            prize_msg = '+' .. val .. ' Chips'
-            prize_colour = G.C.CHIPS
-            card.ability.extra.chips = (card.ability.extra.chips or 0) + val
-        elseif final_pocket == 2 then
-            local val = pseudorandom('pachinko_val', 6, 12)
-            prize_type = 'mult'
-            prize_msg = '+' .. val .. ' Mult'
-            prize_colour = G.C.MULT
-            card.ability.extra.mult = (card.ability.extra.mult or 0) + val
-        elseif final_pocket == 3 then
-            local val = pseudorandom('pachinko_val', 25, 50) / 100.0
-            prize_type = 'x_mult'
-            prize_msg = '+X' .. string.format('%.2f', val) .. ' Mult'
-            prize_colour = G.C.GOLD
-            card.ability.extra.x_mult = (card.ability.extra.x_mult or 1.0) + val
-        elseif final_pocket == 4 then
-            local val = pseudorandom('pachinko_val', 50, 90)
-            prize_type = 'chips'
-            prize_msg = '+' .. val .. ' Chips'
-            prize_colour = G.C.CHIPS
-            card.ability.extra.chips = (card.ability.extra.chips or 0) + val
-        else
-            local val = pseudorandom('pachinko_val', 8, 15)
-            prize_type = 'mult'
-            prize_msg = '+' .. val .. ' Mult'
-            prize_colour = G.C.MULT
-            card.ability.extra.mult = (card.ability.extra.mult or 0) + val
+        local win_prize = pocket_prizes[final_pocket]
+        if win_prize.type == 'chips' then
+            card.ability.extra.chips = (card.ability.extra.chips or 0) + win_prize.val
+        elseif win_prize.type == 'mult' then
+            card.ability.extra.mult = (card.ability.extra.mult or 0) + win_prize.val
+        elseif win_prize.type == 'x_mult' then
+            card.ability.extra.x_mult = (card.ability.extra.x_mult or 1.0) + win_prize.val
         end
 
-        if notify_minigame_completed then
-            notify_minigame_completed('pachinko')
-        end
+        local dir1 = (force >= 100) and 1 or -1
+        G.GAME.reality_warp_pachinko_session = {
+            card = card,
+            force = force,
+            step = 0,
+            substep = 'hit',
+            steps_cols = { c1, c2, c3, c4 },
+            steps_dirs = { dir1, dir2, dir3, dir4 },
+            final_pocket = final_pocket,
+            pocket_prizes = pocket_prizes,
+            prize_msg = win_prize.text,
+            prize_colour = win_prize.col,
+            status_text = "Impulse launch: Dropping steel ball into pins...",
+            cur_chips = card.ability.extra.chips or 0,
+            cur_mult = card.ability.extra.mult or 0,
+            cur_xmult = string.format('%.2f', card.ability.extra.x_mult or 1.0)
+        }
 
-        -- Construct Pachinko Overlay Modal
+        local speed = math.max(1, (G.SETTINGS and G.SETTINGS.GAMESPEED or 1))
+        -- Dampen speed scaling using square root and minimum thresholds so x4 speed remains slow and visible
+        local hit_delay = math.max(0.26, 0.55 / math.sqrt(speed))
+        local bounce_delay = math.max(0.20, 0.42 / math.sqrt(speed))
+        local final_delay = math.max(0.32, 0.65 / math.sqrt(speed))
+
         if create_UIBox_generic_options and G.FUNCS.overlay_menu then
-            local cur_chips = card.ability.extra.chips or 0
-            local cur_mult = card.ability.extra.mult or 0
-            local cur_xmult = string.format('%.2f', card.ability.extra.x_mult or 1.0)
-
-            local function make_peg_row(count, highlight_idx)
-                local nodes = {}
-                for p = 1, count do
-                    local is_hit = (highlight_idx and math.abs(p - highlight_idx) < 0.8)
-                    table.insert(nodes, {
-                        n = G.UIT.C,
-                        config = {
-                            align = "cm",
-                            padding = 0.08,
-                            minw = 0.65,
-                            minh = 0.45,
-                            colour = is_hit and G.C.GOLD or G.C.CLEAR
-                        },
-                        nodes = {
-                            { n = G.UIT.T, config = { text = "•", scale = is_hit and 0.55 or 0.38, colour = is_hit and G.C.WHITE or {0.7, 0.7, 0.8, 1} } }
-                        }
-                    })
-                end
-                return { n = G.UIT.R, config = { align = "cm", padding = 0.02 }, nodes = nodes }
-            end
-
-            local pocket_nodes = {}
-            local pocket_names = { "Bin 1: Chips", "Bin 2: Mult", "Bin 3: ★XMULT★", "Bin 4: Chips", "Bin 5: Mult" }
-            local pocket_colours = { G.C.CHIPS, G.C.MULT, G.C.GOLD, G.C.CHIPS, G.C.MULT }
-
-            for b = 1, 5 do
-                local won = (b == final_pocket)
-                table.insert(pocket_nodes, {
-                    n = G.UIT.C,
-                    config = {
-                        align = "cm",
-                        padding = 0.06,
-                        r = 0.08,
-                        colour = won and pocket_colours[b] or {0.15, 0.15, 0.22, 0.9},
-                        outline = won and 2 or 1,
-                        outline_colour = won and G.C.WHITE or G.C.BLACK,
-                        minw = 1.35,
-                        minh = 0.75
-                    },
-                    nodes = {
-                        { n = G.UIT.R, config = { align = "cm" }, nodes = {
-                            { n = G.UIT.T, config = { text = pocket_names[b], scale = won and 0.26 or 0.22, colour = won and G.C.WHITE or G.C.UI.TEXT_LIGHT, shadow = won } }
-                        } },
-                        won and { n = G.UIT.R, config = { align = "cm" }, nodes = {
-                            { n = G.UIT.T, config = { text = "● WINNER ●", scale = 0.20, colour = G.C.WHITE } }
-                        } } or nil
-                    }
-                })
-            end
-
-            local overlay_def = create_UIBox_generic_options({
-                back_func = 'exit_overlay_menu',
-                contents = {
-                    {
-                        n = G.UIT.R,
-                        config = { align = "cm", padding = 0.1 },
-                        nodes = {
-                            { n = G.UIT.T, config = { text = "PACHINKO MACHINE", scale = 0.6, colour = G.C.GOLD, shadow = true } }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { align = "cm", padding = 0.04 },
-                        nodes = {
-                            { n = G.UIT.T, config = { text = "Impulse Launch Force: " .. force .. "%", scale = 0.32, colour = G.C.UI.TEXT_LIGHT } }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { align = "cm", padding = 0.1, r = 0.12, colour = {0.08, 0.08, 0.12, 0.95}, outline = 2, outline_colour = G.C.GOLD, minw = 7.5 },
-                        nodes = {
-                            make_peg_row(5, bounce_steps[1]),
-                            make_peg_row(6, bounce_steps[2]),
-                            make_peg_row(5, bounce_steps[3]),
-                            make_peg_row(6, bounce_steps[4]),
-                            { n = G.UIT.R, config = { align = "cm", padding = 0.05 }, nodes = {} },
-                            { n = G.UIT.R, config = { align = "cm", padding = 0.03 }, nodes = pocket_nodes }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { align = "cm", padding = 0.08 },
-                        nodes = {
-                            { n = G.UIT.T, config = { text = "Ball landed in Pocket " .. final_pocket .. "! Won: " .. prize_msg .. "!", scale = 0.38, colour = prize_colour, shadow = true } }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { align = "cm", padding = 0.04 },
-                        nodes = {
-                            { n = G.UIT.T, config = { text = "Permanent Total: +" .. cur_chips .. " Chips | +" .. cur_mult .. " Mult | X" .. cur_xmult .. " Mult", scale = 0.28, colour = G.C.WHITE } }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { align = "cm", padding = 0.08 },
-                        nodes = {
-                            UIBox_button({ label = {"Collect & Continue"}, button = 'exit_overlay_menu', colour = G.C.BLUE, minw = 3.0, minh = 0.6, scale = 0.38, col = true })
-                        }
-                    }
-                }
-            })
-
             play_sound('tarot2', 1.3, 0.8)
+            G.FUNCS.overlay_menu{ definition = G.UIDEF.pachinko_overlay() }
+
+            -- Step 1 Hit (Row 1 Pin Strike)
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
-                delay = 0.2,
+                delay = hit_delay,
                 func = function()
-                    play_sound('chips1', 1.0, 0.8)
-                    return true
-                end
-            }))
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.4,
-                func = function()
-                    play_sound('chips1', 1.2, 0.8)
-                    return true
-                end
-            }))
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.6,
-                func = function()
-                    play_sound('gold_seal', 1.2, 0.9)
-                    card:juice_up(0.6, 0.4)
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.step = 1
+                    sess.substep = 'hit'
+                    sess.status_text = "Ball strikes Pin #" .. c1 .. "! PING!"
+                    play_sound('chips1', 0.95, 0.85)
+                    update_pachinko_ui()
                     return true
                 end
             }))
 
-            G.FUNCS.overlay_menu{ definition = overlay_def }
+            -- Step 1 Bounce (Row 1 Deflection)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = bounce_delay,
+                func = function()
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.substep = 'bounce'
+                    sess.status_text = "Bouncing off Pin #" .. c1 .. ((dir1 > 0) and " to Right ->" or " <- to Left")
+                    play_sound('chips2', 1.05, 0.75)
+                    update_pachinko_ui()
+                    return true
+                end
+            }))
+
+            -- Step 2 Hit (Row 2 Pin Strike)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = hit_delay,
+                func = function()
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.step = 2
+                    sess.substep = 'hit'
+                    sess.status_text = "Ball strikes Pin #" .. c2 .. "! PING!"
+                    play_sound('chips1', 1.10, 0.85)
+                    update_pachinko_ui()
+                    return true
+                end
+            }))
+
+            -- Step 2 Bounce (Row 2 Deflection)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = bounce_delay,
+                func = function()
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.substep = 'bounce'
+                    sess.status_text = "Bouncing off Pin #" .. c2 .. ((dir2 > 0) and " to Right ->" or " <- to Left")
+                    play_sound('chips2', 1.20, 0.75)
+                    update_pachinko_ui()
+                    return true
+                end
+            }))
+
+            -- Step 3 Hit (Row 3 Pin Strike)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = hit_delay,
+                func = function()
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.step = 3
+                    sess.substep = 'hit'
+                    sess.status_text = "Ball strikes Pin #" .. c3 .. "! PING!"
+                    play_sound('chips1', 1.25, 0.85)
+                    update_pachinko_ui()
+                    return true
+                end
+            }))
+
+            -- Step 3 Bounce (Row 3 Deflection)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = bounce_delay,
+                func = function()
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.substep = 'bounce'
+                    sess.status_text = "Bouncing off Pin #" .. c3 .. ((dir3 > 0) and " to Right ->" or " <- to Left")
+                    play_sound('chips2', 1.35, 0.75)
+                    update_pachinko_ui()
+                    return true
+                end
+            }))
+
+            -- Step 4 Hit (Row 4 Pin Strike)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = hit_delay,
+                func = function()
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.step = 4
+                    sess.substep = 'hit'
+                    sess.status_text = "Ball strikes Pin #" .. c4 .. "! PING!"
+                    play_sound('chips1', 1.40, 0.85)
+                    update_pachinko_ui()
+                    return true
+                end
+            }))
+
+            -- Step 4 Bounce (Row 4 Deflection)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = bounce_delay,
+                func = function()
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.substep = 'bounce'
+                    sess.status_text = "Dropping into " .. sess.pocket_prizes[sess.final_pocket].label .. "..."
+                    play_sound('chips2', 1.50, 0.75)
+                    update_pachinko_ui()
+                    return true
+                end
+            }))
+
+            -- Step 5 (Landed in winning pocket!)
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = final_delay,
+                func = function()
+                    if not (G.GAME and G.GAME.reality_warp_pachinko_session) then return true end
+                    local sess = G.GAME.reality_warp_pachinko_session
+                    sess.step = 5
+                    sess.substep = 'land'
+                    sess.status_text = "Ball landed in " .. sess.pocket_prizes[sess.final_pocket].label .. "! Won: " .. sess.prize_msg .. "!"
+                    sess.cur_chips = sess.card.ability.extra.chips or 0
+                    sess.cur_mult = sess.card.ability.extra.mult or 0
+                    sess.cur_xmult = string.format('%.2f', sess.card.ability.extra.x_mult or 1.0)
+                    play_sound('gold_seal', 1.2, 0.9)
+                    if sess.card then sess.card:juice_up(0.6, 0.4) end
+                    if notify_minigame_completed then notify_minigame_completed('pachinko') end
+                    update_pachinko_ui()
+                    return true
+                end
+            }))
         else
             play_sound('gold_seal', 1.2, 0.9)
             card:juice_up(0.6, 0.4)
+            if notify_minigame_completed then notify_minigame_completed('pachinko') end
             attention_text({
-                text = "Pachinko: " .. prize_msg .. "!",
+                text = "Pachinko: " .. win_prize.text .. "!",
                 scale = 0.8,
-                hold = 1.6,
-                backdrop_colour = prize_colour,
+                hold = 1.6 / speed,
+                backdrop_colour = win_prize.col,
                 align = 'cm',
                 offset = { x = 0, y = -1.5 }
             })
@@ -3473,7 +3852,7 @@ if G and G.FUNCS then
         local card = e.config.ref_table
         if card and card.ability and card.ability.extra then
             local ex = card.ability.extra
-            local can_play = not ex.played_this_round and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.SHOP)
+            local can_play = not ex.played_this_round and not card.debuff and (G.STATE == G.STATES.SELECTING_HAND)
             if can_play then
                 e.config.colour = G.C.PURPLE
                 e.config.button = 'shell_game_play'
@@ -3484,238 +3863,339 @@ if G and G.FUNCS then
         end
     end
 
+    local function update_shell_game_ui()
+        if not (G.OVERLAY_MENU and G.OVERLAY_MENU.get_UIE_by_ID) then return end
+        local e = G.OVERLAY_MENU:get_UIE_by_ID('shell_game_contents')
+        if e then
+            if e.config.object then
+                e.config.object:remove()
+                e.config.object = nil
+            end
+            e.config.object = UIBox{
+                definition = G.UIDEF.shell_game_inner_content(),
+                config = { offset = { x = 0, y = 0 }, align = 'cm', parent = e }
+            }
+            if G.OVERLAY_MENU.recalculate then
+                G.OVERLAY_MENU:recalculate()
+            end
+        else
+            if G.OVERLAY_MENU then G.FUNCS.overlay_menu{ definition = G.UIDEF.shell_game_overlay() } end
+        end
+    end
+
     G.FUNCS.shell_game_set_prize = function(e)
         local prize = e.config.ref_table and e.config.ref_table.prize
         local session = G.GAME and G.GAME.reality_warp_shell_session
-        if session and prize and session.stage == 'choose' then
+        if session and prize and session.stage ~= 'result' then
             session.target_prize = prize
             if session.card and session.card.ability and session.card.ability.extra then
                 session.card.ability.extra.target_prize = prize
             end
             play_sound('button', 1.1, 0.7)
-            G.FUNCS.overlay_menu{ definition = G.UIDEF.shell_game_overlay() }
+            update_shell_game_ui()
         end
+    end
+
+    -- Strictly 1x1 standard dimension Jokers (excludes Photograph, Square, Half, Wee, Stuntman)
+    local standard_acorn_pool = {
+        { key = 'j_joker', name = "Joker", pos = { x = 0, y = 0 }, col = G.C.RED },
+        { key = 'j_jolly', name = "Jolly Joker", pos = { x = 2, y = 0 }, col = G.C.ORANGE },
+        { key = 'j_zany', name = "Zany Joker", pos = { x = 3, y = 0 }, col = G.C.RED },
+        { key = 'j_mad', name = "Mad Joker", pos = { x = 4, y = 0 }, col = G.C.RED },
+        { key = 'j_crazy', name = "Crazy Joker", pos = { x = 5, y = 0 }, col = G.C.RED },
+        { key = 'j_droll', name = "Droll Joker", pos = { x = 6, y = 0 }, col = G.C.RED },
+        { key = 'j_sly', name = "Sly Joker", pos = { x = 0, y = 1 }, col = G.C.BLUE },
+        { key = 'j_wily', name = "Wily Joker", pos = { x = 1, y = 1 }, col = G.C.BLUE },
+        { key = 'j_clever', name = "Clever Joker", pos = { x = 2, y = 1 }, col = G.C.BLUE },
+        { key = 'j_devious', name = "Devious Joker", pos = { x = 3, y = 1 }, col = G.C.BLUE },
+        { key = 'j_crafty', name = "Crafty Joker", pos = { x = 4, y = 1 }, col = G.C.BLUE },
+        { key = 'j_abstract', name = "Abstract Joker", pos = { x = 6, y = 5 }, col = G.C.BLUE },
+        { key = 'j_misprint', name = "Misprint", pos = { x = 5, y = 6 }, col = G.C.PURPLE },
+        { key = 'j_scary_face', name = "Scary Face", pos = { x = 1, y = 4 }, col = G.C.CHIPS },
+        { key = 'j_gros_michel', name = "Gros Michel", pos = { x = 4, y = 5 }, col = G.C.GOLD },
+        { key = 'j_even_steven', name = "Even Steven", pos = { x = 2, y = 4 }, col = G.C.CHIPS },
+        { key = 'j_odd_todd', name = "Odd Todd", pos = { x = 3, y = 4 }, col = G.C.CHIPS },
+        { key = 'j_ice_cream', name = "Ice Cream", pos = { x = 8, y = 5 }, col = G.C.BLUE },
+        { key = 'j_green_joker', name = "Green Joker", pos = { x = 4, y = 4 }, col = G.C.GREEN },
+        { key = 'j_popcorn', name = "Popcorn", pos = { x = 9, y = 5 }, col = G.C.ORANGE },
+        { key = 'j_ramen', name = "Ramen", pos = { x = 0, y = 6 }, col = G.C.RED },
+    }
+
+    local function make_joker_card_sprite(card_data, is_face_down, is_shaking, w, h)
+        w = w or 1.15
+        h = h or 1.55
+        if Moveable and Sprite then
+            local view = Moveable(0, 0, w, h)
+            local key = card_data and card_data.key or 'j_joker'
+            local center = G.P_CENTERS and G.P_CENTERS[key]
+            local atlas = (center and center.atlas and G.ASSET_ATLAS and G.ASSET_ATLAS[center.atlas])
+                       or (G.ASSET_ATLAS and G.ASSET_ATLAS['Joker'])
+                       or (G.ASSET_ATLAS and G.ASSET_ATLAS['centers'])
+            local pos = (center and center.pos) or (card_data and card_data.pos) or { x = 0, y = 0 }
+
+            local back_atlas = (G.GAME and G.GAME.selected_back and G.ASSET_ATLAS and G.ASSET_ATLAS[G.GAME.selected_back.atlas or 'centers'])
+                            or (G.ASSET_ATLAS and (G.ASSET_ATLAS['centers'] or G.ASSET_ATLAS['b_red']))
+            local back_pos = (G.GAME and G.GAME.selected_back and G.GAME.selected_back.pos) or { x = 0, y = 0 }
+
+            if is_face_down and back_atlas then
+                view.icon_sprite = Sprite(0, 0, w, h, back_atlas, back_pos)
+            elseif atlas then
+                view.icon_sprite = Sprite(0, 0, w, h, atlas, pos)
+            end
+
+            view.is_shaking = is_shaking
+            function view:draw()
+                if self.icon_sprite then
+                    local base_w = self.T.w
+                    local base_h = self.T.h
+                    local rot = 0
+                    local bounce = 0
+                    local scale_mod = 1
+                    if self.is_shaking and G.TIMERS and G.TIMERS.REAL then
+                        -- Balatro condition-activation jiggle (identical to DNA & 2-round Invisible Joker)
+                        local t = G.TIMERS.REAL * 14
+                        rot = math.sin(t) * 0.08
+                        bounce = -math.abs(math.sin(t * 0.6)) * 0.045
+                        scale_mod = 1 + (math.sin(t * 0.6) * 0.04)
+                    end
+                    self.icon_sprite.T.r = rot
+                    self.icon_sprite.T.w = base_w * scale_mod
+                    self.icon_sprite.T.h = base_h * scale_mod
+                    self.icon_sprite.T.x = self.T.x + (base_w * (1 - scale_mod) * 0.5)
+                    self.icon_sprite.T.y = self.T.y + bounce + (base_h * (1 - scale_mod) * 0.5)
+                    self.icon_sprite:draw()
+                end
+                add_to_drawhash(self)
+            end
+            return { n = G.UIT.O, config = { object = view } }
+        end
+        return nil
+    end
+
+    local function roll_acorn_round()
+        local pool = {}
+        for _, j in ipairs(standard_acorn_pool) do table.insert(pool, j) end
+        for i = #pool, 2, -1 do
+            local r = math.random(1, i)
+            pool[i], pool[r] = pool[r], pool[i]
+        end
+        local jokers = {}
+        for i = 1, 5 do
+            table.insert(jokers, pool[i])
+        end
+        local target_idx = math.random(1, 5)
+        return jokers, jokers[target_idx]
     end
 
     G.FUNCS.shell_game_start_shuffle = function(e)
         local session = G.GAME and G.GAME.reality_warp_shell_session
-        if not session or session.stage ~= 'choose' then return end
+        if not session or not session.jokers or session.stage ~= 'reveal' then return end
 
         session.stage = 'shuffling'
-        session.status_text = "Covering all cups..."
-        play_sound('cardSlide1', 1.0, 0.9)
-        G.FUNCS.overlay_menu{ definition = G.UIDEF.shell_game_overlay() }
+        session.status_text = "Flipping face down... Amber Acorn begins!"
+        session.picked_idx = nil
+        session.result_msg = ""
+        play_sound('cardSlide1', 0.88, 0.8)
+        update_shell_game_ui()
 
-        local swaps = {}
-        for i = 1, 3 do
-            local a = math.random(1, 4)
-            local b = math.random(1, 4)
-            while b == a do b = math.random(1, 4) end
-            table.insert(swaps, { a = a, b = b })
-        end
+        local speed = math.max(1, (G.SETTINGS and G.SETTINGS.GAMESPEED) or 1)
+        local step_delay = 0.42 / speed
 
-        for s_idx, sw in ipairs(swaps) do
+        -- 5 sequential slow swaps imitating Amber Acorn showdown blind
+        for s = 1, 5 do
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
-                delay = 0.5,
+                delay = step_delay,
                 func = function()
-                    if not (G.GAME and G.GAME.reality_warp_shell_session) then return true end
-                    local sess = G.GAME.reality_warp_shell_session
-                    local a, b = sw.a, sw.b
-                    sess.cups[a], sess.cups[b] = sess.cups[b], sess.cups[a]
-                    if sess.real_pos == a then sess.real_pos = b
-                    elseif sess.real_pos == b then sess.real_pos = a end
-
-                    sess.status_text = "Shuffling: Swapped Cup #" .. a .. " and Cup #" .. b .. "!"
-                    play_sound('cardSlide' .. ((s_idx % 2) + 1), 1.0 + s_idx * 0.1, 0.9)
-                    G.FUNCS.overlay_menu{ definition = G.UIDEF.shell_game_overlay() }
+                    local sess = G.GAME and G.GAME.reality_warp_shell_session
+                    if not sess or sess.stage ~= 'shuffling' then return true end
+                    sess.status_text = "Amber Acorn: Shuffling... (" .. s .. "/5)"
+                    local i = math.random(1, #sess.jokers)
+                    local j = math.random(1, #sess.jokers)
+                    while j == i do j = math.random(1, #sess.jokers) end
+                    sess.jokers[i], sess.jokers[j] = sess.jokers[j], sess.jokers[i]
+                    play_sound(s % 2 == 0 and 'cardSlide2' or 'cardSlide1', 0.90 + (s * 0.08), 0.8)
+                    update_shell_game_ui()
                     return true
                 end
             }))
         end
 
+        -- Finish shuffle and activate picking
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
-            delay = 0.6,
+            delay = step_delay,
             func = function()
-                if not (G.GAME and G.GAME.reality_warp_shell_session) then return true end
-                local sess = G.GAME.reality_warp_shell_session
-                sess.stage = 'pick'
-                sess.status_text = "Shuffle complete! Pick the cup hiding the Default Joker!"
-                play_sound('chips1', 1.2, 0.8)
-                G.FUNCS.overlay_menu{ definition = G.UIDEF.shell_game_overlay() }
+                local sess = G.GAME and G.GAME.reality_warp_shell_session
+                if not sess or sess.stage ~= 'shuffling' then return true end
+                sess.stage = 'active'
+                sess.status_text = "Shuffled! Click a face-down card to find " .. (sess.target_joker and sess.target_joker.name or "Target") .. "!"
+                play_sound('gold_seal', 1.1, 0.7)
+                update_shell_game_ui()
                 return true
             end
         }))
     end
 
+    G.FUNCS.shell_game_reset_and_play = function(e)
+        local session = G.GAME and G.GAME.reality_warp_shell_session
+        if not session then return end
+
+        local jokers, target_joker = roll_acorn_round()
+        session.stage = 'reveal'
+        session.status_text = "FIND THIS JOKER: ★ " .. string.upper(target_joker.name) .. " ★"
+        session.jokers = jokers
+        session.target_joker = target_joker
+        session.picked_idx = nil
+        session.result_msg = ""
+        session.won = false
+
+        play_sound('cardSlide2', 1.1, 0.8)
+        update_shell_game_ui()
+    end
+
     G.FUNCS.shell_game_pick_cup = function(e)
         local cup_idx = e.config.ref_table and e.config.ref_table.cup_idx
         local session = G.GAME and G.GAME.reality_warp_shell_session
-        if not session or session.stage ~= 'pick' or not cup_idx then return end
+        if not session or not cup_idx or session.stage ~= 'active' or not session.jokers then return end
 
         session.picked_idx = cup_idx
         session.stage = 'result'
-        local picked = session.cups[cup_idx]
+        local picked = session.jokers[cup_idx]
+        local target = session.target_joker
         local card = session.card
 
-        if picked and picked.type == 'real' then
+        if picked and target and picked.key == target.key then
             session.won = true
             local prize = session.target_prize
             if prize == 'money' then
                 ease_dollars(12)
-                session.result_msg = "CORRECT! Found Default Joker! Won $12 Cash!"
+                session.result_msg = "CORRECT! Found " .. target.name .. "! Won $12 Cash!"
             elseif prize == 'tarot' then
                 if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
                     local tcard = create_card('Tarot', G.consumeables, nil, nil, nil, nil, nil, 'shell_game')
                     tcard:add_to_deck()
                     G.consumeables:emplace(tcard)
-                    session.result_msg = "CORRECT! Found Default Joker! Won Tarot: " .. (tcard.ability.name or "Tarot") .. "!"
+                    session.result_msg = "CORRECT! Found " .. target.name .. "! Won Tarot: " .. (tcard.ability.name or "Tarot") .. "!"
                 else
                     ease_dollars(8)
-                    session.result_msg = "CORRECT! Found Default Joker! (Slots full: awarded $8)!"
+                    session.result_msg = "CORRECT! Found " .. target.name .. "! (Slots full: awarded $8)!"
                 end
             elseif prize == 'hands' then
                 ease_hands_played(1)
                 ease_discard(1)
-                session.result_msg = "CORRECT! Found Default Joker! Won +1 Hand & +1 Discard!"
+                session.result_msg = "CORRECT! Found " .. target.name .. "! Won +1 Hand & +1 Discard!"
             elseif prize == 'mult' then
                 if card and card.ability and card.ability.extra then
                     card.ability.extra.mult = (card.ability.extra.mult or 12) + 15
                 end
-                session.result_msg = "CORRECT! Found Default Joker! Joker gained +15 Mult permanently!"
+                session.result_msg = "CORRECT! Found " .. target.name .. "! Joker gained +15 Mult permanently!"
             end
-            play_sound('win_round', 1.2, 0.9)
+            play_sound('timpani', 1.2, 0.9)
             if card then card:juice_up(0.7, 0.4) end
         else
             session.won = false
-            if picked and picked.type == 'decoy' then
-                session.result_msg = "FOOLED! You picked " .. (picked.title or "a Decoy") .. "! You get nothing."
-            else
-                session.result_msg = "EMPTY CUP! Nothing inside Cup #" .. cup_idx .. ". You get nothing."
-            end
+            session.result_msg = "WRONG JOKER! Picked " .. (picked and picked.name or "Unknown") .. ", target was " .. (target and target.name or "Target") .. "! You get nothing."
             play_sound('cancel', 1.0, 0.9)
             if card then card:juice_up(0.3, 0.2) end
-        end
-
-        if card and card.ability and card.ability.extra then
-            card.ability.extra.played_this_round = true
         end
 
         if notify_minigame_completed then
             notify_minigame_completed('shell_game')
         end
 
-        G.FUNCS.overlay_menu{ definition = G.UIDEF.shell_game_overlay() }
+        update_shell_game_ui()
     end
 
-    G.UIDEF.shell_game_overlay = function()
+    G.UIDEF.shell_game_inner_content = function()
         local session = G.GAME and G.GAME.reality_warp_shell_session
-        if not session then return {} end
+        if not session or not session.jokers then return { n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {} } end
 
-        local cup_nodes = {}
-        for i = 1, 4 do
-            local cup = session.cups and session.cups[i]
+        local card_nodes = {}
+        for i = 1, 5 do
+            local jk = session.jokers[i]
             local is_picked = (session.picked_idx == i)
-            local is_real = (cup and cup.type == 'real')
+            local is_target = (jk and session.target_joker and jk.key == session.target_joker.key)
+            local is_clickable = (session.stage == 'active')
+            local is_face_down = (session.stage == 'active' or session.stage == 'shuffling')
+            local is_shaking = (session.stage == 'reveal' and is_target)
 
-            local bg_colour = { 0.18, 0.18, 0.22, 1 }
-            local header_text = "Cup #" .. i
-            local main_text = "[ ? ]"
-            local sub_text = "Mystery"
-            local text_colour = G.C.WHITE
+            local sprite_node = make_joker_card_sprite(jk, is_face_down, is_shaking, 1.25, 1.68)
 
-            if session.stage == 'choose' then
-                if is_real then
-                    bg_colour = G.C.RED
-                    main_text = "[ JOKER ]"
-                    sub_text = "Default Joker"
-                    header_text = "★ REAL JOKER ★"
-                    text_colour = G.C.GOLD
-                else
-                    bg_colour = { 0.15, 0.15, 0.2, 1 }
-                    main_text = "[ ? ]"
-                    sub_text = "Covered"
+            local slot_bg = G.C.CLEAR
+            local slot_border = G.C.CLEAR
+            local slot_outline = 0
+            if session.stage == 'reveal' then
+                if is_target then
+                    slot_bg = { 0.35, 0.25, 0.08, 0.7 }
+                    slot_border = G.C.GOLD
+                    slot_outline = 2
                 end
             elseif session.stage == 'shuffling' then
-                bg_colour = { 0.15, 0.15, 0.2, 1 }
-                main_text = "[ ? ]"
-                sub_text = "Shuffling..."
-            elseif session.stage == 'pick' then
-                bg_colour = G.C.PURPLE
-                main_text = "[ CUP #" .. i .. " ]"
-                sub_text = "Click to Pick!"
-                text_colour = G.C.WHITE
+                slot_bg = { 0.14, 0.12, 0.08, 0.6 }
+                slot_border = { 0.45, 0.35, 0.20, 0.6 }
+                slot_outline = 1
+            elseif session.stage == 'active' then
+                slot_bg = { 0.12, 0.12, 0.18, 0.5 }
+                slot_border = { 0.50, 0.50, 0.70, 0.7 }
+                slot_outline = 1
             elseif session.stage == 'result' then
-                if is_real then
-                    bg_colour = G.C.GREEN
-                    main_text = "[ REAL JOKER ]"
-                    sub_text = "★ DEFAULT ★"
-                    header_text = is_picked and "YOU FOUND IT!" or "HERE IT WAS!"
-                    text_colour = G.C.WHITE
-                elseif cup and cup.type == 'decoy' then
-                    bg_colour = is_picked and G.C.RED or { 0.25, 0.18, 0.22, 1 }
-                    main_text = "[ DECOY ]"
-                    sub_text = cup.title or "Variant"
-                    header_text = is_picked and "FOOLED!" or "Decoy"
-                    text_colour = is_picked and G.C.WHITE or { 0.75, 0.75, 0.75, 1 }
-                else
-                    bg_colour = is_picked and G.C.RED or { 0.15, 0.15, 0.15, 1 }
-                    main_text = "[ EMPTY ]"
-                    sub_text = "Nothing"
-                    header_text = is_picked and "EMPTY CUP!" or "Empty"
-                    text_colour = is_picked and G.C.WHITE or { 0.6, 0.6, 0.6, 1 }
+                if is_picked then
+                    slot_bg = session.won and { 0.12, 0.35, 0.15, 0.8 } or { 0.35, 0.12, 0.12, 0.8 }
+                    slot_border = session.won and G.C.GREEN or G.C.RED
+                    slot_outline = 2.5
+                elseif is_target then
+                    slot_bg = { 0.35, 0.28, 0.10, 0.7 }
+                    slot_border = G.C.GOLD
+                    slot_outline = 2
                 end
             end
 
-            local cup_inner = {
-                {
-                    n = G.UIT.R,
-                    config = { align = "cm", padding = 0.04 },
-                    nodes = {
-                        { n = G.UIT.T, config = { text = header_text, scale = 0.28, colour = text_colour, shadow = true } }
-                    }
-                },
-                {
-                    n = G.UIT.R,
-                    config = { align = "cm", padding = 0.08 },
-                    nodes = {
-                        { n = G.UIT.T, config = { text = main_text, scale = 0.40, colour = G.C.WHITE, shadow = true } }
-                    }
-                },
-                {
-                    n = G.UIT.R,
-                    config = { align = "cm", padding = 0.04 },
-                    nodes = {
-                        { n = G.UIT.T, config = { text = sub_text, scale = 0.26, colour = text_colour } }
-                    }
-                }
-            }
-
-            local cup_cfg = {
-                align = "cm",
-                padding = 0.08,
-                minw = 1.85,
-                minh = 2.4,
-                r = 0.1,
-                colour = bg_colour,
-                shadow = true,
-                hover = (session.stage == 'pick')
-            }
-
-            if session.stage == 'pick' then
-                cup_cfg.button = 'shell_game_pick_cup'
-                cup_cfg.ref_table = { cup_idx = i }
+            local foot_label = nil
+            if session.stage == 'reveal' then
+                foot_label = is_target and { text = "★ TARGET ★", col = G.C.GOLD } or { text = jk.name, col = { 0.70, 0.70, 0.80, 0.8 } }
+            elseif session.stage == 'shuffling' then
+                foot_label = { text = "Slot #" .. i, col = { 0.55, 0.55, 0.65, 0.7 } }
+            elseif session.stage == 'active' then
+                foot_label = { text = "Click to Pick!", col = G.C.GOLD }
+            elseif session.stage == 'result' then
+                if is_picked then
+                    foot_label = { text = session.won and "★ WINNER ★" or "✕ PICKED ✕", col = session.won and G.C.GREEN or G.C.RED }
+                elseif is_target then
+                    foot_label = { text = "★ TARGET ★", col = G.C.GOLD }
+                else
+                    foot_label = { text = jk.name, col = { 0.65, 0.65, 0.75, 0.7 } }
+                end
             end
 
-            table.insert(cup_nodes, {
+            table.insert(card_nodes, {
                 n = G.UIT.C,
-                config = { align = "cm", padding = 0.06 },
+                config = {
+                    align = "cm",
+                    padding = 0.04,
+                    button = is_clickable and 'shell_game_pick_cup' or nil,
+                    ref_table = { cup_idx = i },
+                    hover = is_clickable,
+                    colour = slot_bg,
+                    r = 0.10,
+                    outline = slot_outline,
+                    outline_colour = slot_border,
+                    shadow = is_clickable or is_shaking
+                },
                 nodes = {
                     {
-                        n = G.UIT.C,
-                        config = cup_cfg,
-                        nodes = cup_inner
+                        n = G.UIT.R,
+                        config = { align = "cm", padding = 0.02 },
+                        nodes = sprite_node and { sprite_node } or {
+                            { n = G.UIT.T, config = { text = is_face_down and "[ ? ]" or jk.name, scale = 0.35, colour = G.C.WHITE, shadow = true } }
+                        }
+                    },
+                    {
+                        n = G.UIT.R,
+                        config = { align = "cm", minh = 0.32, padding = 0.02 },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = foot_label.text, scale = 0.20, maxw = 1.25, colour = foot_label.col, shadow = true } }
+                        }
                     }
                 }
             })
@@ -3741,9 +4221,9 @@ if G and G.FUNCS then
                     minh = 0.55,
                     r = 0.08,
                     colour = btn_col,
-                    hover = (session.stage == 'choose'),
+                    hover = (session.stage == 'reveal'),
                     shadow = true,
-                    button = (session.stage == 'choose') and 'shell_game_set_prize' or nil,
+                    button = (session.stage == 'reveal') and 'shell_game_set_prize' or nil,
                     ref_table = { prize = p.key }
                 },
                 nodes = {
@@ -3754,79 +4234,127 @@ if G and G.FUNCS then
         end
 
         local bottom_action_node = nil
-        if session.stage == 'choose' then
+        if session.stage == 'result' then
             bottom_action_node = {
                 n = G.UIT.R,
                 config = { align = "cm", padding = 0.08 },
                 nodes = {
                     UIBox_button({
-                        label = {"Start Shell Game Shuffle!"},
-                        button = 'shell_game_start_shuffle',
+                        label = {"Play Again"},
+                        button = 'shell_game_reset_and_play',
                         colour = G.C.GREEN,
-                        minw = 4.2,
+                        minw = 2.8,
+                        minh = 0.65,
+                        scale = 0.40,
+                        col = true
+                    }),
+                    { n = G.UIT.B, config = { w = 0.3, h = 0.1 } },
+                    UIBox_button({
+                        label = {"Collect & Return"},
+                        button = 'exit_overlay_menu',
+                        colour = G.C.BLUE,
+                        minw = 3.0,
                         minh = 0.65,
                         scale = 0.40,
                         col = true
                     })
                 }
             }
-        elseif session.stage == 'result' then
+        elseif session.stage == 'reveal' then
             bottom_action_node = {
                 n = G.UIT.R,
                 config = { align = "cm", padding = 0.08 },
                 nodes = {
                     UIBox_button({
-                        label = {"Collect & Return"},
-                        button = 'exit_overlay_menu',
-                        colour = G.C.BLUE,
-                        minw = 3.6,
-                        minh = 0.6,
-                        scale = 0.38,
+                        label = {"READY (SHUFFLE JOKERS)"},
+                        button = 'shell_game_start_shuffle',
+                        colour = G.C.ORANGE,
+                        minw = 4.4,
+                        minh = 0.75,
+                        scale = 0.44,
                         col = true
                     })
+                }
+            }
+        elseif session.stage == 'shuffling' then
+            bottom_action_node = {
+                n = G.UIT.R,
+                config = { align = "cm", padding = 0.08 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = {
+                            align = "cm",
+                            padding = 0.08,
+                            minw = 4.4,
+                            minh = 0.75,
+                            r = 0.1,
+                            colour = { 0.22, 0.14, 0.06, 0.95 },
+                            outline = 2,
+                            outline_colour = G.C.GOLD
+                        },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = "⏳ SHUFFLING JOKERS... ⏳", scale = 0.40, colour = G.C.GOLD, shadow = true } }
+                        }
+                    }
                 }
             }
         else
             bottom_action_node = {
                 n = G.UIT.R,
-                config = { align = "cm", padding = 0.06 },
+                config = { align = "cm", padding = 0.08 },
                 nodes = {
-                    { n = G.UIT.T, config = { text = (session.stage == 'shuffling' and "Keep your eyes on the moving cups!" or "Select which cup holds the Real Default Joker!"), scale = 0.32, colour = G.C.WHITE } }
+                    { n = G.UIT.T, config = { text = "Select one of the face-down cards from the tray above!", scale = 0.36, colour = G.C.GOLD, shadow = true } }
                 }
             }
         end
 
         local cur_mult = (session.card and session.card.ability and session.card.ability.extra and session.card.ability.extra.mult) or 12
+        local target_name = session.target_joker and session.target_joker.name or "Joker"
 
-        return create_UIBox_generic_options({
-            back_func = 'exit_overlay_menu',
-            contents = {
-                {
-                    n = G.UIT.R,
-                    config = { align = "cm", padding = 0.08 },
-                    nodes = {
-                        { n = G.UIT.T, config = { text = "THE SHELL GAME", scale = 0.55, colour = G.C.GOLD, shadow = true } }
-                    }
-                },
-                {
-                    n = G.UIT.R,
-                    config = { align = "cm", padding = 0.04 },
-                    nodes = {
-                        { n = G.UIT.T, config = { text = "Find the Real Default Joker hidden among the Decoys!", scale = 0.34, colour = G.C.WHITE } }
-                    }
-                },
+        return {
+            n = G.UIT.ROOT,
+            config = { align = "cm", colour = G.C.CLEAR },
+            nodes = {
                 {
                     n = G.UIT.R,
                     config = { align = "cm", padding = 0.06 },
                     nodes = {
-                        { n = G.UIT.T, config = { text = "Current Joker Mult: +" .. cur_mult, scale = 0.28, colour = G.C.MULT } }
+                        { n = G.UIT.T, config = { text = "THE SHELL GAME - AMBER ACORN", scale = 0.54, colour = G.C.GOLD, shadow = true } }
                     }
                 },
                 {
                     n = G.UIT.R,
                     config = { align = "cm", padding = 0.04 },
                     nodes = {
-                        { n = G.UIT.T, config = { text = "Choose Reward to Play For:", scale = 0.30, colour = G.C.GOLD } }
+                        {
+                            n = G.UIT.C,
+                            config = {
+                                align = "cm",
+                                padding = 0.08,
+                                r = 0.1,
+                                colour = { 0.85, 0.55, 0.05, 0.95 },
+                                outline = 2,
+                                outline_colour = G.C.WHITE
+                            },
+                            nodes = {
+                                { n = G.UIT.T, config = { text = "FIND THIS JOKER:  ★ " .. string.upper(target_name) .. " ★", scale = 0.40, colour = G.C.WHITE, shadow = true } }
+                            }
+                        }
+                    }
+                },
+                {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.04 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = "Current Joker Mult: +" .. cur_mult, scale = 0.32, colour = G.C.MULT } }
+                    }
+                },
+                {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.04 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = "Choose Reward to Play For:", scale = 0.32, colour = G.C.GOLD } }
                     }
                 },
                 {
@@ -3836,32 +4364,37 @@ if G and G.FUNCS then
                 },
                 {
                     n = G.UIT.R,
-                    config = { align = "cm", padding = 0.08 },
+                    config = { align = "cm", padding = 0.06 },
                     nodes = {
                         {
                             n = G.UIT.C,
                             config = {
                                 align = "cm",
-                                padding = 0.12,
-                                r = 0.1,
-                                colour = { 0.1, 0.1, 0.15, 0.95 }
+                                padding = 0.10,
+                                r = 0.14,
+                                colour = { 0.08, 0.08, 0.12, 0.96 },
+                                outline = 2,
+                                outline_colour = (session.stage == 'shuffling' and G.C.ORANGE) or (session.stage == 'active' and G.C.GOLD) or { 0.32, 0.32, 0.45, 0.8 },
+                                shadow = true
                             },
                             nodes = {
                                 {
                                     n = G.UIT.R,
-                                    config = { align = "cm", padding = 0.06 },
+                                    config = { align = "cm", padding = 0.03 },
                                     nodes = {
-                                        { n = G.UIT.T, config = { text = session.status_text or "", scale = 0.33, colour = G.C.GOLD, shadow = true } }
+                                        { n = G.UIT.T, config = { text = "JOKERS (5 / 5)", scale = 0.28, colour = { 0.65, 0.65, 0.78, 0.8 } } },
+                                        { n = G.UIT.B, config = { w = 0.4, h = 0.1 } },
+                                        { n = G.UIT.T, config = { text = "• " .. (session.status_text or "") .. " •", scale = 0.30, colour = G.C.GOLD, shadow = true } }
                                     }
                                 },
                                 {
                                     n = G.UIT.R,
-                                    config = { align = "cm", padding = 0.04 },
-                                    nodes = cup_nodes
+                                    config = { align = "cm", padding = 0.06 },
+                                    nodes = card_nodes
                                 },
                                 (session.stage == 'result' and {
                                     n = G.UIT.R,
-                                    config = { align = "cm", padding = 0.06 },
+                                    config = { align = "cm", padding = 0.04 },
                                     nodes = {
                                         { n = G.UIT.T, config = { text = session.result_msg or "", scale = 0.36, colour = session.won and G.C.GREEN or G.C.RED, shadow = true } }
                                     }
@@ -3872,50 +4405,47 @@ if G and G.FUNCS then
                 },
                 bottom_action_node
             }
+        }
+    end
+
+    G.UIDEF.shell_game_overlay = function()
+        local session = G.GAME and G.GAME.reality_warp_shell_session
+        if not session then return {} end
+
+        return create_UIBox_generic_options({
+            back_func = 'exit_overlay_menu',
+            contents = {
+                {
+                    n = G.UIT.O,
+                    config = {
+                        id = 'shell_game_contents',
+                        object = UIBox{
+                            definition = G.UIDEF.shell_game_inner_content(),
+                            config = { offset = { x = 0, y = 0 }, align = 'cm' }
+                        },
+                        align = 'cm'
+                    }
+                }
+            }
         })
     end
 
     G.FUNCS.shell_game_play = function(e)
         local card = e.config.ref_table
         if not card or not card.ability or not card.ability.extra then return end
-        if card.ability.extra.played_this_round then return end
+        if card.ability.extra.played_this_round or card.debuff or G.STATE ~= G.STATES.SELECTING_HAND then return end
+        card.ability.extra.played_this_round = true
+        if e.UIBox then e.UIBox:recalculate(true) end
 
-        local decoy_pool = {
-            { title = "Jolly Decoy", sub = "Variant Fake!" },
-            { title = "Zany Decoy", sub = "Variant Fake!" },
-            { title = "Mad Impostor", sub = "Variant Fake!" },
-            { title = "Crazy Decoy", sub = "Variant Fake!" },
-            { title = "Droll Fake", sub = "Variant Fake!" },
-        }
-        for i = #decoy_pool, 2, -1 do
-            local j = math.random(1, i)
-            decoy_pool[i], decoy_pool[j] = decoy_pool[j], decoy_pool[i]
-        end
-
-        local cups = {
-            { type = 'real', title = "Default Joker", subtitle = "THE REAL DEAL!" },
-            { type = 'decoy', title = decoy_pool[1].title, subtitle = decoy_pool[1].sub },
-            { type = 'decoy', title = decoy_pool[2].title, subtitle = decoy_pool[2].sub },
-            { type = 'empty', title = "Empty Cup", subtitle = "Nothing Inside" },
-        }
-
-        for i = #cups, 2, -1 do
-            local j = math.random(1, i)
-            cups[i], cups[j] = cups[j], cups[i]
-        end
-
-        local real_pos = 1
-        for idx, c in ipairs(cups) do
-            if c.type == 'real' then real_pos = idx break end
-        end
+        local jokers, target_joker = roll_acorn_round()
 
         G.GAME.reality_warp_shell_session = {
             card = card,
             target_prize = card.ability.extra.target_prize or 'money',
-            stage = 'choose',
-            status_text = "Default Joker is under Cup #" .. real_pos .. "! Pick your prize stake, then start shuffle!",
-            cups = cups,
-            real_pos = real_pos,
+            stage = 'reveal',
+            status_text = "FIND THIS JOKER: ★ " .. string.upper(target_joker.name) .. " ★",
+            jokers = jokers,
+            target_joker = target_joker,
             picked_idx = nil,
             result_msg = "",
             won = false,
@@ -3936,7 +4466,7 @@ if G and G.FUNCS then
             local ex = card.ability.extra
             local cur_d = (to_number and to_number(G.GAME and G.GAME.dollars)) or tonumber(G.GAME and G.GAME.dollars) or 0
             local cost = ex.cost or 2
-            local can_play = ((ex.plays_left or 1) > 0) and cur_d >= cost and (G.STATE == G.STATES.SHOP or G.STATE == G.STATES.SELECTING_HAND)
+            local can_play = not ex.played_this_round and not card.debuff and cur_d >= cost and (G.STATE == G.STATES.SELECTING_HAND)
             if can_play then
                 e.config.colour = G.C.ORANGE
                 e.config.button = 'claw_machine_play'
@@ -3947,110 +4477,225 @@ if G and G.FUNCS then
         end
     end
 
+    local function update_claw_machine_ui()
+        if not (G.OVERLAY_MENU and G.OVERLAY_MENU.get_UIE_by_ID) then return end
+        local e = G.OVERLAY_MENU:get_UIE_by_ID('claw_machine_contents')
+        if e then
+            if e.config.object then
+                e.config.object:remove()
+                e.config.object = nil
+            end
+            e.config.object = UIBox{
+                definition = G.UIDEF.claw_machine_inner_content(),
+                config = { offset = { x = 0, y = 0 }, align = 'cm', parent = e }
+            }
+            if G.OVERLAY_MENU.recalculate then
+                G.OVERLAY_MENU:recalculate()
+            end
+        else
+            if G.OVERLAY_MENU then G.FUNCS.overlay_menu{ definition = G.UIDEF.claw_machine_overlay() } end
+        end
+    end
+
     G.FUNCS.claw_machine_aim_left = function(e)
         local session = G.GAME and G.GAME.reality_warp_claw_session
         if session and session.stage == 'aim' then
-            session.crane_pos = math.max(1, (session.crane_pos or 3) - 1)
-            play_sound('button', 1.2, 0.6)
-            G.FUNCS.overlay_menu{ definition = G.UIDEF.claw_machine_overlay() }
+            if (session.crane_pos or 4) > 1 then
+                session.crane_pos = session.crane_pos - 1
+                play_sound('cardSlide1', 1.25, 0.6)
+                update_claw_machine_ui()
+            else
+                play_sound('cancel', 1.3, 0.3)
+            end
         end
     end
 
     G.FUNCS.claw_machine_aim_right = function(e)
         local session = G.GAME and G.GAME.reality_warp_claw_session
         if session and session.stage == 'aim' then
-            session.crane_pos = math.min(5, (session.crane_pos or 3) + 1)
-            play_sound('button', 1.2, 0.6)
-            G.FUNCS.overlay_menu{ definition = G.UIDEF.claw_machine_overlay() }
+            if (session.crane_pos or 4) < 7 then
+                session.crane_pos = session.crane_pos + 1
+                play_sound('cardSlide1', 1.25, 0.6)
+                update_claw_machine_ui()
+            else
+                play_sound('cancel', 1.3, 0.3)
+            end
         end
     end
 
-    G.FUNCS.claw_machine_drop = function(e)
+    G.FUNCS.claw_machine_anchor = function(e)
         local session = G.GAME and G.GAME.reality_warp_claw_session
         if not session or session.stage ~= 'aim' then return end
 
-        session.stage = 'dropping'
-        session.status_text = "The crane is lowering down into the pit..."
-        play_sound('cardSlide1', 0.9, 0.8)
-        G.FUNCS.overlay_menu{ definition = G.UIDEF.claw_machine_overlay() }
+        session.stage = 'anchored'
+        session.drop_depth = 2
+        session.status_text = "CLAW ANCHORED TO BOX #" .. (session.crane_pos or 4) .. "! CLICK 'PULL UP! (JALAR)' TO RETRIEVE IT!"
+        play_sound('chips1', 1.2, 0.9)
+        play_sound('button', 0.9, 0.9)
+        update_claw_machine_ui()
+    end
 
+    G.FUNCS.claw_machine_reaim = function(e)
+        local session = G.GAME and G.GAME.reality_warp_claw_session
+        if not session or session.stage ~= 'anchored' then return end
+
+        session.stage = 'aim'
+        session.drop_depth = 0
+        session.status_text = "Select any surprise box to anchor the claw!"
+        play_sound('cardSlide1', 1.1, 0.8)
+        update_claw_machine_ui()
+    end
+
+    G.FUNCS.claw_machine_select_slot = function(e)
+        local slot = e.config.ref_table and e.config.ref_table.slot
+        local session = G.GAME and G.GAME.reality_warp_claw_session
+        if session and session.stage == 'aim' and slot then
+            session.crane_pos = slot
+            G.FUNCS.claw_machine_anchor()
+        end
+    end
+
+    G.FUNCS.claw_machine_pull = function(e)
+        local session = G.GAME and G.GAME.reality_warp_claw_session
+        if not session or session.stage ~= 'anchored' then return end
+
+        session.stage = 'pulling'
+        session.drop_depth = 1
+        session.status_text = "HEAVING CRANE UPWARD! Pulling surprise box toward the chute..."
+        play_sound('cardSlide2', 0.95, 0.8)
+        update_claw_machine_ui()
+
+        -- Step 1: Hoisting toward chute (0.45s)
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
-            delay = 0.6,
+            delay = 0.45,
             func = function()
                 if not (G.GAME and G.GAME.reality_warp_claw_session) then return true end
                 local sess = G.GAME.reality_warp_claw_session
-                sess.status_text = "The claw clamps shut! Lifting prize..."
-                play_sound('chips1', 1.2, 0.8)
-                G.FUNCS.overlay_menu{ definition = G.UIDEF.claw_machine_overlay() }
+                sess.drop_depth = 0
+                sess.status_text = "Box reached collection chute! Inspecting contents..."
+                play_sound('cardSlide1', 1.15, 0.8)
+                update_claw_machine_ui()
                 return true
             end
         }))
 
+        -- Step 2: Outcome & Prize resolution (0.45s)
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
-            delay = 0.7,
+            delay = 0.45,
             func = function()
                 if not (G.GAME and G.GAME.reality_warp_claw_session) then return true end
                 local sess = G.GAME.reality_warp_claw_session
                 sess.stage = 'result'
+                sess.drop_depth = 0
                 local target = sess.prizes[sess.crane_pos]
                 local card = sess.card
 
-                if target.id == 4 then
+                if target.type == 'empty' then
+                    -- Outcome 3: EMPTY BOX ("no habia nada adentro")
+                    sess.won = false
+                    sess.outcome = 'empty'
+                    sess.result_msg = "EMPTY BOX! You pulled the box up, but there was nothing inside!"
+                    play_sound('cancel', 0.9, 0.9)
+                    if card then card:juice_up(0.3, 0.2) end
+                elseif target.type == 'jackpot' then
                     local roll = pseudorandom('claw_jackpot', 1, 100)
                     if roll == 1 and G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
+                        -- Outcome 1: OBTAINED Legendary Joker
                         sess.won = true
+                        sess.outcome = 'obtained'
                         local leg = create_card('Joker', G.jokers, true, nil, nil, nil, nil, 'claw_leg')
                         leg:add_to_deck()
                         G.jokers:emplace(leg)
-                        sess.result_msg = "JACKPOT! GRABBED LEGENDARY JOKER (" .. (leg.ability.name or "Legendary") .. ")!"
+                        sess.result_msg = "JACKPOT! OBTAINED LEGENDARY JOKER (" .. (leg.ability.name or "Legendary") .. ")!"
                         play_sound('timpani', 1.2, 0.9)
                         if card then card:juice_up(0.8, 0.5) end
                     elseif roll <= 35 then
+                        -- Outcome 1: OBTAINED $20 Cash
                         sess.won = true
+                        sess.outcome = 'obtained'
                         ease_dollars(20)
-                        sess.result_msg = "GOLDEN CROWN GRABBED! Won $20 Cash!"
-                        play_sound('win_round', 1.2, 0.9)
+                        sess.result_msg = "OBTAINED! You pulled the Golden Crown and won $20 Cash!"
+                        play_sound('timpani', 1.2, 0.9)
                         if card then card:juice_up(0.7, 0.4) end
-                    else
+                    elseif roll <= 80 then
+                        -- Outcome 2: SLIPPED ("se te resbalo")
                         sess.won = false
-                        sess.result_msg = "SLIPPED! The heavy Golden Crown slipped from the claw's grasp."
+                        sess.outcome = 'slipped'
+                        sess.result_msg = "SLIPPED! The heavy Golden Crown slipped from the claw's grasp and dropped back!"
                         play_sound('cancel', 1.0, 0.8)
+                        if card then card:juice_up(0.3, 0.2) end
+                    else
+                        -- Outcome 3: EMPTY BOX ("no habia nada adentro")
+                        sess.won = false
+                        sess.outcome = 'empty'
+                        sess.result_msg = "EMPTY BOX! You hauled the Golden Crown box up, but it was hollow inside!"
+                        play_sound('cancel', 0.9, 0.9)
                         if card then card:juice_up(0.3, 0.2) end
                     end
                 else
                     local roll = pseudorandom('claw_grip', 1, 100)
-                    if roll <= 80 then
+                    if roll <= 65 then
+                        -- Outcome 1: OBTAINED ("lo obtuviste")
                         sess.won = true
-                        if target.type == 'cash' then
-                            ease_dollars(10)
-                            sess.result_msg = "SUCCESS! Grabbed $10 Cash Capsule!"
-                        elseif target.type == 'cash_plus' then
-                            ease_dollars(15)
-                            sess.result_msg = "SUCCESS! Grabbed $15 Big Prize Capsule!"
-                        elseif target.type == 'tag' then
-                            local tag_pool = { 'tag_standard', 'tag_charm', 'tag_meteor', 'tag_buffoon', 'tag_handy', 'tag_garbage', 'tag_coupon', 'tag_double' }
-                            local chosen_tag = pseudorandom_element(tag_pool, pseudoseed('claw_tag'))
-                            add_tag(Tag(chosen_tag))
-                            sess.result_msg = "SUCCESS! Grabbed Mystery Tag: " .. chosen_tag .. "!"
+                        sess.outcome = 'obtained'
+                        if target.type == 'tarot' then
+                            if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                                local tcard = create_card('Tarot', G.consumeables, nil, nil, nil, nil, nil, 'claw_tarot')
+                                tcard:add_to_deck()
+                                G.consumeables:emplace(tcard)
+                                sess.result_msg = "OBTAINED! You pulled Tarot Card: " .. (tcard.ability.name or "Tarot") .. "!"
+                            else
+                                ease_dollars(6)
+                                sess.result_msg = "OBTAINED! (Consumables full: awarded $6)!"
+                            end
+                        elseif target.type == 'spectral' then
+                            if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                                local scard = create_card('Spectral', G.consumeables, nil, nil, nil, nil, nil, 'claw_spec')
+                                scard:add_to_deck()
+                                G.consumeables:emplace(scard)
+                                sess.result_msg = "OBTAINED! You pulled Spectral Card: " .. (scard.ability.name or "Spectral") .. "!"
+                            else
+                                ease_dollars(8)
+                                sess.result_msg = "OBTAINED! (Consumables full: awarded $8)!"
+                            end
+                        elseif target.type == 'planet' then
+                            if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
+                                local pcard = create_card('Planet', G.consumeables, nil, nil, nil, nil, nil, 'claw_planet')
+                                pcard:add_to_deck()
+                                G.consumeables:emplace(pcard)
+                                sess.result_msg = "OBTAINED! You pulled Planet Card: " .. (pcard.ability.name or "Planet") .. "!"
+                            else
+                                ease_dollars(6)
+                                sess.result_msg = "OBTAINED! (Consumables full: awarded $6)!"
+                            end
                         elseif target.type == 'joker' then
                             if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
                                 local jk = create_card('Joker', G.jokers, nil, 1, nil, nil, nil, 'claw_jk')
                                 jk:add_to_deck()
                                 G.jokers:emplace(jk)
-                                sess.result_msg = "SUCCESS! Grabbed Plush Joker (" .. (jk.ability.name or "Joker") .. ")!"
+                                sess.result_msg = "OBTAINED! You pulled Joker: " .. (jk.ability.name or "Joker") .. "!"
                             else
                                 ease_dollars(8)
-                                sess.result_msg = "SUCCESS! (Jokers Full: awarded $8 instead)!"
+                                sess.result_msg = "OBTAINED! (Jokers full: awarded $8)!"
                             end
                         end
-                        play_sound('win_round', 1.2, 0.9)
+                        play_sound('timpani', 1.2, 0.9)
                         if card then card:juice_up(0.7, 0.4) end
-                    else
+                    elseif roll <= 88 then
+                        -- Outcome 2: SLIPPED ("se te resbalo")
                         sess.won = false
-                        sess.result_msg = "SLIPPED! The claw lost grip as it reached the chute!"
+                        sess.outcome = 'slipped'
+                        sess.result_msg = "SLIPPED! The claw lost its grip as it reached the chute!"
                         play_sound('cancel', 1.0, 0.8)
+                        if card then card:juice_up(0.3, 0.2) end
+                    else
+                        -- Outcome 3: EMPTY BOX ("no habia nada adentro")
+                        sess.won = false
+                        sess.outcome = 'empty'
+                        sess.result_msg = "EMPTY BOX! You hauled the surprise box up, but there was nothing inside!"
+                        play_sound('cancel', 0.9, 0.9)
                         if card then card:juice_up(0.3, 0.2) end
                     end
                 end
@@ -4059,160 +4704,356 @@ if G and G.FUNCS then
                     notify_minigame_completed('claw_machine')
                 end
 
-                G.FUNCS.overlay_menu{ definition = G.UIDEF.claw_machine_overlay() }
+                update_claw_machine_ui()
                 return true
             end
         }))
     end
 
-    G.UIDEF.claw_machine_overlay = function()
+    G.UIDEF.claw_machine_inner_content = function()
         local session = G.GAME and G.GAME.reality_warp_claw_session
-        if not session then return {} end
+        if not session then return { n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {} } end
 
-        local crane_pos = session.crane_pos or 3
+        local crane_pos = session.crane_pos or 4
+        local depth = session.drop_depth or 0
+        local stage = session.stage or 'aim'
 
+        -- Helper to create claw machine joker sprite instance
+        local make_claw_joker_sprite = function(w, h)
+            local jk_atlas = (SMODS and SMODS.Atlases and SMODS.Atlases['reality_warp_jokers']) or (G.ASSET_ATLAS and G.ASSET_ATLAS['reality_warp_jokers'])
+            if jk_atlas and Moveable and Sprite then
+                local icon_view = Moveable(0, 0, w or 0.65, h or 0.85)
+                icon_view.icon_sprite = Sprite(0, 0, w or 0.65, h or 0.85, jk_atlas, { x = 3, y = 11 })
+                function icon_view:draw()
+                    if self.icon_sprite then
+                        self.icon_sprite.T.x = self.T.x
+                        self.icon_sprite.T.y = self.T.y
+                        self.icon_sprite:draw()
+                    end
+                    add_to_drawhash(self)
+                end
+                return { n = G.UIT.O, config = { object = icon_view } }
+            end
+            return nil
+        end
+
+        -- Header Joker Sprite
+        local title_nodes = {}
+        local title_joker = make_claw_joker_sprite(0.60, 0.78)
+        if title_joker then
+            table.insert(title_nodes, title_joker)
+            table.insert(title_nodes, { n = G.UIT.B, config = { w = 0.2, h = 0.5 } })
+        end
+        table.insert(title_nodes, { n = G.UIT.T, config = { text = "THE CLAW MACHINE", scale = 0.55, colour = G.C.GOLD, shadow = true } })
+
+        -- Crane Overhead Track Nodes (7 slots)
         local track_nodes = {}
-        for i = 1, 5 do
+        for i = 1, 7 do
             local is_crane = (i == crane_pos)
-            local col = is_crane and G.C.ORANGE or G.C.UI.BACKGROUND_INACTIVE
-            local crane_symbol = is_crane and "[\\] [V] [/]" or "··· | ···"
-            local top_symbol = is_crane and "══[CRANE]══" or "═══════"
+            local track_inner = {}
+
+            if is_crane then
+                if depth == 0 then
+                    local spr = make_claw_joker_sprite(0.48, 0.62)
+                    if spr then
+                        table.insert(track_inner, { n = G.UIT.R, config = { align = "cm" }, nodes = { spr } })
+                    else
+                        table.insert(track_inner, { n = G.UIT.R, config = { align = "cm" }, nodes = { { n = G.UIT.T, config = { text = "▼ CLAW ▼", scale = 0.24, colour = G.C.GOLD, shadow = true } } } })
+                    end
+                else
+                    table.insert(track_inner, { n = G.UIT.R, config = { align = "cm" }, nodes = { { n = G.UIT.T, config = { text = "CABLE", scale = 0.20, colour = G.C.GOLD, shadow = true } } } })
+                    table.insert(track_inner, { n = G.UIT.R, config = { align = "cm" }, nodes = { { n = G.UIT.T, config = { text = "▼ ▼ ▼", scale = 0.18, colour = G.C.WHITE } } } })
+                end
+            else
+                -- Clean metallic rail slot, no broken characters or stray pipes
+                table.insert(track_inner, {
+                    n = G.UIT.R,
+                    config = { align = "cm" },
+                    nodes = {
+                        {
+                            n = G.UIT.B,
+                            config = {
+                                w = 0.85,
+                                h = 0.08,
+                                colour = { 0.25, 0.25, 0.35, 0.5 },
+                                r = 0.04
+                            }
+                        }
+                    }
+                })
+            end
+
             table.insert(track_nodes, {
                 n = G.UIT.C,
-                config = { align = "cm", padding = 0.04, minw = 1.6, minh = 0.8, colour = is_crane and {0.25, 0.15, 0.1, 1} or {0.12, 0.12, 0.15, 0.8}, r = 0.06 },
-                nodes = {
-                    { n = G.UIT.R, config = { align = "cm" }, nodes = { { n = G.UIT.T, config = { text = top_symbol, scale = 0.24, colour = col } } } },
-                    { n = G.UIT.R, config = { align = "cm" }, nodes = { { n = G.UIT.T, config = { text = crane_symbol, scale = 0.32, colour = is_crane and G.C.GOLD or {0.5, 0.5, 0.5, 1}, shadow = is_crane } } } }
-                }
+                config = {
+                    align = "cm",
+                    padding = 0.02,
+                    minw = 1.18,
+                    minh = 0.85,
+                    colour = is_crane and { 0.26, 0.18, 0.08, 1 } or { 0.10, 0.10, 0.14, 0.9 },
+                    r = 0.08,
+                    outline = is_crane and 2.5 or 1,
+                    outline_colour = is_crane and G.C.GOLD or { 0.22, 0.22, 0.30, 0.5 }
+                },
+                nodes = track_inner
             })
         end
 
+        -- Slot Pit Nodes (7 surprise boxes: Single unified arcade capsule card)
         local pit_nodes = {}
-        for i = 1, 5 do
-            local p = session.prizes[i]
+        for i = 1, 7 do
+            local p = session.prizes and session.prizes[i]
+            local pal = (p and p.palette) or {
+                bg = { 0.20, 0.20, 0.30, 0.95 },
+                border = { 0.50, 0.50, 0.70, 1 },
+                slot_bg = { 0.12, 0.12, 0.16, 1 }
+            }
             local is_targeted = (i == crane_pos)
-            local bg_col = is_targeted and { 0.22, 0.2, 0.26, 1 } or { 0.14, 0.14, 0.17, 1 }
+            local is_result = (stage == 'result')
+            local is_revealed = is_result
+
+            local box_inner = {}
+
+            -- Top Header: Box #Number
+            table.insert(box_inner, {
+                n = G.UIT.R,
+                config = { align = "cm", padding = 0.02 },
+                nodes = {
+                    { n = G.UIT.T, config = { text = "Box #" .. i, scale = 0.24, colour = is_targeted and G.C.GOLD or pal.border, shadow = true } }
+                }
+            })
+
+            if not is_revealed then
+                -- Mystery Surprise Box (Clean, vertically centered, no nested inner frame)
+                if is_targeted then
+                    if stage == 'aim' then
+                        table.insert(box_inner, {
+                            n = G.UIT.R,
+                            config = { align = "cm", padding = 0.02 },
+                            nodes = { { n = G.UIT.T, config = { text = "▼ TARGET ▼", scale = 0.16, colour = G.C.GOLD, shadow = true } } }
+                        })
+                    elseif stage == 'anchored' then
+                        table.insert(box_inner, {
+                            n = G.UIT.R,
+                            config = { align = "cm", padding = 0.02 },
+                            nodes = { { n = G.UIT.T, config = { text = "⚓ ANCHORED", scale = 0.16, colour = G.C.GOLD, shadow = true } } }
+                        })
+                    elseif stage == 'pulling' then
+                        table.insert(box_inner, {
+                            n = G.UIT.R,
+                            config = { align = "cm", padding = 0.02 },
+                            nodes = { { n = G.UIT.T, config = { text = "▲ PULLING ▲", scale = 0.16, colour = G.C.GOLD, shadow = true } } }
+                        })
+                    end
+                else
+                    table.insert(box_inner, {
+                        n = G.UIT.B,
+                        config = { w = 0.1, h = 0.16 }
+                    })
+                end
+
+                -- Big Mystery Icon
+                table.insert(box_inner, {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.03 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = "?", scale = 0.65, colour = is_targeted and G.C.GOLD or G.C.WHITE, shadow = true } }
+                    }
+                })
+
+                -- Clean Surprise Label
+                table.insert(box_inner, {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.02 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = "SURPRISE", scale = 0.18, colour = is_targeted and G.C.GOLD or { 0.70, 0.72, 0.85, 0.85 }, shadow = true } }
+                    }
+                })
+
+                -- Bottom status cue
+                table.insert(box_inner, {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.03 },
+                    nodes = {
+                        { n = G.UIT.T, config = {
+                            text = is_targeted and (stage == 'aim' and "READY" or (stage == 'anchored' and "LOCKED ON" or "HAULING")) or (stage == 'aim' and "CHOOSE" or "LOCKED"),
+                            scale = 0.15,
+                            colour = is_targeted and G.C.GOLD or { 0.40, 0.42, 0.55, 0.6 }
+                        } }
+                    }
+                })
+            else
+                -- Revealed Prize Box (Clean unified card)
+                local is_empty = (p and p.type == 'empty')
+                local tag_txt = is_targeted and (session.won and "★ OBTAINED ★" or (session.outcome == 'slipped' and "✕ SLIPPED ✕" or "Ø EMPTY Ø")) or (is_empty and "EMPTY" or "PRIZE")
+                local tag_col = is_targeted and (session.won and G.C.GREEN or G.C.RED) or { 0.60, 0.62, 0.75, 0.7 }
+
+                table.insert(box_inner, {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.02 },
+                    nodes = { { n = G.UIT.T, config = { text = tag_txt, scale = 0.16, colour = tag_col, shadow = is_targeted } } }
+                })
+
+                local icon_txt = is_empty and "Ø" or (p and p.icon or "★")
+                table.insert(box_inner, {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.02 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = icon_txt, scale = 0.38, colour = is_targeted and (session.won and G.C.GOLD or G.C.WHITE) or G.C.WHITE, shadow = true } }
+                    }
+                })
+
+                table.insert(box_inner, {
+                    n = G.UIT.R,
+                    config = { align = "cm", padding = 0.02 },
+                    nodes = {
+                        { n = G.UIT.T, config = { text = p and p.name or "Box", scale = 0.18, maxw = 1.05, colour = G.C.WHITE, shadow = true } }
+                    }
+                })
+
+                if p and p.sub and p.sub ~= "" then
+                    table.insert(box_inner, {
+                        n = G.UIT.R,
+                        config = { align = "cm", padding = 0.01 },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = p.sub, scale = 0.14, maxw = 1.05, colour = { 0.75, 0.78, 0.85, 0.8 } } }
+                        }
+                    })
+                end
+            end
 
             table.insert(pit_nodes, {
                 n = G.UIT.C,
-                config = { align = "cm", padding = 0.05 },
+                config = {
+                    align = "cm",
+                    padding = 0.02,
+                    button = (stage == 'aim' and 'claw_machine_select_slot' or nil),
+                    ref_table = { slot = i },
+                    hover = (stage == 'aim')
+                },
                 nodes = {
                     {
                         n = G.UIT.C,
                         config = {
                             align = "cm",
-                            padding = 0.08,
-                            minw = 1.6,
-                            minh = 2.2,
-                            r = 0.08,
-                            colour = bg_col,
+                            padding = 0.06,
+                            minw = 1.18,
+                            minh = 2.45,
+                            r = 0.10,
+                            colour = is_targeted and (is_result and (session.won and { 0.25, 0.20, 0.08, 0.98 } or { 0.20, 0.10, 0.10, 0.98 }) or { 0.20, 0.16, 0.25, 0.98 }) or pal.slot_bg,
+                            outline = is_targeted and 2.5 or 1.5,
+                            outline_colour = is_targeted and (is_result and (session.won and G.C.GOLD or G.C.RED) or G.C.GOLD) or pal.border,
                             shadow = true
                         },
-                        nodes = {
-                            {
-                                n = G.UIT.R,
-                                config = { align = "cm", padding = 0.02 },
-                                nodes = { { n = G.UIT.T, config = { text = "Slot #" .. i, scale = 0.24, colour = is_targeted and G.C.GOLD or {0.6, 0.6, 0.6, 1} } } }
-                            },
-                            {
-                                n = G.UIT.R,
-                                config = { align = "cm", padding = 0.06 },
-                                nodes = { { n = G.UIT.T, config = { text = p.icon, scale = 0.45, colour = p.col, shadow = true } } }
-                            },
-                            {
-                                n = G.UIT.R,
-                                config = { align = "cm", padding = 0.03 },
-                                nodes = { { n = G.UIT.T, config = { text = p.name, scale = 0.26, colour = G.C.WHITE, shadow = true } } }
-                            },
-                            {
-                                n = G.UIT.R,
-                                config = { align = "cm", padding = 0.02 },
-                                nodes = { { n = G.UIT.T, config = { text = p.sub, scale = 0.22, colour = {0.7, 0.7, 0.7, 1} } } }
-                            }
-                        }
+                        nodes = box_inner
                     }
                 }
             })
         end
 
         local control_nodes = {}
-        if session.stage == 'aim' then
+        if stage == 'aim' then
             table.insert(control_nodes, {
                 n = G.UIT.R,
                 config = { align = "cm", padding = 0.08 },
                 nodes = {
                     UIBox_button({
-                        label = {"< Move Left"},
+                        label = { "< Left" },
                         button = 'claw_machine_aim_left',
                         colour = G.C.BLUE,
-                        minw = 2.0,
-                        minh = 0.6,
-                        scale = 0.35,
-                        col = true
-                    }),
-                    { n = G.UIT.B, config = { w = 0.3, h = 0.6 } },
-                    UIBox_button({
-                        label = {"DROP CRANE!"},
-                        button = 'claw_machine_drop',
-                        colour = G.C.GREEN,
-                        minw = 2.6,
+                        minw = 1.8,
                         minh = 0.65,
-                        scale = 0.40,
+                        scale = 0.36,
                         col = true
                     }),
-                    { n = G.UIT.B, config = { w = 0.3, h = 0.6 } },
+                    { n = G.UIT.B, config = { w = 0.2, h = 0.6 } },
                     UIBox_button({
-                        label = {"Move Right >"},
+                        label = { "ANCHOR CLAW HERE" },
+                        button = 'claw_machine_anchor',
+                        colour = G.C.GREEN,
+                        minw = 3.0,
+                        minh = 0.65,
+                        scale = 0.38,
+                        col = true
+                    }),
+                    { n = G.UIT.B, config = { w = 0.2, h = 0.6 } },
+                    UIBox_button({
+                        label = { "Right >" },
                         button = 'claw_machine_aim_right',
                         colour = G.C.BLUE,
-                        minw = 2.0,
-                        minh = 0.6,
-                        scale = 0.35,
+                        minw = 1.8,
+                        minh = 0.65,
+                        scale = 0.36,
                         col = true
                     })
                 }
             })
-        elseif session.stage == 'result' then
+        elseif stage == 'anchored' then
             table.insert(control_nodes, {
                 n = G.UIT.R,
                 config = { align = "cm", padding = 0.08 },
                 nodes = {
                     UIBox_button({
-                        label = {"Collect & Continue"},
-                        button = 'exit_overlay_menu',
-                        colour = G.C.BLUE,
-                        minw = 3.6,
-                        minh = 0.6,
-                        scale = 0.38,
+                        label = { "PULL UP! (JALAR)" },
+                        button = 'claw_machine_pull',
+                        colour = G.C.GREEN,
+                        minw = 3.2,
+                        minh = 0.70,
+                        scale = 0.42,
+                        col = true
+                    }),
+                    { n = G.UIT.B, config = { w = 0.3, h = 0.6 } },
+                    UIBox_button({
+                        label = { "Choose Other Box" },
+                        button = 'claw_machine_reaim',
+                        colour = G.C.ORANGE,
+                        minw = 2.4,
+                        minh = 0.70,
+                        scale = 0.35,
                         col = true
                     })
                 }
             })
-        else
+        elseif stage == 'pulling' then
             table.insert(control_nodes, {
                 n = G.UIT.R,
                 config = { align = "cm", padding = 0.06 },
                 nodes = {
-                    { n = G.UIT.T, config = { text = "Crane in motion...", scale = 0.34, colour = G.C.GOLD } }
+                    { n = G.UIT.T, config = { text = "Heaving crane arm upward...", scale = 0.36, colour = G.C.GOLD } }
+                }
+            })
+        elseif stage == 'result' then
+            table.insert(control_nodes, {
+                n = G.UIT.R,
+                config = { align = "cm", padding = 0.08 },
+                nodes = {
+                    UIBox_button({
+                        label = { "Collect & Continue" },
+                        button = 'exit_overlay_menu',
+                        colour = G.C.BLUE,
+                        minw = 3.6,
+                        minh = 0.65,
+                        scale = 0.40,
+                        col = true
+                    })
                 }
             })
         end
 
-        return create_UIBox_generic_options({
-            back_func = 'exit_overlay_menu',
-            contents = {
+        return {
+            n = G.UIT.ROOT,
+            config = { align = "cm", colour = G.C.CLEAR },
+            nodes = {
                 {
                     n = G.UIT.R,
                     config = { align = "cm", padding = 0.08 },
-                    nodes = {
-                        { n = G.UIT.T, config = { text = "THE CLAW MACHINE", scale = 0.55, colour = G.C.GOLD, shadow = true } }
-                    }
+                    nodes = title_nodes
                 },
                 {
                     n = G.UIT.R,
                     config = { align = "cm", padding = 0.04 },
                     nodes = {
-                        { n = G.UIT.T, config = { text = "Aim the crane arm and grab arcade prizes!", scale = 0.32, colour = G.C.WHITE } }
+                        { n = G.UIT.T, config = { text = "Click any surprise box to anchor the claw, then click 'PULL UP! (JALAR)' to haul it up!", scale = 0.34, colour = G.C.WHITE } }
                     }
                 },
                 {
@@ -4230,7 +5071,7 @@ if G and G.FUNCS then
                             nodes = {
                                 {
                                     n = G.UIT.R,
-                                    config = { align = "cm", padding = 0.04 },
+                                    config = { align = "cm", padding = 0.03 },
                                     nodes = track_nodes
                                 },
                                 {
@@ -4242,14 +5083,14 @@ if G and G.FUNCS then
                                     n = G.UIT.R,
                                     config = { align = "cm", padding = 0.06 },
                                     nodes = {
-                                        { n = G.UIT.T, config = { text = session.status_text or "", scale = 0.32, colour = G.C.GOLD, shadow = true } }
+                                        { n = G.UIT.T, config = { text = session.status_text or "", scale = 0.34, colour = G.C.GOLD, shadow = true } }
                                     }
                                 },
-                                (session.stage == 'result' and {
+                                (stage == 'result' and {
                                     n = G.UIT.R,
                                     config = { align = "cm", padding = 0.06 },
                                     nodes = {
-                                        { n = G.UIT.T, config = { text = session.result_msg or "", scale = 0.36, colour = session.won and G.C.GREEN or G.C.RED, shadow = true } }
+                                        { n = G.UIT.T, config = { text = session.result_msg or "", scale = 0.38, colour = session.won and G.C.GREEN or G.C.RED, shadow = true } }
                                     }
                                 } or { n = G.UIT.R, config = { align = "cm" }, nodes = {} })
                             }
@@ -4262,6 +5103,28 @@ if G and G.FUNCS then
                     nodes = control_nodes
                 }
             }
+        }
+    end
+
+    G.UIDEF.claw_machine_overlay = function()
+        local session = G.GAME and G.GAME.reality_warp_claw_session
+        if not session then return {} end
+
+        return create_UIBox_generic_options({
+            back_func = 'exit_overlay_menu',
+            contents = {
+                {
+                    n = G.UIT.O,
+                    config = {
+                        id = 'claw_machine_contents',
+                        object = UIBox{
+                            definition = G.UIDEF.claw_machine_inner_content(),
+                            config = { offset = { x = 0, y = 0 }, align = 'cm' }
+                        },
+                        align = 'cm'
+                    }
+                }
+            }
         })
     end
 
@@ -4269,27 +5132,58 @@ if G and G.FUNCS then
         local card = e.config.ref_table
         if not card or not card.ability or not card.ability.extra then return end
         local ex = card.ability.extra
+        if G.STATE ~= G.STATES.SELECTING_HAND or ex.played_this_round or card.debuff then return end
         local cost = ex.cost or 2
         local cur_d = (to_number and to_number(G.GAME and G.GAME.dollars)) or tonumber(G.GAME and G.GAME.dollars) or 0
-        if cur_d < cost or (ex.plays_left and ex.plays_left <= 0) then return end
+        if cur_d < cost then return end
 
         ease_dollars(-cost)
-        ex.plays_left = (ex.plays_left or 1) - 1
+        ex.played_this_round = true
+        if e.UIBox then e.UIBox:recalculate(true) end
 
         local prizes = {
-            { id = 1, type = 'cash', name = "$10 Cash Capsule", sub = "Pure Dollars", col = G.C.GOLD, icon = "[$10]" },
-            { id = 2, type = 'tag', name = "Mystery Tag", sub = "Random Tag", col = G.C.BLUE, icon = "[TAG]" },
-            { id = 3, type = 'joker', name = "Plush Joker", sub = "Common Joker", col = G.C.PURPLE, icon = "[JKR]" },
-            { id = 4, type = 'jackpot', name = "Golden Crown", sub = "1% Legendary / $20", col = G.C.GOLD, icon = "[★]" },
-            { id = 5, type = 'cash_plus', name = "$15 Big Prize", sub = "Heavy Capsule", col = G.C.MONEY, icon = "[$15]" },
+            { id = 1, type = 'tarot', name = "Tarot Card", sub = "Random Tarot", col = G.C.PURPLE, icon = "TAROT" },
+            { id = 2, type = 'spectral', name = "Spectral Card", sub = "Rare Spectral", col = { 0.15, 0.65, 0.85, 1 }, icon = "SPECTRAL" },
+            { id = 3, type = 'planet', name = "Planet Card", sub = "Hand Upgrade", col = { 0.18, 0.72, 0.52, 1 }, icon = "PLANET" },
+            { id = 4, type = 'joker', name = "Mystery Joker", sub = "Random Joker", col = { 0.85, 0.35, 0.25, 1 }, icon = "JOKER" },
+            { id = 5, type = 'jackpot', name = "Golden Crown", sub = "1% Leg. / $20", col = G.C.GOLD, icon = "CROWN" },
+            { id = 6, type = 'empty', name = "Empty Box", sub = "Nothing Inside", col = { 0.45, 0.45, 0.50, 1 }, icon = "EMPTY" },
+            { id = 7, type = 'empty', name = "Empty Box", sub = "Nothing Inside", col = { 0.45, 0.45, 0.50, 1 }, icon = "EMPTY" },
         }
+
+        local capsule_palettes = {
+            { bg = { 0.82, 0.15, 0.40, 0.95 }, border = { 1.0, 0.55, 0.75, 1 }, slot_bg = { 0.18, 0.11, 0.15, 0.95 } },  -- Neon Pink
+            { bg = { 0.08, 0.55, 0.88, 0.95 }, border = { 0.45, 0.85, 1.0, 1 }, slot_bg = { 0.09, 0.14, 0.20, 0.95 } },  -- Electric Cyan
+            { bg = { 0.14, 0.70, 0.32, 0.95 }, border = { 0.50, 0.98, 0.60, 1 }, slot_bg = { 0.10, 0.18, 0.12, 0.95 } },  -- Emerald Green
+            { bg = { 0.90, 0.50, 0.08, 0.95 }, border = { 1.0, 0.78, 0.32, 1 }, slot_bg = { 0.20, 0.14, 0.08, 0.95 } },  -- Tangerine Orange
+            { bg = { 0.55, 0.18, 0.85, 0.95 }, border = { 0.85, 0.55, 1.0, 1 }, slot_bg = { 0.16, 0.10, 0.22, 0.95 } },  -- Royal Purple
+            { bg = { 0.85, 0.18, 0.18, 0.95 }, border = { 1.0, 0.50, 0.45, 1 }, slot_bg = { 0.20, 0.10, 0.10, 0.95 } },  -- Crimson Red
+            { bg = { 0.08, 0.70, 0.68, 0.95 }, border = { 0.45, 0.98, 0.95, 1 }, slot_bg = { 0.08, 0.17, 0.18, 0.95 } },  -- Turquoise Teal
+            { bg = { 0.82, 0.68, 0.10, 0.95 }, border = { 1.0, 0.92, 0.40, 1 }, slot_bg = { 0.20, 0.18, 0.08, 0.95 } },  -- Golden Yellow
+        }
+
+        -- Shuffle prize slots so their positions are secret and randomized
+        for i = #prizes, 2, -1 do
+            local j = pseudorandom('claw_pos_' .. i, 1, i)
+            prizes[i], prizes[j] = prizes[j], prizes[i]
+        end
+
+        -- Shuffle and assign random color palettes to each slot
+        for i = #capsule_palettes, 2, -1 do
+            local j = pseudorandom('claw_pal_' .. i, 1, i)
+            capsule_palettes[i], capsule_palettes[j] = capsule_palettes[j], capsule_palettes[i]
+        end
+        for i = 1, #prizes do
+            prizes[i].palette = capsule_palettes[i]
+        end
 
         G.GAME.reality_warp_claw_session = {
             card = card,
-            crane_pos = 3,
+            crane_pos = 4,
+            drop_depth = 0,
             stage = 'aim',
             prizes = prizes,
-            status_text = "Use [<] and [>] to align crane, then click [DROP CRANE]!",
+            status_text = "Select any surprise box to anchor the claw!",
             result_msg = "",
             won = false,
         }
@@ -4577,7 +5471,7 @@ if Game and Game.main_menu then
     end
 end
 
--- Spawn a random secret Joker taking the place of the card on the main menu, with increased size
+-- Spawn custom title cards: an Ace with a mod upgrade (tilted left) and a random mod Joker (tilted right)
 function spawn_main_menu_secret_joker()
     if not (G and G.title_top and G.title_top.cards) then return end
     if #G.title_top.cards == 0 then
@@ -4594,61 +5488,152 @@ function spawn_main_menu_secret_joker()
         end
         return
     end
-    -- If already replaced by our secret joker, do not replace repeatedly
-    if G.title_top.cards[1] and G.title_top.cards[1].is_reality_warp_menu_joker then
+    -- If already replaced by our custom title cards, do not replace repeatedly
+    if G.title_top.cards[1] and G.title_top.cards[1].is_reality_warp_menu_card then
         create_reality_warp_title_label()
         return
     end
 
-    local secret_keys = {
-        'j_reality_warp_esteban',
-        'j_reality_warp_thiago',
-        'j_reality_warp_black_hole_joker',
-        'j_reality_warp_squele',
-        'j_reality_warp_bluxdir',
-        'j_reality_warp_charles',
-        'j_reality_warp_mochi',
-        'j_reality_warp_helin',
-        'j_reality_warp_raytracing',
-        'j_reality_warp_paco',
-        'j_reality_warp_yairo',
-        'j_reality_warp_kyra',
-        'j_reality_warp_brainprint'
+    local scale = 1.30
+    local card_w = G.CARD_W * scale
+    local card_h = G.CARD_H * scale
+    G.title_top.config.card_limit = 2
+    G.title_top.card_w = card_w
+    G.title_top.card_h = card_h
+    G.title_top.T.w = card_w * 1.65
+    G.title_top.T.h = card_h
+
+    for i = #G.title_top.cards, 1, -1 do
+        G.title_top.cards[i]:remove()
+    end
+    G.title_top.cards = {}
+
+    -- 1. Create Ace card (tilted left) with a mod enhancement, seal, or edition
+    local ace_suits = { 'S_A', 'H_A', 'C_A', 'D_A' }
+    local chosen_ace = ace_suits[math.random(1, #ace_suits)]
+    local card_base = (G.P_CARDS and G.P_CARDS[chosen_ace]) or (G.P_CARDS and G.P_CARDS.S_A) or G.P_CARDS.empty
+    local ace_card = Card(
+        G.title_top.T.x,
+        G.title_top.T.y,
+        card_w,
+        card_h,
+        card_base,
+        G.P_CENTERS.c_base
+    )
+    ace_card.is_reality_warp_menu_card = true
+    ace_card.facing = 'front'
+    ace_card.sprite_facing = 'front'
+    ace_card.no_ui = true
+    ace_card.states.visible = true
+    ace_card.ambient_tilt = 0.4
+
+    local mod_upgrades = {
+        -- Enhancements
+        function(c)
+            local center = G.P_CENTERS and (G.P_CENTERS['m_reality_warp_diamond'] or G.P_CENTERS['m_diamond'])
+            if center then c:set_ability(center) end
+        end,
+        function(c)
+            local center = G.P_CENTERS and (G.P_CENTERS['m_reality_warp_jeweled'] or G.P_CENTERS['m_jeweled'])
+            if center then c:set_ability(center) end
+        end,
+        function(c)
+            local center = G.P_CENTERS and (G.P_CENTERS['m_reality_warp_lead'] or G.P_CENTERS['m_lead'])
+            if center then c:set_ability(center) end
+        end,
+        function(c)
+            local center = G.P_CENTERS and (G.P_CENTERS['m_reality_warp_investment'] or G.P_CENTERS['m_investment'])
+            if center then c:set_ability(center) end
+        end,
+        -- Seals
+        function(c)
+            local seal_key = (G.P_SEALS and G.P_SEALS['reality_warp_dark_green'] and 'reality_warp_dark_green') or 'dark_green'
+            c:set_seal(seal_key, true, true)
+        end,
+        function(c)
+            local seal_key = (G.P_SEALS and G.P_SEALS['reality_warp_white'] and 'reality_warp_white') or 'white'
+            c:set_seal(seal_key, true, true)
+        end,
+        function(c)
+            local seal_key = (G.P_SEALS and G.P_SEALS['reality_warp_silver'] and 'reality_warp_silver') or 'silver'
+            c:set_seal(seal_key, true, true)
+        end,
+        -- Editions
+        function(c)
+            c:set_edition('e_reality_warp_blessed', true, true)
+        end,
+        function(c)
+            c:set_edition('e_reality_warp_mosaic', true, true)
+        end,
     }
-    local chosen_key = secret_keys[math.random(1, #secret_keys)]
-    local center = (G.P_CENTERS and (G.P_CENTERS[chosen_key] or G.P_CENTERS[string.gsub(chosen_key, 'reality_warp', 'Witch brew')])) or (G.P_CENTERS and G.P_CENTERS.j_joker)
-    if center then
-        local scale = 1.35
-        local card_w = G.CARD_W * scale
-        local card_h = G.CARD_H * scale
-        G.title_top.config.card_limit = 1
-        G.title_top.card_w = card_w
-        G.title_top.card_h = card_h
-        G.title_top.T.w = card_w
-        G.title_top.T.h = card_h
+    local chosen_upgrade = mod_upgrades[math.random(1, #mod_upgrades)]
+    if chosen_upgrade then
+        pcall(chosen_upgrade, ace_card)
+    end
 
-        for i = #G.title_top.cards, 1, -1 do
-            G.title_top.cards[i]:remove()
+    -- 2. Pick a random Joker originating from the mod
+    local mod_jokers = {}
+    if G.P_CENTERS then
+        for k, v in pairs(G.P_CENTERS) do
+            if v.set == 'Joker' and (string.find(k, '^j_reality_warp_') or (v.mod and (v.mod.id == 'reality_warp' or v.mod.id == 'Balatro: Reality Warp'))) then
+                mod_jokers[#mod_jokers + 1] = v
+            end
         end
-        G.title_top.cards = {}
+    end
+    if #mod_jokers == 0 then
+        local fallback_keys = {
+            'j_reality_warp_masterful_joker', 'j_reality_warp_outstanding_joker', 'j_reality_warp_blueberry_joker',
+            'j_reality_warp_dj_joker', 'j_reality_warp_esteban', 'j_reality_warp_thiago',
+            'j_reality_warp_black_hole_joker', 'j_reality_warp_squele', 'j_reality_warp_bluxdir',
+            'j_reality_warp_charles', 'j_reality_warp_mochi', 'j_reality_warp_helin',
+            'j_reality_warp_raytracing', 'j_reality_warp_paco', 'j_reality_warp_yairo',
+            'j_reality_warp_kyra', 'j_reality_warp_brainprint'
+        }
+        for _, k in ipairs(fallback_keys) do
+            if G.P_CENTERS and G.P_CENTERS[k] then
+                mod_jokers[#mod_jokers + 1] = G.P_CENTERS[k]
+            end
+        end
+    end
+    local chosen_joker_center = (#mod_jokers > 0 and mod_jokers[math.random(1, #mod_jokers)]) or (G.P_CENTERS and G.P_CENTERS.j_joker)
 
-        local secret_card = Card(
-            G.title_top.T.x,
-            G.title_top.T.y,
-            card_w,
-            card_h,
-            G.P_CARDS.empty,
-            center
-        )
-        secret_card.is_reality_warp_menu_joker = true
-        secret_card.facing = 'front'
-        secret_card.sprite_facing = 'front'
-        secret_card.ambient_tilt = 0.8
-        G.title_top:emplace(secret_card)
-        G.title_top:align_cards()
-        if set_screen_positions then
-            set_screen_positions()
+    local joker_card = Card(
+        G.title_top.T.x,
+        G.title_top.T.y,
+        card_w,
+        card_h,
+        G.P_CARDS.empty,
+        chosen_joker_center
+    )
+    joker_card.is_reality_warp_menu_card = true
+    joker_card.facing = 'front'
+    joker_card.sprite_facing = 'front'
+    joker_card.no_ui = true
+    joker_card.states.visible = true
+    joker_card.ambient_tilt = 0.4
+
+    -- Hook title_top:align_cards to ensure persistent left and right tilt
+    if not G.title_top.reality_warp_hooked then
+        G.title_top.reality_warp_hooked = true
+        local orig_align = G.title_top.align_cards
+        G.title_top.align_cards = function(self)
+            orig_align(self)
+            if #self.cards >= 2 then
+                self.cards[1].T.r = self.cards[1].T.r - 0.05
+                self.cards[2].T.r = self.cards[2].T.r + 0.05
+            end
         end
+    end
+
+    G.title_top:emplace(ace_card)
+    G.title_top:emplace(joker_card)
+    G.title_top:align_cards()
+    if G.title_top.hard_set_cards then
+        G.title_top:hard_set_cards()
+    end
+
+    if set_screen_positions then
+        set_screen_positions()
     end
     create_reality_warp_title_label()
 end
@@ -4663,23 +5648,15 @@ end
 
 local function get_or_load_title_image()
     if G.reality_warp_TITLE_IMAGE then return G.reality_warp_TITLE_IMAGE end
-    if G.ASSET_ATLAS then
-        for k, v in pairs(G.ASSET_ATLAS) do
-            if string.find(string.lower(k), "title") and v.image then
-                G.reality_warp_TITLE_IMAGE = v.image
-                return v.image
-            end
-        end
-    end
     local nfs = NFS or (SMODS and SMODS.NFS)
     if nfs then
-        local raw_path = (reality_warp_MOD and reality_warp_MOD.path) or (SMODS and SMODS.current_mod and SMODS.current_mod.path) or "Mods/Witcher Brew Expansion/"
+        local raw_path = (reality_warp_MOD and reality_warp_MOD.path) or (SMODS and SMODS.current_mod and SMODS.current_mod.path) or "Mods/Balatro Reality Warp/"
         local mod_path = (string.sub(raw_path, -1) == '/' or string.sub(raw_path, -1) == '\\') and raw_path or (raw_path .. '/')
-        local scale = (G.SETTINGS and G.SETTINGS.GRAPHICS and G.SETTINGS.GRAPHICS.texture_scaling) or 1
+        local scale = (G.SETTINGS and G.SETTINGS.GRAPHICS and G.SETTINGS.GRAPHICS.texture_scaling) or 2
         local candidates = {
-            mod_path .. "assets/" .. scale .. "x/title.png",
-            mod_path .. "assets/1x/title.png",
-            mod_path .. "assets/2x/title.png"
+            mod_path .. "assets/" .. scale .. "x/balatro.png",
+            mod_path .. "assets/2x/balatro.png",
+            mod_path .. "assets/1x/balatro.png"
         }
         for _, full_path in ipairs(candidates) do
             if nfs.getInfo(full_path) then
@@ -4691,6 +5668,9 @@ local function get_or_load_title_image()
                 end
             end
         end
+    end
+    if G.ASSET_ATLAS and G.ASSET_ATLAS["balatro"] and G.ASSET_ATLAS["balatro"].image then
+        return G.ASSET_ATLAS["balatro"].image
     end
     return nil
 end
@@ -4735,12 +5715,13 @@ if Game and Game.update then
     end
 end
 
--- Custom Title Atlas (Witcher Brew - Purple & Green Title)
+-- Custom Title Atlas (Reality Warp Title)
 SMODS.Atlas {
-    key = "reality_warp_title",
-    path = "title.png",
+    key = "balatro",
+    path = "balatro.png",
     px = 333,
-    py = 216
+    py = 216,
+    prefix_config = { key = false }
 }
 
 if Game and Game.main_menu then

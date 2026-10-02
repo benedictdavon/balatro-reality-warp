@@ -2486,14 +2486,15 @@ SMODS.Joker {
     rarity = 2,
     cost = 6,
     blueprint_compat = false,
-    config = { extra = { cost = 2, plays_left = 1 } },
+    config = { extra = { cost = 2, played_this_round = false } },
     loc_txt = {
-        name = 'Claw Machine',
+        name = 'The Claw Machine',
         text = {
-            "Click {C:attention}Claw{} in the Shop ({C:money}$#1#{}) to play the crane minigame:",
-            "Aim and drop the crane over the pit to grab",
-            "{C:money}Cash Capsules{}, {C:attention}Tags{}, {C:purple}Jokers{},",
-            "or the elusive {C:legendary}Golden Jackpot{}!"
+            "Click {C:attention}Claw{} once per round ({C:money}$#1#{}) during hand selection:",
+            "Select 1 of {C:attention}7 surprise boxes{} to anchor the crane and haul it up.",
+            "Chance to {C:green}Obtain{} {C:purple}Tarots{}, {C:spectral}Spectrals{}, {C:planet}Planets{},",
+            "{C:attention}Jokers{}, or the legendary {C:gold}Golden Crown ($20){}.",
+            "{C:inactive}(Claw may slip or haul up an empty box){}"
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -2501,9 +2502,9 @@ SMODS.Joker {
         return { vars = { ex.cost or 2 } }
     end,
     calculate = function(self, card, context)
-        if (context.starting_shop or context.setting_blind or context.end_of_round) and not context.blueprint then
+        if (context.setting_blind or context.end_of_round or context.skip_blind) and not context.blueprint then
             local ex = card.ability.extra
-            ex.plays_left = 1
+            ex.played_this_round = false
         end
     end
 }

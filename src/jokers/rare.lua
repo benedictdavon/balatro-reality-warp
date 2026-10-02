@@ -1870,11 +1870,12 @@ SMODS.Joker {
     key = 'ethernet',
     atlas = 'reality_warp_jokers',
     loc_txt = {
-        name = 'Ethernet',
+        name = 'Ethernet Cable',
         text = {
-            "Play a {C:blue}Connect the Dots{} minigame",
-            "once per round. Winning grants {C:mult}+#1#{} Mult.",
-            "{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult){}"
+            "Click {C:attention}Wire{} once per round during hand selection to",
+            "solve a network puzzle: connect all wire pairs across the grid.",
+            "Fully routing the board grants {C:mult}+#1#{} Mult permanently!",
+            "{C:inactive}(Currently: {C:mult}+#2#{} Mult){}"
         }
     },
     config = { extra = { mult_gain = 10, current_mult = 0, played_this_round = false } },
@@ -1893,7 +1894,7 @@ SMODS.Joker {
                 message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.current_mult } }
             }
         end
-        if (context.end_of_round or context.skip_blind) and not context.blueprint and not context.individual and not context.repetition then
+        if (context.end_of_round or context.skip_blind or context.setting_blind) and not context.blueprint and not context.individual and not context.repetition then
             card.ability.extra.played_this_round = false
             card.ability.extra.saved_puzzle = nil
         end
@@ -1917,189 +1918,106 @@ local ETHERNET_PAIR_COLORS = {
 local function generate_ethernet_puzzle(card, forced_size, forced_pairs)
     local S = forced_size or 5
     if S < 5 then S = 5 end
-    if S > 10 then S = 10 end
+    if S > 8 then S = 8 end
 
-    local min_p = (S == 5 and 2) or (S == 6 and 2) or (S == 7 and 3) or (S <= 9 and 4) or 5
-    local max_p = (S == 5 and 4) or (S == 6 and 5) or (S == 7 and 6) or (S == 8 and 7) or (S == 9 and 8) or 10
-    local P = forced_pairs or math.random(min_p, max_p)
+    local min_p = 4
+    local max_limit = math.min(10, math.floor((S * S) / 2))
+    local max_p = math.max(4, max_limit)
+    local P = forced_pairs or math.random(min_p, math.min(max_p, S == 5 and 6 or (S == 6 and 8 or 10)))
+    if P < 4 then P = 4 end
     if P > 10 then P = 10 end
-    if P > max_p then P = max_p end
-    if P < min_p then P = min_p end
+    if P > max_limit then P = max_limit end
 
     local pairs_data = {}
     local grid_endpoints = {}
     local bridges = {}
     local obstacles = {}
 
-    for attempt = 1, 40 do
-        pairs_data = {}
-        grid_endpoints = {}
-        bridges = {}
-        obstacles = {}
-        local occupied = {}
-        local success = true
+    -- Build full-grid serpentine Hamiltonian walk guaranteeing 100% board coverage
+    local flip_h = math.random() > 0.5
+    local flip_v = math.random() > 0.5
+    local transpose = math.random() > 0.5
 
-        if S >= 6 then
-            local bridge_count = math.random(1, S >= 8 and 4 or 2)
-            for b = 1, bridge_count do
-                local br = math.random(2, S - 1)
-                local bc = math.random(2, S - 1)
-                bridges[br .. "_" .. bc] = true
+    local snake = {}
+    for r = 1, S do
+        local row_cells = {}
+        for c = 1, S do
+            local pr = r
+            local pc = (r % 2 == 1) and c or (S - c + 1)
+            if flip_v then pr = S - pr + 1 end
+            if flip_h then pc = S - pc + 1 end
+            if transpose then
+                table.insert(row_cells, { r = pc, c = pr })
+            else
+                table.insert(row_cells, { r = pr, c = pc })
             end
         end
-
-        for p = 1, P do
-            local free_cells = {}
-            for r = 1, S do
-                for c = 1, S do
-                    local k = r .. "_" .. c
-                    if not occupied[k] and not bridges[k] then
-                        table.insert(free_cells, { r = r, c = c })
-                    end
-                end
-            end
-
-            if #free_cells < 2 then
-                success = false
-                break
-            end
-
-            local start_cell = free_cells[math.random(#free_cells)]
-            local walk = { start_cell }
-            local walk_set = { [start_cell.r .. "_" .. start_cell.c] = true }
-            local current = start_cell
-            local target_len = math.random(3, math.min(S * 2, 8))
-
-            for step = 1, target_len do
-                local dirs = { { r = -1, c = 0 }, { r = 1, c = 0 }, { r = 0, c = -1 }, { r = 0, c = 1 } }
-                for i = #dirs, 2, -1 do
-                    local j = math.random(i)
-                    dirs[i], dirs[j] = dirs[j], dirs[i]
-                end
-
-                local next_cell = nil
-                for _, d in ipairs(dirs) do
-                    local nr, nc = current.r + d.r, current.c + d.c
-                    local nk = nr .. "_" .. nc
-                    if nr >= 1 and nr <= S and nc >= 1 and nc <= S and not walk_set[nk] then
-                        if not occupied[nk] or bridges[nk] then
-                            next_cell = { r = nr, c = nc }
-                            break
-                        end
-                    end
-                end
-
-                if next_cell then
-                    table.insert(walk, next_cell)
-                    walk_set[next_cell.r .. "_" .. next_cell.c] = true
-                    current = next_cell
-                else
-                    break
-                end
-            end
-
-            if #walk < 2 then
-                success = false
-                break
-            end
-
-            for _, node in ipairs(walk) do
-                local nk = node.r .. "_" .. node.c
-                if not bridges[nk] then
-                    occupied[nk] = p
-                end
-            end
-
-            local a_pos = walk[1]
-            local b_pos = walk[#walk]
-            local a_label = "A" .. p
-            local b_label = "B" .. p
-
-            grid_endpoints[a_pos.r .. "_" .. a_pos.c] = { pair_id = p, type = 'A', label = a_label }
-            grid_endpoints[b_pos.r .. "_" .. b_pos.c] = { pair_id = p, type = 'B', label = b_label }
-
-            table.insert(pairs_data, {
-                id = p,
-                a = a_pos,
-                b = b_pos,
-                a_label = a_label,
-                b_label = b_label,
-                colour = ETHERNET_PAIR_COLORS[((p - 1) % #ETHERNET_PAIR_COLORS) + 1]
-            })
-        end
-
-        if success and #pairs_data == P then
-            local unused_cells = {}
-            for r = 1, S do
-                for c = 1, S do
-                    local k = r .. "_" .. c
-                    if not occupied[k] and not grid_endpoints[k] and not bridges[k] then
-                        table.insert(unused_cells, { r = r, c = c })
-                    end
-                end
-            end
-
-            local obs_target = math.min(#unused_cells, math.random(2, math.min(S + 1, 8)))
-            for i = #unused_cells, 2, -1 do
-                local j = math.random(i)
-                unused_cells[i], unused_cells[j] = unused_cells[j], unused_cells[i]
-            end
-            for i = 1, obs_target do
-                local cell = unused_cells[i]
-                obstacles[cell.r .. "_" .. cell.c] = true
-            end
-
-            break
+        for _, cell in ipairs(row_cells) do
+            table.insert(snake, cell)
         end
     end
 
-    if #pairs_data < P then
-        S = 5
-        P = 2
-        bridges = { ["3_3"] = true }
-        obstacles = { ["1_3"] = true, ["5_3"] = true }
-        pairs_data = {
-            { id = 1, a = { r = 1, c = 1 }, b = { r = 5, c = 1 }, a_label = "A1", b_label = "B1", colour = ETHERNET_PAIR_COLORS[1] },
-            { id = 2, a = { r = 3, c = 1 }, b = { r = 3, c = 5 }, a_label = "A2", b_label = "B2", colour = ETHERNET_PAIR_COLORS[2] }
-        }
-        grid_endpoints = {
-            ["1_1"] = { pair_id = 1, type = 'A', label = "A1" },
-            ["5_1"] = { pair_id = 1, type = 'B', label = "B1" },
-            ["3_1"] = { pair_id = 2, type = 'A', label = "A2" },
-            ["3_5"] = { pair_id = 2, type = 'B', label = "B2" }
-        }
+    -- Partition snake of total cells S*S into P paths, each length >= 2
+    local total_cells = S * S
+    local lengths = {}
+    for i = 1, P do lengths[i] = 2 end
+    local remaining = total_cells - (P * 2)
+    while remaining > 0 do
+        local idx = math.random(1, P)
+        lengths[idx] = lengths[idx] + 1
+        remaining = remaining - 1
     end
 
-    local num_obs = 0
-    for _ in pairs(obstacles) do num_obs = num_obs + 1 end
-    local num_brg = 0
-    for _ in pairs(bridges) do num_brg = num_brg + 1 end
+    local cell_idx = 1
+    for p = 1, P do
+        local len = lengths[p]
+        local path_cells = {}
+        for k = 1, len do
+            table.insert(path_cells, snake[cell_idx])
+            cell_idx = cell_idx + 1
+        end
 
-    local raw_reward = math.floor(10 + (S - 5) * 4 + (P - 2) * 2 + num_obs * 1 + num_brg * 2)
-    local reward = math.min(40, math.max(10, raw_reward))
+        local a_pos = path_cells[1]
+        local b_pos = path_cells[#path_cells]
+        local a_label = "A" .. p
+        local b_label = "B" .. p
+
+        grid_endpoints[a_pos.r .. "_" .. a_pos.c] = { pair_id = p, type = 'A', label = a_label }
+        grid_endpoints[b_pos.r .. "_" .. b_pos.c] = { pair_id = p, type = 'B', label = b_label }
+
+        table.insert(pairs_data, {
+            id = p,
+            a = a_pos,
+            b = b_pos,
+            a_label = a_label,
+            b_label = b_label,
+            colour = ETHERNET_PAIR_COLORS[((p - 1) % #ETHERNET_PAIR_COLORS) + 1]
+        })
+    end
+
+    local raw_reward = math.floor(12 + (S - 5) * 4 + (P - 4) * 3)
+    local reward = math.min(50, math.max(15, raw_reward))
 
     local wire_paths = {}
-    local completed_pairs = {}
-    for _, pair in ipairs(pairs_data) do
-        wire_paths[pair.id] = { { r = pair.a.r, c = pair.a.c } }
-        completed_pairs[pair.id] = false
+    for _, pr in ipairs(pairs_data) do
+        wire_paths[pr.id] = { { r = pr.a.r, c = pr.a.c } }
     end
 
     return {
         card = card,
         size = S,
-        num_pairs = P,
-        reward = reward,
+        num_pairs = #pairs_data,
         pairs = pairs_data,
         grid_endpoints = grid_endpoints,
         bridges = bridges,
         obstacles = obstacles,
         wire_paths = wire_paths,
-        completed_pairs = completed_pairs,
         active_pair = 1,
+        completed_pairs = {},
         completed = false,
         failed = false,
-        message = "Connect Point A to Point B avoiding obstacles!"
+        reward = reward,
+        message = "Connect all " .. #pairs_data .. " cables! 100% of grid cells must be covered."
     }
 end
 
@@ -2288,31 +2206,42 @@ local function open_ethernet_dots_menu()
     local diff_label = tostring(S) .. "x" .. tostring(S)
     local reward_str = "Reward: +" .. tostring(state.reward or 20) .. " Mult"
 
+    local total_cells = S * S
+    local covered_cells = 0
+    for cr = 1, S do
+        for cc = 1, S do
+            local occ = ethernet_cell_in_path(state, cr, cc)
+            if occ and #occ > 0 then
+                covered_cells = covered_cells + 1
+            end
+        end
+    end
+
     local contents = {
+        {
+            n = G.UIT.R, config = { align = "cm", padding = 0.04 },
+            nodes = {
+                { n = G.UIT.T, config = { text = "ETHERNET ROUTER", scale = 0.55, colour = G.C.BLUE, shadow = true } }
+            }
+        },
         {
             n = G.UIT.R, config = { align = "cm", padding = 0.03 },
             nodes = {
-                { n = G.UIT.T, config = { text = "ETHERNET ROUTER", scale = 0.50, colour = G.C.BLUE, shadow = true } }
+                { n = G.UIT.T, config = { text = "Connect all A to B pairs. 100% of grid tiles must be covered!", scale = 0.35, colour = G.C.WHITE, shadow = true } }
             }
         },
         {
-            n = G.UIT.R, config = { align = "cm", padding = 0.02 },
+            n = G.UIT.R, config = { align = "cm", padding = 0.03 },
             nodes = {
-                { n = G.UIT.T, config = { text = "Connect Point A to B. Cross over ╬ bridges, avoid ✕ obstacles.", scale = 0.28, colour = G.C.WHITE } }
-            }
-        },
-        {
-            n = G.UIT.R, config = { align = "cm", padding = 0.02 },
-            nodes = {
-                { n = G.UIT.T, config = { text = "Grid: " .. diff_label .. " | Cables: " .. tostring(state.num_pairs), scale = 0.31, colour = G.C.CYAN, shadow = true } },
+                { n = G.UIT.T, config = { text = "Grid: " .. diff_label .. " | Cables: " .. tostring(state.num_pairs) .. " | Coverage: " .. covered_cells .. "/" .. total_cells .. " (100% Needed)", scale = 0.34, colour = G.C.CYAN, shadow = true } },
                 { n = G.UIT.B, config = { w = 0.3, h = 0.1 } },
-                { n = G.UIT.T, config = { text = reward_str, scale = 0.33, colour = G.C.MULT, shadow = true } }
+                { n = G.UIT.T, config = { text = reward_str, scale = 0.38, colour = G.C.MULT, shadow = true } }
             }
         },
         {
-            n = G.UIT.R, config = { align = "cm", padding = 0.02 },
+            n = G.UIT.R, config = { align = "cm", padding = 0.03 },
             nodes = {
-                { n = G.UIT.T, config = { text = state.message or "", scale = 0.30, colour = status_colour, shadow = true } }
+                { n = G.UIT.T, config = { text = state.message or "", scale = 0.36, colour = status_colour, shadow = true } }
             }
         }
     }
@@ -2485,18 +2414,32 @@ local function ethernet_step_to_cell(r, c)
         state.completed_pairs[p] = true
         play_sound('tarot1', 1.1, 0.6)
 
-        local all_done = true
+        local all_pairs_done = true
         for _, check_p in ipairs(state.pairs) do
             if not state.completed_pairs[check_p.id] then
-                all_done = false
+                all_pairs_done = false
                 break
             end
         end
 
-        if all_done then
+        local total_cells = state.size * state.size
+        local covered_cells = 0
+        for cr = 1, state.size do
+            for cc = 1, state.size do
+                local occ = ethernet_cell_in_path(state, cr, cc)
+                if occ and #occ > 0 then
+                    covered_cells = covered_cells + 1
+                end
+            end
+        end
+
+        local is_100_percent = (covered_cells == total_cells)
+
+        if all_pairs_done and is_100_percent then
             state.completed = true
-            state.message = "ALL CONNECTIONS ROUTED! (+" .. state.reward .. " MULT)"
-            play_sound('win', 1.0, 0.8)
+            state.message = "100% GRID ROUTED! (+" .. state.reward .. " MULT)"
+            play_sound('timpani', 1.1, 0.85)
+            play_sound('tarot2', 1.2, 0.7)
             local card = state.card
             if card and card.ability and card.ability.extra then
                 card.ability.extra.current_mult = (card.ability.extra.current_mult or 0) + state.reward
@@ -2509,8 +2452,11 @@ local function ethernet_step_to_cell(r, c)
             if notify_minigame_completed then
                 notify_minigame_completed('ethernet')
             end
+        elseif all_pairs_done and not is_100_percent then
+            state.message = "All cables linked, but " .. (total_cells - covered_cells) .. " cells empty! 100% needed."
+            play_sound('cancel', 0.9, 0.4)
         else
-            state.message = "Cable " .. p .. " connected! Route remaining cables."
+            state.message = "Cable " .. p .. " connected! (" .. covered_cells .. "/" .. total_cells .. " cells)"
             for _, check_p in ipairs(state.pairs) do
                 if not state.completed_pairs[check_p.id] then
                     state.active_pair = check_p.id
@@ -2528,9 +2474,11 @@ end
 if G and G.FUNCS then
     G.FUNCS.can_ethernet_play = function(e)
         local card = e.config.ref_table
-        if card and not card.debuff
-           and not (card.ability and card.ability.extra and card.ability.extra.played_this_round)
-           and not (G.STATE == G.STATES.HAND_PLAYED or G.STATE == G.STATES.DRAW_TO_HAND or G.STATE == G.STATES.GAME_OVER) then
+        local ex = card and card.ability and card.ability.extra
+        local can_play = card and not card.debuff
+           and ex and not ex.played_this_round
+           and G.STATE == G.STATES.SELECTING_HAND
+        if can_play then
             e.config.colour = G.C.BLUE
             e.config.button = 'ethernet_open_minigame'
         else
@@ -2549,11 +2497,13 @@ if G and G.FUNCS then
                 end
             end
         end
-        if not card then return end
-        if card.ability and card.ability.extra and card.ability.extra.played_this_round then return end
+        if not card or not card.ability or not card.ability.extra then return end
+        if card.ability.extra.played_this_round or card.debuff or G.STATE ~= G.STATES.SELECTING_HAND then return end
+        card.ability.extra.played_this_round = true
+        if e and e.UIBox then e.UIBox:recalculate(true) end
 
         if not card.ability.extra.saved_puzzle or card.ability.extra.saved_puzzle.completed or card.ability.extra.saved_puzzle.failed then
-            G.ETHERNET_MINIGAME = generate_ethernet_puzzle(card, 5, 2)
+            G.ETHERNET_MINIGAME = generate_ethernet_puzzle(card, 5, 4)
             card.ability.extra.saved_puzzle = G.ETHERNET_MINIGAME
         else
             G.ETHERNET_MINIGAME = card.ability.extra.saved_puzzle
@@ -2583,8 +2533,18 @@ if G and G.FUNCS then
         if not G.ETHERNET_MINIGAME then return end
         local state = G.ETHERNET_MINIGAME
         local p = state.active_pair
-        if p and state.pairs[p] and not state.completed_pairs[p] then
+        if p and state.pairs and state.pairs[p] then
+            if state.completed_pairs then state.completed_pairs[p] = nil end
             state.wire_paths[p] = { { r = state.pairs[p].a.r, c = state.pairs[p].a.c } }
+            state.message = "Reset cable for wire #" .. p .. "."
+            play_sound('cancel', 0.9, 0.4)
+            open_ethernet_dots_menu()
+        elseif state.pairs then
+            for k, pair in ipairs(state.pairs) do
+                if state.completed_pairs then state.completed_pairs[k] = nil end
+                state.wire_paths[k] = { { r = pair.a.r, c = pair.a.c } }
+            end
+            state.message = "All cables reset."
             play_sound('cancel', 0.9, 0.4)
             open_ethernet_dots_menu()
         end
@@ -2593,10 +2553,8 @@ if G and G.FUNCS then
     G.FUNCS.ethernet_refresh_panel = function(e)
         if not G.ETHERNET_MINIGAME then return end
         local card = G.ETHERNET_MINIGAME.card
-        local next_s = math.random(5, 10)
-        local min_p = (next_s == 5 and 2) or (next_s == 6 and 2) or (next_s == 7 and 3) or (next_s <= 9 and 4) or 5
-        local max_p = (next_s == 5 and 4) or (next_s == 6 and 5) or (next_s == 7 and 6) or (next_s == 8 and 7) or (next_s == 9 and 8) or 10
-        local next_p = math.random(min_p, max_p)
+        local next_s = math.random(5, 7)
+        local next_p = math.random(4, math.min(10, next_s == 5 and 6 or (next_s == 6 and 8 or 10)))
 
         G.ETHERNET_MINIGAME = generate_ethernet_puzzle(card, next_s, next_p)
         if card and card.ability and card.ability.extra then
@@ -2642,6 +2600,8 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
 
         if card_has_key(card, 'ethernet') then
             local is_played = card.ability and card.ability.extra and card.ability.extra.played_this_round
+            local can_play = not is_played and not card.debuff and (G.STATE == G.STATES.SELECTING_HAND)
+            local btn_txt = (G.STATE ~= G.STATES.SELECTING_HAND and "In Round Only") or (is_played and "Played" or "PLAY")
             local play_btn_node = {
                 n = G.UIT.R,
                 config = { align = "cl" },
@@ -2658,11 +2618,11 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                                     padding = 0.1,
                                     r = 0.08,
                                     minw = 1.25,
-                                    hover = true,
+                                    hover = can_play,
                                     shadow = true,
-                                    colour = is_played and G.C.UI.BACKGROUND_INACTIVE or G.C.BLUE,
+                                    colour = can_play and G.C.BLUE or G.C.UI.BACKGROUND_INACTIVE,
                                     one_press = true,
-                                    button = 'ethernet_open_minigame',
+                                    button = can_play and 'ethernet_open_minigame' or nil,
                                     func = 'can_ethernet_play'
                                 },
                                 nodes = {
@@ -2675,7 +2635,7 @@ if G and G.UIDEF and G.UIDEF.use_and_sell_buttons then
                                                 n = G.UIT.R,
                                                 config = { align = "cm", maxw = 1.25 },
                                                 nodes = {
-                                                    { n = G.UIT.T, config = { text = "PLAY", colour = G.C.WHITE, scale = 0.4, shadow = true } }
+                                                    { n = G.UIT.T, config = { text = btn_txt, colour = G.C.WHITE, scale = 0.36, shadow = true } }
                                                 }
                                             }
                                         }
@@ -2770,11 +2730,10 @@ SMODS.Joker {
     loc_txt = {
         name = 'Pachinko Machine',
         text = {
-            "Click {C:attention}Play{} once per round to launch a steel ball.",
-            "The ball drops with random force, bouncing across pins",
-            "into {C:attention}1 of 5 pockets{} to win a random prize:",
-            "{C:chips}+Chips{}, {C:mult}+Mult{}, or {X:mult,C:white}XMult{} prizes",
-            "{C:attention}accumulate permanently{} across rounds!",
+            "Click {C:attention}Play{} once per round during hand selection",
+            "to drop a steel ball bouncing across pins into {C:attention}1 of 5 pockets{}.",
+            "Pockets award permanent {C:chips}+Chips{}, {C:mult}+Mult{},",
+            "or {X:mult,C:white}XMult{} that accumulate across rounds!",
             "{C:inactive}(Currently: {C:chips}+#1#{} Chips, {C:mult}+#2#{} Mult, {X:mult,C:white}X#3#{} Mult){}"
         }
     },

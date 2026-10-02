@@ -1310,10 +1310,11 @@ SMODS.Joker {
         name = 'The Shell Game',
         text = {
             "{C:mult}+#1#{} Mult.",
-            "Click {C:attention}Play{} once per round to play the {C:attention}Three Cups{}:",
-            "Choose your prize ({C:money}Cash{}, {C:purple}Tarot{}, {C:blue}+Hands{}, or {C:mult}+Mult{})",
-            "and find the {C:attention}Real Joker{} hidden among {C:red}Decoys{}!",
-            "Win your chosen prize if correct; {C:inactive}nothing if wrong.{}"
+            "Click {C:attention}Play{} once per round during hand selection to",
+            "trigger the {C:attention}Amber Acorn Showdown{}: choose your prize",
+            "({C:money}Cash{}, {C:purple}Tarot{}, {C:blue}+Hands{}, or {C:mult}+Mult{}), watch the Jokers",
+            "flip face-down and shuffle, then find the {C:attention}Target Joker{}!",
+            "{C:inactive}(Correct pick awards prize, Mult upgrades permanently){}"
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -1328,8 +1329,7 @@ SMODS.Joker {
                 card = card
             }
         end
-
-        if (context.end_of_round or context.setting_blind) and not context.blueprint then
+        if (context.setting_blind or context.end_of_round or context.skip_blind) and not context.blueprint then
             ex.played_this_round = false
         end
     end
