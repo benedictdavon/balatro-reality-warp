@@ -119,7 +119,7 @@ function Card:update(dt)
 end
 
 local card_use_potion_ref = Card.use_consumeable
-function Card:use_consumeable(area, copier)
+function Card:use_consumeable(area, copier, ...)
     if self.ability and self.ability.set == 'Potion' and Particles then
         local colours = get_potion_particle_colours(self)
         local burst = Particles(0, 0, 0, 0, {
@@ -145,7 +145,7 @@ function Card:use_consumeable(area, copier)
             end
         }))
     end
-    return card_use_potion_ref(self, area, copier)
+    return card_use_potion_ref(self, area, copier, ...)
 end
 
 local card_start_dissolve_potion_ref = Card.start_dissolve
@@ -1925,11 +1925,8 @@ G.FUNCS.use_potion_from_pouch = function(e)
     local center = (G.P_CENTERS and G.P_CENTERS[entry.key]) or (G.P_CENTERS and G.P_CENTERS[get_valid_joker_key(entry.key) or ''])
     if center then
         local temp_card = Card(0, 0, G.CARD_W, G.CARD_H, G.P_CARDS.empty, center)
-        if center.use then
-            center:use(temp_card, G.consumeables)
-        elseif temp_card.use then
-            temp_card:use(G.consumeables)
-        end
+        temp_card:use_consumeable(G.consumeables)
+        SMODS.calculate_context({using_consumeable = true, consumeable = temp_card, area = G.consumeables})
         temp_card:remove()
     end
 

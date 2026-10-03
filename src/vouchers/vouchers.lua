@@ -167,8 +167,9 @@ SMODS.Voucher {
 
 -- Hook Card.use_consumeable for Destilacion vouchers
 if Card and Card.use_consumeable then
+    local function pack_use_returns(...) return {n = select('#', ...), ...} end
     local orig_use_consumeable_vouchers = Card.use_consumeable
-    function Card:use_consumeable(area, copier)
+    function Card:use_consumeable(area, copier, ...)
         local voucher_chance = 0
         if G.GAME and G.GAME.used_vouchers then
             if G.GAME.used_vouchers.v_reality_warp_destilacion_infinita or G.GAME.used_vouchers['v_Witch brew_destilacion_infinita'] or G.GAME.used_vouchers.v_destilacion_infinita or G.GAME.used_vouchers.destilacion_infinita then
@@ -188,7 +189,7 @@ if Card and Card.use_consumeable then
             end
         end
 
-        local ret = orig_use_consumeable_vouchers(self, area, copier)
+        local ret = pack_use_returns(orig_use_consumeable_vouchers(self, area, copier, ...))
 
         if will_recreate then
             G.E_MANAGER:add_event(Event({
@@ -212,7 +213,7 @@ if Card and Card.use_consumeable then
             }))
         end
 
-        return ret
+        return unpack(ret, 1, ret.n)
     end
 end
 

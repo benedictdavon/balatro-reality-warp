@@ -425,15 +425,15 @@ Notes: Scheduler now grants one allowance per Ante. Payment/UI defect remains ac
 ## R13: The Code punishes one consumable twice and bypasses Eternal filtering
 
 Source: BUG_AUDIT.md R13
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source fix independently reviewed; agent checks pass; real-game validation outstanding
 Priority: Normal
-Dependencies: 6, 19
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Dependencies: 6, 19, R7 (accepted)
+State: HUMAN_TEST_NEEDED
+Branch: fix/code-consumable-punishment
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/7
+Commit: 8fc3d43fa92ace3818cf03ad7ca8bda805ed7d83
+Manual test requirement: Code UI/direct/Pouch, all-Eternal, Doctor Jo, Chicot and native event counts are specified in REGRESSION_TESTS.md; real game remains unrun.
+Notes: One Card use-method punishment, canonical identity and captured encounter ownership; duplicate Blind calculate removed. Pouch now uses the method and emits one ordinary listener context. Framework Eternal eligibility excludes invalid candidates with no fallback. Actual consumption arguments/returns compose through all three surrounding wrappers. External definition-only calls require the Card method contract.
 
 ## R14: Ante-history wrapper marks the current hand as previously played before evaluation
 

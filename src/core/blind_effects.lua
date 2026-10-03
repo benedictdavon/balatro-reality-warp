@@ -40,6 +40,38 @@ function reality_warp_destroy_cards(blind, cards)
     return SMODS.destroy_cards(candidates, {immediate = true}) or {}
 end
 
+-- The Card use method is the sole punishment owner; the UI's later context is
+-- still dispatched for ordinary consumable listeners, without a second penalty.
+function reality_warp_code_consumable_used(blind, token)
+    if not reality_warp_encounter_owns(token) or not reality_warp_blind_is(blind, 'code') then return end
+    local candidates = {}
+    for _, joker in ipairs((G.jokers and G.jokers.cards) or {}) do
+        if joker.area == G.jokers and not joker.removed and not joker.destroyed and
+            not joker.shattered and not joker.getting_sliced and
+            not SMODS.is_eternal(joker, {destroy_cards = true}) then
+            candidates[#candidates + 1] = joker
+        end
+    end
+    if not reality_warp_encounter_owns(token) then return end
+    if #candidates > 0 then
+        local chosen = pseudorandom_element(candidates, pseudoseed('code_destruct'))
+        if chosen and chosen.area == G.jokers and reality_warp_encounter_owns(token) then
+            -- The API revalidates protection at commitment and runs destruction hooks.
+            reality_warp_destroy_cards(blind, {chosen})
+        end
+    end
+    if not reality_warp_encounter_owns(token) then return end
+    blind.chips = math.floor(blind.chips * 1.25)
+    blind.chip_text = number_format(blind.chips)
+    if G.HUD_blind then G.HUD_blind:recalculate() end
+    reality_warp_queue_blind_event(blind, {func = function()
+        attention_text({text = 'Code: X1.25 Target!', scale = 0.9, hold = 1.4,
+            major = G.play or G.HUD_blind, backdrop_colour = HEX('00f0ff'), align = 'cm'})
+        play_sound('slice1', 0.8, 0.7)
+        return true
+    end})
+end
+
 function reality_warp_release_debuffs(source, cards)
     for _, card in ipairs(cards or {}) do
         if card.ability and (card.ability.debuff_sources or {})[source] then
