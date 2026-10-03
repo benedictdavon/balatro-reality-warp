@@ -152,15 +152,15 @@ Notes: See source document and dependency order; not yet implemented.
 ## 12: Consumable stacking compatibility / UI: no clean native stacking, and early visual-only patches buried cards
 
 Source: ISSUE.md #12
-Classification: Optional requested feature
-Priority: Normal
-Dependencies: correctness stabilization
-State: AUDITED
-Branch: —
+Classification: NOT_A_BUG on current main; optional feature gap, with historical local implementations absent
+Priority: Optional
+Dependencies: None for this source-only disposition; any future feature waits for correctness stabilization
+State: NOT_A_BUG
+Branch: docs/consumable-stacking-disposition
 PR: —
 Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Native quantity model absent. Implement only after correctness stabilization; inspect use/copy/save contracts and avoid copying external licensed code.
+Manual test requirement: None for the source-only disposition. Optional baseline confirmation and future feature acceptance tests are in REGRESSION_TESTS.md.
+Notes: Current Reality Warp and installed framework use separate real Card objects; no quantity/representative/split-use/save model or local v1–v6 patch is present. The old visual-only buried-card behavior cannot execute in this checkout. Potion Pouch is separate serialized storage for up to six potions, and Cauldron consumes two real cards into a recipe result; neither is stacking. This closes the reported current-main defect claim without implementing the requested optional feature. Preserve A/B/C controls.
 
 ## 13: Dark Alchemy Tag tooltip/code probability deserves verification
 
@@ -256,15 +256,15 @@ Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permane
 ## 20: Consumable-stack quantity badge alignment was confusing
 
 Source: ISSUE.md #20
-Classification: Historical badge implementation absent
-Priority: Normal
-Dependencies: 12
+Classification: STALE; historical local-v6 badge implementation absent from current main
+Priority: Cosmetic
+Dependencies: 12 only if a separate stacking feature is implemented
 State: STALE
 Branch: —
 PR: —
 Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: No current quantity badge. Future #12 implementation must use centered representative badge.
+Manual test requirement: None while no quantity badge exists. If stacking is implemented later, test quantities 2/10/100 at normal, hover, and drag scales with adjacent stacks, hitboxes, and controller focus.
+Notes: Current source has no representative quantity badge or local-v6 placement code. The historical top-right to top-center correction cannot be reproduced here; this label is stale on current main, not a verified fix to Reality Warp.
 
 ## R1: Encounter parameters are not persisted and shared definitions survive runs
 

@@ -16,6 +16,14 @@ For permanent effects include enabled positive control, disabled at setup, disab
 - Perfectionism: Negative replaces Polychrome under the single-edition model.
 - Upgrade Roulette: scoring enhancements upgrade before scoring; Stone becomes Steel, Glass remains terminal, unscored cards remain unchanged.
 
+## Consumable stacking disposition (#12; linked #20)
+
+Source-only check on accepted main: Reality Warp has no quantity/representative-card or split-use/sell model. Native CardArea insertion and alignment keep physical Cards separate; native copy/save/load operate on each Card. The Potion Pouch serializes up to six separate potion records, and Cauldron combines two actual ingredient cards into a recipe result; neither is a stack. The local historical v1–v6 implementation and its badge are absent. #12 is therefore an optional feature gap rather than a current-main bug, and #20 is stale. No Balatro runtime or historical local patch was executed.
+
+Optional baseline confirmation: use seed EYEFTHTG with the salt recorded, White stake, Reality Warp plus required framework mods only, and no consumable-stack mod. Run the Red Deck baseline and Colosseum separately, checking Antes 1 and 12 in each run. Create several Negative Tarot, Planet, and Spectral cards. Confirm each is a separate physical/draggable card, use one card, copy one card, then cold-save/reload and confirm the remaining cards are still independent. This is an optional manual cross-check, not required to establish the source disposition.
+
+Future feature acceptance is separate work: test using, selling, and copying exactly one represented item; quantity-weighted random selection; Observatory scaling; Code's one punishment per actual use; cold-save/load; Potion/Job exclusions; and badge quantities 2, 10, and 100 at normal, hover, and drag scales with adjacent stacks, hitboxes, and controller focus. Preserve the A/B/C controls above. Do not infer correctness of historical local v1–v6 or external stack mods from this source review.
+
 ## Historical Straight
 
 10 diamonds, 9 hearts, 8 hearts, 7 clubs, 5 hearts is a Straight with active Shortcut; without or debuffed Shortcut it is not. Also test A K Q J 9, A 2 3 4 6, two consecutive missing ranks, separated one-rank gaps, duplicates, Four Fingers and Colorful Street combinations. R8 must additionally preserve explicit min_length/skip/wrap/custom rank topology.
