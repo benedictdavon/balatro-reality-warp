@@ -178,15 +178,15 @@ Notes: See source document and dependency order; not yet implemented.
 ## 14: Lucky One probability logic has historically been broader than the tooltip suggests
 
 Source: ISSUE.md #14
-Classification: Revalidated global RNG ownership, charge persistence and premature reset defects
+Classification: Source fix independently reviewed and locally approved; actual game validation outstanding
 Priority: Normal
 Dependencies: none
-State: IN_PROGRESS
+State: HUMAN_TEST_NEEDED
 Branch: fix/lucky-one-rng
 PR: —
-Commit: —
-Manual test requirement: Exact seeded Club/token, typed probability, UI/simulation, end-round and cold-restart cases are in the implementation brief; real game remains unrun.
-Notes: Sol High implements directly across supported probability APIs, Card simulation scope and deferred round boundaries. Original pseudorandom must remain untouched. Base is freshly verified accepted main f863d0c2c543c4befa481803a581847ca8fe7274. Local review/publication remains subject to the existing pending approval request, with no dependent unmerged work imported.
+Commit: c53fffc6a9fac38f2a2816b3e9359cd706e54bb3 (implementation); 305ad622a5bcf03dab0498be6e8a4f88abad76b2 (unowned preview correction); 288e6ba4720326f4189aaad41ed061d4d98f88eb (fixed Echo/Miner inventory correction)
+Manual test requirement: Exact seeded Club/token, typed probability, UI/simulation, end-round and cold-restart cases are in REGRESSION_TESTS.md; real game remains unrun.
+Notes: Sol High implemented the cross-cutting ownership fix; Luna Max independently reviewed and approved immutable head 288e6ba4720326f4189aaad41ed061d4d98f88eb after concrete corrections. Root complete-diff/self-review and all nine harnesses, Lua/TOML/four Lovely boundaries, fully applied/mixed/duplicate fixture checks and installed Omega checks pass. Global pseudorandom stays native. Serialized per-card charges and private result/reservation scopes preserve copy/simulation/disabled/end-round semantics. Base remains accepted main f863d0c2c543c4befa481803a581847ca8fe7274; no pending independent fix imported. Unpublished: existing automatic publication review rejection still requires the pending explicit approval, so no PR or main acceptance is claimed. Hypnotist cleanup remains separate local N6.
 
 ## 15: Battle-of-Gods boss usage counters can be polluted by blind rolls that are immediately overwritten
 
