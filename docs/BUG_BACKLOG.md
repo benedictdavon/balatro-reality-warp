@@ -352,8 +352,8 @@ Priority: Normal
 Dependencies: #6/#19/R4 effect ownership foundation and R2
 State: HUMAN_TEST_NEEDED (PR review pending)
 Branch: fix/blind-destruction-notifications
-PR: pending
-Implementation commit: pending
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/6
+Implementation commit: 333c3fd0c27009a540369e449b22d437f3dbfef3
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
 Notes: Ares, Net, and Hades now submit filtered snapshots to `SMODS.destroy_cards` once per batch, allowing the framework to send removal notifications and run normal hooks. Ares permanence commits in `context.after`; only feedback remains delayed. See the R7 bounded brief and REGRESSION_TESTS.md. No Balatro runtime/save test has been run.
 

@@ -73,5 +73,5 @@ Explicitly excluded work: R13 Code, RNG/target/draw changes, broad wrapper rewri
 Required static validation: Lua 5.1 whole-repository compile and all harnesses; registered callback contract checks for batch IDs, notification counts, native-destroyed exclusion, duplicate/repeated references, Eternal/disabled cases and hand-list mutation; full diff/status and `git diff --check`.
 Required runtime/manual validation: Canio, Glass Joker, standard consumable comparison, Net match/nonmatch, Hades held/unplayed cards, Chicot, winning hands, next encounter and cold-save/event boundary (REGRESSION_TESTS.md).
 Known risks: Steamodded's `immediate` option dispatches bookkeeping synchronously but still uses native animation/removal scheduling; Ares permanence now commits at `context.after`, and its existing delay applies only to visual feedback. No Balatro runtime, reload or save-codec test has been run.
-Implementation commit: pending.
-Review: pending Sol High review.
+Implementation commit: `333c3fd0c27009a540369e449b22d437f3dbfef3`; PR #6 is open.
+Review: pending Sol High review; gameplay remains HUMAN_TEST_NEEDED.
