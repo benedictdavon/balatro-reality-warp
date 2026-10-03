@@ -360,15 +360,15 @@ Notes: Ares, Net, and Hades submit deduplicated snapshots with already-removing 
 ## R8: get_straight wrapper discards modern API parameters
 
 Source: BUG_AUDIT.md R8
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed compatibility defect; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
 Dependencies: none
-State: AUDITED
-Branch: —
+State: IN_PROGRESS
+Branch: fix/straight-api-forwarding
 PR: —
 Commit: —
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: The current wrapper accepts only `hand`, dropping the installed four-argument detector contract and all trailing values; its numeric fallback bypasses custom rank graphs. R8 restores native/helper forwarding and retains Colorful Street through the framework helpers. The focused Lua 5.1 source regression passes; independent review and real card scoring remain pending.
 
 ## R9: Chronos and Guillotine each run at two scoring stages; Void checks before queued score addition
 
