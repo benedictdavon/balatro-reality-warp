@@ -486,6 +486,71 @@ assert(owner.ability.extra.charges == 0)
 origin_context.retrigger_joker = nil
 flush(); close(owner.ability.extra.xmult, 1.8)
 
+-- Execute the two fixed integer-chance callsites identified by independent review.
+local echo_source = region(read('src/jokers/uncommon.lua'), '-- Echo Chamber\n', '\n-- Claw Machine\n')
+local miner_source = region(read('src/consumables/jobs.lua'), '-- Miner Sticker\n', '\n-- Jeweler Sticker\n')
+local function fixed_callsites()
+    install(); owner = lucky(2)
+    play_sound = function() end
+    load(echo_source, 'actual Echo Chamber definition')
+    local stickers = SMODS.Sticker
+    setmetatable(stickers, {__call = function(_, def) definitions[def.key] = def end})
+    load(miner_source, 'actual Miner Sticker definition')
+    G.consumeables = {cards = {}, config = {card_limit = 1}}
+    return {ability = {extra = {base_chance = 50, bonus_chance = 0}}}
+end
+local echo = fixed_callsites()
+sample_values = {0.49}
+assert(definitions.echo_chamber:calculate(echo, {repetition = true, cardarea = G.play}).repetitions == 1)
+assert(echo.ability.extra.bonus_chance == 2 and owner.ability.extra.charges == 2 and #calls == 1)
+assert(roll_args[2] == 'echo_chamber' and roll_args[3] == 50 and roll_args[4] == 100 and roll_args[6] == true)
+flush(); close(owner.ability.extra.xmult, 1.6)
+sample_values = {0.52}
+assert(definitions.echo_chamber:calculate(echo, {repetition = true, cardarea = G.play}) == nil)
+flush(); close(owner.ability.extra.xmult, 1.6)
+echo.ability.extra.base_chance, echo.ability.extra.bonus_chance = 49.9, 0
+sample_values = {0.495}
+assert(definitions.echo_chamber:calculate(echo, {repetition = true, cardarea = G.play}) == nil)
+assert(roll_args[3] == 49, 'fractional saved percentage preserves the original integer-roll threshold')
+flush(); close(owner.ability.extra.xmult, 1.6)
+echo.ability.extra.base_chance = 100
+sample_values = {0.99}
+assert(definitions.echo_chamber:calculate(echo, {repetition = true, cardarea = G.play, blueprint = true}))
+assert(echo.ability.extra.bonus_chance == 0 and owner.ability.extra.charges == 2)
+flush(); close(owner.ability.extra.xmult, 1.7)
+
+fixed_callsites()
+local cash_total, created = 0, 0
+local lower_rng = pseudorandom
+pseudorandom = function(seed, ...)
+    if seed == 'miner_cash' then
+        local args = pack(...)
+        assert(args.n == 2 and args[1] == 1 and args[2] == 3)
+        calls[#calls+1] = {seed = seed, args = args}
+        return 2 -- bounded native ranged RNG adapter; only the separate gem result is typed
+    end
+    return lower_rng(seed, ...)
+end
+ease_dollars = function(value) cash_total = cash_total + value end
+SMODS.add_card = function(args)
+    assert(args.set == 'Tarot' and args.key_append == 'miner_dig'); created = created + 1
+end
+local mined = {ability = {}}
+sample_values = {0.124}
+assert(definitions.miner_job:calculate(mined, {main_scoring = true, cardarea = G.play}).message:find('Unearthed', 1, true))
+assert(cash_total == 2 and created == 1 and #calls == 2 and owner.ability.extra.charges == 2)
+assert(calls[1].seed == 'miner_cash' and roll_args[2] == 'miner_gem' and roll_args[3] == 1 and roll_args[4] == 8 and roll_args[6] == true)
+flush(); close(owner.ability.extra.xmult, 1.6)
+G.consumeables.config.card_limit = 0
+sample_values = {0.1}
+assert(definitions.miner_job:calculate(mined, {individual = true, cardarea = G.play}).chips == 50)
+assert(cash_total == 4 and created == 1 and #calls == 4 and owner.ability.extra.charges == 2)
+flush(); close(owner.ability.extra.xmult, 1.7)
+sample_values = {0.125}
+assert(definitions.miner_job:calculate(mined, {individual = true, cardarea = G.play}).chips == nil)
+assert(cash_total == 6 and created == 1 and #calls == 6 and owner.ability.extra.charges == 2)
+flush(); close(owner.ability.extra.xmult, 1.7)
+
 -- Optional actual installed Omega number contract, enabled only by the LuaJIT runner.
 if LUCKY_BIG_PATH then
     package.path = LUCKY_BIG_PATH .. '/?.lua;' .. package.path
