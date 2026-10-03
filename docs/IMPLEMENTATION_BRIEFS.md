@@ -73,5 +73,5 @@ Explicitly excluded work: R13 Code, RNG/target/draw changes, broad wrapper rewri
 Required static validation: Lua 5.1 whole-repository compile and all harnesses; registered callback contract checks for batch IDs, notification counts, native-destroyed exclusion, duplicate/repeated references, Eternal/disabled cases and hand-list mutation; full diff/status and `git diff --check`.
 Required runtime/manual validation: Canio, Glass Joker, standard consumable comparison, Net match/nonmatch, Hades held/unplayed cards, Chicot, winning hands, next encounter and cold-save/event boundary (REGRESSION_TESTS.md).
 Known risks: Steamodded's `immediate` option dispatches bookkeeping synchronously but still uses native animation/removal scheduling; the API alone evaluates Eternal state once per candidate. Ares permanence now commits at `context.after`, and its existing delay applies only to visual feedback. No Balatro runtime, reload or save-codec test has been run.
-Implementation commit: `333c3fd0c27009a540369e449b22d437f3dbfef3`; PR #6 is open.
-Review: pending Sol High review; gameplay remains HUMAN_TEST_NEEDED.
+Implementation commits: `333c3fd0c27009a540369e449b22d437f3dbfef3` (initial) and `64e7576eeb9b103dfee2bd8936a5c7071fc80321` (Eternal eligibility correction); PR #6 is open.
+Review: Sol High requested single API-owned Eternal evaluation; correction is pushed and awaiting re-review. Gameplay remains HUMAN_TEST_NEEDED.

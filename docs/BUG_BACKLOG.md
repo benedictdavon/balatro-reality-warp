@@ -353,9 +353,9 @@ Dependencies: #6/#19/R4 effect ownership foundation and R2
 State: HUMAN_TEST_NEEDED (PR review pending)
 Branch: fix/blind-destruction-notifications
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/6
-Commit: 333c3fd0c27009a540369e449b22d437f3dbfef3 (initial implementation); correction pending
+Commit: 333c3fd0c27009a540369e449b22d437f3dbfef3 (initial implementation); 64e7576eeb9b103dfee2bd8936a5c7071fc80321 (Eternal eligibility correction)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Ares, Net, and Hades now submit filtered snapshots to `SMODS.destroy_cards` once per batch, allowing the framework to send removal notifications and run normal hooks. Ares permanence commits in `context.after`; only feedback remains delayed. See the R7 bounded brief and REGRESSION_TESTS.md. No Balatro runtime/save test has been run.
+Notes: Ares, Net, and Hades submit deduplicated snapshots with already-removing cards excluded to `SMODS.destroy_cards` once per batch; the API alone checks Eternal eligibility and sends removal notifications/runs normal hooks. Ares permanence commits in `context.after`; only feedback remains delayed. See the R7 bounded brief and REGRESSION_TESTS.md. No Balatro runtime/save test has been run.
 
 ## R8: get_straight wrapper discards modern API parameters
 
