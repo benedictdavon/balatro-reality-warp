@@ -139,15 +139,15 @@ Notes: Source trace in BUG_AUDIT.md; R8 remains independently actionable. Add de
 ## 11: Baby Mark appeared to trigger roughly ten times from one Red Seal Polychrome King
 
 Source: ISSUE.md #11
-Classification: Historical symptom requiring isolated game reproduction
+Classification: No Mark-generated repetition is source-confirmed; the historical symptom remains HUMAN_TEST_NEEDED
 Priority: Normal
-Dependencies: R5
-State: AUDITED
-Branch: —
+Dependencies: Accepted encounter/effect contracts on main f863d0c2c543c4befa481803a581847ca8fe7274. R5 is not a prerequisite for this isolated `individual` callback: Baby Mark's wrapper path and the final `joker_main` composer are separate. Combined mode integration remains in the human test queue.
+State: HUMAN_TEST_NEEDED
+Branch: docs/baby-mark-retrigger-validation
 PR: —
 Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Manual test requirement: Required to resolve the historical ~ten-message report; exact isolated procedure is in REGRESSION_TESTS.md.
+Notes: Current Mark code returns XMult for `context.individual` on a scored face card and returns no `repetitions`. Installed `SMODS.score_card` owns repeated scoring passes; Red Seal supplies one repeat and Polychrome supplies an XMult edition effect. The Familiar scoring area wrapper checks for the same area before appending it. A source-extracted loop/callback harness covers these contracts but cannot recreate Balatro UI callbacks, optional mod dispatch or the reported run. Do not suppress Mark on legitimate repeated evaluations.
 
 ## 12: Consumable stacking compatibility / UI: no clean native stacking, and early visual-only patches buried cards
 
