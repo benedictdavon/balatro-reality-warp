@@ -1639,7 +1639,7 @@ function Card:calculate_joker(context, ...)
     end
 
     -- Doppelgänger activation detection: if possessed joker triggers during a hand, flag for ÷4 at final scoring
-    if is_doppel_active and G.GAME.doppelganger_target and self == G.GAME.doppelganger_target and ret and type(ret) == 'table' and not self.debuff and context then
+    if is_doppel_active and reality_warp_doppelganger_target() and self == reality_warp_doppelganger_target() and ret and type(ret) == 'table' and not self.debuff and context then
         if not context.end_of_round and not context.ending_shop and not context.starting_shop and not context.setting_blind and not context.doppel_sim and not context.edition and not context.selling_card and not context.buying_card and not context.open_booster and not context.skip_blind then
             local is_activation = false
             if (ret.mult and ret.mult ~= 0) or (ret.mult_mod and ret.mult_mod ~= 0) or (ret.h_mult and ret.h_mult ~= 0) or
