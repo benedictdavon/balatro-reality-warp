@@ -90,12 +90,12 @@ Source: ISSUE.md #7
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 1, 6, 19
-State: AUDITED
-Branch: —
+State: IN_PROGRESS
+Branch: fix/round-action-draws
 PR: —
 Commit: —
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Revalidated against refreshed accepted main f863d0c; exact physical-card count requires an owned native selection boundary as well as context flags. Shared draw/transfer contract with R10 in IMPLEMENTATION_BRIEFS.md. Independent of local reviewed R5 and R6; publication withheld pending the required human confirmation. New Familiar extra-draw finding N1 is documented on local Joker-composition branch and excluded here.
 
 ## 8: Helin's exponent effect can do nothing in big-number mode
 
@@ -389,12 +389,12 @@ Source: BUG_AUDIT.md R10
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 7
-State: AUDITED
-Branch: —
+State: IN_PROGRESS
+Branch: fix/round-action-draws
 PR: —
 Commit: —
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Revalidated against refreshed accepted main f863d0c; exact physical-card count requires an owned native selection boundary as well as context flags. Shared draw/transfer contract with R10 in IMPLEMENTATION_BRIEFS.md. Independent of local reviewed R5 and R6; publication withheld pending the required human confirmation. New Familiar extra-draw finding N1 is documented on local Joker-composition branch and excluded here.
 
 ## R11: Canonical Blind keys are missing from several active-effect detectors
 
