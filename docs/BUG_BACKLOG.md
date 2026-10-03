@@ -90,12 +90,12 @@ Source: ISSUE.md #7
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 1, 6, 19
-State: IN_PROGRESS
+State: APPROVED
 Branch: fix/round-action-draws
 PR: —
-Commit: —
+Commit: 99618014e3ce21a30b0c9b04f632c652343b082d; 0b386690550d3126916492fb42e4dc91d62dcf43; 7c1cd917fbbc80c74e7f3197bbefd0e31ac86995
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Revalidated against refreshed accepted main f863d0c; exact physical-card count requires an owned native selection boundary as well as context flags. Shared draw/transfer contract with R10 in IMPLEMENTATION_BRIEFS.md. Independent of local reviewed R5 and R6; publication withheld pending the required human confirmation. New Familiar extra-draw finding N1 is documented on local Joker-composition branch and excluded here.
+Notes: Local implementation, Sol High source review and independent Luna approval complete. All repository Lua/TOML/owned pattern checks and nine harnesses pass through the independent runner (the accepted-main N3 aggregate-runner limitation is documented). One review correction makes draw restriction runtime-owned so disabled Ouroboros alone restores native auto-refill; live Serpent remains independent. No PR/merge exists; publication awaits required human authorization, and accepted main still contains these defects. Revalidated against refreshed accepted main f863d0c; exact physical-card count requires an owned native selection boundary as well as context flags. Shared draw/transfer contract with R10 in IMPLEMENTATION_BRIEFS.md. Independent of local reviewed R5 and R6; publication withheld pending the required human confirmation. New Familiar extra-draw finding N1 is documented on local Joker-composition branch and excluded here.
 
 ## 8: Helin's exponent effect can do nothing in big-number mode
 
@@ -389,12 +389,12 @@ Source: BUG_AUDIT.md R10
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 7
-State: IN_PROGRESS
+State: APPROVED
 Branch: fix/round-action-draws
 PR: —
-Commit: —
+Commit: 99618014e3ce21a30b0c9b04f632c652343b082d; 0b386690550d3126916492fb42e4dc91d62dcf43; 7c1cd917fbbc80c74e7f3197bbefd0e31ac86995
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Revalidated against refreshed accepted main f863d0c; exact physical-card count requires an owned native selection boundary as well as context flags. Shared draw/transfer contract with R10 in IMPLEMENTATION_BRIEFS.md. Independent of local reviewed R5 and R6; publication withheld pending the required human confirmation. New Familiar extra-draw finding N1 is documented on local Joker-composition branch and excluded here.
+Notes: Local implementation, Sol High source review and independent Luna approval complete. All repository Lua/TOML/owned pattern checks and nine harnesses pass through the independent runner (the accepted-main N3 aggregate-runner limitation is documented). One review correction makes draw restriction runtime-owned so disabled Ouroboros alone restores native auto-refill; live Serpent remains independent. No PR/merge exists; publication awaits required human authorization, and accepted main still contains these defects. Revalidated against refreshed accepted main f863d0c; exact physical-card count requires an owned native selection boundary as well as context flags. Shared draw/transfer contract with R10 in IMPLEMENTATION_BRIEFS.md. Independent of local reviewed R5 and R6; publication withheld pending the required human confirmation. New Familiar extra-draw finding N1 is documented on local Joker-composition branch and excluded here.
 
 ## R11: Canonical Blind keys are missing from several active-effect detectors
 
