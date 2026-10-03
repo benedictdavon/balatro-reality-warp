@@ -984,41 +984,32 @@ SMODS.Blind {
         if blind.disabled then return end
         if context.after and context.scoring_hand and #context.scoring_hand > 0 then
             if pseudorandom('ares_destroy') < G.GAME.probabilities.normal / 5 then
-                local destroyed_cards = {}
-                for _, c in ipairs(context.scoring_hand) do
-                    table.insert(destroyed_cards, c)
-                end
-                reality_warp_queue_blind_event(blind, {
-                    trigger = 'after',
-                    delay = 0.8,
-                    func = function()
-                        for _, c in ipairs(destroyed_cards) do
-                            if not c.removed and not c.destroyed and not c.shattered then
-                                c.destroyed = true
-                                if c.shatter and c.ability and c.ability.name == 'Glass Card' then
-                                    c:shatter()
-                                else
-                                    c:start_dissolve()
-                                end
-                            end
+                local destroyed_cards = reality_warp_destroy_cards(blind, context.scoring_hand)
+                if #destroyed_cards > 0 then
+                    -- Destruction and its framework notifications commit in context.after;
+                    -- only the feedback remains delayed.
+                    reality_warp_queue_blind_event(blind, {
+                        trigger = 'after',
+                        delay = 0.8,
+                        func = function()
+                            attention_text({
+                                text = 'Destroyed!',
+                                scale = 1.3,
+                                hold = 1.2,
+                                major = G.play,
+                                backdrop_colour = HEX('c1121f'),
+                                align = 'cm',
+                                offset = { x = 0, y = 0 }
+                            })
+                            play_sound('slice1', 1.0, 0.7)
+                            return true
                         end
-                        attention_text({
-                            text = 'Destroyed!',
-                            scale = 1.3,
-                            hold = 1.2,
-                            major = G.play,
-                            backdrop_colour = HEX('c1121f'),
-                            align = 'cm',
-                            offset = { x = 0, y = 0 }
-                        })
-                        play_sound('slice1', 1.0, 0.7)
-                        return true
-                    end
-                })
-                return {
-                    message = 'Ares strikes!',
-                    colour = HEX('c1121f')
-                }
+                    })
+                    return {
+                        message = 'Ares strikes!',
+                        colour = HEX('c1121f')
+                    }
+                end
             end
         end
     end
@@ -1206,14 +1197,16 @@ SMODS.Blind {
             G.GAME.blind.effect.reality_warp_hades_nullify = false
             if pseudorandom('hades_hand') < G.GAME.probabilities.normal / 10 then
                 if G.hand and G.hand.cards and #G.hand.cards > 0 then
-                    for _, c in ipairs(G.hand.cards) do
-                        c.destroyed = true
-                        c:start_dissolve()
+                    local held_cards = {}
+                    for _, card in ipairs(G.hand.cards) do
+                        held_cards[#held_cards + 1] = card
                     end
-                    return {
-                        message = 'Hand Annihilated!',
-                        colour = HEX('1a1a24')
-                    }
+                    if #reality_warp_destroy_cards(blind, held_cards) > 0 then
+                        return {
+                            message = 'Hand Annihilated!',
+                            colour = HEX('1a1a24')
+                        }
+                    end
                 end
             end
         end
@@ -1399,15 +1392,13 @@ SMODS.Blind {
     calculate = function(self, blind, context)
         if blind.disabled then return end
         if context.after and context.scoring_hand then
-            local destroyed_any = false
+            local matching_cards = {}
             for _, c in ipairs(context.scoring_hand) do
-                if not c.destroyed and c.base and c.base.value == reality_warp_encounter_params(self.key).target_rank then
-                    c.destroyed = true
-                    c:start_dissolve()
-                    destroyed_any = true
+                if c.base and c.base.value == reality_warp_encounter_params(self.key).target_rank then
+                    matching_cards[#matching_cards + 1] = c
                 end
             end
-            if destroyed_any then
+            if #reality_warp_destroy_cards(blind, matching_cards) > 0 then
                 play_sound('slice1', 1.0, 0.7)
                 return {
                     message = 'Trapped in Net!',

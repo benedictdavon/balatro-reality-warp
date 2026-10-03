@@ -29,22 +29,21 @@ dofile(REPO_ROOT .. '/src/core/blind_effects.lua')
 function reality_warp_encounter_params() return G.GAME.reality_warp_active_encounter.params end
 dofile(REPO_ROOT .. '/src/blinds/boss_blinds.lua')
 queue = {}
-local mutations = 0
-local card = {ability = {}, start_dissolve = function() mutations = mutations + 1 end}
 local blind = {config = {blind = definitions.bl_reality_warp_ares}, effect = {}, disabled = false}
 G.GAME.blind = blind
-local ares = definitions.bl_reality_warp_ares
-ares:calculate(blind, {after = true, scoring_hand = {card}})
+local queued_runs = 0
+reality_warp_queue_blind_event(blind, {trigger = 'after', func = function() queued_runs = queued_runs + 1; return true end})
 assert(#queue == 1)
-blind.disabled = true; queue[1].func(); assert(mutations == 0)
+blind.disabled = true; queue[1].func(); assert(queued_runs == 0)
 queue = {}; blind.disabled = false
-ares:calculate(blind, {after = true, scoring_hand = {card}})
-G.GAME.reality_warp_active_encounter.id = 2; queue[1].func(); assert(mutations == 0)
-queue = {}
-ares:calculate(blind, {after = true, scoring_hand = {card}})
-queue[1].func(); assert(mutations == 1)
+reality_warp_queue_blind_event(blind, {trigger = 'after', func = function() queued_runs = queued_runs + 1; return true end})
+G.GAME.reality_warp_active_encounter.id = 2; queue[1].func(); assert(queued_runs == 0)
+queue = {}; G.GAME.reality_warp_active_encounter.id = 1
+reality_warp_queue_blind_event(blind, {trigger = 'after', func = function() queued_runs = queued_runs + 1; return true end})
+queue[1].func(); assert(queued_runs == 1)
 -- Every normal/showdown active calculate callback suppresses disabled penalties.
 queue = {}; blind.disabled = true
+local card = {ability = {}}
 for key, def in pairs(definitions) do
     if def.calculate then
         blind.config.blind = def
@@ -52,7 +51,7 @@ for key, def in pairs(definitions) do
             individual = true, scoring_hand = {card}, scoring_name = 'Pair', cardarea = G.play, other_card = card})
     end
 end
-assert(#queue == 0 and mutations == 1)
+assert(#queue == 0 and queued_runs == 1)
 -- Source cleanup preserves both expiration and independently owned restrictions.
 local expired = {ability = {perishable = true, perish_tally = 0}}
 local other = {ability = {debuff_sources = {external = true}}}

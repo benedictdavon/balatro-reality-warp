@@ -59,3 +59,19 @@ Required static validation: Lua 5.1 compile; callback harness for repeat setup, 
 Required runtime/manual validation: Iron Maiden hand size before/after win/disable/defeat/next encounter and cold restart; Chicot at setup and late disable; Obelisk/Leviathan remaining-resource and zero-resource cases, recorded in REGRESSION_TESTS.
 Known risks: Balatro hand-area reconstruction and callback/event ordering need a real cold-restart run; resource easing must remain idempotent if cleanup is re-entered. Pre-fix Iron Maiden saves have no ownership ledger, so an in-progress save cannot safely distinguish an applied -1 from a disabled-at-setup Blind; no compensation is inferred. New saves carry the serialized ledger. This work does not alter event ownership.
 Review: APPROVE at `2155e8ccf5f5f6dd30cc4ad1df7d5739eaf10b79`. Sol High independently inspected the complete diff and callback surroundings, then reran `tests/run.py` and `git diff --check`; both passed. No Balatro runtime or cold-restart validation was performed, so the issue remains HUMAN_TEST_NEEDED.
+
+## Boss destruction notification contract
+
+Issue: BUG_AUDIT R7.
+Classification: source-confirmed installed-framework contract defect; HUMAN_TEST_NEEDED for gameplay/save behavior.
+Dependencies: #6/#19/R4 effect ownership foundation and accepted R2.
+Relevant files/functions: `src/core/blind_effects.lua` destruction helper; Ares, Net, and Hades `calculate` callbacks in `src/blinds/boss_blinds.lua`.
+Confirmed root cause: these after-context callbacks directly dissolved cards after the normal destroyed-card collection had already emitted `remove_playing_cards`, bypassing the framework notification and destruction-hook path.
+Required behavior: snapshot/deduplicate eligible card references and omit removed, destroyed, shattered, or getting-sliced cards. Call `SMODS.destroy_cards` once per nonempty batch with immediate acceptance and let the API make the sole Eternal eligibility check, returning its accepted list. Ares retains one 1-in-5 roll for `scoring_hand`, Net uses its encounter's saved rank, and Hades snapshots held cards before callbacks can mutate the hand area.
+Behavior that must remain unchanged: odds/seeds, scoring versus held-card scope, target rank, disabled guards, Chicot handling, native destruction notifications, Glass/custom/Spectral hooks, and removal-aware Joker behavior.
+Explicitly excluded work: R13 Code, RNG/target/draw changes, broad wrapper rewrites, and unrelated formatting.
+Required static validation: Lua 5.1 whole-repository compile and all harnesses; registered callback contract checks for batch IDs, notification counts, native-destroyed exclusion, duplicate/repeated references, Eternal/disabled cases and hand-list mutation; full diff/status and `git diff --check`.
+Required runtime/manual validation: Canio, Glass Joker, standard consumable comparison, Net match/nonmatch, Hades held/unplayed cards, Chicot, winning hands, next encounter and cold-save/event boundary (REGRESSION_TESTS.md).
+Known risks: Steamodded's `immediate` option dispatches bookkeeping synchronously but still uses native animation/removal scheduling; the API alone evaluates Eternal state once per candidate. Ares permanence now commits at `context.after`, and its existing delay applies only to visual feedback. No Balatro runtime, reload or save-codec test has been run.
+Implementation commits: `333c3fd0c27009a540369e449b22d437f3dbfef3` (initial) and `64e7576eeb9b103dfee2bd8936a5c7071fc80321` (Eternal eligibility correction); PR #6 is open.
+Review: APPROVE at `0bda04c6a299dbd303c4cb624b8ee938264f7b72` after one correction round removed redundant Eternal evaluation. Sol High independently reviewed the complete diff, callback surroundings and installed destruction contract, then reran all five Lua 5.1 harnesses and `git diff --check`; they pass. No real game or save-boundary test ran; gameplay remains HUMAN_TEST_NEEDED.
