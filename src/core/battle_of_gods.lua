@@ -287,73 +287,11 @@ SMODS.Booster {
 }
 
 function get_new_boss_filtered(showdown)
-    local eligible_bosses = {}
-    for k, v in pairs(G.P_BLINDS) do
-        if v.boss then
-            local is_sd = (v.showdown == true) or (type(v.boss) == 'table' and v.boss.showdown)
-            if showdown and is_sd then
-                eligible_bosses[k] = true
-            elseif not showdown and not is_sd then
-                eligible_bosses[k] = true
-            end
-        end
-    end
-    for k, _ in pairs(G.GAME.banned_keys or {}) do
-        if eligible_bosses[k] then eligible_bosses[k] = nil end
-    end
-    local min_use = 100
-    G.GAME.bosses_used = G.GAME.bosses_used or {}
-    for k, _ in pairs(eligible_bosses) do
-        local use_count = G.GAME.bosses_used[k] or 0
-        if use_count <= min_use then 
-            min_use = use_count
-        end
-    end
-    for k, _ in pairs(eligible_bosses) do
-        local use_count = G.GAME.bosses_used[k] or 0
-        if use_count > min_use then 
-            eligible_bosses[k] = nil
-        end
-    end
-    local keys_list = {}
-    for k, _ in pairs(eligible_bosses) do
-        keys_list[#keys_list + 1] = k
-    end
-    if #keys_list == 0 then
-        local fallback = showdown and 'bl_cerulean_bell' or 'bl_hook'
-        G.GAME.bosses_used[fallback] = (G.GAME.bosses_used[fallback] or 0) + 1
-        return fallback
-    end
-    local choice, _ = pseudorandom_element(keys_list, pseudoseed(showdown and 'botg_showdown' or 'botg_boss'))
-    local boss = (type(choice) == 'string' and choice) or keys_list[1] or (showdown and 'bl_cerulean_bell' or 'bl_hook')
-    G.GAME.bosses_used[boss] = (G.GAME.bosses_used[boss] or 0) + 1
-    return boss
+    return reality_warp_choose_blind(showdown and 'showdown' or 'boss', showdown and 'botg_showdown' or 'botg_boss')
 end
 
-local FUSED_BOSS_KEYS = {
-    'bl_reality_warp_obelisk',
-    'bl_reality_warp_minotaur',
-    'bl_reality_warp_fortress',
-    'bl_reality_warp_mind_flayer',
-    'bl_reality_warp_leviathan',
-    'bl_reality_warp_iron_maiden',
-    'bl_reality_warp_cyclops',
-    'bl_reality_warp_thorn_crown',
-    'bl_reality_warp_ouroboros',
-    'bl_reality_warp_nightshade',
-    'bl_reality_warp_black_diamond',
-    'bl_reality_warp_blood_moon'
-}
-
 function get_new_fused_boss()
-    local eligible = {}
-    for _, k in ipairs(FUSED_BOSS_KEYS) do
-        if G.P_BLINDS and G.P_BLINDS[k] then eligible[#eligible + 1] = k end
-    end
-    if #eligible == 0 then return get_new_boss_filtered(false) end
-    local choice, _ = pseudorandom_element(eligible, pseudoseed('botg_fused_boss'))
-    local boss = (type(choice) == 'string' and choice) or eligible[1]
-    return (G.P_BLINDS and G.P_BLINDS[boss] and boss) or eligible[1] or get_new_boss_filtered(false)
+    return reality_warp_choose_blind('fused', 'botg_fused_boss')
 end
 
 function get_botg_godly_hubris_multiplier()
@@ -371,76 +309,49 @@ function get_botg_godly_hubris_multiplier()
     return 1 + (god_count * 0.5), god_count
 end
 
--- Sanitizer hook for create_UIBox_blind_choice to prevent nil config crashes
+-- UI reads committed slots; only the preview context changes, never the schedule.
 if create_UIBox_blind_choice then
-    local orig_create_UIBox_blind_choice = create_UIBox_blind_choice
-    function create_UIBox_blind_choice(type, run_info)
-        if G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_choices then
-            local current_blind = G.GAME.round_resets.blind_choices[type]
-            if not current_blind or not (G.P_BLINDS and G.P_BLINDS[current_blind]) then
-                if G.GAME.battle_of_gods then
-                    if type == 'Boss' then
-                        G.GAME.round_resets.blind_choices[type] = get_new_boss_filtered(true)
-                    elseif G.GAME.round_resets.ante and G.GAME.round_resets.ante >= 12 then
-                        G.GAME.round_resets.blind_choices[type] = get_new_fused_boss()
-                    else
-                        G.GAME.round_resets.blind_choices[type] = get_new_boss_filtered(false)
-                    end
-                else
-                    if type == 'Small' then
-                        G.GAME.round_resets.blind_choices[type] = 'bl_small'
-                    elseif type == 'Big' then
-                        G.GAME.round_resets.blind_choices[type] = 'bl_big'
-                    else
-                        G.GAME.round_resets.blind_choices[type] = (get_new_boss and get_new_boss()) or 'bl_hook'
-                    end
-                end
-            end
+    local original = create_UIBox_blind_choice
+    function create_UIBox_blind_choice(slot, ...)
+        return reality_warp_with_blind_preview(slot, original, slot, ...)
+    end
+end
+
+-- Intercept the framework's explicit new-Ante schedule creation before it rolls candidates.
+if SMODS.reset_blind_choices then
+    local original = SMODS.reset_blind_choices
+    function SMODS.reset_blind_choices(choices, ...)
+        if G.GAME.battle_of_gods then
+            reality_warp_schedule_blinds(true)
+            return
         end
-        if type == 'Boss' and G.GAME and G.GAME.battle_of_gods then
-            G.GAME.botg_hubris_in_blind_choice = true
-        end
-        local ret = orig_create_UIBox_blind_choice(type, run_info)
-        if G.GAME then G.GAME.botg_hubris_in_blind_choice = nil end
-        return ret
+        local result = original(choices, ...)
+        reality_warp_schedule_blinds(false)
+        return result
     end
 end
 
 if reset_blinds then
-    local orig_reset_blinds = reset_blinds
-    function reset_blinds()
-        orig_reset_blinds()
-        local sel_fam = (get_nursery_selected_fam and get_nursery_selected_fam())
-        if (G.GAME and G.GAME.battle_of_gods) or sel_fam then
+    local original = reset_blinds
+    function reset_blinds(...)
+        local boss_defeated = G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Boss == 'Defeated'
+        local result = original(...)
+        local sel_fam = get_nursery_selected_fam and get_nursery_selected_fam()
+        if G.GAME.battle_of_gods or sel_fam then
             if init_botg_familiars_area then init_botg_familiars_area() end
             if sel_fam and botg_set_active_familiar and G.botg_familiars and #G.botg_familiars.cards == 0 then
                 botg_set_active_familiar('c_reality_warp_' .. sel_fam)
             end
         end
-        if G.GAME and G.GAME.battle_of_gods then
-            if G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante >= 24 then
-                unlock_colosseum_champion()
-            end
-            G.GAME.round_resets.divine_ward_free = true -- Mechanic 24: Divine Ward free reroll
-            if G.GAME.round_resets and G.GAME.round_resets.blind_choices then
-                -- Mechanic 3: 12 Dedicated Fused Boss Blinds (Ante 12+)
-                if G.GAME.round_resets.ante >= 12 then
-                    local f1 = get_new_fused_boss()
-                    local f2 = get_new_fused_boss()
-                    local attempts = 0
-                    while f2 == f1 and attempts < 10 do
-                        f2 = get_new_fused_boss()
-                        attempts = attempts + 1
-                    end
-                    G.GAME.round_resets.blind_choices.Small = f1
-                    G.GAME.round_resets.blind_choices.Big = f2
-                else
-                    G.GAME.round_resets.blind_choices.Small = get_new_boss_filtered(false)
-                    G.GAME.round_resets.blind_choices.Big = get_new_boss_filtered(false)
-                end
-                G.GAME.round_resets.blind_choices.Boss = get_new_boss_filtered(true)
-            end
+        if G.GAME.battle_of_gods then
+            G.GAME.win_ante = 24
+            if G.GAME.round_resets.ante >= 24 then unlock_colosseum_champion() end
+            if boss_defeated and botg_trigger_mod_achievement then botg_trigger_mod_achievement('god_slayer') end
         end
+        local migrating = not G.GAME.round_resets.reality_warp_encounters
+        reality_warp_schedule_blinds(not boss_defeated and G.GAME.reality_warp_refresh_pending, migrating)
+        G.GAME.reality_warp_refresh_pending = nil
+        return result
     end
 end
 
@@ -462,12 +373,15 @@ end
 
 
 if get_new_boss then
-    local orig_get_new_boss = get_new_boss
-    function get_new_boss()
-        if G.GAME and G.GAME.battle_of_gods then
-            return get_new_boss_filtered(true)
-        end
-        return orig_get_new_boss()
+    local original = get_new_boss
+    function get_new_boss(...)
+        if not G.GAME.battle_of_gods then return original(...) end
+        local key = reality_warp_choose_blind('showdown', 'botg_boss_reroll') or
+            reality_warp_choose_blind('boss', 'botg_boss_reroll_fallback') or
+            reality_warp_choose_blind('regular', 'botg_boss_reroll_regular')
+        assert(key, 'Reality Warp: no eligible reroll Blind')
+        reality_warp_commit_blind('Boss', key)
+        return key
     end
 end
 
@@ -547,11 +461,7 @@ if Blind and Blind.defeat then
                 end
             end
 
-            if G.GAME.blind_on_deck == 'Small' then
-                G.GAME.round_resets.blind = G.P_BLINDS.bl_small
-            elseif G.GAME.blind_on_deck == 'Big' then
-                G.GAME.round_resets.blind = G.P_BLINDS.bl_big
-            end
+            G.GAME.reality_warp_refresh_pending = true
         end
         return orig_blind_defeat(self, silent)
     end
@@ -719,115 +629,6 @@ if create_UIBox_blind_choice then
             p_blind.mult = orig_mult
         end
         return ret
-    end
-end
-
-local function get_botg_regular_boss(seed_suffix)
-    local eligible = {}
-    for k, v in pairs(G.P_BLINDS) do
-        local is_sd = (v.showdown == true) or (type(v.boss) == 'table' and v.boss.showdown)
-        if v.boss and not is_sd and k ~= 'bl_wall' and k ~= 'bl_vessel' then
-            eligible[k] = true
-        end
-    end
-    if G.GAME and G.GAME.banned_keys then
-        for k, _ in pairs(G.GAME.banned_keys) do
-            eligible[k] = nil
-        end
-    end
-    local _, boss = pseudorandom_element(eligible, pseudoseed('botg_s1_boss' .. (seed_suffix or 1)))
-    return boss or 'bl_hook'
-end
-
-local function get_botg_showdown_boss(seed_suffix, exclude_key)
-    local eligible = {}
-    for k, v in pairs(G.P_BLINDS) do
-        local is_sd = (v.showdown == true) or (type(v.boss) == 'table' and v.boss.showdown)
-        if v.boss and is_sd and k ~= exclude_key then
-            eligible[k] = true
-        end
-    end
-    if G.GAME and G.GAME.banned_keys then
-        for k, _ in pairs(G.GAME.banned_keys) do
-            eligible[k] = nil
-        end
-    end
-    local _, boss = pseudorandom_element(eligible, pseudoseed('botg_showdown' .. (seed_suffix or 1)))
-    return boss or 'bl_vessel'
-end
-
-local function roll_botg_blinds(seed_suffix)
-    seed_suffix = seed_suffix or (G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante) or 1
-    
-    -- Slot 1: Always a Big Blind
-    local slot1 = 'bl_big'
-    
-    -- Slot 2: Always a Boss Blind, Fused Blind, or Showdown Boss (which can also take slot 2)
-    local s2_types = { 'boss', 'fused', 'showdown' }
-    local s2_choice = pseudorandom_element(s2_types, pseudoseed('botg_s2_type_' .. seed_suffix))
-    local slot2
-    if s2_choice == 'fused' and get_new_fused_boss then
-        slot2 = get_new_fused_boss()
-    elseif s2_choice == 'showdown' then
-        slot2 = get_botg_showdown_boss('s2_' .. seed_suffix)
-    else
-        slot2 = get_botg_regular_boss('s2_' .. seed_suffix)
-    end
-    
-    -- Slot 3: Always a Showdown Boss Blind
-    local slot3 = get_botg_showdown_boss('s3_' .. seed_suffix, slot2)
-
-    return {
-        Small = slot1,
-        Big = slot2,
-        Boss = slot3
-    }
-end
-
-if get_new_boss then
-    local orig_get_new_boss = get_new_boss
-    function get_new_boss()
-        if G.GAME and G.GAME.battle_of_gods and (G.GAME.round_resets and G.GAME.round_resets.ante or 1) > 1 then
-            return get_botg_showdown_boss(G.GAME.round_resets and G.GAME.round_resets.ante or 1)
-        end
-        return orig_get_new_boss()
-    end
-end
-
-if reset_blinds then
-    local orig_reset_blinds = reset_blinds
-    function reset_blinds()
-        local was_boss_defeated = G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Boss == 'Defeated'
-        orig_reset_blinds()
-        if G.GAME and G.GAME.battle_of_gods then
-            G.GAME.win_ante = 24
-        end
-        if G.GAME and G.GAME.battle_of_gods and G.GAME.round_resets and G.GAME.round_resets.blind_choices then
-            local ante = (G.GAME.round_resets and G.GAME.round_resets.ante) or 1
-            if ante > 1 then
-                if was_boss_defeated then
-                    if botg_trigger_mod_achievement then
-                        botg_trigger_mod_achievement('god_slayer')
-                    end
-                    local b = roll_botg_blinds('ante_' .. ante .. '_' .. (G.GAME.round or 1))
-                    G.GAME.round_resets.blind_choices.Small = b.Small
-                    G.GAME.round_resets.blind_choices.Big = b.Big
-                    G.GAME.round_resets.blind_choices.Boss = b.Boss
-                else
-                    -- Any time a blind is defeated, the other two blinds are refreshed to new blinds
-                    local b = roll_botg_blinds('reroll_round_' .. (G.GAME.round or 1))
-                    if G.GAME.round_resets.blind_states.Small ~= 'Defeated' then
-                        G.GAME.round_resets.blind_choices.Small = b.Small
-                    end
-                    if G.GAME.round_resets.blind_states.Big ~= 'Defeated' then
-                        G.GAME.round_resets.blind_choices.Big = b.Big
-                    end
-                    if G.GAME.round_resets.blind_states.Boss ~= 'Defeated' then
-                        G.GAME.round_resets.blind_choices.Boss = b.Boss
-                    end
-                end
-            end
-        end
     end
 end
 
@@ -1011,11 +812,10 @@ G.FUNCS.confirm_battle_of_gods = function(e)
     G.GAME.round_resets.blind = G.P_BLINDS.bl_small
     G.GAME.facing_blind = nil
     G.GAME.round_resets.blind_states = {Small = 'Upcoming', Big = 'Upcoming', Boss = 'Upcoming'}
-    G.GAME.round_resets.blind_choices = {
-        Small = 'bl_small',
-        Big = 'bl_big',
-        Boss = get_new_boss()
-    }
+    G.GAME.round_resets.blind_choices = {}
+    G.GAME.round_resets.reality_warp_encounters = nil
+    G.GAME.reality_warp_active_encounter = nil
+    reality_warp_schedule_blinds(true)
     G.GAME.round_resets.blind_tags = {
         Small = (get_next_tag_key and get_next_tag_key()) or 'tag_uncommon',
         Big = (get_next_tag_key and get_next_tag_key()) or 'tag_rare'

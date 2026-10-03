@@ -136,6 +136,7 @@ G.E_MANAGER:add_event(Event({
 
 -- 1. The Obelisk (Needle + Pillar)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'obelisk',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 0 },
@@ -178,6 +179,7 @@ SMODS.Blind {
 
 -- 2. The Minotaur (Ox + Hook)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'minotaur',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 1 },
@@ -243,6 +245,7 @@ SMODS.Blind {
 
 -- 3. The Fortress (Wall + Flint)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'fortress',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 2 },
@@ -275,6 +278,7 @@ SMODS.Blind {
 
 -- 4. The Mind Flayer (Psychic + Arm)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'mind_flayer',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 3 },
@@ -313,6 +317,7 @@ SMODS.Blind {
 
 -- 5. The Leviathan (Water + Fish)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'leviathan',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 4 },
@@ -369,6 +374,7 @@ SMODS.Blind {
 
 -- 6. The Iron Maiden (Manacle + Tooth)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'iron_maiden',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 5 },
@@ -425,6 +431,7 @@ SMODS.Blind {
 
 -- 7. The Cyclops (Eye + Mouth)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'cyclops',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 6 },
@@ -464,6 +471,7 @@ SMODS.Blind {
 
 -- 8. The Thorn Crown (Mark + Plant)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'thorn_crown',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 7 },
@@ -504,6 +512,7 @@ SMODS.Blind {
 
 -- 9. The Ouroboros (Wheel + Serpent)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'ouroboros',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 8 },
@@ -560,6 +569,7 @@ end
 
 -- 10. The Nightshade (House + Goad)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'nightshade',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 9 },
@@ -599,6 +609,7 @@ SMODS.Blind {
 
 -- 11. The Black Diamond (Window + Club)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'black_diamond',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 10 },
@@ -628,6 +639,7 @@ SMODS.Blind {
 
 -- 12. The Blood Moon (Head + Goad)
 SMODS.Blind {
+    reality_warp_fused = true,
     key = 'blood_moon',
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 11 },

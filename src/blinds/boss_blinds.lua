@@ -770,7 +770,7 @@ SMODS.Blind {
                 j.doppelganger_reflected = nil
             end
         end
-        G.GAME.doppelganger_target = nil
+        G.GAME.doppelganger_target_id = nil
         G.GAME.doppelganger_target_name = nil
 
         local eligible = {}
@@ -799,14 +799,14 @@ SMODS.Blind {
             local r_num = (G.GAME.round) or 1
             local pick_idx = pseudorandom('doppel_pick_' .. ante .. '_' .. r_num, 1, #eligible)
             local chosen = eligible[pick_idx]
-            G.GAME.doppelganger_target = chosen
+            G.GAME.doppelganger_target_id = chosen.sort_id
             chosen.doppelganger_reflected = true
             local jname = (chosen.ability and chosen.ability.name) or (chosen.config and chosen.config.center and chosen.config.center.name) or 'Joker'
             G.GAME.doppelganger_target_name = jname
 
-            self.loc_debuff_text = "Possessed: " .. jname .. " (÷4 Chips & Mult)"
+            G.GAME.blind.loc_debuff_text = "Possessed: " .. jname .. " (÷4 Chips & Mult)"
             if G.GAME.blind then
-                G.GAME.blind.loc_debuff_text = self.loc_debuff_text
+                G.GAME.blind:set_text()
             end
 
             G.E_MANAGER:add_event(Event({
@@ -828,9 +828,9 @@ SMODS.Blind {
                 end
             }))
         else
-            self.loc_debuff_text = "No Jokers to possess"
+            G.GAME.blind.loc_debuff_text = "No Jokers to possess"
             if G.GAME.blind then
-                G.GAME.blind.loc_debuff_text = self.loc_debuff_text
+                G.GAME.blind:set_text()
             end
         end
     end,
@@ -841,7 +841,7 @@ SMODS.Blind {
         if context.before then
             G.GAME.doppel_triggered_in_hand = nil
             -- Repick if target is removed or sold or not eligible
-            if not G.GAME.doppelganger_target or G.GAME.doppelganger_target.removed or (G.GAME.doppelganger_target.area and G.GAME.doppelganger_target.area ~= G.jokers) then
+            if not reality_warp_doppelganger_target() then
                 local eligible = {}
                 if G.jokers and G.jokers.cards then
                     for _, j in ipairs(G.jokers.cards) do
@@ -855,18 +855,18 @@ SMODS.Blind {
                     local r_num = (G.GAME.round) or 1
                     local pick_idx = pseudorandom('doppel_repick_' .. ante .. '_' .. r_num, 1, #eligible)
                     local chosen = eligible[pick_idx]
-                    G.GAME.doppelganger_target = chosen
+                    G.GAME.doppelganger_target_id = chosen.sort_id
                     if chosen then
                         chosen.doppelganger_reflected = true
                         local jname = (chosen.ability and chosen.ability.name) or (chosen.config and chosen.config.center and chosen.config.center.name) or 'Joker'
                         G.GAME.doppelganger_target_name = jname
-                        self.loc_debuff_text = "Possessed: " .. jname .. " (÷4 Chips & Mult)"
+                        G.GAME.blind.loc_debuff_text = "Possessed: " .. jname .. " (÷4 Chips & Mult)"
                         if G.GAME.blind then
-                            G.GAME.blind.loc_debuff_text = self.loc_debuff_text
+                            G.GAME.blind:set_text()
                         end
                     end
                 else
-                    G.GAME.doppelganger_target = nil
+                    G.GAME.doppelganger_target_id = nil
                     G.GAME.doppelganger_target_name = "None"
                 end
             end
@@ -886,7 +886,7 @@ SMODS.Blind {
                 end
             end
         end
-        G.GAME.doppelganger_target = nil
+        G.GAME.doppelganger_target_id = nil
         G.GAME.doppelganger_target_name = nil
         reset_reality_warp_boss_ui()
     end,
@@ -904,7 +904,7 @@ SMODS.Blind {
                 end
             end
         end
-        G.GAME.doppelganger_target = nil
+        G.GAME.doppelganger_target_id = nil
         G.GAME.doppelganger_target_name = nil
         reset_reality_warp_boss_ui()
     end
@@ -1045,11 +1045,8 @@ SMODS.Blind {
         }
     },
     loc_vars = function(self, info_queue, card)
-        if not self.target_hand then
-            local eligible = {'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House'}
-            self.target_hand = pseudorandom_element(eligible, pseudoseed('athena_command_' .. (G.GAME and G.GAME.round or 1)))
-        end
-        local hand_name = localize(self.target_hand, 'poker_hands')
+        local target = reality_warp_encounter_params(self.key).target_hand or 'Pair'
+        local hand_name = localize(target, 'poker_hands')
         return { vars = { hand_name } }
     end,
     collection_loc_vars = function(self)
@@ -1059,9 +1056,6 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     set_blind = function(self, reset, silent)
-        local eligible = {'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House'}
-        self.target_hand = pseudorandom_element(eligible, pseudoseed('athena_command_' .. (G.GAME and G.GAME.round or 1)))
-        self.debuff_next = false
         if G.GAME and G.GAME.blind then
             G.GAME.blind:set_text()
         end
@@ -1074,7 +1068,7 @@ SMODS.Blind {
     press_play = function(self)
     end,
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-        local matches = (text == self.target_hand)
+        local matches = (text == reality_warp_encounter_params(self.key).target_hand)
         if G.jokers and G.jokers.cards then
             for _, j in ipairs(G.jokers.cards) do
                 if not (j.edition and (j.edition.blessed or j.edition.bendecido or j.edition.key == 'e_reality_warp_blessed' or j.edition.key == 'e_blessed')) then
@@ -1088,7 +1082,7 @@ SMODS.Blind {
     end,
     calculate = function(self, blind, context)
         if context.after and context.scoring_name then
-            local matches = (context.scoring_name == self.target_hand)
+            local matches = (context.scoring_name == reality_warp_encounter_params(self.key).target_hand)
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
                 delay = 0.2,
@@ -1123,8 +1117,6 @@ SMODS.Blind {
         end
     end,
     defeat = function(self)
-        self.target_hand = nil
-        self.debuff_next = false
         if G.jokers and G.jokers.cards then
             for _, j in ipairs(G.jokers.cards) do
                 j:set_debuff(false)
@@ -1133,8 +1125,6 @@ SMODS.Blind {
         reset_reality_warp_boss_ui()
     end,
     disable = function(self)
-        self.target_hand = nil
-        self.debuff_next = false
         if G.jokers and G.jokers.cards then
             for _, j in ipairs(G.jokers.cards) do
                 j:set_debuff(false)
@@ -1198,26 +1188,26 @@ SMODS.Blind {
             end
         end
         if pseudorandom('hades_no_score') < G.GAME.probabilities.normal / 3 then
-            self.hades_nullify_score = true
+            G.GAME.blind.effect.reality_warp_hades_nullify = true
         else
-            self.hades_nullify_score = false
+            G.GAME.blind.effect.reality_warp_hades_nullify = false
         end
     end,
     debuff_hand = function(self, cards, hand, handname, check)
-        if not self.disabled and self.hades_nullify_score then
-            self.triggered = true
+        if not G.GAME.blind.disabled and G.GAME.blind.effect.reality_warp_hades_nullify then
+            G.GAME.blind.triggered = true
             return true
         end
     end,
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-        if not self.disabled and self.hades_nullify_score then
-            self.triggered = true
+        if not G.GAME.blind.disabled and G.GAME.blind.effect.reality_warp_hades_nullify then
+            G.GAME.blind.triggered = true
             return 0, 0, true
         end
         return mult, hand_chips, false
     end,
     calculate = function(self, blind, context)
-        if context.before and self.hades_nullify_score then
+        if context.before and G.GAME.blind.effect.reality_warp_hades_nullify then
             mult = 0
             hand_chips = 0
             update_hand_text({delay = 0}, {chips = 0, mult = 0})
@@ -1227,7 +1217,7 @@ SMODS.Blind {
             }
         end
         if context.after then
-            self.hades_nullify_score = false
+            G.GAME.blind.effect.reality_warp_hades_nullify = false
             if pseudorandom('hades_hand') < G.GAME.probabilities.normal / 10 then
                 if G.hand and G.hand.cards and #G.hand.cards > 0 then
                     for _, c in ipairs(G.hand.cards) do
@@ -1405,11 +1395,7 @@ SMODS.Blind {
         }
     },
     loc_vars = function(self, info_queue, card)
-        if not self.target_rank then
-            local all_ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'}
-            self.target_rank = pseudorandom_element(all_ranks, pseudoseed('net_target_rank_' .. (G.GAME and G.GAME.round or 1)))
-        end
-        return { vars = { self.target_rank } }
+        return { vars = { reality_warp_encounter_params(self.key).target_rank or 'Ace' } }
     end,
     collection_loc_vars = function(self)
         return { vars = { 'Ace' } }
@@ -1418,8 +1404,6 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     set_blind = function(self, reset, silent)
-        local all_ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'}
-        self.target_rank = pseudorandom_element(all_ranks, pseudoseed('net_target_rank_' .. (G.GAME and G.GAME.round or 1)))
         if G.GAME and G.GAME.blind then
             G.GAME.blind:set_text()
         end
@@ -1428,7 +1412,7 @@ SMODS.Blind {
         if context.after and context.scoring_hand then
             local destroyed_any = false
             for _, c in ipairs(context.scoring_hand) do
-                if not c.destroyed and c.base and c.base.value == self.target_rank then
+                if not c.destroyed and c.base and c.base.value == reality_warp_encounter_params(self.key).target_rank then
                     c.destroyed = true
                     c:start_dissolve()
                     destroyed_any = true

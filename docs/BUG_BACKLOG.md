@@ -12,12 +12,12 @@ Source: ISSUE.md #1
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Critical
 Dependencies: 18, R11
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/botg-encounter-lifecycle
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/3
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/active parameters; canonical selected identity is retained on defeat. Athena/Net read committed parameters; Hades flag uses runtime effect; Doppelganger resolves saved sort_id. Lua 5.1 and schedule/persistence stubs passed. Old saves with missing target data use marked Pair/Ace migration defaults; cold Balatro verification remains pending.
 
 ## 2: Ares / Violet Vessel sometimes behave like The Hook / Minotaur and discard two random cards
 
@@ -38,12 +38,12 @@ Source: ISSUE.md #3
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 1, R1
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/botg-encounter-lifecycle
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/3
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/active parameters; canonical selected identity is retained on defeat. Athena/Net read committed parameters; Hades flag uses runtime effect; Doppelganger resolves saved sort_id. Lua 5.1 and schedule/persistence stubs passed. Old saves with missing target data use marked Pair/Ace migration defaults; cold Balatro verification remains pending.
 
 ## 4: The Net can display one target rank and destroy another
 
@@ -51,12 +51,12 @@ Source: ISSUE.md #4
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 1, R1
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/botg-encounter-lifecycle
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/3
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/active parameters; canonical selected identity is retained on defeat. Athena/Net read committed parameters; Hades flag uses runtime effect; Doppelganger resolves saved sort_id. Lua 5.1 and schedule/persistence stubs passed. Old saves with missing target data use marked Pair/Ace migration defaults; cold Balatro verification remains pending.
 
 ## 5: Godly Hubris / Blind chip requirement can differ between preview and actual combat
 
@@ -194,12 +194,12 @@ Source: ISSUE.md #15
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 1
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/botg-encounter-lifecycle
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/3
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/active parameters; canonical selected identity is retained on defeat. Athena/Net read committed parameters; Hades flag uses runtime effect; Doppelganger resolves saved sort_id. Lua 5.1 and schedule/persistence stubs passed. Old saves with missing target data use marked Pair/Ace migration defaults; cold Balatro verification remains pending.
 
 ## 16: Fused and regular boss categories overlap in the current selector
 
@@ -207,12 +207,12 @@ Source: ISSUE.md #16
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 1
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/botg-encounter-lifecycle
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/3
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/active parameters; canonical selected identity is retained on defeat. Athena/Net read committed parameters; Hades flag uses runtime effect; Doppelganger resolves saved sort_id. Lua 5.1 and schedule/persistence stubs passed. Old saves with missing target data use marked Pair/Ace migration defaults; cold Balatro verification remains pending.
 
 ## 17: Boss eligibility ignores or inconsistently applies `min`, `max`, and `in_pool()`
 
@@ -220,12 +220,12 @@ Source: ISSUE.md #17
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 1
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/botg-encounter-lifecycle
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/3
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/active parameters; canonical selected identity is retained on defeat. Athena/Net read committed parameters; Hades flag uses runtime effect; Doppelganger resolves saved sort_id. Lua 5.1 and schedule/persistence stubs passed. Old saves with missing target data use marked Pair/Ace migration defaults; cold Balatro verification remains pending.
 
 ## 18: Battle-of-Gods state has too many overlapping representations of “what Blind are we fighting?”
 
@@ -233,12 +233,12 @@ Source: ISSUE.md #18
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Critical
 Dependencies: none
-State: IN_PROGRESS
-Branch: fix/blind-identity-contracts
-PR: https://github.com/benedictdavon/balatro-reality-warp/pull/2
+State: HUMAN_TEST_NEEDED
+Branch: fix/botg-encounter-lifecycle
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/3
 Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Identity helpers and framework get_type contract corrected; scheduler commit/selected-key repair remains for next architectural PR.
+Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/active parameters; canonical selected identity is retained on defeat. Athena/Net read committed parameters; Hades flag uses runtime effect; Doppelganger resolves saved sort_id. Lua 5.1 and schedule/persistence stubs passed. Old saves with missing target data use marked Pair/Ace migration defaults; cold Balatro verification remains pending.
 
 ## 19: Potential stale/delayed boss effects should be audited after Blind changes
 
@@ -272,12 +272,12 @@ Source: BUG_AUDIT.md R1
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Critical
 Dependencies: 1, 18
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/botg-encounter-lifecycle
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/3
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/active parameters; canonical selected identity is retained on defeat. Athena/Net read committed parameters; Hades flag uses runtime effect; Doppelganger resolves saved sort_id. Lua 5.1 and schedule/persistence stubs passed. Old saves with missing target data use marked Pair/Ace migration defaults; cold Balatro verification remains pending.
 
 ## R2: Iron Maiden hand size is not restored on ordinary defeat; disable restoration can repeat
 
@@ -420,7 +420,7 @@ Branch: —
 PR: —
 Commit: —
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Scheduler now grants one allowance per Ante. Payment/UI defect remains actionable for its own PR.
 
 ## R13: The Code punishes one consumable twice and bypasses Eternal filtering
 
