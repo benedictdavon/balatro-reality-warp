@@ -704,12 +704,6 @@ function reset_reality_warp_boss_ui(state)
 
     if G.GAME then
         G.GAME.blind_color = nil
-        G.GAME.doppelganger_target = nil
-        G.GAME.doppelganger_hand_mult = 0
-        G.GAME.doppelganger_hand_chips = 0
-        G.GAME.doppelganger_hand_xmult = 1
-        G.GAME.doppelganger_hand_xchips = 1
-        G.GAME.doppelganger_target_name = nil
     end
     if G.ARGS then
         G.ARGS.blind_colour = nil
@@ -871,12 +865,12 @@ function Blind:set_blind(blind, reset, silent)
         G.GAME.stick_penalty = nil
     end
 
-    if blind and self.boss and not self.disabled then
+    if blind and reality_warp_blind_is_boss(self) and not self.disabled then
         local theme = get_reality_warp_blind_theme and get_reality_warp_blind_theme(self)
         if theme and ease_custom_blind_background then
             ease_custom_blind_background(self)
         end
-    elseif not blind or not self.boss or self.disabled then
+    elseif not blind or not reality_warp_blind_is_boss(self) or self.disabled then
         reset_reality_warp_boss_ui()
     end
 
@@ -909,7 +903,7 @@ if Blind.defeat then
         }))
 
         -- Unlock familiar if boss defeated in 1 hand
-        if self.boss and G.GAME and G.GAME.current_round and (G.GAME.current_round.hands_played or 0) <= 1 then
+        if reality_warp_blind_is_boss(self) and G.GAME and G.GAME.current_round and (G.GAME.current_round.hands_played or 0) <= 1 then
             local b_key = (self.config and self.config.blind and self.config.blind.key) or (G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key)
             local suffix = b_key and b_key:match('^bl_(.+)$')
             local fam_key = suffix and ('c_reality_warp_baby_' .. suffix)
@@ -1066,7 +1060,7 @@ end
 -- Mountain Blind consumable check & Layered SFX for Consumables
 local use_card_ref = Card.use_consumeable
 function Card:use_consumeable(area, copier)
-    if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'b_reality_warp_mountain' or G.GAME.blind.name == 'mountain' or G.GAME.blind.key == 'b_reality_warp_mountain' or G.GAME.blind.name == 'The Mountain') and not G.GAME.blind.disabled then
+    if G.GAME and reality_warp_blind_is(G.GAME.blind, 'mountain') and not G.GAME.blind.disabled then
         G.GAME.mountain_disabled_hand = true
         if G.GAME.blind.wiggle then G.GAME.blind:wiggle() end
         if G.hand and G.hand.parse_highlighted then
@@ -1618,8 +1612,7 @@ function Card:calculate_joker(context, ...)
     end
 
     -- Doppelgänger: Track if the possessed Joker triggers during hand scoring
-    local is_doppel_active = G.GAME and G.GAME.blind and not G.GAME.blind.disabled and 
-        (G.GAME.blind.name == 'doppelganger' or G.GAME.blind.name == 'The Doppelgänger' or G.GAME.blind.key == 'b_reality_warp_doppelganger' or G.GAME.blind.key == 'doppelganger' or (G.GAME.blind.config and G.GAME.blind.config.blind and (G.GAME.blind.config.blind.key == 'doppelganger' or G.GAME.blind.config.blind.key == 'b_reality_warp_doppelganger')))
+    local is_doppel_active = G.GAME and reality_warp_blind_is(G.GAME.blind, 'doppelganger') and not G.GAME.blind.disabled
 
     local ret, post = calculate_joker_ref(self, context, ...)
 
@@ -1792,25 +1785,7 @@ function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_sou
 
     -- Pinza Showdown card destruction check
     if (self.playing_card or (self.ability and (self.ability.set == 'Enhanced' or self.ability.set == 'Default')) or self.base) then
-        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_reality_warp_pinza' or G.GAME.blind.name == 'b_reality_warp_pinza' or G.GAME.blind.name == 'The Pincer') then
-            if not G.GAME.pinza_card_destroyed then
-                G.GAME.pinza_card_destroyed = true
-                G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    delay = 0.2,
-                    func = function()
-                        if G.jokers and G.jokers.cards then
-                            for _, j in ipairs(G.jokers.cards) do
-                                j:set_debuff(false)
-                                j.debuff = false
-                            end
-                        end
-                        play_sound('tarot2')
-                        return true
-                    end
-                }))
-            end
-        end
+        reality_warp_pincer_card_destroyed()
     end
 
     return card_start_dissolve_ref(self, dissolve_colours, silent, dissolve_time_fac, no_sound)
@@ -2398,25 +2373,7 @@ function Card:spectral_shatter()
     self:juice_up(0.8, 0.5)
 
     -- Pinza Showdown card destruction check
-    if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_reality_warp_pinza' or G.GAME.blind.name == 'b_reality_warp_pinza' or G.GAME.blind.name == 'The Pincer') then
-        if not G.GAME.pinza_card_destroyed then
-            G.GAME.pinza_card_destroyed = true
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.2,
-                func = function()
-                    if G.jokers and G.jokers.cards then
-                        for _, j in ipairs(G.jokers.cards) do
-                            j:set_debuff(false)
-                            j.debuff = false
-                        end
-                    end
-                    play_sound('tarot2')
-                    return true
-                end
-            }))
-        end
-    end
+    reality_warp_pincer_card_destroyed()
 
     local childParts = Particles(0, 0, 0, 0, {
         timer_type = 'TOTAL',
@@ -2555,25 +2512,7 @@ if Card.shatter then
         if (self.seal and (self.seal == 'dark_green' or self.seal == 'reality_warp_dark_green')) or self.dark_green_broken then
             return self:spectral_shatter()
         end
-        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'pinza' or G.GAME.blind.key == 'b_reality_warp_pinza' or G.GAME.blind.name == 'b_reality_warp_pinza' or G.GAME.blind.name == 'The Pincer') then
-            if not G.GAME.pinza_card_destroyed then
-                G.GAME.pinza_card_destroyed = true
-                G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    delay = 0.2,
-                    func = function()
-                        if G.jokers and G.jokers.cards then
-                            for _, j in ipairs(G.jokers.cards) do
-                                j:set_debuff(false)
-                                j.debuff = false
-                            end
-                        end
-                        play_sound('tarot2')
-                        return true
-                    end
-                }))
-            end
-        end
+        reality_warp_pincer_card_destroyed()
         return card_shatter_ref(self)
     end
 end
@@ -2581,18 +2520,9 @@ end
 -- Boss Blinds Debuff, Hand validation warnings
 
 function is_reality_warp_blind(blind, target_key)
-    if not blind then return false end
-    local k = (blind.config and blind.config.blind and (blind.config.blind.key or blind.config.blind.name))
-              or (blind.config and blind.config.center and (blind.config.center.key or blind.config.center.name))
-              or blind.key or blind.name or ''
-    k = string.gsub(k, '^bl_reality_warp_', '')
-    k = string.gsub(k, '^b_reality_warp_', '')
-    k = string.gsub(k, '^bl_', '')
-    k = string.gsub(k, '^b_', '')
-    if target_key then
-        return k == target_key or string.find(string.lower(k), string.lower(target_key)) ~= nil
-    end
-    return k
+    local key = reality_warp_blind_key(blind)
+    if target_key then return reality_warp_blind_is(blind, target_key) end
+    return key and key:match('^bl_reality_warp_(.+)$') or key
 end
 
 function clear_reality_warp_phone_debuffs()
