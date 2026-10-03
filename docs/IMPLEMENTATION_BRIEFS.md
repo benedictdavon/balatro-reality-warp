@@ -91,3 +91,18 @@ Required runtime/manual validation: enabled Code with three ordinary Jokers, dir
 Known risks: eligibility selection and committed destruction each query framework protection, so final protection is revalidated. Native animations remain queued; external mods that call a definition directly must use the normal Card method to receive Code's punishment. Balatro execution remains unavailable.
 
 Review: APPROVE at `5042ea2` after complete Sol High source/diff review and independent Luna review of the same diff, wrapper load order and installed consumption/destruction contracts. All six Lua 5.1 harnesses and compilation pass, and `git diff --check` is clean. Implementation: `8fc3d43fa92ace3818cf03ad7ca8bda805ed7d83`, PR https://github.com/benedictdavon/balatro-reality-warp/pull/7. Actual Balatro, Doctor Jo and cold-save tests remain HUMAN_TEST_NEEDED. This is an agent maintainer approval; GitHub disallows the shared author account approving its own PR.
+
+## Ante-history hook disposition
+
+Issue: BUG_AUDIT R14.
+Classification: STALE on the verified installed framework stack; no runtime verification claimed.
+Dependencies: Accepted main `592b30092d611a7b78694c21fff7d1b68e86a715`; installed Lovely/Steamodded sources and Reality Warp Lovely patches inspected.
+Relevant files/functions: `docs/BUG_BACKLOG.md` R14, this disposition, and `docs/REGRESSION_TESTS.md`; source evidence in `src/core/utils.lua`, `src/core/botg_possession.lua`, `src/blinds/fused_blinds.lua`, and `../lovely/dump/functions/state_events.lua`.
+Confirmed root cause: The audit assumed the bare global `evaluate_play` existed. The installed framework only calls/defines `G.FUNCS.evaluate_play`; Reality Warp's conditional wrapper captures the absent bare global at `src/core/utils.lua:7817–7829`, and source searches found no alias bridge in required framework files or this mod's Lovely patches. Native evaluation dispatches `context.after` before queuing `played_this_ante` markers for every played card (`state_events.lua:908–917`).
+Required behavior: Preserve R14 and its source evidence in the backlog, classify the reported early-marking defect STALE for this stack, and make no production change.
+Behavior that must remain unchanged: Native post-after history marking; Possessed Pillar and Obelisk prior-play checks; Reality Warp's separate `ease_ante` history reset; all 34 existing issue/audit labels.
+Explicitly excluded work: Production fixes, target/scoring changes, and speculative support for optional mods that might introduce a bare alias.
+Required static validation: Confirm source references against accepted main and installed framework; review all changed documentation, `git diff --check`, and verify the 20 ISSUE plus 14 R-label headings remain present.
+Required runtime/manual validation: No runtime result is claimed. An optional first/repeat-play, played-versus-scored, Obelisk, Ante-reset and reload fixture is documented in REGRESSION_TESTS.md and remains unrun.
+Known risks: Another optional mod could define a bare global alias in a different stack; that would require fresh evidence and revalidation. The accepted installed stack contains no such bridge.
+Review status: Source revalidation and documentation self-review complete; independent Sol High review pending.

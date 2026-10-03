@@ -438,15 +438,15 @@ Notes: One Card use-method punishment, canonical identity and captured encounter
 ## R14: Ante-history wrapper marks the current hand as previously played before evaluation
 
 Source: BUG_AUDIT.md R14
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: STALE on the verified installed framework stack; the alleged bare-global hook is dormant
 Priority: Normal
-Dependencies: none
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Dependencies: Accepted main `592b30092d611a7b78694c21fff7d1b68e86a715`; installed Lovely/Steamodded source inspected
+State: STALE
+Branch: docs/ante-history-disposition
+PR: Pending
+Commit: See PR commit history (documentation-only disposition).
+Manual test requirement: No gameplay validation was run. The optional first-play/repeat-play confirmation fixture is recorded in REGRESSION_TESTS.md.
+Notes: The audit assumed a bare global `evaluate_play` alias. On the accepted main, Reality Warp's guarded hook captures that absent global (`src/core/utils.lua:7817–7829`), and repository/framework/Lovely-patch search found no alias bridge. The installed route calls and defines `G.FUNCS.evaluate_play` (`../lovely/dump/functions/state_events.lua:526, 586`); it sends `context.after` first, then queues `played_this_ante` marking for all played cards (`:908–917`). The separate namespaced wrapper (`src/core/utils.lua:979–1006`) tracks unlock counts but does not set card history. Possessed Pillar (`src/core/botg_possession.lua:89–99`) and Obelisk (`src/blinds/fused_blinds.lua:198–203`) read the native flag as prior-play history. The `ease_ante` clear wrapper (`src/core/utils.lua:7831–7842`) remains unchanged. This stale disposition is based on source tracing, not Balatro runtime verification.
 
 ## A: Black Hole + Blueprint
 
