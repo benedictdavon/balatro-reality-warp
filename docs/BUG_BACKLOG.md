@@ -363,12 +363,12 @@ Source: BUG_AUDIT.md R8
 Classification: Source-confirmed compatibility defect; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
 Dependencies: none
-State: IN_PROGRESS
+State: APPROVED (local; publication awaits required human confirmation)
 Branch: fix/straight-api-forwarding
 PR: —
-Commit: —
+Commit: 19b60afda787c64d6da37de9ea43923d1893c8dc (implementation)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: The current wrapper accepts only `hand`, dropping the installed four-argument detector contract and all trailing values; its numeric fallback bypasses custom rank graphs. R8 restores native/helper forwarding and retains Colorful Street through the framework helpers. The focused Lua 5.1 source regression passes; independent review and real card scoring remain pending.
+Notes: The current wrapper accepts only `hand`, dropping the installed four-argument detector contract and all trailing values; its numeric fallback bypasses custom rank graphs. R8 restores native/helper forwarding and retains Colorful Street through the framework helpers. Sol High independently reviewed the complete immutable diff and surrounding/native dispatch contracts: APPROVE. All repository Lua5.1 compilation, TOML/payload and exact original-or-applied installed dump checks, nine harnesses and git diff --check pass. No Balatro execution is claimed. The original tests/run.py rejects the already-applied target payloads (local N3 repair is pending in the separate R5 branch); the independent read-only checker passed. Real card scoring, classification and cold restart remain pending; main is still f863d0c and has not received this fix.
 
 ## R9: Chronos and Guillotine each run at two scoring stages; Void checks before queued score addition
 
@@ -486,3 +486,17 @@ PR: —
 Commit: —
 Manual test requirement: Preserve as regression controls.
 Notes: common.lua before context upgrades scoring enhanced cards; Stone special route and Glass terminal behavior are intentional.
+
+
+## N5: Colorful Street Flush and suit fallback can outlive physical ownership
+
+Source: Sol High surrounding-code review during R8; this is a local source finding, distinct from POST-N5.
+Classification: Source-confirmed ownership-filter mismatch; actual transition impact requires gameplay evidence.
+Priority: Normal
+Dependencies: R8 helper contract
+State: AUDITED (outside original audit; separate future branch)
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Slice/destroy/remove Colorful Street while it remains in a pending area snapshot; compare Straight helpers, four-card Flush and mixed red/black suit checks before actual removal and after queue drain. Preserve unrelated live Four Fingers/Shortcut/Smeared effects.
+Notes: The unchanged get_flush fallback and Card:is_suit amalgam scan in src/core/utils.lua check nondebuff status but omit the new helpers' physical-area/removal/destruction/slicing filter. A pending-removal Colorful Street left in G.jokers.cards can therefore retain those fallback bonuses while its Straight helpers stop. R8 explicitly excludes rewriting these separate wrappers and preserves them; no speculative gameplay fix is included. Revalidate this separate finding on accepted main before implementation.
