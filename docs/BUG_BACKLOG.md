@@ -62,12 +62,12 @@ Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/ac
 
 Source: ISSUE.md #5
 Classification: Unified initialization and reset-preservation implementation; review pending
-Priority: Normal
+Priority: High
 Dependencies: 1, 18, R3
-State: IN_PROGRESS
+State: PR_OPEN
 Branch: fix/blind-target-calculation
-PR: —
-Commit: —
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/9
+Commit: 8b6b0b910fb6466aade2ae2df18b7254fb3fc2c3
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
 Notes: Shared pure formula/native initialization hooks cover semantic Hubris, stake, showdown mult, Rod/Nectar, final cap and eligible Wall forecast; active previews read current serialized chips. Reset-only wrappers no longer scale or rebuild dynamic target. Competing shared-definition UI mutation and delayed Colosseum4000 override removed. Seven stub harnesses and exact installed Lovely pattern counts pass; actual game/number extension/conditional setup eligibility remain manual tests.
 
@@ -296,12 +296,12 @@ Notes: Registered callbacks revalidated on accepted main 8e4c2bf. Setup markers 
 
 Source: BUG_AUDIT.md R3
 Classification: Unified initialization and reset-preservation implementation; review pending
-Priority: Normal
+Priority: High
 Dependencies: 1, 18
-State: IN_PROGRESS
+State: PR_OPEN
 Branch: fix/blind-target-calculation
-PR: —
-Commit: —
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/9
+Commit: 8b6b0b910fb6466aade2ae2df18b7254fb3fc2c3
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
 Notes: Shared pure formula/native initialization hooks cover semantic Hubris, stake, showdown mult, Rod/Nectar, final cap and eligible Wall forecast; active previews read current serialized chips. Reset-only wrappers no longer scale or rebuild dynamic target. Competing shared-definition UI mutation and delayed Colosseum4000 override removed. Seven stub harnesses and exact installed Lovely pattern counts pass; actual game/number extension/conditional setup eligibility remain manual tests.
 
