@@ -430,8 +430,8 @@ Priority: Normal
 Dependencies: 6, 19, R7 (accepted)
 State: PR_OPEN
 Branch: fix/code-consumable-punishment
-PR: Pending creation
-Commit: Pending commit
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/7
+Commit: 8fc3d43fa92ace3818cf03ad7ca8bda805ed7d83
 Manual test requirement: Code UI/direct/Pouch, all-Eternal, Doctor Jo, Chicot and native event counts are specified in REGRESSION_TESTS.md; real game remains unrun.
 Notes: One Card use-method punishment, canonical identity and captured encounter ownership; duplicate Blind calculate removed. Pouch now uses the method and emits one ordinary listener context. Framework Eternal eligibility excludes invalid candidates with no fallback. Actual consumption arguments/returns compose through all three surrounding wrappers. External definition-only calls require the Card method contract.
 
