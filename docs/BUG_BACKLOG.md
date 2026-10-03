@@ -324,12 +324,12 @@ Source: BUG_AUDIT.md R5
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 18
-State: AUDITED
-Branch: —
+State: IN_PROGRESS
+Branch: fix/joker-calculation-composition
 PR: —
 Commit: —
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Revalidated against accepted main f863d0c; bounded architectural contract in IMPLEMENTATION_BRIEFS.md. Independent of pending local Arrow branch. Full chain includes the outer Potion wrapper omitted by the audit map. Publication awaits the explicit confirmation requested after automatic review required it.
 
 ## R6: Arrow rank lookup uses invalid vanilla card keys
 
@@ -486,3 +486,29 @@ PR: —
 Commit: —
 Manual test requirement: Preserve as regression controls.
 Notes: common.lua before context upgrades scoring enhanced cards; Stone special route and Glass terminal behavior are intentional.
+
+## N1: Familiar extra-draw numeric arguments are ignored
+
+Source: Stabilization source trace; botg_familiars.lua Baby Fish/Serpent draw wrapper versus installed state_events.lua draw_from_deck_to_hand.
+Classification: Source-confirmed additional defect outside the original audit
+Priority: Normal
+Dependencies: 7, R10 for shared draw-boundary design
+State: AUDITED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: After play/discard with the relevant familiar at levels1/2/4, compare requested and actual extra cards; include hand capacity and Serpent effects.
+Notes: The familiar wrapper adds to e, but the installed native routine recomputes and overwrites that argument. Separate from possession R10 and excluded from R5; needs its own focused branch. Do not claim the advertised familiar extra draws are verified.
+
+## N2: Potion Mirror aggregates only selected retrigger fields
+
+Source: Stabilization full-chain trace; potions.lua outer Card.calculate_joker wrapper.
+Classification: Source-confirmed additional composition limit outside the audit's listed chain
+Priority: Normal
+Dependencies: R5 establishes supported composed effects
+State: AUDITED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Mirror active on the rightmost Joker returning legacy Xmult_mod, nested extra effects or secondary post effects; compare both real calculations and effect application with an ordinary native retrigger.
+Notes: Current aggregation adds chips/mult/dollars and multiplies x_mult/Xmult only, losing other second-calculation effects/post data and mutating the first return table. R5 preserves the primary forwarding contract and existing supported aggregation without silently redesigning the Potion. A separate branch must address full retrigger composition; it does not block standard R5 calculations with Mirror inactive.
