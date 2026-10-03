@@ -178,15 +178,15 @@ Notes: See source document and dependency order; not yet implemented.
 ## 14: Lucky One probability logic has historically been broader than the tooltip suggests
 
 Source: ISSUE.md #14
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Revalidated global RNG ownership, charge persistence and premature reset defects
 Priority: Normal
 Dependencies: none
-State: AUDITED
-Branch: —
+State: IN_PROGRESS
+Branch: fix/lucky-one-rng
 PR: —
 Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Manual test requirement: Exact seeded Club/token, typed probability, UI/simulation, end-round and cold-restart cases are in the implementation brief; real game remains unrun.
+Notes: Sol High implements directly across supported probability APIs, Card simulation scope and deferred round boundaries. Original pseudorandom must remain untouched. Base is freshly verified accepted main f863d0c2c543c4befa481803a581847ca8fe7274. Local review/publication remains subject to the existing pending approval request, with no dependent unmerged work imported.
 
 ## 15: Battle-of-Gods boss usage counters can be polluted by blind rolls that are immediately overwritten
 
@@ -486,3 +486,16 @@ PR: —
 Commit: —
 Manual test requirement: Preserve as regression controls.
 Notes: common.lua before context upgrades scoring enhanced cards; Stone special route and Glass terminal behavior are intentional.
+
+## N6: Hypnotist clears independently owned playing-card debuffs
+
+Source: Newly discovered outside the original audit; src/jokers/rare.lua Hypnotist setting_blind callback.
+Classification: Source-confirmed ownership risk; gameplay reproduction pending
+Priority: Normal
+Dependencies: R4 (accepted)
+State: DISCOVERED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Give one playing card an independent SMODS.debuff_card reason and a second only the Boss debuff. Force successful Hypnotist disable; the independent reason must survive while the Boss-only reason clears.
+Notes: Tooltip promises to disable only the Boss debuff effect. After Blind:disable performs framework cleanup/recalculation, Hypnotist unconditionally assigns debuff=false to every playing card. This separate path was not named by audit R4. Do not include its cleanup patch in Lucky One probability integration. Local N IDs are distinct from POST_SOL_RUNTIME_FINDINGS.md IDs. No game execution or third-party ownership reproduction is claimed.
