@@ -7451,77 +7451,76 @@ if Card_Character and Card_Character.add_speech_bubble then
     end
 end
 
--- Boss Blinds Final Scoring Hook: Chronos, Doppelgänger, The Guillotine
-if Back and Back.trigger_effect then
-    local orig_back_trigger_effect = Back.trigger_effect
-    function Back:trigger_effect(args)
-        local nu_chip, nu_mult = orig_back_trigger_effect(self, args)
-        if args and args.context == 'final_scoring_step' and G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
-            local bname = G.GAME.blind.name
-            local bkey = G.GAME.blind.key or (G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key)
-
-            -- Chronos: If final score is >= requirement, multiply Chips and Mult by 0.90
-            local is_chronos = (bname == 'Chronos' or bkey == 'chronos' or bkey == 'bl_chronos' or bkey == 'bl_reality_warp_chronos')
-            if is_chronos then
-                local check_chips = nu_chip or args.chips or 0
-                local check_mult = nu_mult or args.mult or 0
-                local cur_chips = G.GAME.chips or 0
-                local req = (G.GAME.blind and G.GAME.blind.chips) or 0
-                if (cur_chips + (check_chips * check_mult)) >= req or (check_chips * check_mult) >= req then
-                    nu_chip = mod_chips(math.max(1, math.floor(check_chips * 0.90)))
-                    nu_mult = mod_mult(math.max(1, math.floor(check_mult * 0.90)))
-                    update_hand_text({delay = 0}, {chips = nu_chip, mult = nu_mult})
-                    attention_text({
-                        text = 'Time Dilated! X0.90',
-                        scale = 1.1,
-                        hold = 1.4,
-                        major = G.play or G.HUD_blind,
-                        backdrop_colour = HEX('6a0dad'),
-                        align = 'cm'
-                    })
-                    play_sound('timpani', 0.8, 0.7)
-                end
-            end
-
-            -- The Guillotine: 1 in 5 chance to reduce final score to 0
-            local is_guillotine = (bname == 'The Guillotine' or bname == 'guillotine' or bkey == 'guillotine' or bkey == 'bl_guillotine' or bkey == 'bl_reality_warp_guillotine')
-            if is_guillotine and pseudorandom('guillotine') < ((G.GAME and G.GAME.probabilities.normal or 1) / 5) then
-                nu_chip = mod_chips(0)
-                nu_mult = mod_mult(0)
-                update_hand_text({delay = 0}, {chips = 0, mult = 0})
-                attention_text({
-                    text = 'Guillotined! 0 Score!',
-                    scale = 1.3,
-                    hold = 1.6,
-                    major = G.play or G.HUD_blind,
-                    backdrop_colour = HEX('6b0f1a'),
-                    align = 'cm'
-                })
-                play_sound('slice1', 0.8, 0.8)
-            end
-
-            -- The Doppelgänger: If the possessed Joker triggered during the hand, divide Chips & Mult by 4
-            local is_doppel = (bname == 'The Doppelgänger' or bname == 'doppelganger' or bkey == 'doppelganger' or bkey == 'bl_doppelganger' or bkey == 'bl_reality_warp_doppelganger')
-            if is_doppel and G.GAME.doppel_triggered_in_hand then
-                G.GAME.doppel_triggered_in_hand = nil
-                local check_c = nu_chip or args.chips or 0
-                local check_m = nu_mult or args.mult or 0
-                nu_chip = mod_chips(math.max(1, math.floor(check_c * 0.25)))
-                nu_mult = mod_mult(math.max(1, math.floor(check_m * 0.25)))
-                update_hand_text({delay = 0}, {chips = nu_chip, mult = nu_mult})
-                attention_text({
-                    text = '÷4 Chips & Mult!',
-                    scale = 1.1,
-                    hold = 1.4,
-                    major = G.play or G.HUD_blind,
-                    backdrop_colour = HEX('1c2833'),
-                    align = 'cm'
-                })
-                play_sound('chips2', 0.8, 0.7)
-            end
-        end
+-- Called by the outer Back dispatcher after native and registered deck scoring.
+function reality_warp_apply_blind_final_score(args, nu_chip, nu_mult)
+    local game = G and G.GAME
+    local blind = game and game.blind
+    if not (args and args.context == 'final_scoring_step' and blind and not blind.disabled) then
         return nu_chip, nu_mult
     end
+
+    local blind_key = reality_warp_blind_key(blind)
+    local check_chips = nu_chip or args.chips or 0
+    local check_mult = nu_mult or args.mult or 0
+
+    -- Chronos: If the projected final score reaches the requirement, reduce Chips and Mult once.
+    if blind_key == 'bl_reality_warp_chronos' then
+        local score = math.floor(check_chips * check_mult)
+        local current_chips = game.chips or 0
+        local requirement = blind.chips or 0
+        if current_chips + score >= requirement then
+            nu_chip = mod_chips(math.max(1, math.floor(check_chips * 0.90)))
+            nu_mult = mod_mult(math.max(1, math.floor(check_mult * 0.90)))
+            update_hand_text({delay = 0}, {chips = nu_chip, mult = nu_mult})
+            attention_text({
+                text = 'Time Dilated! X0.90',
+                scale = 1.1,
+                hold = 1.4,
+                major = G.play or G.HUD_blind,
+                backdrop_colour = HEX('6a0dad'),
+                align = 'cm'
+            })
+            play_sound('timpani', 0.8, 0.7)
+        end
+    end
+
+    -- The Guillotine: consume one existing seeded roll and zero the deck-scored result.
+    if blind_key == 'bl_reality_warp_guillotine' and
+        pseudorandom('guillotine') < ((game.probabilities and game.probabilities.normal or 1) / 5) then
+        nu_chip = mod_chips(0)
+        nu_mult = mod_mult(0)
+        update_hand_text({delay = 0}, {chips = 0, mult = 0})
+        attention_text({
+            text = 'Guillotined! 0 Score!',
+            scale = 1.3,
+            hold = 1.6,
+            major = G.play or G.HUD_blind,
+            backdrop_colour = HEX('6b0f1a'),
+            align = 'cm'
+        })
+        play_sound('slice1', 0.8, 0.8)
+    end
+
+    -- The Doppelgänger: preserve its existing final-stage ÷4 and hand-flag cleanup.
+    if blind_key == 'bl_reality_warp_doppelganger' and game.doppel_triggered_in_hand then
+        game.doppel_triggered_in_hand = nil
+        local check_c = nu_chip or args.chips or 0
+        local check_m = nu_mult or args.mult or 0
+        nu_chip = mod_chips(math.max(1, math.floor(check_c * 0.25)))
+        nu_mult = mod_mult(math.max(1, math.floor(check_m * 0.25)))
+        update_hand_text({delay = 0}, {chips = nu_chip, mult = nu_mult})
+        attention_text({
+            text = '÷4 Chips & Mult!',
+            scale = 1.1,
+            hold = 1.4,
+            major = G.play or G.HUD_blind,
+            backdrop_colour = HEX('1c2833'),
+            align = 'cm'
+        })
+        play_sound('chips2', 0.8, 0.7)
+    end
+
+    return nu_chip, nu_mult
 end
 
 
