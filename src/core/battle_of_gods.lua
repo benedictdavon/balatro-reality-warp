@@ -538,93 +538,38 @@ end
 
 if get_blind_amount then
     local orig_get_blind_amount = get_blind_amount
-    function get_blind_amount(ante)
-        if G.GAME and G.GAME.battle_of_gods then
-            local base = get_botg_base_blind(ante)
-            if G.GAME.botg_hubris_in_blind_choice then
-                local mult = get_botg_godly_hubris_multiplier()
-                local scaled = base * mult
-                if to_big then
-                    local cap = to_big('1e365')
-                    local ok, is_gt = pcall(function() return to_big(scaled) > cap end)
-                    if ok and is_gt then scaled = cap end
-                end
-                return scaled
-            end
-            return base
-        end
-        return orig_get_blind_amount(ante)
+    function get_blind_amount(ante, ...)
+        if G.GAME and G.GAME.battle_of_gods then return get_botg_base_blind(ante) end
+        return orig_get_blind_amount(ante, ...)
     end
 end
 
+-- Target initialization lives in the native non-reset branch through Lovely.
+-- This wrapper owns feedback only and never rebuilds an existing requirement.
 if Blind and Blind.set_blind then
     local orig_blind_set_blind = Blind.set_blind
-    function Blind:set_blind(blind, reset, silent)
-        local ret = orig_blind_set_blind(self, blind, reset, silent)
-        if G.GAME and G.GAME.battle_of_gods and not self.disabled then
-            local is_showdown = (self.showdown == true) or
-                (type(self.boss) == 'table' and self.boss.showdown) or
-                (blind and (blind.showdown or (type(blind.boss) == 'table' and blind.boss.showdown))) or
-                (self.config and self.config.blind and (self.config.blind.showdown or (type(self.config.blind.boss) == 'table' and self.config.blind.boss.showdown)))
-            if is_showdown then
-                local bname = self.name or (self.config and self.config.blind and self.config.blind.name) or ''
-                local bkey = self.key or (self.config and self.config.blind and self.config.blind.key) or ''
-                local is_purple = (bname == 'Chronos' or bname == 'Violet Vessel' or bkey == 'chronos' or bkey == 'vessel' or bkey == 'bl_vessel' or bkey == 'bl_reality_warp_chronos' or bkey == 'bl_chronos')
-                local target_mult = is_purple and 8 or 5
-                local base_chips = get_blind_amount(G.GAME.round_resets and G.GAME.round_resets.ante or 1)
-                self.chips = math.floor(base_chips * target_mult)
-            end
-
+    local function pack(...) return {n = select('#', ...), ...} end
+    function Blind:set_blind(blind, reset, silent, ...)
+        local ret = pack(orig_blind_set_blind(self, blind, reset, silent, ...))
+        if blind and not reset and not silent and G.GAME.battle_of_gods and
+            reality_warp_blind_is_boss(self) and not self.disabled then
             local mult, count = get_botg_godly_hubris_multiplier()
-            if count > 0 and self.boss then
-                self.chips = math.floor(self.chips * mult)
-            end
-            if to_big then
-                local cap = to_big('1e365')
-                local ok, is_gt = pcall(function() return to_big(self.chips) > cap end)
-                if ok and is_gt then self.chips = cap end
-            end
-            self.chip_text = number_format(self.chips)
-            if not silent and count > 0 and self.boss then
-                G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    delay = 0.4,
+            if count > 0 then
+                reality_warp_queue_blind_event(self, {
+                    trigger = 'after', delay = 0.4,
                     func = function()
                         attention_text({
                             text = 'Godly Hubris: Boss Chips X' .. string.format('%.1f', mult) .. ' (' .. count .. ' Divine Joker' .. (count > 1 and 's' or '') .. ')',
-                            scale = 0.55,
-                            hold = 2.2,
-                            backdrop_colour = G.C.RED,
-                            align = 'cm',
-                            offset = { x = 0, y = -1 }
+                            scale = 0.55, hold = 2.2, backdrop_colour = G.C.RED,
+                            align = 'cm', offset = {x = 0, y = -1}
                         })
                         play_sound('cancel', 0.9, 0.7)
                         return true
                     end
-                }))
+                })
             end
         end
-        return ret
-    end
-end
-
-if create_UIBox_blind_choice then
-    local orig_create_UIBox_blind_choice = create_UIBox_blind_choice
-    function create_UIBox_blind_choice(blind_type, run_info)
-        local blind_key = G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_choices and G.GAME.round_resets.blind_choices[blind_type]
-        local p_blind = blind_key and G.P_BLINDS and G.P_BLINDS[blind_key]
-        local orig_mult = nil
-        local p_is_sd = p_blind and ((p_blind.showdown == true) or (type(p_blind.boss) == 'table' and p_blind.boss.showdown))
-        if G.GAME and G.GAME.battle_of_gods and p_is_sd then
-            orig_mult = p_blind.mult
-            local is_purple = (blind_key == 'bl_vessel' or blind_key == 'vessel' or blind_key == 'bl_chronos' or blind_key == 'chronos' or blind_key == 'bl_reality_warp_chronos' or p_blind.key == 'chronos' or p_blind.key == 'vessel')
-            p_blind.mult = is_purple and 8 or 5
-        end
-        local ret = orig_create_UIBox_blind_choice(blind_type, run_info)
-        if orig_mult and p_blind then
-            p_blind.mult = orig_mult
-        end
-        return ret
+        return unpack(ret, 1, ret.n)
     end
 end
 
@@ -667,7 +612,7 @@ function create_UIBox_botg_warning()
                 {n=G.UIT.T, config={text = "WARNING", scale = 0.45, colour = G.C.RED, shadow = true}}
             }},
             {n=G.UIT.R, config={align = "cm", padding = 0.08, maxw = 6.2}, nodes={
-                {n=G.UIT.T, config={text = "Entering will reset Antes to 1 with a starting score requirement of 2,500 base chips.", scale = 0.35, colour = G.C.WHITE, shadow = true}}
+                {n=G.UIT.T, config={text = "Entering will reset Antes to 1 with a starting score requirement of 15,000 base chips.", scale = 0.35, colour = G.C.WHITE, shadow = true}}
             }},
             {n=G.UIT.R, config={align = "cm", padding = 0.06, maxw = 6.2}, nodes={
                 {n=G.UIT.T, config={text = "• All current Jokers will be destroyed.", scale = 0.33, colour = G.C.FILTER, shadow = true}}

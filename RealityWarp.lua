@@ -24,6 +24,7 @@ local files = {
     "src/core/blind_identity.lua",
     "src/core/blind_encounters.lua",
     "src/core/blind_effects.lua",
+    "src/core/blind_targets.lua",
     "src/core/utils.lua",
     "src/core/localization.lua",
     "src/core/battle_of_gods.lua",

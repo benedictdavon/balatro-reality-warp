@@ -857,13 +857,10 @@ end
 
 -- Blind hook for Detective Job, Stick Penalty & Custom Boss Backgrounds
 local set_blind_ref = Blind.set_blind
-function Blind:set_blind(blind, reset, silent)
+local function pack_blind_setup_returns(...) return {n = select('#', ...), ...} end
+function Blind:set_blind(blind, reset, silent, ...)
     reset_sale_tag_effects()
-    local ret = set_blind_ref(self, blind, reset, silent)
-    if G.GAME and G.GAME.stick_penalty then
-        self.chips = math.floor(self.chips * G.GAME.stick_penalty)
-        G.GAME.stick_penalty = nil
-    end
+    local ret = pack_blind_setup_returns(set_blind_ref(self, blind, reset, silent, ...))
 
     if blind and reality_warp_blind_is_boss(self) and not self.disabled then
         local theme = get_reality_warp_blind_theme and get_reality_warp_blind_theme(self)
@@ -874,7 +871,7 @@ function Blind:set_blind(blind, reset, silent)
         reset_reality_warp_boss_ui()
     end
 
-    return ret
+    return unpack(ret, 1, ret.n)
 end
 
 -- Blind disable hook to reset background
