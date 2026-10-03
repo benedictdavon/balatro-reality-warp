@@ -350,7 +350,7 @@ Source: BUG_AUDIT.md R7
 Classification: Source-confirmed installed-framework contract defect; static/callback checks only, gameplay remains unverified
 Priority: Normal
 Dependencies: #6/#19/R4 effect ownership foundation and R2
-State: HUMAN_TEST_NEEDED (PR review pending)
+State: HUMAN_TEST_NEEDED
 Branch: fix/blind-destruction-notifications
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/6
 Commit: 333c3fd0c27009a540369e449b22d437f3dbfef3 (initial implementation); 64e7576eeb9b103dfee2bd8936a5c7071fc80321 (Eternal eligibility correction)
