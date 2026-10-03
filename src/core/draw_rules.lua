@@ -71,7 +71,10 @@ local pack = function(...) return {n = select('#', ...), ...} end
 local modifies_draw = SMODS.blind_modifies_draw
 function SMODS.blind_modifies_draw(...)
     local result = pack(modifies_draw(...))
-    if reality_warp_fixed_action_draw() then result[1] = true; result.n = math.max(result.n, 1) end
+    if select(1, ...) == reality_warp_blind_key(G.GAME and G.GAME.blind) and reality_warp_fixed_action_draw() then
+        result[1] = true
+        result.n = math.max(result.n, 1)
+    end
     return unpack(result, 1, result.n)
 end
 

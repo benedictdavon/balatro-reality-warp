@@ -559,7 +559,6 @@ SMODS.Blind {
 SMODS.Blind {
     reality_warp_fused = true,
     key = 'ouroboros',
-    modifies_draw = true,
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 8 },
     dollars = 5,

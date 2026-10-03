@@ -20,9 +20,13 @@ function reality_warp_blind_is(blind, suffix) return reality_warp_blind_key(blin
 function pseudoseed(s) return s end
 function pseudorandom_element(pool, seed) assert(seed == 'hook_disc'); rolls = rolls + 1; return pool[1] end
 local blinds, stickers = {}, {}
-SMODS = {Atlas = function() end, Blind = function(b) blinds[b.key] = b end,
+local draw_registry = {}
+SMODS = {Blinds = {modifies_draw = draw_registry}, Atlas = function() end, Blind = function(b)
+        blinds[b.key] = b
+        if b.modifies_draw then draw_registry['bl_reality_warp_' .. b.key] = true end
+    end,
     Sticker = function(s) stickers[s.key] = s end, blind_modifies_draw = function(...)
-        lower_args = pack(...); return false, 'lower', nil end,
+        lower_args = pack(...); return draw_registry[select(1, ...)] or false, 'lower', nil end,
     get_probability_vars = function(_, a, b) return a, b end,
     pseudorandom_probability = function() return false end}
 dofile(REPO_ROOT .. '/src/core/draw_rules.lua')
@@ -113,7 +117,7 @@ else
     print('SKIP: installed SMODS.draw_cards integration; independent API model only')
 end
 
-assert(blinds.ouroboros.modifies_draw == true)
+assert(not draw_registry.bl_reality_warp_ouroboros, 'disabled state must not inherit a static restriction')
 for _, held in ipairs({0, 2, 4, 6, 8, 10}) do
     for deck = 0, 5 do
         reset(held, deck)
@@ -147,6 +151,7 @@ local s1, s2 = possession('possessed_serpent'), possession('possessed_serpent')
 G.GAME.blind.disabled = true; assert(reality_warp_fixed_action_draw(), 'possession survives Blind disable')
 local r = pack(SMODS.blind_modifies_draw('bl_other', 'extra', nil))
 assert(r.n == 3 and r[1] and r[2] == 'lower' and r[3] == nil and lower_args.n == 3)
+assert(not SMODS.blind_modifies_draw('bl_unrelated'), 'do not override unrelated queried keys')
 for i = 1, 5 do stickers.possessed_serpent:calculate(s1, {discard = true}) end
 stickers.possessed_serpent:calculate(s1, {after = true}); assert(#requested == 0)
 assert(stickers.possessed_serpent:calculate(s1, {individual = true, cardarea = G.play}).chips == 30)
@@ -195,6 +200,21 @@ if smods_source then
     SMODS.should_handle_limit = function() return true end
     function check_for_unlock() end
     assert(loadstring(section(smods_source, 'function CardArea:handle_card_limit()', 'function SMODS.get_atlas')))()
+    for _, fixture in ipairs({{disabled = false}, {disabled = true}, {disabled = true, serpent = true}}) do
+        reset(2, 10); G.GAME.blind.disabled = fixture.disabled
+        if fixture.serpent then possession('possessed_serpent') end
+        G.hand.config.card_limits = {base = 8, mod = 0, old_slots = 8}
+        G.hand.count_property = function(self, key)
+            local n = 0; for _, c in ipairs(self.cards) do n = n + (c.ability[key] or 0) end; return n
+        end
+        local restricted = not fixture.disabled or fixture.serpent
+        assert(not not SMODS.blind_modifies_draw('bl_reality_warp_ouroboros') == not not restricted)
+        CardArea.handle_card_limit(G.hand)
+        if restricted then assert(#queue == 0, 'enabled restriction suppresses native auto-refill')
+        elseif native then
+            assert(#queue == 1 and SMODS.draw_queued); drain(); assert(#transferred == 6, 'disabled Oro alone refills natively')
+        end
+    end
     reset(2, 10, 'bl_other'); local serpent = possession('possessed_serpent')
     G.hand.config.card_limits = {base = 8, mod = 0, old_slots = 8}
     G.hand.count_property = function(self, key)
