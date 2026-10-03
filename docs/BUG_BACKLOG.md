@@ -61,10 +61,10 @@ Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/ac
 ## 5: Godly Hubris / Blind chip requirement can differ between preview and actual combat
 
 Source: ISSUE.md #5
-Classification: Unified initialization and reset-preservation implementation; review pending
+Classification: Source fix independently reviewed; all agent checks pass; actual game/extension validation outstanding
 Priority: High
 Dependencies: 1, 18, R3
-State: PR_OPEN
+State: HUMAN_TEST_NEEDED
 Branch: fix/blind-target-calculation
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/9
 Commit: 8b6b0b910fb6466aade2ae2df18b7254fb3fc2c3
@@ -295,10 +295,10 @@ Notes: Registered callbacks revalidated on accepted main 8e4c2bf. Setup markers 
 ## R3: Reset-only Blind refresh compounds or erases target scaling
 
 Source: BUG_AUDIT.md R3
-Classification: Unified initialization and reset-preservation implementation; review pending
+Classification: Source fix independently reviewed; all agent checks pass; actual game/extension validation outstanding
 Priority: High
 Dependencies: 1, 18
-State: PR_OPEN
+State: HUMAN_TEST_NEEDED
 Branch: fix/blind-target-calculation
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/9
 Commit: 8b6b0b910fb6466aade2ae2df18b7254fb3fc2c3
