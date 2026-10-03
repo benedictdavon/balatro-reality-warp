@@ -1,5 +1,5 @@
 local queue, definitions = {}, {}
-local destroy_calls, batches, notifications = 0, {}, {}
+local destroy_calls, submitted, batches, notifications, eternal_checks = 0, {}, {}, {}, {}
 local random_calls = {}
 G = {GAME = {
     probabilities = {normal = 1},
@@ -32,7 +32,12 @@ SMODS = {
         definition.key = 'bl_reality_warp_' .. definition.key
         definitions[definition.key] = definition
     end,
-    is_eternal = function(card) return card.eternal end,
+    is_eternal = function(card, context)
+        assert(context and context.destroy_cards == true)
+        eternal_checks[card] = (eternal_checks[card] or 0) + 1
+        if card.eternal_check then return card.eternal_check(card, eternal_checks[card]) end
+        return card.eternal
+    end,
     shatters = function(card) return card.glass end,
     calculate_context = function(context)
         if not context.remove_playing_cards then return end
@@ -55,21 +60,23 @@ SMODS = {
         assert(args and args.immediate == true, 'boss destruction must use immediate supported removal')
         destroy_calls = destroy_calls + 1
         local accepted, seen = {}, {}
-        batches[destroy_calls] = {}
+        submitted[destroy_calls], batches[destroy_calls] = {}, {}
         for _, card in ipairs(cards) do
             assert(not seen[card], 'destroy_cards received a duplicate reference')
             seen[card] = true
-            batches[destroy_calls][#batches[destroy_calls] + 1] = card
+            submitted[destroy_calls][#submitted[destroy_calls] + 1] = card
             assert(not card.removed and not card.destroyed and not card.shattered and not card.getting_sliced,
                 'destroy_cards received a card already being removed')
-            assert(not card.eternal, 'destroy_cards received an Eternal card')
-            card.getting_sliced = true
-            if card.glass then
-                card.shattered = true
-            else
-                card.destroyed = true
+            if not SMODS.is_eternal(card, {destroy_cards = true}) then
+                batches[destroy_calls][#batches[destroy_calls] + 1] = card
+                card.getting_sliced = true
+                if card.glass then
+                    card.shattered = true
+                else
+                    card.destroyed = true
+                end
+                accepted[#accepted + 1] = card
             end
-            accepted[#accepted + 1] = card
         end
         if #accepted > 0 then
             SMODS.calculate_context({scoring_hand = cards, remove_playing_cards = true, removed = accepted})
@@ -110,7 +117,7 @@ local function activate(key, params)
 end
 
 local function reset_destruction()
-    destroy_calls, batches, notifications, queue = 0, {}, {}, {}
+    destroy_calls, submitted, batches, notifications, eternal_checks, queue = 0, {}, {}, {}, {}, {}
 end
 
 local function assert_batch(index, expected)
@@ -119,6 +126,15 @@ local function assert_batch(index, expected)
     for i, expected_card in ipairs(expected) do
         assert(batch[i] == expected_card, 'unexpected card in destruction batch')
         assert(notifications[expected_card] == 1, 'each accepted playing card must notify exactly once')
+    end
+end
+
+local function assert_submitted(index, expected)
+    local batch = submitted[index]
+    assert(batch and #batch == #expected, 'unexpected submitted destruction batch size')
+    for i, expected_card in ipairs(expected) do
+        assert(batch[i] == expected_card, 'unexpected submitted card reference')
+        assert(eternal_checks[expected_card] == 1, 'Steamodded must check Eternal eligibility exactly once')
     end
 end
 
@@ -132,12 +148,12 @@ notifications[native] = 1 -- collected and notified by the earlier native stage
 local removed = card('removed', 'Jack', {removed = true})
 local shattered = card('shattered', '10', {shattered = true})
 local sliced = card('sliced', '9', {getting_sliced = true})
-local eternal = card('eternal', '8', {eternal = true})
-local ares_context = {after = true, scoring_hand = {ace, glass, ace, native, removed, shattered, sliced, eternal}}
+local ares_context = {after = true, scoring_hand = {ace, glass, ace, native, removed, shattered, sliced}}
 local result = ares:calculate(ares_blind, ares_context)
 assert(result and result.message == 'Ares strikes!')
 assert(random_calls.ares_destroy == 1, 'Ares must make one roll per scoring hand')
 assert(destroy_calls == 1, 'Ares must make one supported batch call')
+assert_submitted(1, {ace, glass})
 assert_batch(1, {ace, glass})
 assert(notifications[native] == 1, 'native destruction must not be notified a second time')
 assert(ace.destroyed and glass.shattered and ace.getting_sliced and glass.getting_sliced,
@@ -162,9 +178,23 @@ ares_blind.disabled = true
 ares:calculate(ares_blind, {after = true, scoring_hand = {card('disabled', 'Ace')}})
 assert(destroy_calls == 0, 'disabled Ares must do nothing')
 ares_blind.disabled = false
-ares:calculate(ares_blind, {after = true, scoring_hand = {card('eternal_1', 'Ace', {eternal = true}),
-    card('eternal_2', 'King', {eternal = true})}})
-assert(destroy_calls == 0, 'an all-Eternal batch must not call destroy_cards')
+local eternal_1 = card('eternal_1', 'Ace', {eternal = true})
+local eternal_2 = card('eternal_2', 'King', {eternal = true})
+ares:calculate(ares_blind, {after = true, scoring_hand = {eternal_1, eternal_2}})
+assert(destroy_calls == 1, 'the supported API owns the all-Eternal decision')
+assert_submitted(1, {eternal_1, eternal_2})
+assert(#batches[1] == 0 and next(notifications) == nil, 'all-Eternal cards must not be removed or notified')
+
+-- A stateful Eternal check is evaluated once by Steamodded, without a second
+-- local eligibility pass that could disagree with the API.
+reset_destruction()
+ares, ares_blind = activate('ares')
+local stateful = card('stateful', 'Ace')
+stateful.eternal_check = function(_, count) return count == 2 end
+result = ares:calculate(ares_blind, {after = true, scoring_hand = {stateful}})
+assert(result and destroy_calls == 1)
+assert_submitted(1, {stateful})
+assert_batch(1, {stateful})
 
 -- Net uses the encounter's saved target rank and reports only accepted removals.
 reset_destruction()
@@ -173,6 +203,7 @@ local target, other = card('target', 'Ace'), card('other', 'King')
 result = net:calculate(net_blind, {after = true, scoring_hand = {target, other, target}})
 assert(result and result.message == 'Trapped in Net!')
 assert(destroy_calls == 1)
+assert_submitted(1, {target})
 assert_batch(1, {target})
 assert(not other.destroyed and notifications[other] == nil, 'Net must preserve nonmatching ranks')
 
@@ -185,6 +216,7 @@ G.hand.cards = {held_1, held_2, held_3}
 result = hades:calculate(hades_blind, {after = true})
 assert(result and result.message == 'Hand Annihilated!')
 assert(destroy_calls == 1)
+assert_submitted(1, {held_1, held_2, held_3})
 assert_batch(1, {held_1, held_2, held_3})
 assert(#G.hand.cards == 0, 'the contract stub should mutate the held-card area during notifications')
 
