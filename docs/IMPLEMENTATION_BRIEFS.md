@@ -29,3 +29,18 @@ Required static validation: complete diff and framework reset/selection/save con
 Required runtime/manual validation: exact lifecycle/target/cold restart queue in REGRESSION_TESTS.
 Known risks: seeded sequences change; earlier invalid pool access no longer allowed; empty showdown/fused pools use eligible fallback; old missing targets cannot be recovered and use marked deterministic migration defaults.
 Review: APPROVE after correcting duplicate refresh on Boss transition, standard-mode counter duplication and explicit fused classification; local harness passes. Full game save serialization remains HUMAN_TEST_NEEDED.
+
+## Effect ownership foundation
+
+Issue: #6, #19, R4 and #9 residual cleanse eligibility (shared lifecycle/debuff root).
+Classification: confirmed unsafe callbacks/cleanup; historical revival symptom remains a game case.
+Dependencies: identity and encounter PRs #2/#3 accepted on main 43a90f4.
+Relevant files/functions: normal calculate callbacks, Athena/Phone lifecycle, Pincer predecessor cleanup, Minotaur/Iron Maiden events, combat counterattack, Thanatos/Apotheosis, utility highlight/background hooks.
+Confirmed root cause: disabled dispatch still runs active effects; delayed closures read reused runtime/global lists; cleanup assigns a shared debuff Boolean.
+Required behavior: cleanup before active guards; source-owned SMODS debuffs; event game/id/key/phase validation and captured cards; explicit showdown cleanse; retain framework expiry/other restrictions.
+Behavior that must remain unchanged: enabled penalties, Blessed protection, legitimate showdown refresh/Rental removal, Apotheosis Blind immunity, progression and scoring scope.
+Explicitly excluded work: Iron Maiden/refund deltas R2, removal notifications R7, duplicate Code use R13, scoring/Joker/RNG rules and optional features.
+Required static validation: complete diff and ownership/dispatch/card debuff contracts; Lua 5.1 and actual callback/event/source stubs; diff check.
+Required runtime/manual validation: disabled/queued/winning/next/cold controls and cleanse cases in REGRESSION_TESTS.
+Known risks: framework event blocking must allow normal winning-hand penalties before defeat; optional mod debuff hooks require real game checks; missing queued events do not survive cold restart.
+Review: APPROVE after correcting press-play captured cards, removing duplicate Magician guard and stale delayed UI reset. Agent-executable checks pass; real gameplay remains HUMAN_TEST_NEEDED.

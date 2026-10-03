@@ -321,6 +321,7 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.individual and context.cardarea == G.play and context.other_card and context.other_card.edition then
             ease_dollars(-10)
             return {
@@ -498,6 +499,7 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.before then
             G.GAME.cube_triggered = nil
         end
@@ -552,6 +554,7 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.after and not context.blueprint and not context.individual and not context.repetition then
             if G.GAME and G.GAME.blind and G.GAME.chips < G.GAME.blind.chips then
                 G.GAME.blind.chips = math.floor(G.GAME.blind.chips * 1.5)
@@ -611,23 +614,18 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if context.after or context.blind_disabled or context.blind_defeated then
+            reality_warp_clear_phone_debuffs()
+        end
+        if blind.disabled then return end
         if context.before and context.scoring_hand and #context.scoring_hand > 1 then
             for i = 2, #context.scoring_hand do
-                context.scoring_hand[i]:set_debuff(true)
-                context.scoring_hand[i].debuffed_by_phone = true
+                SMODS.debuff_card(context.scoring_hand[i], true, 'reality_warp_phone')
             end
             return {
                 message = '1st Card Only!',
                 colour = HEX('00b281')
             }
-        end
-        if context.after and context.scoring_hand then
-            for i = 2, #context.scoring_hand do
-                if context.scoring_hand[i].debuffed_by_phone then
-                    context.scoring_hand[i]:set_debuff(false)
-                    context.scoring_hand[i].debuffed_by_phone = nil
-                end
-            end
         end
     end,
     defeat = function(self)
@@ -835,6 +833,7 @@ SMODS.Blind {
         end
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         local context = context or card
         if not context then return end
 
@@ -982,18 +981,19 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.after and context.scoring_hand and #context.scoring_hand > 0 then
             if pseudorandom('ares_destroy') < G.GAME.probabilities.normal / 5 then
                 local destroyed_cards = {}
                 for _, c in ipairs(context.scoring_hand) do
                     table.insert(destroyed_cards, c)
                 end
-                G.E_MANAGER:add_event(Event({
+                reality_warp_queue_blind_event(blind, {
                     trigger = 'after',
                     delay = 0.8,
                     func = function()
                         for _, c in ipairs(destroyed_cards) do
-                            if not c.destroyed and not c.shattered then
+                            if not c.removed and not c.destroyed and not c.shattered then
                                 c.destroyed = true
                                 if c.shatter and c.ability and c.ability.name == 'Glass Card' then
                                     c:shatter()
@@ -1014,7 +1014,7 @@ SMODS.Blind {
                         play_sound('slice1', 1.0, 0.7)
                         return true
                     end
-                }))
+                })
                 return {
                     message = 'Ares strikes!',
                     colour = HEX('c1121f')
@@ -1059,11 +1059,7 @@ SMODS.Blind {
         if G.GAME and G.GAME.blind then
             G.GAME.blind:set_text()
         end
-        if G.jokers and G.jokers.cards then
-            for _, j in ipairs(G.jokers.cards) do
-                j:set_debuff(false)
-            end
-        end
+        reality_warp_clear_athena_debuffs()
     end,
     press_play = function(self)
     end,
@@ -1072,26 +1068,23 @@ SMODS.Blind {
         if G.jokers and G.jokers.cards then
             for _, j in ipairs(G.jokers.cards) do
                 if not (j.edition and (j.edition.blessed or j.edition.bendecido or j.edition.key == 'e_reality_warp_blessed' or j.edition.key == 'e_blessed')) then
-                    j:set_debuff(not matches)
+                    SMODS.debuff_card(j, not matches and not j.ability.deity_ascended, 'reality_warp_athena')
                 else
-                    j:set_debuff(false)
+                    SMODS.debuff_card(j, false, 'reality_warp_athena')
                 end
             end
         end
         return mult, hand_chips, false
     end,
     calculate = function(self, blind, context)
+        if context.after or context.blind_disabled or context.blind_defeated then reality_warp_clear_athena_debuffs() end
+        if blind.disabled then return end
         if context.after and context.scoring_name then
             local matches = (context.scoring_name == reality_warp_encounter_params(self.key).target_hand)
-            G.E_MANAGER:add_event(Event({
+            reality_warp_queue_blind_event(blind, {
                 trigger = 'after',
                 delay = 0.2,
                 func = function()
-                    if G.jokers and G.jokers.cards then
-                        for _, j in ipairs(G.jokers.cards) do
-                            j:set_debuff(false)
-                        end
-                    end
                     if matches then
                         attention_text({
                             text = 'Athena Pleased!',
@@ -1113,23 +1106,15 @@ SMODS.Blind {
                     end
                     return true
                 end
-            }))
+            })
         end
     end,
     defeat = function(self)
-        if G.jokers and G.jokers.cards then
-            for _, j in ipairs(G.jokers.cards) do
-                j:set_debuff(false)
-            end
-        end
+        reality_warp_clear_athena_debuffs()
         reset_reality_warp_boss_ui()
     end,
     disable = function(self)
-        if G.jokers and G.jokers.cards then
-            for _, j in ipairs(G.jokers.cards) do
-                j:set_debuff(false)
-            end
-        end
+        reality_warp_clear_athena_debuffs()
         reset_reality_warp_boss_ui()
     end
 }
@@ -1207,6 +1192,7 @@ SMODS.Blind {
         return mult, hand_chips, false
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.before and G.GAME.blind.effect.reality_warp_hades_nullify then
             mult = 0
             hand_chips = 0
@@ -1258,6 +1244,7 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.after and context.scoring_hand then
             local cleansed = false
             for _, c in ipairs(context.scoring_hand) do
@@ -1297,6 +1284,7 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.after and context.scoring_hand and #context.scoring_hand > 0 then
             local rank_down_map = {
                 ['Ace'] = 'King', ['King'] = 'Queen', ['Queen'] = 'Jack', ['Jack'] = '10',
@@ -1409,6 +1397,7 @@ SMODS.Blind {
         end
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.after and context.scoring_hand then
             local destroyed_any = false
             for _, c in ipairs(context.scoring_hand) do
@@ -1450,11 +1439,11 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         local context = (context and type(context) == 'table' and context.cardarea and context)
                      or (card and type(card) == 'table' and card.cardarea and card)
                      or context or card
         if not context then return end
-        if G.GAME and G.GAME.blind and G.GAME.blind.disabled then return end
 
         if context.individual and context.cardarea == G.play then
             local poison_factor = 0.85 -- 1 - 0.15 reduction (X0.85)
@@ -1490,20 +1479,23 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
+        if blind.disabled then return end
         if context.using_consumeable then
             if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
                 local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed('code_destroy'))
                 if chosen_joker and not chosen_joker.getting_sliced then
                     chosen_joker.getting_sliced = true
-                    G.E_MANAGER:add_event(Event({
+                    reality_warp_queue_blind_event(blind, {
+                        cancelled = function() chosen_joker.getting_sliced = nil end,
                         trigger = 'after',
                         delay = 0.4,
                         func = function()
+                            if chosen_joker.removed or chosen_joker.area ~= G.jokers then return true end
                             chosen_joker:start_dissolve()
                             play_sound('slice1', 0.96, 0.7)
                             return true
                         end
-                    }))
+                    })
                 end
             end
             if G.GAME and G.GAME.blind then
