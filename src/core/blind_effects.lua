@@ -23,6 +23,25 @@ function reality_warp_queue_blind_event(blind, spec)
     G.E_MANAGER:add_event(Event(spec))
 end
 
+function reality_warp_destroy_cards(blind, cards)
+    if not blind or blind.disabled or not SMODS or type(SMODS.destroy_cards) ~= 'function' or
+        type(SMODS.is_eternal) ~= 'function' then return {} end
+
+    local seen, candidates = {}, {}
+    for _, card in ipairs(cards or {}) do
+        if card and not seen[card] then
+            seen[card] = true
+            if not card.removed and not card.destroyed and not card.shattered and not card.getting_sliced and
+                not SMODS.is_eternal(card, {destroy_cards = true}) then
+                candidates[#candidates + 1] = card
+            end
+        end
+    end
+
+    if #candidates == 0 then return {} end
+    return SMODS.destroy_cards(candidates, {immediate = true}) or {}
+end
+
 function reality_warp_release_debuffs(source, cards)
     for _, card in ipairs(cards or {}) do
         if card.ability and (card.ability.debuff_sources or {})[source] then

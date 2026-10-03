@@ -347,15 +347,15 @@ Notes: See source document and dependency order; not yet implemented.
 ## R7: Direct boss dissolution bypasses destruction-notification bookkeeping
 
 Source: BUG_AUDIT.md R7
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed installed-framework contract defect; static/callback checks only, gameplay remains unverified
 Priority: Normal
-Dependencies: 6, 19
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+Dependencies: #6/#19/R4 effect ownership foundation and R2
+State: HUMAN_TEST_NEEDED (PR review pending)
+Branch: fix/blind-destruction-notifications
+PR: pending
+Implementation commit: pending
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Ares, Net, and Hades now submit filtered snapshots to `SMODS.destroy_cards` once per batch, allowing the framework to send removal notifications and run normal hooks. Ares permanence commits in `context.after`; only feedback remains delayed. See the R7 bounded brief and REGRESSION_TESTS.md. No Balatro runtime/save test has been run.
 
 ## R8: get_straight wrapper discards modern API parameters
 
