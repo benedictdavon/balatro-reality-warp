@@ -93,11 +93,23 @@ end
 c.compat = false; local copy_context = context(); copy_context.blueprint = true
 before = calls; assert(c:calculate_joker(copy_context) == nil and calls == before, 'copy gate remains outside composer')
 c.compat = true
-for _, value in ipairs({false, true, 'signal'}) do
+for _, value in ipairs({false, 'signal'}) do
     c.effect = value
     local r = pack(c:calculate_joker(context()))
     assert(r[1] == value and r[2] == c.post and r.n == 4, 'non-table signals stay unchanged')
 end
+c.effect = true
+local removal = pack(c:calculate_joker(context()))
+assert(removal.n == 4 and removal[1].remove == true and factor(removal[1]) == 2.5 and removal[2] == c.post)
+local removal_count, node = 0, removal[1]
+while node do
+    if node.remove then removal_count = removal_count + 1 end
+    node = node.extra
+end
+assert(removal_count == 1, 'supported true sentinel preserves one removal effect and all bonuses')
+c.effect = {Xmult_mod = 2, extra = true}
+local terminal_removal = c:calculate_joker(context())
+assert(terminal_removal.extra.remove and factor(terminal_removal) == 5 and c.effect.extra == true)
 c.effect = original
 
 -- Compatible copy routes through the real composed target; neither call is replaced.

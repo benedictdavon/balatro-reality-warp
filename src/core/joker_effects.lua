@@ -1,11 +1,15 @@
 -- Copy only the effect chain; Card objects and other referenced data stay intact.
 function reality_warp_append_joker_effect(effect, bonus)
     if effect == nil then return bonus end
+    local original_effect = effect
+    if effect == true then effect = {remove = true} end
     if type(effect) ~= 'table' then return effect end
     local root, tail, seen = {}, nil, {}
     local source = effect
-    while source do
-        if type(source) ~= 'table' or seen[source] then return effect end
+    while source ~= nil do
+        -- Steamodded accepts true as the removal effect, including in extra chains.
+        if source == true then source = {remove = true} end
+        if type(source) ~= 'table' or seen[source] then return original_effect end
         seen[source] = true
         local copy = tail and {} or root
         for key, value in pairs(source) do
