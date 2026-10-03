@@ -44,3 +44,18 @@ Required static validation: complete diff and ownership/dispatch/card debuff con
 Required runtime/manual validation: disabled/queued/winning/next/cold controls and cleanse cases in REGRESSION_TESTS.
 Known risks: framework event blocking must allow normal winning-hand penalties before defeat; optional mod debuff hooks require real game checks; missing queued events do not survive cold restart.
 Review: APPROVE after correcting press-play captured cards, removing duplicate Magician guard and stale delayed UI reset. Agent-executable checks pass; real gameplay remains HUMAN_TEST_NEEDED.
+
+## Iron Maiden hand-size and resource refund ownership
+
+Issue: BUG_AUDIT R2.
+Classification: source-confirmed lifecycle defect; HUMAN_TEST_NEEDED after code/checks.
+Dependencies: #6/#19 effect ownership foundation accepted as PR #4.
+Relevant files/functions: `src/blinds/fused_blinds.lua`: Obelisk, Leviathan, and Iron Maiden `calculate` callbacks; Steamodded `blind_disabled` and `blind_defeated` contexts.
+Confirmed root cause: Iron Maiden applies hand-size -1 without tracking its ownership, restores only on disable, and can restore repeatedly. Obelisk/Leviathan persist setup amounts but neither guard duplicate setup nor clear refunds after cleanup; Obelisk bases its removal on configured round hands rather than remaining hands.
+Required behavior: store serializable applied deltas and one-time setup markers on the runtime Blind's `effect`; reverse Iron Maiden's actual -1 once on disable or defeat; on disable refund only resources removed by Obelisk/Leviathan, once; clear those ledgers on defeat. Obelisk setup leaves one remaining hand, using `current_round.hands_left`; Leviathan setup leaves zero remaining discards. Cleanup claims/clears each delta before calling the refund API. Preserve legacy `hands_sub`/`discards_sub` save fields where present.
+Behavior that must remain unchanged: all enabled effects, Iron Maiden's per-card money penalty, Obelisk's prior-play debuff, Leviathan's face-down cleanup and its refund-before-flip ordering, slot progression, and original resource amounts except over-refunds.
+Explicitly excluded work: other Blind bugs/refactors, R14 history, effect/event ownership changes, card draw, destruction/removal paths, and balance changes outside erroneous resource refunds.
+Required static validation: Lua 5.1 compile; callback harness for repeat setup, disable twice, disable/defeat, next encounter, simulated saved-effect reconstruction, disabled-at-setup, and remaining-resource math; complete diff/status review.
+Required runtime/manual validation: Iron Maiden hand size before/after win/disable/defeat/next encounter and cold restart; Chicot at setup and late disable; Obelisk/Leviathan remaining-resource and zero-resource cases, recorded in REGRESSION_TESTS.
+Known risks: Balatro hand-area reconstruction and callback/event ordering need a real cold-restart run; resource easing must remain idempotent if cleanup is re-entered. Pre-fix Iron Maiden saves have no ownership ledger, so an in-progress save cannot safely distinguish an applied -1 from a disabled-at-setup Blind; no compensation is inferred. New saves carry the serialized ledger. This work does not alter event ownership.
+Review: APPROVE at `2155e8ccf5f5f6dd30cc4ad1df7d5739eaf10b79`. Sol High independently inspected the complete diff and callback surroundings, then reran `tests/run.py` and `git diff --check`; both passed. No Balatro runtime or cold-restart validation was performed, so the issue remains HUMAN_TEST_NEEDED.
