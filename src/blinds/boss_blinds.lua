@@ -556,9 +556,10 @@ SMODS.Blind {
     calculate = function(self, blind, context)
         if blind.disabled then return end
         if context.after and not context.blueprint and not context.individual and not context.repetition then
-            if G.GAME and G.GAME.blind and G.GAME.chips < G.GAME.blind.chips then
-                G.GAME.blind.chips = math.floor(G.GAME.blind.chips * 1.5)
-                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+            local projected_chips = (G.GAME.chips or 0) + math.floor((SMODS.last_hand_score or 0))
+            if context.scoring_hand and projected_chips < (blind.chips or 0) then
+                blind.chips = math.floor(blind.chips * 1.5)
+                blind.chip_text = number_format(blind.chips)
                 return {
                     message = 'X1.5 Target!',
                     colour = HEX('b067b1')
@@ -933,28 +934,6 @@ SMODS.Blind {
     ease_background_colour = function(self)
         ease_custom_blind_background(self)
     end,
-    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-        if (G.GAME.chips + (hand_chips * mult)) >= G.GAME.blind.chips then
-            mult = mod_mult(math.max(1, math.floor(mult * 0.90)))
-            hand_chips = mod_chips(math.max(1, math.floor(hand_chips * 0.90)))
-            G.E_MANAGER:add_event(Event({
-                trigger = 'immediate',
-                func = function()
-                    attention_text({
-                        text = 'Time Dilation! (X0.90)',
-                        scale = 1.1,
-                        hold = 1.0,
-                        major = G.HUD_blind,
-                        backdrop_colour = HEX('6a0dad'),
-                        align = 'cm'
-                    })
-                    return true
-                end
-            }))
-            return mult, hand_chips, true
-        end
-        return mult, hand_chips, false
-    end
 }
 
 -- 13. Ares (Supreme Showdown Boss)
@@ -1333,29 +1312,6 @@ SMODS.Blind {
     ease_background_colour = function(self)
         ease_custom_blind_background(self)
     end,
-    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-        if pseudorandom('guillotine') < (G.GAME.probabilities.normal or 1) / 5 then
-            mult = 0
-            hand_chips = 0
-            G.E_MANAGER:add_event(Event({
-                trigger = 'immediate',
-                func = function()
-                    attention_text({
-                        text = 'Severed! (0 Score)',
-                        scale = 1.2,
-                        hold = 1.2,
-                        major = G.HUD_blind,
-                        backdrop_colour = HEX('6b0f1a'),
-                        align = 'cm'
-                    })
-                    play_sound('slice1', 1.0, 0.7)
-                    return true
-                end
-            }))
-            return mult, hand_chips, true
-        end
-        return mult, hand_chips, false
-    end
 }
 
 -- 19. The Net (La Red - Showdown Boss)

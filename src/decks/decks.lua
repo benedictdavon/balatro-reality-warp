@@ -1336,11 +1336,15 @@ end
 if Back and not G.reality_warp_back_trigger_hooked then
     G.reality_warp_back_trigger_hooked = true
     local orig_trigger_effect = Back.trigger_effect
-    function Back:trigger_effect(args)
-        local ret1, ret2 = nil, nil
+    local function pack_back_returns(...)
+        return {n = select('#', ...), ...}
+    end
+    function Back:trigger_effect(args, ...)
+        local ret = {n = 0}
         if orig_trigger_effect then
-            ret1, ret2 = orig_trigger_effect(self, args)
+            ret = pack_back_returns(orig_trigger_effect(self, args, ...))
         end
+        local ret1, ret2 = ret[1], ret[2]
         local current_key = self.effect and self.effect.center and self.effect.center.key
         if current_key and reality_warp_DECK_HOOKS then
             local clean_k = tostring(current_key):gsub('^b_reality_warp_', ''):gsub('^b_', ''):gsub('^reality_warp_', '')
@@ -1353,7 +1357,13 @@ if Back and not G.reality_warp_back_trigger_hooked then
                 end
             end
         end
-        return ret1 or (args and args.chips), ret2 or (args and args.mult)
+        ret[1] = ret1 or (args and args.chips)
+        ret[2] = ret2 or (args and args.mult)
+        if reality_warp_apply_blind_final_score then
+            ret[1], ret[2] = reality_warp_apply_blind_final_score(args, ret[1], ret[2])
+        end
+        ret.n = math.max(ret.n, 2)
+        return unpack(ret, 1, ret.n)
     end
 end
 
