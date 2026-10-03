@@ -418,7 +418,7 @@ Dependencies: Accepted encounter scheduling (PR3), canonical identity and target
 State: IN_PROGRESS
 Branch: fix/divine-ward-reroll
 PR: —
-Commit: —
+Commit: 2e57572528f044da1a002ca492cffd39d2840681
 Manual test requirement: Required for zero/low-cash UI and delayed payment, Boss Tag, resets, Ante grant, and cold restart; exact procedure is in REGRESSION_TESTS.md.
 Notes: Native ease_dollars(-10) applies through a queued event, so the old immediate dollar snapshot/refund does not cancel payment. Native reroll UI also hides/disables the button based on voucher and $10 checks. The installed dump already includes Steamodded's priority-10 no-UI payload once, leaving exactly two post-Steamodded fee sites. The fix consumes the serialized per-Ante Ward at both native fee boundaries and derives UI allowance/price from the same state. Real-game callback/UI behavior remains unverified.
 
