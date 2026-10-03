@@ -464,36 +464,6 @@ if Blind and Blind.defeat then
     end
 end
 
--- Mechanic 19 & 23: Scoring hooks for Apotheosis & Hand Level Transcendence
-local orig_calculate_joker = Card.calculate_joker
-function Card:calculate_joker(context, ...)
-    if G.GAME and G.GAME.battle_of_gods then
-        -- Mechanic 19: Deity Ascended Joker protection & X2 Mult
-        if self.ability and self.ability.deity_ascended then
-            if context and context.cardarea == G.jokers and context.joker_main then
-                return {
-                    message = 'Apotheosis! X2',
-                    Xmult_mod = 2,
-                    colour = G.C.PURPLE
-                }
-            end
-        end
-
-        -- Mechanic 23: Hand Level Transcendence (Level > 20 grants X1.25 Exalted Mult)
-        if context and context.cardarea == G.jokers and context.joker_main and G.jokers and G.jokers.cards and self == G.jokers.cards[1] then
-            local p_hand = context.scoring_name
-            if p_hand and G.GAME.hands and G.GAME.hands[p_hand] and G.GAME.hands[p_hand].level > 20 then
-                return {
-                    message = 'Exalted! X1.25',
-                    Xmult_mod = 1.25,
-                    colour = G.C.GOLD
-                }
-            end
-        end
-    end
-    return orig_calculate_joker(self, context, ...)
-end
-
 local botg_ante_bases = {
     15000,       -- Ante 1: 15k (Boss 30k)
     60000,       -- Ante 2: 60k (Boss 120k)

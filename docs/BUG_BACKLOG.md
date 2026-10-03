@@ -512,3 +512,16 @@ PR: —
 Commit: —
 Manual test requirement: Mirror active on the rightmost Joker returning legacy Xmult_mod, nested extra effects or secondary post effects; compare both real calculations and effect application with an ordinary native retrigger.
 Notes: Current aggregation adds chips/mult/dollars and multiplies x_mult/Xmult only, losing other second-calculation effects/post data and mutating the first return table. R5 preserves the primary forwarding contract and existing supported aggregation without silently redesigning the Potion. A separate branch must address full retrigger composition; it does not block standard R5 calculations with Mirror inactive.
+
+## N3: Regression runner rejects an already patched Lovely dump
+
+Source: R5 validation; tests/run.py versus current installed lovely/dump/blind.lua and UI_definitions.lua.
+Classification: Source-confirmed test infrastructure defect; blocks required local checks after dump regeneration
+Priority: Normal
+Dependencies: Original target patches PR9
+State: IN_PROGRESS
+Branch: fix/joker-calculation-composition
+PR: —
+Commit: —
+Manual test requirement: None for count validation; game behavior remains separate.
+Notes: The runner required exactly one pre-replacement pattern even when the current dump contains the exact complete applied payload instead. The blocking validation repair accepts exactly one original OR one complete applied payload, rejecting missing, partial, duplicate or mixed results; it does not skip the check or claim runtime gameplay verification.
