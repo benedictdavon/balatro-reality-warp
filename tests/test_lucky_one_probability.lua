@@ -435,6 +435,57 @@ assert(not SMODS.pseudorandom_probability(trigger, 'removed-during-modifiers', 1
 assert(owner.ability.extra.charges == 1)
 modifier = nil; flush(); close(owner.ability.extra.xmult, 1.5)
 
+-- Native Blueprint/context-stack delegation distinguishes duplicate receivers from distinct real rolls.
+local overrides = read('../smods/src/overrides.lua')
+local card_stack_source = region(overrides, 'local calculate_joker_ref = Card.calculate_joker', '\nlocal set_ability = Card.set_ability')
+local blueprint_source = region(native, 'function SMODS.blueprint_effect(', '\nfunction SMODS.get_mods_scoring_targets(')
+install(function()
+    load(card_stack_source, 'installed Card calculate context-stack wrapper')
+    load(blueprint_source, 'installed Blueprint effect')
+end)
+owner = lucky(1)
+owner.config.center.blueprint_compat = true
+owner.calculation = function(self, context) return definitions.lucky_one_joker:calculate(self, context) end
+local copier = setmetatable({area = G.jokers, config = {center = {key = 'j_blueprint'}}}, {__index = Card})
+G.jokers.cards[#G.jokers.cards+1] = copier
+assert(SMODS.pseudorandom_probability(trigger, 'receiver-test', 1, 100))
+local receiver_context = SMODS.post_prob[1]
+assert(SMODS.blueprint_effect(copier, owner, receiver_context) == nil,
+    'a copied Lucky receiver must not grow from the same native result')
+assert(receiver_context.blueprint == nil and #SMODS.context_stack == 0)
+close(owner.ability.extra.xmult, 1.5)
+flush(); close(owner.ability.extra.xmult, 1.6)
+assert(SMODS.blueprint_effect(copier, owner, receiver_context) == nil)
+receiver_context.retrigger_joker = copier
+assert(owner:calculate_joker(receiver_context) == nil)
+receiver_context.retrigger_joker = nil
+assert(owner:calculate_joker(receiver_context) == nil)
+close(owner.ability.extra.xmult, 1.6)
+-- Blueprint copying the Lucky Club receiver likewise cannot award a charge.
+local club_receiver = {individual = true, cardarea = G.play, other_card = club}
+assert(SMODS.blueprint_effect(copier, owner, club_receiver) == nil)
+assert(owner.ability.extra.clubs_scored == 0 and owner.ability.extra.charges == 0)
+
+-- A separate actual probability made by a copied chance Joker still qualifies once.
+owner.ability.extra.charges = 2
+local chance_joker = setmetatable({area = G.jokers,
+    config = {center = {key = 'j_chance_test', blueprint_compat = true}},
+    calculation = function(self, context)
+        assert(SMODS.context_stack[#SMODS.context_stack].context == context)
+        assert(SMODS.pseudorandom_probability(self, 'copied-real-chance', 1, 100))
+        return {message = 'Actual probability succeeded'}
+    end}, {__index = Card})
+G.jokers.cards[#G.jokers.cards+1] = chance_joker
+local origin_context = {joker_main = true}
+assert(SMODS.blueprint_effect(copier, chance_joker, origin_context).card == copier)
+assert(origin_context.blueprint == nil and owner.ability.extra.charges == 1)
+flush(); close(owner.ability.extra.xmult, 1.7)
+origin_context.retrigger_joker = copier
+assert(chance_joker:calculate_joker(origin_context))
+assert(owner.ability.extra.charges == 0)
+origin_context.retrigger_joker = nil
+flush(); close(owner.ability.extra.xmult, 1.8)
+
 -- Optional actual installed Omega number contract, enabled only by the LuaJIT runner.
 if LUCKY_BIG_PATH then
     package.path = LUCKY_BIG_PATH .. '/?.lua;' .. package.path
