@@ -559,6 +559,7 @@ SMODS.Blind {
 SMODS.Blind {
     reality_warp_fused = true,
     key = 'ouroboros',
+    modifies_draw = true,
     atlas = 'reality_warp_fused_blinds',
     pos = { x = 0, y = 8 },
     dollars = 5,
@@ -593,24 +594,13 @@ SMODS.Blind {
 
         if blind.disabled then return end
 
+        if context.drawing_cards and reality_warp_fixed_action_draw() then return {cards_to_draw = 3} end
+
         if context.stay_flipped and context.to_area == G.hand and SMODS.pseudorandom_probability(blind or self, 'ouroboros', 1, 7) then
             return { stay_flipped = true }
         end
     end
 }
-
--- Serpent 3-card draw hook for The Ouroboros
-if G.FUNCS and G.FUNCS.draw_from_deck_to_hand then
-    local orig_draw_from_deck_to_hand = G.FUNCS.draw_from_deck_to_hand
-    G.FUNCS.draw_from_deck_to_hand = function(e)
-        if G.GAME and G.GAME.blind and not G.GAME.blind.disabled and
-           (G.GAME.blind.name == 'The Ouroboros' or (G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key == 'bl_reality_warp_ouroboros')) and
-           (G.GAME.current_round.hands_played > 0 or G.GAME.current_round.discards_used > 0) and not e then
-            return orig_draw_from_deck_to_hand(math.min(#G.deck.cards, 3))
-        end
-        return orig_draw_from_deck_to_hand(e)
-    end
-end
 
 -- 10. The Nightshade (House + Goad)
 SMODS.Blind {
