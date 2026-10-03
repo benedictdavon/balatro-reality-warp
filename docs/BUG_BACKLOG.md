@@ -77,12 +77,12 @@ Source: ISSUE.md #6
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 18, R11
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/blind-effect-ownership
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/4
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup require human testing.
 
 ## 7: Ouroboros does not reliably enforce “always draw 3 cards” after Play or Discard
 
@@ -116,12 +116,12 @@ Source: ISSUE.md #9
 Classification: Historical correction with residual eligibility/ownership risk
 Priority: Normal
 Dependencies: 1, 18, R4
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/blind-effect-ownership
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/4
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup require human testing.
 
 ## 10: Shortcut failed a valid one-gap Straight
 
@@ -246,12 +246,12 @@ Source: ISSUE.md #19
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 1, R1
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/blind-effect-ownership
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/4
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup require human testing.
 
 ## 20: Consumable-stack quantity badge alignment was confusing
 
@@ -311,12 +311,12 @@ Source: BUG_AUDIT.md R4
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 6, 19
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/blind-effect-ownership
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/4
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup require human testing.
 
 ## R5: Apotheosis/Exalted interception replaces normal Joker calculation
 

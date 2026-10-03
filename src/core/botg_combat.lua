@@ -16,7 +16,7 @@ if Blind and Blind.press_play then
 
         if G.GAME and G.GAME.battle_of_gods and reality_warp_blind_is_boss(self) and not self.disabled then
             -- Boss counter-attack after hand is evaluated
-            G.E_MANAGER:add_event(Event({
+            reality_warp_queue_blind_event(self, {
                 trigger = 'after',
                 delay = 1.2,
                 func = function()
@@ -45,7 +45,7 @@ if Blind and Blind.press_play then
                     end
                     return true
                 end
-            }))
+            })
         end
 
         return ret

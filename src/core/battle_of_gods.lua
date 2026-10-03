@@ -405,16 +405,13 @@ if Blind and Blind.defeat then
             end
 
             -- Mechanic 15: Thanatos Hourglass (Perishable & Rental Cleansing on Showdown)
-            local is_showdown = (self.showdown == true) or
-                (self.config and self.config.blind and (self.config.blind.showdown or (type(self.config.blind.boss) == 'table' and self.config.blind.boss.showdown))) or
-                (type(self.boss) == 'table' and self.boss.showdown) or
-                (G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.win_ante and (G.GAME.round_resets.ante % G.GAME.win_ante == 0) and G.GAME.round_resets.ante >= 2 and (self.boss or G.GAME.blind_on_deck == 'Boss'))
+            local is_showdown = reality_warp_blind_is_showdown(self)
             if is_showdown and G.jokers and G.jokers.cards then
                 for _, j in ipairs(G.jokers.cards) do
                     local cleansed = false
                     if j.ability and j.ability.perishable then
                         j.ability.perish_tally = G.GAME.perishable_rounds or 5
-                        j.debuff = false
+                        SMODS.recalc_debuff(j)
                         cleansed = true
                     end
                     if j.ability and j.ability.rental then
@@ -451,7 +448,7 @@ if Blind and Blind.defeat then
                     local target = G.jokers.cards[1]
                     target.ability.deity_ascended = true
                     target:set_edition({ polychrome = true }, true)
-                    target.debuff = false
+                    SMODS.recalc_debuff(target)
                     G.GAME.apotheosis_done = true
                     attention_text({
                         text = 'APOTHEOSIS! Ascended to Deity',
@@ -473,7 +470,6 @@ function Card:calculate_joker(context, ...)
     if G.GAME and G.GAME.battle_of_gods then
         -- Mechanic 19: Deity Ascended Joker protection & X2 Mult
         if self.ability and self.ability.deity_ascended then
-            self.debuff = false
             if context and context.cardarea == G.jokers and context.joker_main then
                 return {
                     message = 'Apotheosis! X2',

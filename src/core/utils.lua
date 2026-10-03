@@ -893,16 +893,7 @@ if Blind.defeat then
     function Blind:defeat(silent)
         local ret = blind_defeat_ref(self, silent)
         reset_reality_warp_boss_ui()
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.5,
-            func = function()
-                reset_reality_warp_boss_ui()
-                return true
-            end
-        }))
-
-        -- Unlock familiar if boss defeated in 1 hand
+-- Unlock familiar if boss defeated in 1 hand
         if reality_warp_blind_is_boss(self) and G.GAME and G.GAME.current_round and (G.GAME.current_round.hands_played or 0) <= 1 then
             local b_key = (self.config and self.config.blind and self.config.blind.key) or (G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key)
             local suffix = b_key and b_key:match('^bl_(.+)$')
@@ -2526,25 +2517,7 @@ function is_reality_warp_blind(blind, target_key)
 end
 
 function clear_reality_warp_phone_debuffs()
-    local areas = { G.hand, G.play, G.deck, G.discard }
-    for _, area in ipairs(areas) do
-        if area and area.cards then
-            for _, c in ipairs(area.cards) do
-                if c.debuffed_by_phone then
-                    c:set_debuff(false)
-                    c.debuffed_by_phone = nil
-                end
-            end
-        end
-    end
-    if G.playing_cards then
-        for _, c in ipairs(G.playing_cards) do
-            if c.debuffed_by_phone then
-                c:set_debuff(false)
-                c.debuffed_by_phone = nil
-            end
-        end
-    end
+    reality_warp_clear_phone_debuffs()
 end
 
 -- Hook Blind:debuff_hand to enable native Balatro invalid-hand warning (like The Psychic)
@@ -2629,6 +2602,11 @@ end
 if Blind and Blind.debuff_card then
     local debuff_card_ref = Blind.debuff_card
     function Blind:debuff_card(card, from_blind)
+        if G.GAME.battle_of_gods and card and card.ability and card.ability.deity_ascended then
+            -- Apotheosis exempts Blind restrictions; framework still owns expiry/other sources.
+            card:set_debuff(false)
+            return
+        end
         if not self.disabled and is_reality_warp_blind(self, 'wizard') then
             if card and card.area ~= G.jokers then
                 local is_enhanced = (card.ability and card.ability.set == 'Enhanced') or
@@ -2652,8 +2630,8 @@ if CardArea and CardArea.parse_highlighted then
             -- Reset previous phone debuffs in hand first
             if self.cards then
                 for _, c in ipairs(self.cards) do
-                    if c.debuffed_by_phone then
-                        c:set_debuff(false)
+                    if c.debuffed_by_phone or (c.ability.debuff_sources or {}).reality_warp_phone then
+                        SMODS.debuff_card(c, false, 'reality_warp_phone')
                         c.debuffed_by_phone = nil
                     end
                 end
@@ -2664,16 +2642,15 @@ if CardArea and CardArea.parse_highlighted then
                 local text, disp_text, poker_hands, scoring_hand = G.FUNCS.get_poker_hand_info(self.highlighted)
                 if scoring_hand and #scoring_hand > 1 then
                     for i = 2, #scoring_hand do
-                        scoring_hand[i]:set_debuff(true)
-                        scoring_hand[i].debuffed_by_phone = true
+                        SMODS.debuff_card(scoring_hand[i], true, 'reality_warp_phone')
                     end
                 end
             end
         else
             if self == G.hand and self.cards then
                 for _, c in ipairs(self.cards) do
-                    if c.debuffed_by_phone then
-                        c:set_debuff(false)
+                    if c.debuffed_by_phone or (c.ability.debuff_sources or {}).reality_warp_phone then
+                        SMODS.debuff_card(c, false, 'reality_warp_phone')
                         c.debuffed_by_phone = nil
                     end
                 end

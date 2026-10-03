@@ -202,14 +202,15 @@ SMODS.Blind {
         if blind.disabled then return end
 
         if context.press_play then
-            G.E_MANAGER:add_event(Event({ func = function()
+            local held_cards = {}; for _, c in ipairs(G.hand.cards) do held_cards[#held_cards + 1] = c end
+            reality_warp_queue_blind_event(blind, { func = function()
                 local any_selected = nil
                 local _cards = {}
-                for k, v in ipairs(G.hand.cards) do
-                    _cards[#_cards+1] = v
+                for k, v in ipairs(held_cards) do
+                    if not v.removed and v.area == G.hand then _cards[#_cards+1] = v end
                 end
                 for i = 1, 2 do
-                    if G.hand.cards[i] then 
+                    if #_cards > 0 then
                         local selected_card, card_key = pseudorandom_element(_cards, pseudoseed('hook'))
                         G.hand:add_to_highlighted(selected_card, true)
                         table.remove(_cards, card_key)
@@ -219,7 +220,7 @@ SMODS.Blind {
                 end
                 if any_selected then G.FUNCS.discard_cards_from_highlighted(nil, true) end
                 return true
-            end })) 
+            end })
             blind.triggered = true
             delay(0.7)
             SMODS.juice_up_blind()
@@ -408,21 +409,15 @@ SMODS.Blind {
         end
 
         if context.press_play then
-            G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function()
-                if G.play and G.play.cards then
-                    for i = 1, #G.play.cards do
-                        G.E_MANAGER:add_event(Event({ func = function()
-                            if G.play and G.play.cards and G.play.cards[i] then
-                                G.play.cards[i]:juice_up()
-                            end
-                            return true
-                        end })) 
-                        ease_dollars(-1)
-                        delay(0.23)
-                    end
+            local played = {}; local cards = (#(G.hand.highlighted or {}) > 0 and G.hand.highlighted) or G.play.cards or {}
+            for _, card in ipairs(cards) do played[#played + 1] = card end
+            reality_warp_queue_blind_event(blind, {trigger = 'after', delay = 0.2, func = function()
+                for _, card in ipairs(played) do
+                    if not card.removed then card:juice_up() end
+                    ease_dollars(-1)
                 end
                 return true
-            end }))
+            end})
             blind.triggered = true
             return true
         end
