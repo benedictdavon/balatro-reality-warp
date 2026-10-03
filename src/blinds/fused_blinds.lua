@@ -126,6 +126,19 @@ local function sync_fused_blind_atlases()
     end
 end
 
+local function take_blind_effect_delta(blind, key, legacy_key)
+    local effect = blind and blind.effect
+    if not effect then return nil end
+
+    local delta = effect[key]
+    effect[key] = nil
+    if legacy_key then
+        if delta == nil then delta = effect[legacy_key] end
+        effect[legacy_key] = nil
+    end
+    return delta
+end
+
 sync_fused_blind_atlases()
 G.E_MANAGER:add_event(Event({
     func = function()
@@ -157,18 +170,32 @@ SMODS.Blind {
     end,
     calculate = function(self, blind, context)
         if context.blind_disabled then
-            if blind.effect and blind.effect.hands_sub then
-                ease_hands_played(blind.effect.hands_sub)
+            local hands_sub = take_blind_effect_delta(blind, 'reality_warp_obelisk_hands_sub', 'hands_sub')
+            if hands_sub ~= nil then
+                ease_hands_played(hands_sub)
+            end
+        end
+
+        if context.blind_defeated then
+            take_blind_effect_delta(blind, 'reality_warp_obelisk_hands_sub', 'hands_sub')
+        end
+
+        if context.setting_blind then
+            blind.effect = blind.effect or {}
+            local effect = blind.effect
+            if not effect.reality_warp_obelisk_setup then
+                effect.reality_warp_obelisk_setup = true
+                -- Older saves stored only hands_sub. Treat it as an already applied delta.
+                if effect.hands_sub == nil and not blind.disabled then
+                    local hands_left = (G.GAME.current_round and G.GAME.current_round.hands_left) or 0
+                    local hands_sub = math.max(0, hands_left - 1)
+                    effect.reality_warp_obelisk_hands_sub = hands_sub
+                    if hands_sub > 0 then ease_hands_played(-hands_sub) end
+                end
             end
         end
 
         if blind.disabled then return end
-
-        if context.setting_blind then
-            blind.effect = blind.effect or {}
-            blind.effect.hands_sub = G.GAME.round_resets.hands - 1
-            ease_hands_played(-blind.effect.hands_sub)
-        end
 
         if context.debuff_card and context.debuff_card.area ~= G.jokers and
             context.debuff_card.ability and context.debuff_card.ability.played_this_ante then
@@ -339,8 +366,9 @@ SMODS.Blind {
     end,
     calculate = function(self, blind, context)
         if context.blind_disabled then
-            if blind.effect and blind.effect.discards_sub then
-                ease_discard(blind.effect.discards_sub)
+            local discards_sub = take_blind_effect_delta(blind, 'reality_warp_leviathan_discards_sub', 'discards_sub')
+            if discards_sub ~= nil then
+                ease_discard(discards_sub)
             end
             if G.hand and G.hand.cards then
                 for i = 1, #G.hand.cards do
@@ -351,17 +379,30 @@ SMODS.Blind {
             end
         end
 
+        if context.blind_defeated then
+            take_blind_effect_delta(blind, 'reality_warp_leviathan_discards_sub', 'discards_sub')
+        end
+
         if context.setting_blind or context.hand_drawn then
             blind.prepped = nil
         end
 
-        if blind.disabled then return end
-
         if context.setting_blind then
             blind.effect = blind.effect or {}
-            blind.effect.discards_sub = G.GAME.current_round.discards_left
-            ease_discard(-blind.effect.discards_sub)
+            local effect = blind.effect
+            if not effect.reality_warp_leviathan_setup then
+                effect.reality_warp_leviathan_setup = true
+                -- Older saves stored only discards_sub. Treat it as an already applied delta.
+                if effect.discards_sub == nil and not blind.disabled then
+                    local discards_left = (G.GAME.current_round and G.GAME.current_round.discards_left) or 0
+                    local discards_sub = math.max(0, discards_left)
+                    effect.reality_warp_leviathan_discards_sub = discards_sub
+                    if discards_sub > 0 then ease_discard(-discards_sub) end
+                end
+            end
         end
+
+        if blind.disabled then return end
 
         if context.press_play then
             blind.prepped = true
@@ -394,19 +435,28 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     calculate = function(self, blind, context)
-        if context.blind_disabled then
+        if context.blind_disabled or context.blind_defeated then
             if G.hand then
-                G.hand:change_size(1)
+                local hand_size_sub = take_blind_effect_delta(blind, 'reality_warp_iron_maiden_hand_size_sub')
+                if hand_size_sub ~= nil then
+                    G.hand:change_size(-hand_size_sub)
+                end
+            end
+        end
+
+        if context.setting_blind then
+            blind.effect = blind.effect or {}
+            local effect = blind.effect
+            if not effect.reality_warp_iron_maiden_setup then
+                effect.reality_warp_iron_maiden_setup = true
+                if not blind.disabled and effect.reality_warp_iron_maiden_hand_size_sub == nil and G.hand then
+                    effect.reality_warp_iron_maiden_hand_size_sub = -1
+                    G.hand:change_size(-1)
+                end
             end
         end
 
         if blind.disabled then return end
-
-        if context.setting_blind then
-            if G.hand then
-                G.hand:change_size(-1)
-            end
-        end
 
         if context.press_play then
             local played = {}; local cards = (#(G.hand.highlighted or {}) > 0 and G.hand.highlighted) or G.play.cards or {}

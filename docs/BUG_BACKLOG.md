@@ -282,15 +282,15 @@ Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/ac
 ## R2: Iron Maiden hand size is not restored on ordinary defeat; disable restoration can repeat
 
 Source: BUG_AUDIT.md R2
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed defect; HUMAN_TEST_NEEDED after review and runtime validation
 Priority: Normal
-Dependencies: 6, 19
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Dependencies: 6, 19 (effect ownership PR #4 accepted)
+State: IN_PROGRESS
+Branch: fix/iron-maiden-restoration
+PR: Pending creation after branch push
+Commit: See branch head in implementation handoff
+Manual test requirement: Required for gameplay/save/load; Iron Maiden hand size, Chicot setup/late disable, Obelisk/Leviathan remaining-resource refunds, zero-resource setups, defeat, next encounter, and cold restart are specified in REGRESSION_TESTS.md.
+Notes: Registered callbacks revalidated on accepted main 8e4c2bf. Setup markers and serializable applied deltas are stored on blind.effect; cleanup clears before refund. Lua 5.1 callback harness passes. Pre-fix Iron Maiden saves lack an ownership ledger and cannot be safely inferred; new saves carry it.
 
 ## R3: Reset-only Blind refresh compounds or erases target scaling
 
