@@ -1468,36 +1468,6 @@ SMODS.Blind {
     },
     ease_background_colour = function(self)
         ease_custom_blind_background(self)
-    end,
-    calculate = function(self, blind, context)
-        if blind.disabled then return end
-        if context.using_consumeable then
-            if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
-                local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed('code_destroy'))
-                if chosen_joker and not chosen_joker.getting_sliced then
-                    chosen_joker.getting_sliced = true
-                    reality_warp_queue_blind_event(blind, {
-                        cancelled = function() chosen_joker.getting_sliced = nil end,
-                        trigger = 'after',
-                        delay = 0.4,
-                        func = function()
-                            if chosen_joker.removed or chosen_joker.area ~= G.jokers then return true end
-                            chosen_joker:start_dissolve()
-                            play_sound('slice1', 0.96, 0.7)
-                            return true
-                        end
-                    })
-                end
-            end
-            if G.GAME and G.GAME.blind then
-                G.GAME.blind.chips = math.floor(G.GAME.blind.chips * 1.25)
-                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                return {
-                    message = 'X1.25 Target!',
-                    colour = HEX('00b4d8')
-                }
-            end
-        end
     end
 }
 

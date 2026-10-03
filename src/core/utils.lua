@@ -1049,8 +1049,9 @@ if ease_dollars then
 end
 
 -- Mountain Blind consumable check & Layered SFX for Consumables
+local function pack_consumable_returns(...) return {n = select('#', ...), ...} end
 local use_card_ref = Card.use_consumeable
-function Card:use_consumeable(area, copier)
+function Card:use_consumeable(area, copier, ...)
     if G.GAME and reality_warp_blind_is(G.GAME.blind, 'mountain') and not G.GAME.blind.disabled then
         G.GAME.mountain_disabled_hand = true
         if G.GAME.blind.wiggle then G.GAME.blind:wiggle() end
@@ -1098,7 +1099,7 @@ function Card:use_consumeable(area, copier)
         play_sound('foil1', 0.75, 0.7)
     end
 
-    local ret = use_card_ref(self, area, copier)
+    local ret = pack_consumable_returns(use_card_ref(self, area, copier, ...))
 
     -- Ensure custom/boss blind background is preserved when using any consumable during round gameplay
     if G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
@@ -1122,7 +1123,7 @@ function Card:use_consumeable(area, copier)
         end
     end
 
-    return ret
+    return unpack(ret, 1, ret.n)
 end
 
 -- Safety guard for Card:update_alert & suppression of sticker alerts
@@ -7527,41 +7528,15 @@ if Back and Back.trigger_effect then
 end
 
 
--- The Code: Consumable destruction & requirement increase
+-- The Code: one penalty per actual use, bound to its starting encounter.
 if Card and Card.use_consumeable then
     local orig_use_consumeable_code = Card.use_consumeable
-    function Card:use_consumeable(area, copier)
-        local ret = orig_use_consumeable_code(self, area, copier)
-        if G.GAME and G.GAME.blind and (G.GAME.blind.name == 'The Code' or G.GAME.blind.key == 'bl_reality_warp_code' or (G.GAME.blind.config and G.GAME.blind.config.blind and G.GAME.blind.config.blind.key == 'bl_reality_warp_code')) and not G.GAME.blind.disabled then
-            if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
-                local destroyable = {}
-                for _, j in ipairs(G.jokers.cards) do
-                    if not j.ability or not j.ability.eternal then
-                        table.insert(destroyable, j)
-                    end
-                end
-                local chosen_j = (#destroyable > 0) and pseudorandom_element(destroyable, pseudoseed('code_destruct')) or pseudorandom_element(G.jokers.cards, pseudoseed('code_destruct'))
-                if chosen_j then
-                    chosen_j.destroyed = true
-                    chosen_j:start_dissolve()
-                end
-            end
-            if G.GAME.blind.chips then
-                G.GAME.blind.chips = math.floor(G.GAME.blind.chips * 1.25)
-                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                if G.HUD_blind then G.HUD_blind:recalculate() end
-            end
-            attention_text({
-                text = 'Code Triggered! X1.25 & Joker Destroyed!',
-                scale = 0.9,
-                hold = 1.4,
-                major = G.play or G.HUD_blind,
-                backdrop_colour = HEX('00f0ff'),
-                align = 'cm'
-            })
-            play_sound('slice1', 0.8, 0.7)
-        end
-        return ret
+    function Card:use_consumeable(area, copier, ...)
+        local blind = G.GAME and G.GAME.blind
+        local token = blind and not self.debuff and reality_warp_capture_encounter(blind)
+        local ret = pack_consumable_returns(orig_use_consumeable_code(self, area, copier, ...))
+        if token then reality_warp_code_consumable_used(blind, token) end
+        return unpack(ret, 1, ret.n)
     end
 end
 

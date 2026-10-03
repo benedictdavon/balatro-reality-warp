@@ -75,3 +75,17 @@ Required runtime/manual validation: Canio, Glass Joker, standard consumable comp
 Known risks: Steamodded's `immediate` option dispatches bookkeeping synchronously but still uses native animation/removal scheduling; the API alone evaluates Eternal state once per candidate. Ares permanence now commits at `context.after`, and its existing delay applies only to visual feedback. No Balatro runtime, reload or save-codec test has been run.
 Implementation commits: `333c3fd0c27009a540369e449b22d437f3dbfef3` (initial) and `64e7576eeb9b103dfee2bd8936a5c7071fc80321` (Eternal eligibility correction); PR #6 is open.
 Review: APPROVE at `0bda04c6a299dbd303c4cb624b8ee938264f7b72` after one correction round removed redundant Eternal evaluation. Sol High independently reviewed the complete diff, callback surroundings and installed destruction contract, then reran all five Lua 5.1 harnesses and `git diff --check`; they pass. No real game or save-boundary test ran; gameplay remains HUMAN_TEST_NEEDED.
+
+## Code consumable punishment ownership
+
+Issue: BUG_AUDIT R13.
+Classification: source-confirmed duplicate punishment and Eternal eligibility defect.
+Dependencies: accepted encounter/effect/destruction contracts, main `ce82699`.
+Relevant files/functions: Code.calculate, Card:use_consumeable wrappers in utils/potions/vouchers, Potion Pouch use, blind_effects helper.
+Confirmed root cause: UI calls the use method and then using_consumeable; both independently punish. Pouch bypasses the use method/context entirely. Existing selection can fall back to Eternal Jokers.
+Required behavior: the real Card use method owns one punishment per invocation; remove duplicate Blind calculate implementation, route Pouch through the normal method and notify ordinary consumable listeners once. Capture encounter before use, revalidate afterward, exclude debuffed unsuccessful uses and removed/ineligible targets. Select among framework-destroyable Jokers, use supported destruction, increase the same encounter target once even with no eligible Joker. Preserve wrapper arguments/returns.
+Behavior that must remain unchanged: consumable effects, sound/particle/voucher hooks, UI listener coverage, normal mode, disabled Code, Doctor Jo/framework removal hooks and X1.25 amount.
+Explicitly excluded work: quantity stacking, RNG ownership, target formulas, unrelated wrapper refactors and Doctor Jo redesign.
+Required static validation: Lua 5.1 compilation and all harnesses; actual wrapper/helper callbacks under stubs for UI method plus context, repeated real uses, Pouch/direct use, all-Eternal/disabled/debuffed controls, changed encounter during use, original arguments and multiple returns.
+Required runtime/manual validation: enabled Code with three ordinary Jokers, direct use, Pouch, all-Eternal, Chicot, Doctor Jo and actual destruction counts; exact procedure in regression queue.
+Known risks: eligibility selection and committed destruction each query framework protection, so final protection is revalidated. Native animations remain queued; external mods that call a definition directly must use the normal Card method to receive Code's punishment. Balatro execution remains unavailable.

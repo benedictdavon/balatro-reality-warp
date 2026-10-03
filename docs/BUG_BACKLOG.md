@@ -425,15 +425,15 @@ Notes: Scheduler now grants one allowance per Ante. Payment/UI defect remains ac
 ## R13: The Code punishes one consumable twice and bypasses Eternal filtering
 
 Source: BUG_AUDIT.md R13
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed duplicate use-path punishment; implementation/checks complete, review pending
 Priority: Normal
-Dependencies: 6, 19
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Dependencies: 6, 19, R7 (accepted)
+State: PR_OPEN
+Branch: fix/code-consumable-punishment
+PR: Pending creation
+Commit: Pending commit
+Manual test requirement: Code UI/direct/Pouch, all-Eternal, Doctor Jo, Chicot and native event counts are specified in REGRESSION_TESTS.md; real game remains unrun.
+Notes: One Card use-method punishment, canonical identity and captured encounter ownership; duplicate Blind calculate removed. Pouch now uses the method and emits one ordinary listener context. Framework Eternal eligibility excludes invalid candidates with no fallback. Actual consumption arguments/returns compose through all three surrounding wrappers. External definition-only calls require the Card method contract.
 
 ## R14: Ante-history wrapper marks the current hand as previously played before evaluation
 
