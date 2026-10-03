@@ -355,20 +355,59 @@ if reset_blinds then
     end
 end
 
--- Mechanic 24: Divine Ward free reroll hook
-if G.FUNCS and G.FUNCS.reroll_boss then
-    local orig_reroll_boss = G.FUNCS.reroll_boss
-    G.FUNCS.reroll_boss = function(e)
-        if G.GAME and G.GAME.battle_of_gods and G.GAME.round_resets.divine_ward_free then
-            local current_dollars = G.GAME.dollars
-            orig_reroll_boss(e)
-            G.GAME.dollars = current_dollars
-            G.GAME.round_resets.divine_ward_free = false
-            attention_text({ text = 'Divine Ward: Free Reroll!', scale = 0.7, hold = 1.2, backdrop_colour = G.C.GOLD, align = 'cm', offset = {x = 0, y = -1} })
-            return
-        end
-        orig_reroll_boss(e)
+-- Mechanic 24: Divine Ward pays at the native reroll fee boundary.
+local divine_ward_reroll_price_refs = setmetatable({}, {__mode = 'k'})
+
+function reality_warp_divine_ward_free_available()
+    local game = G and G.GAME
+    local resets = game and game.round_resets
+    return not not (game and game.battle_of_gods and resets and resets.divine_ward_free)
+end
+
+function reality_warp_boss_reroll_button_visible()
+    local game = G and G.GAME
+    if not game then return false end
+    local vouchers = game.used_vouchers or {}
+    return reality_warp_divine_ward_free_available() or vouchers.v_retcon or vouchers.v_directors_cut or false
+end
+
+function reality_warp_divine_ward_reroll_button()
+    local price_ref = {
+        label = localize('$') .. (reality_warp_divine_ward_free_available() and '0' or '10')
+    }
+    local button = UIBox_button({
+        label = {localize('b_reroll_boss'), price_ref.label},
+        button = 'reroll_boss',
+        func = 'reroll_boss_button',
+        ref_table = price_ref
+    })
+    local price_text = button and button.nodes and button.nodes[1] and button.nodes[1].nodes and
+        button.nodes[1].nodes[2] and button.nodes[1].nodes[2].nodes and button.nodes[1].nodes[2].nodes[1]
+    if price_text and price_text.config then
+        price_text.config.ref_table = price_ref
+        price_text.config.ref_value = 'label'
+        divine_ward_reroll_price_refs[price_ref] = true
     end
+    return button
+end
+
+local function reality_warp_update_divine_ward_reroll_prices()
+    local label = localize('$') .. (reality_warp_divine_ward_free_available() and '0' or '10')
+    for price_ref in pairs(divine_ward_reroll_price_refs) do
+        price_ref.label = label
+    end
+end
+
+function reality_warp_pay_boss_reroll()
+    if G.from_boss_tag then return false end
+    if reality_warp_divine_ward_free_available() then
+        G.GAME.round_resets.divine_ward_free = false
+        reality_warp_update_divine_ward_reroll_prices()
+        attention_text({ text = 'Divine Ward: Free Reroll!', scale = 0.7, hold = 1.2, backdrop_colour = G.C.GOLD, align = 'cm', offset = {x = 0, y = -1} })
+        return true
+    end
+    ease_dollars(-10)
+    return false
 end
 
 

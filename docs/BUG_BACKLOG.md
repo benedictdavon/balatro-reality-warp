@@ -412,15 +412,15 @@ Notes: Canonical Mountain/Doppelganger/Pincer detectors restored. Pincer unlock 
 ## R12: Free reroll refunds by assigning dollars before delayed payment settles
 
 Source: BUG_AUDIT.md R12
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed delayed-fee/UI allowance defect; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
-Dependencies: 1
-State: AUDITED
-Branch: —
+Dependencies: Accepted encounter scheduling (PR3), canonical identity and target fixes on main f863d0c2c543c4befa481803a581847ca8fe7274
+State: IN_PROGRESS
+Branch: fix/divine-ward-reroll
 PR: —
 Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Scheduler now grants one allowance per Ante. Payment/UI defect remains actionable for its own PR.
+Manual test requirement: Required for zero/low-cash UI and delayed payment, Boss Tag, resets, Ante grant, and cold restart; exact procedure is in REGRESSION_TESTS.md.
+Notes: Native ease_dollars(-10) applies through a queued event, so the old immediate dollar snapshot/refund does not cancel payment. Native reroll UI also hides/disables the button based on voucher and $10 checks. The installed dump already includes Steamodded's priority-10 no-UI payload once, leaving exactly two post-Steamodded fee sites. The fix consumes the serialized per-Ante Ward at both native fee boundaries and derives UI allowance/price from the same state. Real-game callback/UI behavior remains unverified.
 
 ## R13: The Code punishes one consumable twice and bypasses Eternal filtering
 
