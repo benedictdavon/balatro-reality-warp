@@ -425,10 +425,10 @@ Notes: Scheduler now grants one allowance per Ante. Payment/UI defect remains ac
 ## R13: The Code punishes one consumable twice and bypasses Eternal filtering
 
 Source: BUG_AUDIT.md R13
-Classification: Source-confirmed duplicate use-path punishment; implementation/checks complete, review pending
+Classification: Source fix independently reviewed; agent checks pass; real-game validation outstanding
 Priority: Normal
 Dependencies: 6, 19, R7 (accepted)
-State: PR_OPEN
+State: HUMAN_TEST_NEEDED
 Branch: fix/code-consumable-punishment
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/7
 Commit: 8fc3d43fa92ace3818cf03ad7ca8bda805ed7d83
