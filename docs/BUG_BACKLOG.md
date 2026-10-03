@@ -334,15 +334,15 @@ Notes: See source document and dependency order; not yet implemented.
 ## R6: Arrow rank lookup uses invalid vanilla card keys
 
 Source: BUG_AUDIT.md R6
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed invalid vanilla rank-key lookup; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
-Dependencies: 6
-State: AUDITED
-Branch: —
+Dependencies: Accepted canonical identity and disabled-effect contracts (PR2/4); current scoring-stage main (PR10)
+State: IN_PROGRESS
+Branch: fix/arrow-rank-mapping
 PR: —
 Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Manual test requirement: Required for gameplay; exact procedure will be recorded in REGRESSION_TESTS.md.
+Notes: `SMODS.modify_rank` follows registered `prev`/`prev_behavior` and `SMODS.change_base` resolves registered suit/rank `card_key`s. The current Arrow callback manually constructs invalid face/numeric card keys. Preserve registered custom-rank behavior and compare base rank before/after for feedback; actual gameplay remains unverified.
 
 ## R7: Direct boss dissolution bypasses destruction-notification bookkeeping
 
