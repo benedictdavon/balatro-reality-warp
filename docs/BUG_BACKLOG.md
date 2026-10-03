@@ -233,12 +233,12 @@ Source: ISSUE.md #18
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Critical
 Dependencies: none
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: IN_PROGRESS
+Branch: fix/blind-identity-contracts
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/2
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Identity helpers and framework get_type contract corrected; scheduler commit/selected-key repair remains for next architectural PR.
 
 ## 19: Potential stale/delayed boss effects should be audited after Blind changes
 
@@ -402,12 +402,12 @@ Source: BUG_AUDIT.md R11
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 18
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/blind-identity-contracts
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/2
+Commit: See PR head/merge commit (recorded in final report)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Canonical Mountain/Doppelganger/Pincer detectors restored. Pincer unlock recalculates debuffs once and exempts Chicot; UI cleanup no longer erases Doppelganger state. Lua 5.1 compilation and identity/disabled/unlock harness passed; real game queue pending.
 
 ## R12: Free reroll refunds by assigning dollars before delayed payment settles
 

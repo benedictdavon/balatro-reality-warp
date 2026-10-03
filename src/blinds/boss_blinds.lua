@@ -659,28 +659,19 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     set_blind = function(self, reset, silent)
+        if reset then return end
         G.GAME.pinza_card_destroyed = nil
         ease_custom_blind_background(self)
-        if G.jokers and G.jokers.cards then
-            for _, j in ipairs(G.jokers.cards) do
-                local key = (j.config and j.config.center and j.config.center.key) or j.config.center_key or (j.ability and j.ability.name) or ''
-                local destroys_cards = {
-                    ['j_trading'] = true,
-                    ['j_sixth_sense'] = true,
-                    ['c_reality_warp_butcher_job'] = true,
-                    ['j_c_butcher'] = true
-                }
-                if not destroys_cards[key] then
-                    j:set_debuff(true)
-                end
-            end
+        for _, j in ipairs((G.jokers and G.jokers.cards) or {}) do
+            SMODS.recalc_debuff(j)
         end
     end,
     recalc_debuff = function(self, card, from_blind)
-        if self.disabled then return false end
+        if G.GAME.blind.disabled then return false end
         if card and card.area == G.jokers and not G.GAME.pinza_card_destroyed then
             local key = (card.config and card.config.center and card.config.center.key) or card.config.center_key or (card.ability and card.ability.name) or ''
             local destroys_cards = {
+                ['j_chicot'] = true,
                 ['j_trading'] = true,
                 ['j_sixth_sense'] = true,
                 ['c_reality_warp_butcher_job'] = true,

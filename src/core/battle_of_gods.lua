@@ -471,18 +471,6 @@ if get_new_boss then
     end
 end
 
-if Blind and Blind.get_type then
-    local orig_blind_get_type = Blind.get_type
-    function Blind:get_type()
-        if G.GAME and G.GAME.battle_of_gods and G.GAME.blind_on_deck then
-            return G.GAME.blind_on_deck
-        end
-        return orig_blind_get_type(self)
-    end
-end
-
-
-
 if Blind and Blind.defeat then
     local orig_blind_defeat = Blind.defeat
     function Blind:defeat(silent)

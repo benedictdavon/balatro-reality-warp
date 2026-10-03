@@ -21,6 +21,7 @@ end
 
 local files = {
     -- Core & Engine Hooks
+    "src/core/blind_identity.lua",
     "src/core/utils.lua",
     "src/core/localization.lua",
     "src/core/battle_of_gods.lua",
@@ -67,4 +68,3 @@ end
 if alias_all_reality_warp_centers then
     alias_all_reality_warp_centers()
 end
-                                                        

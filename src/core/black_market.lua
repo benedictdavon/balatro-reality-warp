@@ -120,15 +120,9 @@ end
 local function calculate_round_dark_coins()
     if not (G and G.GAME) then return 0, 0, 0 end
     local blind = G.GAME.blind
-    local b_name = (blind and blind.name) or ''
-    local b_key = (blind and blind.config and blind.config.blind and blind.config.blind.key) or ''
-    local states = G.GAME.round_resets and G.GAME.round_resets.blind_states
-
-    local is_boss = (blind and blind.boss) or (states and states.Boss == 'Current') or (G.GAME.blind_on_deck == 'Boss')
-    local is_showdown = is_boss and ((blind and blind.config and blind.config.blind and blind.config.blind.boss and blind.config.blind.boss.showdown) or
-       (G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.win_ante and (G.GAME.round_resets.ante % G.GAME.win_ante == 0) and G.GAME.round_resets.ante >= 2))
-
-    local is_big = not is_boss and ((states and states.Big == 'Current') or string.find(b_name, 'Big') or string.find(b_key, 'big') or G.GAME.blind_on_deck == 'Big')
+    local is_boss = reality_warp_blind_is_boss(blind)
+    local is_showdown = reality_warp_blind_is_showdown(blind)
+    local is_big = not is_boss and reality_warp_current_slot() == 'Big'
 
     local blind_coins = is_showdown and 5 or is_boss and 3 or is_big and 2 or 1
     local deck_coins = (is_boss and G.GAME.dark_merchant_deck) and 5 or 0
