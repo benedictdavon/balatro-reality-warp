@@ -568,17 +568,6 @@ SMODS.Back {
                     G.GAME.starting_params.dollars = 100
                 end
 
-                -- Balanced Ante 1 blind chips curve (4,000 base)
-                if G.GAME.round_resets and (not G.GAME.round_resets.ante or G.GAME.round_resets.ante == 1) then
-                    local base_1 = 4000
-                    if G.GAME.blind and not G.GAME.blind.disabled then
-                        local b_type = G.GAME.blind.get_type and G.GAME.blind:get_type() or 'Small'
-                        local mult = (b_type == 'Boss' and 2) or (b_type == 'Big' and 1.5) or 1
-                        G.GAME.blind.chips = math.floor(base_1 * mult)
-                        G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                    end
-                end
-
                 local cur_dollars = G.GAME.dollars or 4
                 if cur_dollars ~= 100 then
                     ease_dollars(100 - cur_dollars)

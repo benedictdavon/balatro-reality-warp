@@ -254,7 +254,7 @@ SMODS.Sticker {
     calculate = function(self, card, context)
         if context.setting_blind and not context.blueprint and G.GAME and G.GAME.blind and not card.ability.wall_blind_doubled then
             card.ability.wall_blind_doubled = true
-            G.GAME.blind.chips = G.GAME.blind.chips * 2
+            G.GAME.blind.chips = reality_warp_wall_blind_target(G.GAME.blind.chips)
             G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
         end
         if context.end_of_round and not context.repetition and not context.individual then

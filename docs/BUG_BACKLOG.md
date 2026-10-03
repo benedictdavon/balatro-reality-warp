@@ -61,15 +61,15 @@ Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/ac
 ## 5: Godly Hubris / Blind chip requirement can differ between preview and actual combat
 
 Source: ISSUE.md #5
-Classification: Source-confirmed defect; revalidate before implementation
-Priority: Normal
+Classification: Source fix independently reviewed; all agent checks pass; actual game/extension validation outstanding
+Priority: High
 Dependencies: 1, 18, R3
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/blind-target-calculation
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/9
+Commit: 8b6b0b910fb6466aade2ae2df18b7254fb3fc2c3
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Shared pure formula/native initialization hooks cover semantic Hubris, stake, showdown mult, Rod/Nectar, final cap and eligible Wall forecast; active previews read current serialized chips. Reset-only wrappers no longer scale or rebuild dynamic target. Competing shared-definition UI mutation and delayed Colosseum4000 override removed. Seven stub harnesses and exact installed Lovely pattern counts pass; actual game/number extension/conditional setup eligibility remain manual tests.
 
 ## 6: Chicot can visually disable custom bosses while their custom effects still execute
 
@@ -295,15 +295,15 @@ Notes: Registered callbacks revalidated on accepted main 8e4c2bf. Setup markers 
 ## R3: Reset-only Blind refresh compounds or erases target scaling
 
 Source: BUG_AUDIT.md R3
-Classification: Source-confirmed defect; revalidate before implementation
-Priority: Normal
+Classification: Source fix independently reviewed; all agent checks pass; actual game/extension validation outstanding
+Priority: High
 Dependencies: 1, 18
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/blind-target-calculation
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/9
+Commit: 8b6b0b910fb6466aade2ae2df18b7254fb3fc2c3
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Shared pure formula/native initialization hooks cover semantic Hubris, stake, showdown mult, Rod/Nectar, final cap and eligible Wall forecast; active previews read current serialized chips. Reset-only wrappers no longer scale or rebuild dynamic target. Competing shared-definition UI mutation and delayed Colosseum4000 override removed. Seven stub harnesses and exact installed Lovely pattern counts pass; actual game/number extension/conditional setup eligibility remain manual tests.
 
 ## R4: Blanket undebuff erases other systems' restrictions
 

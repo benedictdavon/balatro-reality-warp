@@ -324,20 +324,7 @@ if G.FUNCS and G.FUNCS.cash_out then
     end
 end
 
--- Hook: Blind:set_blind (nectar)
-if Blind and Blind.set_blind then
-    local orig_blind_set_blind_nectar = Blind.set_blind
-    function Blind:set_blind(blind, reset, silent)
-        local ret = orig_blind_set_blind_nectar(self, blind, reset, silent)
-        if G.GAME and G.GAME.used_vouchers and (G.GAME.used_vouchers.v_reality_warp_nectar or G.GAME.used_vouchers.v_nectar or G.GAME.used_vouchers.nectar) then
-            if self.chips then
-                self.chips = math.max(1, math.floor(self.chips * 0.95))
-                self.chip_text = number_format(self.chips)
-            end
-        end
-        return ret
-    end
-end
+-- Nectar target scaling is part of the shared initial requirement calculator.
 
 -- Hook: G.UIDEF.shop (nectar)
 if G.UIDEF and G.UIDEF.shop then
