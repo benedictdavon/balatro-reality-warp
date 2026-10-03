@@ -37,12 +37,12 @@ end
 -- Keep serialized Card IDs for a cold restart during a partially drained draw.
 -- The private reservation prevents same-process duplicate calls, even when
 -- Negative Cards make the native pending slot counter zero.
-local pending_game, pending_action
+local pending_actions = setmetatable({}, {__mode = 'k'})
 function reality_warp_prepare_action_draw(cards, amount)
     if not reality_warp_fixed_action_draw() then return cards, amount end
     local marker = action_marker()
     local saved = G.GAME.reality_warp_action_draw_plan
-    if pending_game == G.GAME and same_action(pending_action, marker) then return {}, 0 end
+    if same_action(pending_actions[G.GAME], marker) then return {}, 0 end
     local selected = {}
     if same_action(saved, marker) then
         for _, id in ipairs(saved.cards or {}) do
@@ -63,7 +63,7 @@ function reality_warp_prepare_action_draw(cards, amount)
         end
         G.GAME.reality_warp_action_draw_plan = marker
     end
-    pending_game, pending_action = G.GAME, marker
+    pending_actions[G.GAME] = marker
     return selected, #selected
 end
 
