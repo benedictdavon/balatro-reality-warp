@@ -324,12 +324,12 @@ Source: BUG_AUDIT.md R5
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 18
-State: IN_PROGRESS
+State: APPROVED
 Branch: fix/joker-calculation-composition
 PR: —
-Commit: —
+Commit: 62a4cf10945c28580920720c90e51af931a4ef85; correction eadc076a1f61c2db1085bc95a10afe888c83e3c2
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Revalidated against accepted main f863d0c; bounded architectural contract in IMPLEMENTATION_BRIEFS.md. Independent of pending local Arrow branch. Full chain includes the outer Potion wrapper omitted by the audit map. Publication awaits the explicit confirmation requested after automatic review required it.
+Notes: Local source implementation and independent Luna review are complete; nine harnesses and native patch-state positive/negative checks pass. One review correction normalizes supported true removal sentinels before composition. This branch is unmerged and has no PR; accepted main still contains the issue. Revalidated against accepted main f863d0c; bounded architectural contract in IMPLEMENTATION_BRIEFS.md. Independent of pending local Arrow branch. Full chain includes the outer Potion wrapper omitted by the audit map. Publication awaits the explicit confirmation requested after automatic review required it.
 
 ## R6: Arrow rank lookup uses invalid vanilla card keys
 
@@ -519,9 +519,9 @@ Source: R5 validation; tests/run.py versus current installed lovely/dump/blind.l
 Classification: Source-confirmed test infrastructure defect; blocks required local checks after dump regeneration
 Priority: Normal
 Dependencies: Original target patches PR9
-State: IN_PROGRESS
+State: FIXED
 Branch: fix/joker-calculation-composition
 PR: —
-Commit: —
+Commit: 62a4cf10945c28580920720c90e51af931a4ef85
 Manual test requirement: None for count validation; game behavior remains separate.
-Notes: The runner required exactly one pre-replacement pattern even when the current dump contains the exact complete applied payload instead. The blocking validation repair accepts exactly one original OR one complete applied payload, rejecting missing, partial, duplicate or mixed results; it does not skip the check or claim runtime gameplay verification.
+Notes: Local source fix is independently reviewed; no PR/merge yet because publication awaits required human authorization. The runner required exactly one pre-replacement pattern even when the current dump contains the exact complete applied payload instead. The blocking validation repair accepts exactly one original OR one complete applied payload, rejecting missing, partial, duplicate or mixed results; it does not skip the check or claim runtime gameplay verification.
