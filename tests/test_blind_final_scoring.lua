@@ -55,6 +55,10 @@ SMODS = {
 }
 
 dofile(REPO_ROOT .. '/src/core/blind_identity.lua')
+-- This final-score harness models only the chance API; ownership has its own native API harness.
+SMODS.pseudorandom_probability = function(_, seed, numerator, denominator)
+    return pseudorandom(seed) < numerator * G.GAME.probabilities.normal / denominator
+end
 dofile(REPO_ROOT .. '/src/blinds/boss_blinds.lua')
 
 local chronos = assert(definitions.bl_reality_warp_chronos)

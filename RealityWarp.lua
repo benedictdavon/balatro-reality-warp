@@ -31,6 +31,7 @@ local files = {
     "src/core/botg_possession.lua",
     "src/core/botg_familiars.lua",
     "src/core/botg_combat.lua",
+    "src/core/probability_rules.lua",
     "src/core/black_market.lua",
     "src/core/cauldron_synthesis.lua",
 

@@ -1388,7 +1388,7 @@ function botg_calculate_familiar(self, context)
 
     -- 13. Baby Wheel: 1 in 3 chance for scored card to give +6 to +30 Mult
     if f_key == 'c_reality_warp_baby_wheel' and context.individual and context.cardarea == G.play and context.other_card then
-        if pseudorandom('baby_wheel') < (G.GAME.probabilities.normal or 1) / 3 then
+        if SMODS.pseudorandom_probability(fam, 'baby_wheel', 1, 3) then
             local mult = 6 * fam_level
             return {
                 mult = mult,
@@ -1549,7 +1549,7 @@ function botg_calculate_familiar(self, context)
     -- 24. Baby Bell: retrigger scored cards (20% to 100% chance)
     if f_key == 'c_reality_warp_baby_bell' and context.repetition and context.cardarea == G.play then
         local chance = 0.2 * fam_level
-        if pseudorandom('baby_bell') < chance then
+        if SMODS.pseudorandom_probability(fam, 'baby_bell', chance, 1, nil, true) then
             return {
                 message = 'Again! [Baby Bell Lv.' .. fam_level .. ']',
                 repetitions = 1,
@@ -1562,7 +1562,7 @@ function botg_calculate_familiar(self, context)
     if f_key == 'c_reality_warp_baby_acorn' and (context.retrigger_joker_check or context.retrigger_joker) and G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
         if context.other_card == G.jokers.cards[#G.jokers.cards] then
             local chance = 0.2 * fam_level
-            if pseudorandom('baby_acorn') < chance then
+            if SMODS.pseudorandom_probability(fam, 'baby_acorn', chance, 1, nil, true) then
                 return {
                     message = 'Again! [Baby Acorn Lv.' .. fam_level .. ']',
                     repetitions = 1,

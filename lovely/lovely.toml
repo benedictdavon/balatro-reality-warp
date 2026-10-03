@@ -88,3 +88,23 @@ position = 'at'
 payload = """
 local blind_amt = reality_warp_preview_blind_target(blind_choice.config, G.GAME.round_resets.blind_ante, type)
 """
+
+# Complete all main/held end-of-round effects before expiring Lucky One's tokens.
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = 'G.FUNCS.draw_from_hand_to_discard()'
+match_indent = true
+position = 'before'
+times = 1
+payload = 'reality_warp_reset_lucky_round()'
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = 'G.STATE = G.STATES.GAME_OVER'
+match_indent = true
+position = 'before'
+times = 1
+payload = 'reality_warp_reset_lucky_round()'
+# End Lucky One round boundaries.

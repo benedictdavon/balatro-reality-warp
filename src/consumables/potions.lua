@@ -1581,8 +1581,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
         for _, c in ipairs(G.hand.highlighted) do
             local chosen_enh = pseudorandom_element(enhs, pseudoseed('potion_rayo_enh'))
             c:set_ability(chosen_enh)
-            local odds = ((G.GAME and G.GAME.probabilities.normal) or 1) / 5
-            if pseudorandom('potion_rayo_destroy') < odds then
+            if SMODS.pseudorandom_probability(c, 'potion_rayo_destroy', 1, 5) then
                 c.potion_rayo_destruct = true
             end
         end

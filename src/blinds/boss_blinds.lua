@@ -962,7 +962,7 @@ SMODS.Blind {
     calculate = function(self, blind, context)
         if blind.disabled then return end
         if context.after and context.scoring_hand and #context.scoring_hand > 0 then
-            if pseudorandom('ares_destroy') < G.GAME.probabilities.normal / 5 then
+            if SMODS.pseudorandom_probability(blind, 'ares_destroy', 1, 5) then
                 local destroyed_cards = reality_warp_destroy_cards(blind, context.scoring_hand)
                 if #destroyed_cards > 0 then
                     -- Destruction and its framework notifications commit in context.after;
@@ -1121,7 +1121,7 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     press_play = function(self)
-        if pseudorandom('hades_money') < G.GAME.probabilities.normal / 4 then
+        if SMODS.pseudorandom_probability(G.GAME.blind, 'hades_money', 1, 4) then
             local cur = G.GAME.dollars or 0
             if cur > 0 then
                 ease_dollars(-cur)
@@ -1142,7 +1142,7 @@ SMODS.Blind {
                 }))
             end
         end
-        if pseudorandom('hades_no_score') < G.GAME.probabilities.normal / 3 then
+        if SMODS.pseudorandom_probability(G.GAME.blind, 'hades_no_score', 1, 3) then
             G.GAME.blind.effect.reality_warp_hades_nullify = true
         else
             G.GAME.blind.effect.reality_warp_hades_nullify = false
@@ -1174,7 +1174,7 @@ SMODS.Blind {
         end
         if context.after then
             G.GAME.blind.effect.reality_warp_hades_nullify = false
-            if pseudorandom('hades_hand') < G.GAME.probabilities.normal / 10 then
+            if SMODS.pseudorandom_probability(blind, 'hades_hand', 1, 10) then
                 if G.hand and G.hand.cards and #G.hand.cards > 0 then
                     local held_cards = {}
                     for _, card in ipairs(G.hand.cards) do
