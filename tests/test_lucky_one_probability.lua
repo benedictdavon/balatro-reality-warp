@@ -357,6 +357,9 @@ modifier = function(context)
 end
 SMODS.get_probability_vars(trigger, 1, 10, 'ui-only')
 assert(#calls == 2 and owner.ability.extra.charges == 1)
+SMODS.get_probability_vars(trigger, 1, 10, 'ui-claims-from-roll', true)
+assert(#calls == 4 and owner.ability.extra.charges == 1,
+    'a direct getter claiming from_roll is still a preview without an official owned API frame')
 modifier = nil; flush(); close(owner.ability.extra.xmult, 1.5)
 assert(SMODS.pseudorandom_probability(trigger, 'real-after-ui', 1, 100))
 flush(); close(owner.ability.extra.xmult, 1.6)

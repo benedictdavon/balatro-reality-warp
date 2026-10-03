@@ -93,7 +93,7 @@ function SMODS.get_probability_vars(...)
         trigger_obj == frame.trigger and identifier == frame.identifier
     local was_preparing = frame and frame.preparing
     if official then frame.preparing = true end
-    local preview = not from_roll or simulated()
+    local preview = not official or simulated()
     if preview then simulation_depth = simulation_depth + 1 end
     local output = pack(pcall(get_vars, returns(args)))
     if preview then simulation_depth = simulation_depth - 1 end
