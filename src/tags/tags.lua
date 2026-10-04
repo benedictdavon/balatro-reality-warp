@@ -411,7 +411,8 @@ SMODS.Tag {
         name = 'Dark Alchemy Tag',
         text = {
             "Jokers in next shop and booster packs",
-            "have {C:attention}10X{} chance to be {C:dark_edition}Negative{}",
+            "have {C:dark_edition}Negative{} generation",
+            "weight multiplied by {C:attention}10X{}",
             "{C:red}+$2{} scaling reroll cost"
         }
     },

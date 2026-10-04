@@ -27,6 +27,7 @@ local files = {
     "src/core/blind_targets.lua",
     "src/core/joker_effects.lua",
     "src/core/draw_rules.lua",
+    "src/core/edition_rules.lua",
     "src/core/utils.lua",
     "src/core/localization.lua",
     "src/core/battle_of_gods.lua",
