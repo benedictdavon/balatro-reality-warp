@@ -337,12 +337,12 @@ Source: BUG_AUDIT.md R6
 Classification: Source-confirmed invalid vanilla rank-key lookup; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
 Dependencies: Accepted canonical identity and disabled-effect contracts (PR2/4); current scoring-stage main (PR10)
-State: IN_PROGRESS
+State: HUMAN_TEST_NEEDED
 Branch: fix/arrow-rank-mapping
 PR: —
-Commit: —
+Commit: 31015cf76b9637e6ddcce757b1528ce07e81690e
 Manual test requirement: Required for gameplay; exact procedure will be recorded in REGRESSION_TESTS.md.
-Notes: `SMODS.modify_rank` follows registered `prev`/`prev_behavior` and `SMODS.change_base` resolves registered suit/rank `card_key`s. The current Arrow callback manually constructs invalid face/numeric card keys. Preserve registered custom-rank behavior and compare base rank before/after for feedback; actual gameplay remains unverified.
+Notes: Local source review APPROVE at implementation commit 31015cf76b9637e6ddcce757b1528ce07e81690e. The nine Lua harnesses and Lua 5.1 compilation pass; the stock aggregate runner still has the separately documented N3 exact-pattern limitation, while an original-or-fully-applied check confirms both owned Lovely target payloads. `SMODS.modify_rank` follows registered `prev`/`prev_behavior` and `SMODS.change_base` resolves registered suit/rank `card_key`s. Actual Balatro gameplay remains unverified and required.
 
 ## R7: Direct boss dissolution bypasses destruction-notification bookkeeping
 
