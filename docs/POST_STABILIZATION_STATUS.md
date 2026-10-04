@@ -25,3 +25,15 @@ N9 requires profiling before a production fix. A runtime-only final disposition 
 POST-A1 is newly discovered outside the posted audit: Croupier high-roll retrigger flag is read/cleared but never written. Keep it separate from the sound crash, trace native repetition ordering before implementing, and report it as a residual finding if not processed in this posted pass.
 
 The original local N1/N2/N4/N5/N6 findings remain separate. No newly proposed source fix has been committed by this initial documentation PR.
+
+## Initial source revalidation
+
+Read-only Lua 5.1 checks reproduced POST-N6 on the current source: changing only numeric Ante and scheduling again advanced encounter sequence 6 to 9, replaced the defeated Small and upcoming Boss encounter IDs, and replenished a consumed Divine Ward. BOTG base requirements at Ante 0 and Ante 1 both returned 15,000. The future architectural patch must separate schedule progression from difficulty and cover Ward ownership as part of that same root cause.
+
+A check executing installed native Perishable calculation and the current Thanatos defeat wrapper produced 4 → 3 → 2 → 1 → 0 with expiration. A regular Boss defeat left the Joker expired; a showdown refreshed both an expired starter-style Perishable and another Perishable to 5, removed Rental, and retained an independent debuff through a labeled recalculation adapter. This supports current-code expiration and all-Perishable cleansing; the historical game symptom and pending trigger policy are not closed by this check.
+
+A check executing the current Echo wrapper with installed native Tag:yep reproduced two Echo Tags plus Negative yielding three Negative Tags and one remaining Echo. Tag construction/removal, lower add_tag storage and FIFO event draining were labeled adapters, so this establishes the wrapper defect without claiming real game event timing or rendering.
+
+Native Familiar persistence uses unlock_card/discover_card and Game:save_progress to serialize registered-center unlock/discovery flags. Nursery additionally checks the profile's witch_discovered_familiars record. Adoption currently changes only the active Card's flags; the eventual fix must cover successful adoption/replacement, profile persistence and Nursery together while leaving previews, declined offers and cold-run restoration unable to unlock new rewards.
+
+Public POST publication remains awaiting explicit human approval after automatic approval review rejected the push of this documentation branch. That rejection said the earlier publication authorization covered the named original branches and did not specifically authorize exporting the POST report. No POST branch has been pushed, no POST PR exists, and accepted main remains c94227daa5b08dfe7e26497fe601b19e9ebb2b02. Local review and source investigations continue; sequential dependent issue branches wait for the tracking PR's actual acceptance.
