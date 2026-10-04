@@ -362,13 +362,13 @@ Notes: Ares, Net, and Hades submit deduplicated snapshots with already-removing 
 Source: BUG_AUDIT.md R8
 Classification: Source-confirmed compatibility defect; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
-Dependencies: Accepted main 98ffbbc999263f334e4d0b9e600c746f8e4df339; R5/R6/R10 integrated
+Dependencies: None (independent API fix); integrated accepted main 98ffbbc999263f334e4d0b9e600c746f8e4df339
 State: HUMAN_TEST_NEEDED
 Branch: fix/straight-api-forwarding
-PR: —
-Commit: 19b60afda787c64d6da37de9ea43923d1893c8dc (implementation)
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/14
+Commit: 19b60afda787c64d6da37de9ea43923d1893c8dc (implementation); 528ec0d34b0bb8c249efb5e27cf12bddcba143ab (accepted-main integration)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: The current wrapper accepts only `hand`, dropping the installed four-argument detector contract and all trailing values; its numeric fallback bypasses custom rank graphs. R8 restores native/helper forwarding and retains Colorful Street through framework helpers. Sol High independently reviewed the complete immutable diff and surrounding/native dispatch contracts: APPROVE. The branch integrates accepted main 98ffbbc999263f334e4d0b9e600c746f8e4df339; the state-aware runner passes all twelve harness files, Lua 5.1 compilation, TOML/payload, installed original/applied target checks and git diff --check. No Balatro execution is claimed. ISSUE #10's historical hand remains classified STALE for its original fallback failure and stays in the regression controls; R8 addresses the separate modern API contract. Real card scoring, custom ranks, optional helper behavior and cold restart remain pending.
+Notes: The pre-fix wrapper accepted only `hand`, dropping the installed four-argument detector contract and all trailing values; its numeric fallback bypassed custom rank graphs. R8 restores native/helper forwarding and retains Colorful Street through framework helpers. Sol High independently reviewed the complete immutable diff and surrounding/native dispatch contracts: APPROVE. PR #14 is open for independent review. The branch integrates accepted main 98ffbbc999263f334e4d0b9e600c746f8e4df339; the state-aware runner passes all twelve harness files, Lua 5.1 compilation, TOML/payload, installed original/applied target checks and git diff --check. No Balatro execution is claimed. ISSUE #10's historical hand remains classified STALE for its original fallback failure and stays in the regression controls; R8 addresses the separate modern API contract. Real card scoring, custom ranks, optional helper behavior and cold restart remain pending.
 
 ## R9: Chronos and Guillotine each run at two scoring stages; Void checks before queued score addition
 
