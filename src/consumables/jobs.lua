@@ -517,7 +517,7 @@ SMODS.Sticker {
     calculate = function(self, card, context)
         if (context.main_scoring or context.individual) and context.cardarea == G.play then
             local roll = pseudorandom('dice_job', 1, 6)
-            play_sound('dice', 1.0 + roll * 0.05)
+            play_sound('generic1', 1.0 + roll * 0.05)
 
             if roll == 1 or roll == 3 then
                 local mult_val = roll * 8
