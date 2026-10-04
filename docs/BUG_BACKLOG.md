@@ -326,10 +326,10 @@ Priority: Normal
 Dependencies: 18
 State: HUMAN_TEST_NEEDED
 Branch: fix/joker-calculation-composition
-PR: —
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/12
 Commit: 62a4cf10945c28580920720c90e51af931a4ef85; correction eadc076a1f61c2db1085bc95a10afe888c83e3c2; accepted-main integration 2b0d9d3; N3 matcher correction 6856781df919d338e9fdb8b393a80e80ecd0358a
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Local source implementation and independent review are complete. The branch preserves the supported true-removal-sentinel correction and integrates accepted main add5727837c396fff2b5af12283fc3f25904d242 (including merged Arrow R6). Ten Lua harness files, Lua 5.1 compilation, TOML/payload checks, original/applied target-patch validation, and negative validator controls pass. The test runner rejects missing, partial, duplicate, and mixed target-patch states, including an original pattern combined with a partial applied payload. Runtime/save/load/optional-mod gameplay remains unverified and required.
+Notes: Local source implementation and independent review are complete; PR #12 is open for independent review. The branch preserves the supported true-removal-sentinel correction and integrates accepted main add5727837c396fff2b5af12283fc3f25904d242 (including merged Arrow R6). Ten Lua harness files, Lua 5.1 compilation, TOML/payload checks, original/applied target-patch validation, and negative validator controls pass. The test runner rejects missing, partial, duplicate, and mixed target-patch states, including an original pattern combined with a partial applied payload. Runtime/save/load/optional-mod gameplay remains unverified and required.
 
 ## R6: Arrow rank lookup uses invalid vanilla card keys
 
@@ -521,7 +521,7 @@ Priority: Normal
 Dependencies: Original target patches PR9
 State: FIXED
 Branch: fix/joker-calculation-composition
-PR: —
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/12
 Commit: 62a4cf10945c28580920720c90e51af931a4ef85; matcher correction 6856781df919d338e9fdb8b393a80e80ecd0358a
 Manual test requirement: None for count validation; game behavior remains separate.
-Notes: The runner previously required exactly one pre-replacement pattern even when the installed dump contained the complete applied payload. R5's state-aware validator now accepts exactly one original OR one complete applied payload and rejects missing, partial, duplicate, or mixed states, including an original pattern with a partial applied payload. It does not skip the check or claim runtime gameplay verification. Ten Lua harnesses, Lua 5.1 compilation, TOML and installed payload controls pass on the integrated R5 branch.
+Notes: PR #12 carries the runner fix. The runner previously required exactly one pre-replacement pattern even when the installed dump contained the complete applied payload. R5's state-aware validator now accepts exactly one original OR one complete applied payload and rejects missing, partial, duplicate, or mixed states, including an original pattern with a partial applied payload. It does not skip the check or claim runtime gameplay verification. Ten Lua harnesses, Lua 5.1 compilation, TOML and installed payload controls pass on the integrated R5 branch.
