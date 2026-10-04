@@ -712,3 +712,16 @@ PR: —
 Commit: —
 Manual test requirement: Force5/6 versus1–4, record scoring/repetition order and actual extra evaluations with Red Seal, debuff and repeated hands. Avoid self-retrigger loops.
 Notes: jobs.lua reads and clears ability.croupier_rolled_high but repository search finds no writer. Current high rolls return X2 without setting that flag. This is independently actionable from the missing-sound crash and excluded from its minimal sound patch. Do not claim high-roll retriggers were repaired by a feedback-only change.
+
+## POST-A2: One-hand Familiar reward writes Nursery discovery despite native unlock denial
+
+Source: Newly discovered during POST-N3 adoption/persistence trace; src/core/utils.lua Blind:defeat one-hand Familiar unlock path on accepted c94227d.
+Classification: Source-confirmed independent profile-policy inconsistency; outside the posted adoption finding.
+Priority: Medium
+Dependencies: Native seeded/challenge unlock policy and registered/profile discovery contracts.
+State: DISCOVERED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Fresh test profile, native seeded_unlocks=false, seeded/challenge run, defeat a mapped native Boss in one hand. Compare registered Familiar unlocked/discovered with profile witch_discovered_familiars and Nursery. Unseeded and seeded_unlocks=true positive controls should agree. No agent game execution.
+Notes: Native unlock_card/discover_card decline seeded/challenge unlocks by default, but the existing one-hand defeat wrapper writes the custom profile marker true unconditionally afterward. Nursery prioritizes that marker. This writer is independent of successful adoption/replacement and does not block an adoption-only patch that checks actual native center flags. Keep it separate; do not claim adoption fixes it or repairs already inconsistent profiles.

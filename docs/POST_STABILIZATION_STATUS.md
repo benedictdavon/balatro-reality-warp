@@ -24,6 +24,8 @@ N9 has no confirmed source culprit. Use opt-in, per-session profiling with bound
 
 POST-A1 is newly discovered outside the posted audit: Croupier high-roll retrigger flag is read/cleared but never written. Keep it separate from the sound crash, trace native repetition ordering before implementing, and report it as a residual finding if not processed in this posted pass.
 
+POST-A2 is a separate source-confirmed writer outside adoption: the one-hand Familiar reward calls native unlock/discover then writes the Nursery profile marker regardless of seeded/challenge denial. An adoption-only patch must respect native policy and must not claim to fix that writer or existing inconsistent profiles. Test adoption on a fresh profile without a prior one-hand reward; keep the independent writer in the residual queue.
+
 The original local N1/N2/N4/N5/N6 findings remain separate. Local POST-N7, POST-N4 and POST-N6 source/test commits exist and are independently approved, but are unpublished and not part of accepted main. N6 is locally implemented and independently reviewed; Familiar adoption N3 is the next independent source task; other independent work may be prepared from a refreshed accepted main without creating dependent stacked branches.
 
 ## Initial source revalidation
