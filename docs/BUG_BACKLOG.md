@@ -105,8 +105,8 @@ Priority: Normal
 Dependencies: R5
 State: HUMAN_TEST_NEEDED
 Branch: docs/helin-exponent-validation
-PR: Publication pending
-Commit: Pending validation commit
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/21
+Commit: ec9470cbf18e9eb9d91ca9fd862a68b9653e3fc1 (source validation)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
 Notes: Fresh branch from accepted adf2df084fee06bbdb6036f61ae6d8e7905f2402. Actual Amulet registration and individual dispatcher consume e_mult, emult and Emult_mod. Source-extracted Helin/native Blueprint through accepted R5 composition yields144/20736/429981696 from12 with0/1/2 copies, both numeric fallback and supported dispatch. Actual installed Omega under LuaJIT also verifies these values and1e400→1e800. Modes append after original exponent; copy eligibility and0/1 controls pass. Seventeen stock harnesses and Lua5.1/TOML/native target checks pass. The audit unsupported-field premise is contradicted; do not replace the supported effect with direct mutation. A labeled Card eligibility adapter, ordered effect-chain/scoring-parameter sinks and UI sinks do not establish real game ordering or reproduce historical inventory. Actual Joker position governs subsequent XMult: exponent then×2 gives288, ×2 then exponent gives576. End-of-scoring tooltip interpretation is recorded for human validation, not silently redesigned. HUMAN_TEST_NEEDED, no production change or Balatro execution.
 

@@ -17,7 +17,7 @@ All 34 original labels are inventoried: 29 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | #5 | Godly Hubris / Blind chip requirement can differ between preview and actual combat | HUMAN_TEST_NEEDED | fix/blind-target-calculation | [PR 9](https://github.com/benedictdavon/balatro-reality-warp/pull/9); [N7 PR20](https://github.com/benedictdavon/balatro-reality-warp/pull/20) (accepted) |
 | #6 | Chicot can visually disable custom bosses while their custom effects still execute | HUMAN_TEST_NEEDED | fix/blind-effect-ownership | [PR 4](https://github.com/benedictdavon/balatro-reality-warp/pull/4) |
 | #7 | Ouroboros does not reliably enforce “always draw 3 cards” after Play or Discard | HUMAN_TEST_NEEDED | fix/round-action-draws | [PR 13](https://github.com/benedictdavon/balatro-reality-warp/pull/13) |
-| #8 | Helin's exponent effect can do nothing in big-number mode | HUMAN_TEST_NEEDED | docs/helin-exponent-validation | Source checks complete; publication pending |
+| #8 | Helin's exponent effect can do nothing in big-number mode | HUMAN_TEST_NEEDED | docs/helin-exponent-validation | [PR21](https://github.com/benedictdavon/balatro-reality-warp/pull/21), review pending |
 | #9 | Colosseum starting Perishable Stencils can expire, then become active again | HUMAN_TEST_NEEDED | fix/blind-effect-ownership | [PR 4](https://github.com/benedictdavon/balatro-reality-warp/pull/4) |
 | #10 | Shortcut failed a valid one-gap Straight | STALE | — | Source disposition |
 | #11 | Baby Mark appeared to trigger roughly ten times from one Red Seal Polychrome King | HUMAN_TEST_NEEDED | docs/baby-mark-retrigger-validation | [PR 16](https://github.com/benedictdavon/balatro-reality-warp/pull/16) |
@@ -73,7 +73,7 @@ All 34 original labels are inventoried: 29 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | [PR19](https://github.com/benedictdavon/balatro-reality-warp/pull/19) | docs/ares-vessel-discard-validation | 2 | ca0f92ace6828911e1286e441a41c41e0c434b07 | b28bcc4c3eaf802ffd9aa3f58e8fb619d88fb905 | 0474ed39013d53bd96f3af08fb956832a644afe1 |
 | [PR20](https://github.com/benedictdavon/balatro-reality-warp/pull/20) | fix/vessel-target-key | N7 / #5 | 0c1e38fc3a32d1818efcebad4cb295e5b7799add | 57d541ec20c6f85d9d05c42e03816a9652f304d7 | adf2df084fee06bbdb6036f61ae6d8e7905f2402 |
 
-Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 PR20 was accepted and merged. #8 source-validation publication remains pending.
+Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 PR20 was accepted and merged. #8 PR21 is open at source validation ec9470cbf18e9eb9d91ca9fd862a68b9653e3fc1; acceptance pending.
 
 ## Validation and limits
 
