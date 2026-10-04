@@ -89,6 +89,40 @@ payload = """
 local blind_amt = reality_warp_preview_blind_target(blind_choice.config, G.GAME.round_resets.blind_ante, type)
 """
 
+# Divine Ward takes the native fee boundary; match both native and Steamodded's no-UI route.
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''if not G.from_boss_tag then ease_dollars(-10) end'''
+match_indent = true
+position = 'at'
+times = 2
+payload = '''if not G.from_boss_tag then reality_warp_pay_boss_reroll() end'''
+
+# Ward availability may expose the native button without a voucher or $10; native logic handles paid controls afterward.
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''if ((G.GAME.dollars-G.GAME.bankrupt_at) - 10 >= 0) and
+      (G.GAME.used_vouchers["v_retcon"] or
+      (G.GAME.used_vouchers["v_directors_cut"] and not G.GAME.round_resets.boss_rerolled)) then'''
+match_indent = true
+position = 'at'
+times = 1
+payload = '''if reality_warp_divine_ward_free_available() or (((G.GAME.dollars-G.GAME.bankrupt_at) - 10 >= 0) and
+      (G.GAME.used_vouchers["v_retcon"] or
+      (G.GAME.used_vouchers["v_directors_cut"] and not G.GAME.round_resets.boss_rerolled))) then'''
+
+# Create the button for a free Ward use and bind its private price label to native UIElement:update_text.
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''(G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
+        UIBox_button({label = {localize('b_reroll_boss'), localize('$')..'10'}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil'''
+match_indent = true
+position = 'at'
+times = 1
+payload = '''reality_warp_boss_reroll_button_visible() and reality_warp_divine_ward_reroll_button() or nil'''
 # Apply owned physical-card draw rules after Steamodded's slot-cost/Serpent selection.
 [[patches]]
 [patches.pattern]
