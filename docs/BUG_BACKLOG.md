@@ -30,7 +30,7 @@ Branch: docs/ares-vessel-discard-validation
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/19
 Commit: ca0f92ace6828911e1286e441a41c41e0c434b07 (source validation)
 Manual test requirement: Exact isolated game procedure in REGRESSION_TESTS.md; no Balatro execution.
-Notes: Fresh branch from accepted d0f83b461d0777ffb52bb2a1af727f0906f7c967. Source-extracted native/Steamodded press-play dispatch, real registered Violet Vessel record, current Ares/Minotaur callbacks and possessed Hook exercise separate owners. Ares/Vessel cause no held-card discard; Ares destroys only scored cards after scoring. Native Hook and Minotaur discard two distinct held cards. Actual defeat wrapper, disabled state and reused same-key/new-ID encounters cancel stale Minotaur events. Possessed Hook remains an independent once/action owner while the Blind is disabled. All 16 Lua harnesses, Lua 5.1 compilation and shipping target/native-boundary controls pass. Luna's draft was taken over after a usage-limit failure; Sol corrected the native fixture and reviewed surrounding contracts. No speculative production change. Historical exact inventory remains unavailable.
+Notes: Fresh branch from accepted d0f83b461d0777ffb52bb2a1af727f0906f7c967. Source-extracted native/Steamodded press-play dispatch, real registered Violet Vessel record, current Ares/Minotaur callbacks and possessed Hook exercise separate owners. Ares/Vessel cause no held-card discard; Ares destroys only scored cards after scoring. Native Hook and Minotaur discard two distinct held cards. Actual defeat wrapper, disabled state and reused same-key/new-ID encounters cancel stale Minotaur events. Possessed Hook remains an independent once/action owner while the Blind is disabled. All 16 Lua harnesses, Lua 5.1 compilation and shipping target/native-boundary controls pass. Luna's draft was taken over after a usage-limit failure; Sol corrected the native fixture and reviewed surrounding contracts. No speculative production change. Historical exact inventory remains unavailable. PR19 accepted at 0474ed39013d53bd96f3af08fb956832a644afe1.
 
 ## 3: Athena can display one required poker hand and enforce another
 
@@ -69,7 +69,7 @@ Branch: fix/blind-target-calculation
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/9
 Commit: 8b6b0b910fb6466aade2ae2df18b7254fb3fc2c3
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Shared pure formula/native initialization hooks cover semantic Hubris, stake, showdown mult, Rod/Nectar, final cap and eligible Wall forecast; active previews read current serialized chips. Reset-only wrappers no longer scale or rebuild dynamic target. Competing shared-definition UI mutation and delayed Colosseum4000 override removed. Seven stub harnesses and exact installed Lovely pattern counts pass; actual game/number extension/conditional setup eligibility remain manual tests.
+Notes: Shared pure formula/native initialization hooks cover semantic Hubris, stake, showdown mult, Rod/Nectar, final cap and eligible Wall forecast; active previews read current serialized chips. Reset-only wrappers no longer scale or rebuild dynamic target. Competing shared-definition UI mutation and delayed Colosseum4000 override removed. Seven stub harnesses and exact installed Lovely pattern counts pass; actual game/number extension/conditional setup eligibility remain manual tests. Corrective N7 restores the actual native Vessel key in its own branch; see N7.
 
 ## 6: Chicot can visually disable custom bosses while their custom effects still execute
 
@@ -303,7 +303,7 @@ Branch: fix/blind-target-calculation
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/9
 Commit: 8b6b0b910fb6466aade2ae2df18b7254fb3fc2c3
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Shared pure formula/native initialization hooks cover semantic Hubris, stake, showdown mult, Rod/Nectar, final cap and eligible Wall forecast; active previews read current serialized chips. Reset-only wrappers no longer scale or rebuild dynamic target. Competing shared-definition UI mutation and delayed Colosseum4000 override removed. Seven stub harnesses and exact installed Lovely pattern counts pass; actual game/number extension/conditional setup eligibility remain manual tests.
+Notes: Shared pure formula/native initialization hooks cover semantic Hubris, stake, showdown mult, Rod/Nectar, final cap and eligible Wall forecast; active previews read current serialized chips. Reset-only wrappers no longer scale or rebuild dynamic target. Competing shared-definition UI mutation and delayed Colosseum4000 override removed. Seven stub harnesses and exact installed Lovely pattern counts pass; actual game/number extension/conditional setup eligibility remain manual tests. Corrective N7 restores the actual native Vessel key in its own branch; see N7.
 
 ## R4: Blanket undebuff erases other systems' restrictions
 
@@ -578,9 +578,9 @@ Source: Original #5 follow-up discovered during #2 source validation; not POST
 Classification: Source-confirmed regression in accepted unified target helper
 Priority: High
 Dependencies: 5, R3; finish #2 branch first
-State: READY
-Branch: fix/vessel-target-key (planned)
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/vessel-target-key
+PR: Publication pending
+Commit: Pending implementation commit
 Manual test requirement: BOTG base ×8 and ordinary native base ×6, preview/selection/runtime/reset/cold restart with exact versions, salt and modifiers recorded.
-Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR9's helper and synthetic fixture copied the nonexistent key, causing actual Colosseum Vessel to use generic5 instead of its prior8. Separate smallest canonical-key correction and real native fixture required before original-goal completion.
+Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR9's helper and synthetic fixture copied the nonexistent key, causing actual Colosseum Vessel to use generic5 instead of its prior8. The smallest canonical-key correction restores8. The target fixture now source-extracts actual native Vessel metadata, checks ordinary6 and localized-name-spoof5, and retains the full preview/runtime/modifier/slot/reset matrix. All16 stock harnesses and Lua5.1/TOML/native boundary checks pass. No game execution.

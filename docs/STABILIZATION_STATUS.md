@@ -1,17 +1,17 @@
 # Stabilization status and review queue
 
-Snapshot: accepted main/origin/main d0f83b461d0777ffb52bb2a1af727f0906f7c967 (PR 18). PRs 1–18 are accepted. This #2 validation branch starts from that accepted main. Public publication and controlled merging after technical approval are authorized.
+Snapshot: accepted main/origin/main 0474ed39013d53bd96f3af08fb956832a644afe1 (PR19). PRs1–19 are accepted. This separate N7 correction starts from that accepted main. Public publication and controlled merging after technical approval are authorized.
 
 AGENTS.md, ISSUE.md and BUG_AUDIT.md are tracked. POST_SOL_RUNTIME_FINDINGS.md remains untouched and untracked; POST work is deferred.
 
-All 34 original labels are inventoried: 28 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG and 2 READY. Original stabilization remains incomplete: publish/accept #2 validation, correct N7 (original #5 regression), then fresh #8 and #13 branches. No Balatro execution or cold-runtime verification is claimed.
+All 34 original labels are inventoried: 28 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG and 2 READY. Original stabilization remains incomplete: accept the N7 correction (original #5 regression), then fresh #8 and #13 branches. No Balatro execution or cold-runtime verification is claimed.
 
 ## Original findings
 
 | ID | Finding | Disposition | Branch | PR / acceptance |
 | --- | --- | --- | --- | --- |
 | #1 | Battle of Gods / Colosseum can display one Blind while a different Blind or effect is actually active | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
-| #2 | Ares / Violet Vessel sometimes behave like The Hook / Minotaur and discard two random cards | HUMAN_TEST_NEEDED | docs/ares-vessel-discard-validation | [PR 19](https://github.com/benedictdavon/balatro-reality-warp/pull/19), open for review |
+| #2 | Ares / Violet Vessel sometimes behave like The Hook / Minotaur and discard two random cards | HUMAN_TEST_NEEDED | docs/ares-vessel-discard-validation | [PR 19](https://github.com/benedictdavon/balatro-reality-warp/pull/19) (accepted) |
 | #3 | Athena can display one required poker hand and enforce another | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
 | #4 | The Net can display one target rank and destroy another | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
 | #5 | Godly Hubris / Blind chip requirement can differ between preview and actual combat | HUMAN_TEST_NEEDED | fix/blind-target-calculation | [PR 9](https://github.com/benedictdavon/balatro-reality-warp/pull/9); N7 correction required |
@@ -70,12 +70,13 @@ All 34 original labels are inventoried: 28 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | [PR 16](https://github.com/benedictdavon/balatro-reality-warp/pull/16) | docs/baby-mark-retrigger-validation | 11 | 74e5961fc2407d6c14ed477e12af05308e0d6eed | 530060dc63361335ae8af19f8d688d9b90d07b5e | c7879d9ad4c170a565c0a3d438a4bdf05a852982 |
 | [PR 17](https://github.com/benedictdavon/balatro-reality-warp/pull/17) | fix/lucky-one-rng | 14 | c53fffc6a9fac38f2a2816b3e9359cd706e54bb3 | a8319d6f1b9ed06751b60822c0115d794a0b9a8e | 36c4283213cf841e0e7cc32088cc9a0cd482e4be |
 | [PR 18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) | docs/consumable-stacking-disposition | 12, 20 | c6c78485bb752df26e8347c313465875b93b0548 | 6987331795c0b0cc659fe01adc8708440ae816c1 | d0f83b461d0777ffb52bb2a1af727f0906f7c967 |
+| [PR19](https://github.com/benedictdavon/balatro-reality-warp/pull/19) | docs/ares-vessel-discard-validation | 2 | ca0f92ace6828911e1286e441a41c41e0c434b07 | b28bcc4c3eaf802ffd9aa3f58e8fb619d88fb905 | 0474ed39013d53bd96f3af08fb956832a644afe1 |
 
-Correction and integration commits remain in the linked accepted PR histories. PR 19 is open at source-validation commit ca0f92ace6828911e1286e441a41c41e0c434b07; final approval/merge remains pending.
+Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 correction publication is pending; no merge is assumed.
 
 ## Validation and limits
 
-This candidate on accepted main has 16 passing focused Lua harnesses, Lua 5.1 source compilation, shipping TOML/payload compilation and original-or-fully-applied native boundary validation. Lucky additionally passes actual installed Amulet Omega probability-ratio checks under LuaJIT and in-memory original/full/mixed/duplicate reset fixtures. Mark exercises actual native scoring and copy callbacks with labeled UI/event/card adapters. Real games, cold restart, optional-mod interplay and scheduling remain human tests. The #2 branch adds one focused source fixture and updates four Markdown files; it verifies source inventory, every original row, accepted Git ancestry, immutable provenance and the complete diff. No installed dump or save is modified.
+This candidate on accepted main has 16 passing focused Lua harnesses, Lua 5.1 source compilation, shipping TOML/payload compilation and original-or-fully-applied native boundary validation. Lucky additionally passes actual installed Amulet Omega probability-ratio checks under LuaJIT and in-memory original/full/mixed/duplicate reset fixtures. Mark exercises actual native scoring and copy callbacks with labeled UI/event/card adapters. Real games, cold restart, optional-mod interplay and scheduling remain human tests. The N7 branch corrects one canonical key and the native target fixture, and updates four Markdown files; it verifies source inventory, every original row, accepted Git ancestry, immutable provenance and the complete diff. No installed dump or save is modified.
 
 ## New findings outside the original audit
 
@@ -87,7 +88,7 @@ This candidate on accepted main has 16 passing focused Lua harnesses, Lua 5.1 so
 | N4 | Familiar outer draw wrapper drops native early return and extra arguments, even without a Familiar. | Separate return-preservation fix after revalidation. |
 | N5 | Colorful flush/isSuit can count removed or out-of-area owners. | Separate live-owner fix. |
 | N6 | Hypnotist clears independently owned playing-card debuffs after native disable. | Separate owned-cleanup fix. |
-| N7 | Actual Violet Vessel key is bl_final_vessel; unified helper uses nonexistent bl_vessel. | Required separate corrective follow-up to original #5 before completion. |
+| N7 | Actual Violet Vessel key is bl_final_vessel; unified helper uses nonexistent bl_vessel. | Canonical source correction and actual native fixture complete; publication/review pending; HUMAN_TEST_NEEDED. |
 
 These local N identifiers are distinct from the deferred POST report. A Black Hole sequential exponentiation, B Perfectionism Negative replacement and C Upgrade Roulette pre-scoring progression remain NOT_A_BUG. #10 and R14 are STALE because the implicated wrappers are absent; R8 independently fixes current API forwarding. #20 is STALE because its quantity badge is absent. #12 records an optional feature gap, without claiming a working stack model.
 
