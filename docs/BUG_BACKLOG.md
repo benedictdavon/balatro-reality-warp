@@ -588,4 +588,18 @@ Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR
 
 ## Original stabilization acceptance checkpoint
 
-Original ISSUE #1–20 and audit R1–R14 are all accounted for: 30 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG. Accepted source main is 52f76d72e9a980275446fb9707640288c573f139. All source candidates were reviewed and merged; no original label is BLOCKED or awaiting publication. STABILIZATION_STATUS.md contains the final branch/PR/commit ledger, validation limits, complete human queue, residual risks and recommended end-to-end sequence. POST work remains deferred; local N1/N2/N4/N5/N6 remain separately documented outside the original audit. No Balatro execution is claimed.
+Original ISSUE #1–20 and audit R1–R14 are all accounted for: 30 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG. Accepted source main is 52f76d72e9a980275446fb9707640288c573f139. All source candidates were reviewed and merged; no original label is BLOCKED or awaiting publication. STABILIZATION_STATUS.md contains the final branch/PR/commit ledger, validation limits, complete human queue, residual risks and recommended end-to-end sequence. At that original checkpoint, POST work was deferred; local N1/N2/N4/N5/N6 remain separately documented outside the original audit. No Balatro execution is claimed.
+
+
+## POST-N7: Croupier/Dice sticker requests a missing sound
+
+Source: User-reported POST-N7 runtime crash, revalidated against `src/consumables/jobs.lua` and installed native sound code.
+Classification: Source-confirmed invalid sound key; HUMAN_TEST_NEEDED for audio runtime.
+Priority: Critical
+Dependencies: No code dependency beyond accepted main `c94227daa5b08dfe7e26497fe601b19e9ebb2b02`; POST tracking publication remains a separate administrative gate.
+State: IN_PROGRESS; local source/tests are ready for independent review.
+Branch: fix/croupier-missing-sound
+PR: — (public POST publication awaits explicit human authorization)
+Commit: 27377d3b9529d349d234516f05450e95a4ea5902 (local source/test implementation; independent review pending)
+Manual test requirement: EYEFTHTG with recorded salt/versions, White stake, Red Deck and Colosseum; apply Dice to a playing card and check sound enabled/muted, die outcomes1–6, normal/Red Seal repeated scoring and cold restart. No Balatro execution has been claimed.
+Notes: The scoring callback samples `pseudorandom('dice_job', 1, 6)` once and then requests `play_sound('dice', 1.0 + roll * 0.05)`. The native sound manager falls back to `resources/sounds/<key>.ogg`; the inspected local Balatro archive contains `generic1.ogg` and no `dice.ogg`. Replace only the key with `generic1`; preserve pitch, score fields, messages, RNG and call count. POST-A1 is distinct: scoring still has no producer for `ability.croupier_rolled_high`; its existing repetition callback only reads/clears that flag. This patch does not implement or claim high-roll retrigger behavior.

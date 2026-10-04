@@ -353,6 +353,22 @@ Accepted base:475b549498f2bc693524f428c7cd3b6a7ca72729. Sol implements directly 
 
 Independent Luna review: APPROVE at a3b34017c84f9c50d4be13d5a6ace3c36a8ed8bb; complete nine-file diff and actual native contracts checked, all18 harnesses and Lua5.1/TOML/native controls independently passed. No production/test correction requested; historical prerequisite wording clarified for current accepted base. No game execution.
 
+
+## POST-N7: Croupier/Dice missing sound
+
+Issue: POST-N7; user reported a sound-manager crash when the Croupier/Dice sticker is scored.
+Classification: Source-confirmed invalid sound key; HUMAN_TEST_NEEDED for the real audio runtime.
+Dependencies: Accepted base `c94227daa5b08dfe7e26497fe601b19e9ebb2b02`. The POST tracking branch is not a code dependency; public POST publication remains unauthorized pending human approval.
+Relevant files/functions: `src/consumables/jobs.lua` Croupier sticker `calculate`; installed native `play_sound` and sound-manager fallback; local packaged Balatro sound archive; `tests/test_croupier_missing_sound.lua`; `tests/run.py`; Croupier backlog and regression entry.
+Confirmed root cause: The registered sticker calls `play_sound('dice', 1.0 + roll * 0.05)`. Native sound lookup falls back to `resources/sounds/<key>.ogg`; the inspected Balatro executable archive has `generic1.ogg` and no `dice.ogg`.
+Required behavior: Change only `dice` to `generic1`. Preserve the original pitch and two-argument call, one `pseudorandom('dice_job', 1, 6)` sample, scoring effects and every returned field. The source-extracted registered-sticker regression must cover main-scoring and individual G.play contexts, outcomes1–6, and non-play/non-scoring controls with no sample/sound.
+Behavior that must remain unchanged: Die distribution; +8 Mult/pip, +30 Chips/pip and X2 outputs, text/colors/Card reference; sound call count/arity and pitch; existing repetition callback; other jobs/stickers; wrapper order and balance.
+Explicitly excluded work: POST-A1 `croupier_rolled_high` flag producer; no repetition lifecycle or scoring changes, custom asset/sound registration, RNG/global wrappers or unrelated POST findings.
+Required static validation: Lua5.1 whole-repository compilation and all current source harnesses/TOML/native patch checks; new sticker harness with exact output-field, seeded range/sample, sound-key/pitch/arity and negative-context assertions; read-only local Balatro archive check confirming generic1 present and dice absent (SKIP when that host archive is unavailable); inspect status/stat/full diff and diffcheck. Tests must not claim real game/audio-thread execution.
+Required runtime/manual validation: EYEFTHTG, record salt and exact versions, White stake, Red Deck and Colosseum, Dice/Croupier playing card. Test sound on/off; die1–6; ordinary/Red Seal repeated scoring; cold restart. Confirm no missing asset/audio-thread crash and unchanged score/message/RNG behavior. Record the 5/6 retrigger symptom separately as POST-A1; do not state the sound fix repairs it.
+Known risks: The replacement sound may have different timbre. Headless call spies and archive inspection cannot verify real audio-thread behavior. Manual Balatro validation remains required. Publication of this POST-derived payload is expressly withheld pending fresh human approval.
+Local validation at implementation commit `27377d3b9529d349d234516f05450e95a4ea5902`: all19 harnesses, Lua5.1 compilation, TOML/native target-payload controls and the local packaged sound-archive check passed. No Balatro/audio-thread execution. Independent review is pending; do not publish until explicit human POST approval.
+
 ## Final original stabilization report
 
 Issue: Close the original ISSUE #1–20 / BUG_AUDIT R1–R14 acceptance ledger after actual PR22 merge.
