@@ -490,7 +490,7 @@ SMODS.Joker {
         name = 'Lucky One',
         text = {
             "Every {C:attention}5{} scored {C:clubs}Clubs{}, the next",
-            "{C:green}probability{} is guaranteed {C:green}(1 in 1){}.",
+            "modifiable {C:green}probability{} is guaranteed {C:green}(1 in 1){}.",
             "{C:inactive}(#2#/5 Clubs, #3# - Resets at end of round){}",
             "Gains {X:mult,C:white}+X#1#{} Mult when any probability succeeds",
             "{C:inactive}(Currently {X:mult,C:white}X#4#{C:inactive} Mult){}"
@@ -501,44 +501,31 @@ SMODS.Joker {
         "{C:inactive}(Hearts, Spades, Clubs, Diamonds){}",
         "in a single run"
     },
-    config = { extra = { xmult = 1.5, xmult_gain = 0.1, clubs_scored = 0, clubs_needed = 5, guaranteed = false } },
+    config = { extra = { xmult = 1.5, xmult_gain = 0.1, clubs_scored = 0, clubs_needed = 5, charges = 0 } },
     rarity = 3,
     pos = { x = 6, y = 3 },
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
         local ex = (card and card.ability and card.ability.extra) or self.config.extra
-        local status = (ex and ex.guaranteed) and "Guaranteed!" or "Pending"
+        local charges = reality_warp_lucky_charges(card or {ability = {extra = ex}})
+        local status = charges > 0 and ("Guaranteed! x" .. charges) or "Pending"
         return { vars = { ex.xmult_gain or 0.1, ex.clubs_scored or 0, status, ex.xmult or 1.5 } }
     end,
     check_for_unlock = check_all_suits_flushed_unlock,
     calculate = function(self, card, context)
         card.ability.extra = card.ability.extra or {}
 
-        if context.individual and context.cardarea == G.play and not context.blueprint then
-            if context.other_card:is_suit('Clubs') then
-                card.ability.extra.clubs_scored = (card.ability.extra.clubs_scored or 0) + 1
-                if card.ability.extra.clubs_scored >= (card.ability.extra.clubs_needed or 5) then
-                    card.ability.extra.clubs_scored = 0
-                    card.ability.extra.guaranteed = true
-                    if G.GAME then G.GAME.lucky_one_guaranteed = true end
-                    return {
-                        message = 'Guaranteed Next!',
-                        colour = G.C.GREEN,
-                        card = card
-                    }
-                else
-                    return {
-                        message = 'Club ' .. card.ability.extra.clubs_scored .. '/5',
-                        colour = G.C.CLUBS,
-                        card = card
-                    }
-                end
-            end
+        local charged = reality_warp_lucky_scored_club(card, context)
+        if charged ~= nil then
+            return {
+                message = charged and 'Guaranteed Next!' or ('Club ' .. card.ability.extra.clubs_scored .. '/5'),
+                colour = charged and G.C.GREEN or G.C.CLUBS,
+                card = card
+            }
         end
 
-        if context.individual and context.other_card and context.other_card.lucky_trigger and not context.blueprint then
-            card.ability.extra.xmult = (card.ability.extra.xmult or 1.5) + (card.ability.extra.xmult_gain or 0.1)
+        if reality_warp_lucky_probability_success(card, context) then
             return {
                 extra = { focus = card, message = '+X' .. (card.ability.extra.xmult_gain or 0.1) .. ' Mult!', colour = G.C.MULT },
                 card = card
@@ -551,11 +538,6 @@ SMODS.Joker {
             }
         end
 
-        if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
-            card.ability.extra.clubs_scored = 0
-            card.ability.extra.guaranteed = false
-            if G.GAME then G.GAME.lucky_one_guaranteed = false end
-        end
     end
 }
 
@@ -1036,11 +1018,10 @@ SMODS.Joker {
         end
         if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
             local hands_played = (G.GAME and G.GAME.current_round and G.GAME.current_round.hands_played) or 1
-            local prob = (G.GAME and G.GAME.probabilities.normal) or 1
             local odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 5
             if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
                 for i = 1, hands_played do
-                    if pseudorandom('radiation_debuff') < (prob / odds) then
+                    if SMODS.pseudorandom_probability(card, 'radiation_debuff', 1, odds) then
                         local candidates = {}
                         for _, j in ipairs(G.jokers.cards) do
                             if not j.debuff then
@@ -1146,9 +1127,8 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if (context.starting_shop or context.open_shop) and not context.blueprint then
-            local prob = (G.GAME and G.GAME.probabilities.normal) or 1
             local odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 4
-            if pseudorandom('orchestra_director') < (prob / odds) then
+            if SMODS.pseudorandom_probability(card, 'orchestra_director', 1, odds) then
                 -- Find a joker in the shop and zero its cost
                 G.E_MANAGER:add_event(Event({
                     trigger = 'after',
@@ -1432,9 +1412,8 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.joker_main then
-            local prob = (G.GAME and G.GAME.probabilities.normal) or 1
             local odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 3
-            if pseudorandom('catalyst') < (prob / odds) then
+            if SMODS.pseudorandom_probability(card, 'catalyst', 1, odds) then
                 local others = {}
                 if G.jokers and G.jokers.cards then
                     for _, jk in ipairs(G.jokers.cards) do
@@ -1568,9 +1547,8 @@ SMODS.Joker {
         if context.setting_blind and not context.blueprint then
             card.ability.extra.hypnotized = false
             if G.GAME and G.GAME.blind and G.GAME.blind.boss then
-                local prob = (G.GAME and G.GAME.probabilities.normal) or 1
                 local odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 3
-                if pseudorandom('hypnotist') < (prob / odds) then
+                if SMODS.pseudorandom_probability(card, 'hypnotist', 1, odds) then
                     card.ability.extra.hypnotized = true
                     if G.GAME.blind.disable then
                         G.GAME.blind:disable()

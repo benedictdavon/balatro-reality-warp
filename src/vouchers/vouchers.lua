@@ -184,7 +184,7 @@ if Card and Card.use_consumeable then
         local saved_key = (self.config and self.config.center and self.config.center.key) or (self.ability and self.ability.name)
 
         if voucher_chance > 0 and not copier and saved_key and saved_key ~= '' then
-            if pseudorandom('destilacion_voucher') < (voucher_chance / 100) then
+            if SMODS.pseudorandom_probability(self, 'destilacion_voucher', voucher_chance, 100, nil, true) then
                 will_recreate = true
             end
         end

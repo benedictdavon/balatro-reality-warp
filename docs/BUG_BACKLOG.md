@@ -178,15 +178,15 @@ Notes: See source document and dependency order; not yet implemented.
 ## 14: Lucky One probability logic has historically been broader than the tooltip suggests
 
 Source: ISSUE.md #14
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source fix independently reviewed and locally approved; actual game validation outstanding
 Priority: Normal
-Dependencies: none
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Dependencies: Accepted R5 composition, R6 Arrow, round-action draw, R8 forwarding, R12 reroll, and ISSUE #11 validation are integrated on current accepted main `c7879d9ad4c170a565c0a3d438a4bdf05a852982`.
+State: HUMAN_TEST_NEEDED
+Branch: fix/lucky-one-rng
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/17
+Commit: c53fffc6a9fac38f2a2816b3e9359cd706e54bb3 (implementation); 305ad622a5bcf03dab0498be6e8a4f88abad76b2 (unowned preview correction); 39a503d6c5701427709ba2cb342c752fd5485a6e (Blueprint/retrigger controls); 288e6ba4720326f4189aaad41ed061d4d98f88eb (Echo/Miner correction); f0cc1ed64b38a823ad2c25785bc582541e20216e (accepted-main merge); 65aef4ef908d64955f6155b8b37385c866f4c954 (integrated harness adapters)
+Manual test requirement: Exact seeded Club/token, typed probability, UI/simulation, end-round and cold-restart cases are in REGRESSION_TESTS.md; real game remains unrun.
+Notes: Historical isolated review started from `f863d0c2c543c4befa481803a581847ca8fe7274`; its nine-harness result and initial publication state apply only to that base. The branch now merges current accepted main `c7879d9ad4c170a565c0a3d438a4bdf05a852982`. The integrated stock runner passes all fifteen harnesses, Lua 5.1 compilation, TOML/payload and native patch-state controls; the focused Lucky One harness also passes under LuaJIT with installed Amulet Omega. Root's in-memory fully-applied reset-payload control passes and rejects mixed/duplicate states. Global `pseudorandom` stays native; per-card charges and private result/reservation scopes preserve copy/simulation/disabled/end-round semantics. PR #17 (https://github.com/benedictdavon/balatro-reality-warp/pull/17) was opened at reviewed integrated code head `7592eac6d03e8a2a1ffd1e1f4af342ebfa1d70f6`; its later documentation metadata commit is included for independent review. Hypnotist cleanup remains separate local N6.
 
 ## 15: Battle-of-Gods boss usage counters can be polluted by blind rolls that are immediately overwritten
 
@@ -488,6 +488,19 @@ PR: —
 Commit: —
 Manual test requirement: Preserve as regression controls.
 Notes: common.lua before context upgrades scoring enhanced cards; Stone special route and Glass terminal behavior are intentional.
+
+## N6: Hypnotist clears independently owned playing-card debuffs
+
+Source: Newly discovered outside the original audit; src/jokers/rare.lua Hypnotist setting_blind callback.
+Classification: Source-confirmed ownership risk; gameplay reproduction pending
+Priority: Normal
+Dependencies: R4 (accepted)
+State: DISCOVERED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Give one playing card an independent SMODS.debuff_card reason and a second only the Boss debuff. Force successful Hypnotist disable; the independent reason must survive while the Boss-only reason clears.
+Notes: Tooltip promises to disable only the Boss debuff effect. After Blind:disable performs framework cleanup/recalculation, Hypnotist unconditionally assigns debuff=false to every playing card. This separate path was not named by audit R4. Do not include its cleanup patch in Lucky One probability integration. Local N IDs are distinct from POST_SOL_RUNTIME_FINDINGS.md IDs. No game execution or third-party ownership reproduction is claimed.
 
 ## N5: Colorful Street Flush and suit fallback can outlive physical ownership
 

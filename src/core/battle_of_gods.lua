@@ -465,12 +465,12 @@ if Blind and Blind.defeat then
             end
 
             -- Idea 19: Mini-Boss Familiar drop chance (40%)
-            if botg_offer_familiar and pseudorandom('botg_fam_drop') < 0.40 then
+            if botg_offer_familiar and SMODS.pseudorandom_probability(self, 'botg_fam_drop', 40, 100, nil, true) then
                 botg_offer_familiar()
             end
 
             -- Boss Possession drop chance (30%)
-            if possess_joker and pseudorandom('botg_possession_drop') < 0.30 and G.jokers and G.jokers.cards then
+            if possess_joker and SMODS.pseudorandom_probability(self, 'botg_possession_drop', 30, 100, nil, true) and G.jokers and G.jokers.cards then
                 local unpossessed = {}
                 for _, j in ipairs(G.jokers.cards) do
                     if not (j.ability and j.ability.possessed) then unpossessed[#unpossessed + 1] = j end

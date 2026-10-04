@@ -93,6 +93,10 @@ SMODS = {
 }
 
 dofile(REPO_ROOT .. '/src/core/blind_identity.lua')
+-- Probability ownership is exercised separately with the actual installed API.
+SMODS.pseudorandom_probability = function(_, seed, numerator, denominator)
+    return pseudorandom(seed) < numerator * G.GAME.probabilities.normal / denominator
+end
 dofile(REPO_ROOT .. '/src/core/blind_effects.lua')
 dofile(REPO_ROOT .. '/src/blinds/boss_blinds.lua')
 

@@ -2294,61 +2294,6 @@ if get_straight then
     end
 end
 
-local function is_probability_seed(seed)
-    if type(seed) ~= 'string' then return false end
-    local s = string.lower(seed)
-    local prob_seeds = {
-        wheel_of_fortune = true, lucky_mult = true, lucky_money = true,
-        space_joker = true, bloodstone = true, business = true,
-        hallucination = true, gros_michel = true, cavendish = true,
-        glass = true, ['8_ball'] = true, eight_ball = true,
-        contratado = true, injured_joker = true, squele_project = true,
-        perfectionism_neg = true, discord_tag = true, blacksmith_reward = true,
-    }
-    if prob_seeds[s] then return true end
-    if string.find(s, 'prob') or string.find(s, 'chance') or string.find(s, 'luck')
-       or string.find(s, 'wheel') or string.find(s, 'odds') or string.find(s, 'roll') then
-        return true
-    end
-    return false
-end
-
--- Lucky One: Guaranteed success on next probability roll using stored charges or guaranteed flag
-local pseudorandom_ref = pseudorandom
-function pseudorandom(seed, min, max)
-    if not min and not max then
-        if G.GAME and G.GAME.lucky_one_guaranteed then
-            G.GAME.lucky_one_guaranteed = false
-            if G.jokers and G.jokers.cards then
-                for _, j in ipairs(G.jokers.cards) do
-                    if not j.debuff and (card_has_key(j, 'lucky_one') or card_has_key(j, 'lucky_one_joker')) then
-                        card_eval_status_text(j, 'extra', nil, nil, nil, { message = 'Guaranteed!', colour = G.C.GREEN })
-                        j:juice_up(0.5, 0.5)
-                    end
-                end
-            end
-            return 0
-        end
-        if is_probability_seed(seed) and G and G.jokers and G.jokers.cards then
-            for _, j in ipairs(G.jokers.cards) do
-                if (card_has_key(j, 'lucky_one_joker') or card_has_key(j, 'lucky_one')) and not j.debuff then
-                    if j.ability and j.ability.extra and (j.ability.extra.charges or 0) > 0 then
-                        j.ability.extra.charges = j.ability.extra.charges - 1
-                        j.ability.extra.xmult = (j.ability.extra.xmult or 1.5) + (j.ability.extra.xmult_gain or 0.1)
-                        card_eval_status_text(j, 'extra', nil, nil, nil, {
-                            message = 'Guaranteed! (' .. j.ability.extra.charges .. '/5)',
-                            colour = G.C.GREEN
-                        })
-                        play_sound('tarot1')
-                        return 0.0000000001
-                    end
-                end
-            end
-        end
-    end
-    return pseudorandom_ref(seed, min, max)
-end
-
 -- Spectral Shatter, Card dissolution effect
 
 function Card:spectral_shatter()
@@ -7489,7 +7434,7 @@ function reality_warp_apply_blind_final_score(args, nu_chip, nu_mult)
 
     -- The Guillotine: consume one existing seeded roll and zero the deck-scored result.
     if blind_key == 'bl_reality_warp_guillotine' and
-        pseudorandom('guillotine') < ((game.probabilities and game.probabilities.normal or 1) / 5) then
+        SMODS.pseudorandom_probability(blind, 'guillotine', 1, 5) then
         nu_chip = mod_chips(0)
         nu_mult = mod_mult(0)
         update_hand_text({delay = 0}, {chips = 0, mult = 0})

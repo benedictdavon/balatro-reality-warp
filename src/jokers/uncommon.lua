@@ -2460,9 +2460,8 @@ SMODS.Joker {
         if context.repetition and context.cardarea == G.play then
             local ex = card.ability.extra
             local total_chance = math.min(100, (ex.base_chance or 50) + (ex.bonus_chance or 0))
-            local roll = pseudorandom('echo_chamber', 1, 100)
-
-            if roll <= total_chance then
+            -- The original integer roll accepted only whole percentage points.
+            if SMODS.pseudorandom_probability(card, 'echo_chamber', math.floor(total_chance), 100, nil, true) then
                 if not context.blueprint then
                     ex.bonus_chance = math.min(50, (ex.bonus_chance or 0) + 2)
                 end
