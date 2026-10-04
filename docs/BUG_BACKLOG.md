@@ -613,12 +613,14 @@ Source: POST_SOL_RUNTIME_FINDINGS.md N6; reported runtime main f863d0c
 Classification: Source-confirmed Ante-zero clamp and schedule/Ante conflation; persistence-sensitive
 Priority: High
 Dependencies: Accepted encounter/target contracts on main c94227daa5b08dfe7e26497fe601b19e9ebb2b02; independent of N7/N4 local code.
-State: READY for Sol direct architecture implementation.
-Branch: fix/hieroglyph-botg-ante (planned; not created)
+State: APPROVED locally; HUMAN_TEST_NEEDED for game/save; publication/integration review pending.
+Branch: fix/hieroglyph-botg-ante
 PR: —
-Commit: —
+Commit: 5315abcaed37cfe108637215e71b4ef5943d13eb (source/test); final local head9e7799897ac9b9a399ccd4d3b3a2fc01fcf14731
 Manual test requirement: Ante1→0 and5→4 with Hieroglyph; Petroglyph too. Record slot, all keys/IDs/params, usage counts, tags, Ward token and target before/after, then cold restart and actual next-Ante advance.
 Notes: get_botg_base_blind clamps to1; scheduler treats entry.ante inequality as new progression and set_blind likewise recommits. Numeric difficulty adjustment must not regenerate schedule or grant another progression reward. Architectural design and native progression trace required. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. Use serialized schedule generation advanced only at explicit schedule creation/BOTG cycle, migrate existing entries and Ward without refunds, and use native Ante-below-one ratio100/300: BOTG floor5000 versus Ante1 base15000. Positive curve remains unchanged. Local preparation is independent; publication requires approval and later accepted-main integration.
+
+Local implementation and review: Sol implemented directly from accepted c94227d; fresh Luna Max independently APPROVED source5315abc and complete candidatec3b8137, independently reran all19 Lua5.1/TOML/native controls and fresh-VM Lua5.1/LuaJIT reconstruction. Root final review agrees. Exact native voucher/queued Ante/progression/cycle controls use labeled UI/FIFO/Card/primitive serialization adapters. No Balatro, physical disk round trip, public PR or main integration. Full bounded brief/manuals remain on the existing local issue branch and must reconcile once on acceptance.
 
 ## POST-#9: Starter Perishables are continuously refreshed by Thanatos
 
