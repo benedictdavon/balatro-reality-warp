@@ -891,9 +891,10 @@ jd_def["j_reality_warp_lucky_one_joker"] = {
     calc_function = function(card)
         local ex = card.ability and card.ability.extra
         local clubs = (ex and ex.clubs_scored) or 0
-        local is_guar = (ex and ex.guaranteed) or (G.GAME and G.GAME.lucky_one_guaranteed)
+        local charges = reality_warp_lucky_charges(card)
+        local is_guar = charges > 0
         card.joker_display_values.x_mult = (ex and ex.xmult) or 1.5
-        card.joker_display_values.clubs_str = is_guar and "Guaranteed!" or (clubs .. "/5 ♣")
+        card.joker_display_values.clubs_str = is_guar and ("Guaranteed! x" .. charges) or (clubs .. "/5 ♣")
         card.joker_display_values.active = is_guar
     end,
     style_function = function(card, text, reminder_text, extra)

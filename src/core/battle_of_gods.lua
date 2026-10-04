@@ -355,20 +355,59 @@ if reset_blinds then
     end
 end
 
--- Mechanic 24: Divine Ward free reroll hook
-if G.FUNCS and G.FUNCS.reroll_boss then
-    local orig_reroll_boss = G.FUNCS.reroll_boss
-    G.FUNCS.reroll_boss = function(e)
-        if G.GAME and G.GAME.battle_of_gods and G.GAME.round_resets.divine_ward_free then
-            local current_dollars = G.GAME.dollars
-            orig_reroll_boss(e)
-            G.GAME.dollars = current_dollars
-            G.GAME.round_resets.divine_ward_free = false
-            attention_text({ text = 'Divine Ward: Free Reroll!', scale = 0.7, hold = 1.2, backdrop_colour = G.C.GOLD, align = 'cm', offset = {x = 0, y = -1} })
-            return
-        end
-        orig_reroll_boss(e)
+-- Mechanic 24: Divine Ward pays at the native reroll fee boundary.
+local divine_ward_reroll_price_refs = setmetatable({}, {__mode = 'k'})
+
+function reality_warp_divine_ward_free_available()
+    local game = G and G.GAME
+    local resets = game and game.round_resets
+    return not not (game and game.battle_of_gods and resets and resets.divine_ward_free)
+end
+
+function reality_warp_boss_reroll_button_visible()
+    local game = G and G.GAME
+    if not game then return false end
+    local vouchers = game.used_vouchers or {}
+    return reality_warp_divine_ward_free_available() or vouchers.v_retcon or vouchers.v_directors_cut or false
+end
+
+function reality_warp_divine_ward_reroll_button()
+    local price_ref = {
+        label = localize('$') .. (reality_warp_divine_ward_free_available() and '0' or '10')
+    }
+    local button = UIBox_button({
+        label = {localize('b_reroll_boss'), price_ref.label},
+        button = 'reroll_boss',
+        func = 'reroll_boss_button',
+        ref_table = price_ref
+    })
+    local price_text = button and button.nodes and button.nodes[1] and button.nodes[1].nodes and
+        button.nodes[1].nodes[2] and button.nodes[1].nodes[2].nodes and button.nodes[1].nodes[2].nodes[1]
+    if price_text and price_text.config then
+        price_text.config.ref_table = price_ref
+        price_text.config.ref_value = 'label'
+        divine_ward_reroll_price_refs[price_ref] = true
     end
+    return button
+end
+
+local function reality_warp_update_divine_ward_reroll_prices()
+    local label = localize('$') .. (reality_warp_divine_ward_free_available() and '0' or '10')
+    for price_ref in pairs(divine_ward_reroll_price_refs) do
+        price_ref.label = label
+    end
+end
+
+function reality_warp_pay_boss_reroll()
+    if G.from_boss_tag then return false end
+    if reality_warp_divine_ward_free_available() then
+        G.GAME.round_resets.divine_ward_free = false
+        reality_warp_update_divine_ward_reroll_prices()
+        attention_text({ text = 'Divine Ward: Free Reroll!', scale = 0.7, hold = 1.2, backdrop_colour = G.C.GOLD, align = 'cm', offset = {x = 0, y = -1} })
+        return true
+    end
+    ease_dollars(-10)
+    return false
 end
 
 
@@ -426,12 +465,12 @@ if Blind and Blind.defeat then
             end
 
             -- Idea 19: Mini-Boss Familiar drop chance (40%)
-            if botg_offer_familiar and pseudorandom('botg_fam_drop') < 0.40 then
+            if botg_offer_familiar and SMODS.pseudorandom_probability(self, 'botg_fam_drop', 40, 100, nil, true) then
                 botg_offer_familiar()
             end
 
             -- Boss Possession drop chance (30%)
-            if possess_joker and pseudorandom('botg_possession_drop') < 0.30 and G.jokers and G.jokers.cards then
+            if possess_joker and SMODS.pseudorandom_probability(self, 'botg_possession_drop', 30, 100, nil, true) and G.jokers and G.jokers.cards then
                 local unpossessed = {}
                 for _, j in ipairs(G.jokers.cards) do
                     if not (j.ability and j.ability.possessed) then unpossessed[#unpossessed + 1] = j end
@@ -462,36 +501,6 @@ if Blind and Blind.defeat then
         end
         return orig_blind_defeat(self, silent)
     end
-end
-
--- Mechanic 19 & 23: Scoring hooks for Apotheosis & Hand Level Transcendence
-local orig_calculate_joker = Card.calculate_joker
-function Card:calculate_joker(context, ...)
-    if G.GAME and G.GAME.battle_of_gods then
-        -- Mechanic 19: Deity Ascended Joker protection & X2 Mult
-        if self.ability and self.ability.deity_ascended then
-            if context and context.cardarea == G.jokers and context.joker_main then
-                return {
-                    message = 'Apotheosis! X2',
-                    Xmult_mod = 2,
-                    colour = G.C.PURPLE
-                }
-            end
-        end
-
-        -- Mechanic 23: Hand Level Transcendence (Level > 20 grants X1.25 Exalted Mult)
-        if context and context.cardarea == G.jokers and context.joker_main and G.jokers and G.jokers.cards and self == G.jokers.cards[1] then
-            local p_hand = context.scoring_name
-            if p_hand and G.GAME.hands and G.GAME.hands[p_hand] and G.GAME.hands[p_hand].level > 20 then
-                return {
-                    message = 'Exalted! X1.25',
-                    Xmult_mod = 1.25,
-                    colour = G.C.GOLD
-                }
-            end
-        end
-    end
-    return orig_calculate_joker(self, context, ...)
 end
 
 local botg_ante_bases = {

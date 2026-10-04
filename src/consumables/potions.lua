@@ -1581,8 +1581,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
         for _, c in ipairs(G.hand.highlighted) do
             local chosen_enh = pseudorandom_element(enhs, pseudoseed('potion_rayo_enh'))
             c:set_ability(chosen_enh)
-            local odds = ((G.GAME and G.GAME.probabilities.normal) or 1) / 5
-            if pseudorandom('potion_rayo_destroy') < odds then
+            if SMODS.pseudorandom_probability(c, 'potion_rayo_destroy', 1, 5) then
                 c.potion_rayo_destruct = true
             end
         end
@@ -1636,9 +1635,11 @@ end
 
 -- Hook joker calculation for Pocion de Espejo (retrigger rightmost joker)
 local orig_calculate_joker = Card.calculate_joker
+local function pack_mirror_returns(...) return {n = select("#", ...), ...} end
 function Card:calculate_joker(context, ...)
-    local ret, post = orig_calculate_joker(self, context, ...)
-    if G.GAME and (G.GAME.potion_mirror_active or G.GAME.potion_espejo_active) and not context.potion_mirror_retrigger and not context.potion_espejo_retrigger and not context.retrigger_joker_check then
+    local result = pack_mirror_returns(orig_calculate_joker(self, context, ...))
+    local ret = result[1]
+    if context and G.GAME and (G.GAME.potion_mirror_active or G.GAME.potion_espejo_active) and not context.potion_mirror_retrigger and not context.potion_espejo_retrigger and not context.retrigger_joker_check then
         if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
             local rightmost = G.jokers.cards[#G.jokers.cards]
             if self == rightmost and not self.debuff then
@@ -1665,7 +1666,9 @@ function Card:calculate_joker(context, ...)
             end
         end
     end
-    return ret, post
+    result[1] = ret
+    if ret ~= nil then result.n = math.max(result.n, 1) end
+    return unpack(result, 1, result.n)
 end
 
 -- Hook new_round for Pocion de Reloj (+1 mano siguiente ronda)

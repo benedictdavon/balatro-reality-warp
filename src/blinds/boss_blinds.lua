@@ -962,7 +962,7 @@ SMODS.Blind {
     calculate = function(self, blind, context)
         if blind.disabled then return end
         if context.after and context.scoring_hand and #context.scoring_hand > 0 then
-            if pseudorandom('ares_destroy') < G.GAME.probabilities.normal / 5 then
+            if SMODS.pseudorandom_probability(blind, 'ares_destroy', 1, 5) then
                 local destroyed_cards = reality_warp_destroy_cards(blind, context.scoring_hand)
                 if #destroyed_cards > 0 then
                     -- Destruction and its framework notifications commit in context.after;
@@ -1121,7 +1121,7 @@ SMODS.Blind {
         ease_custom_blind_background(self)
     end,
     press_play = function(self)
-        if pseudorandom('hades_money') < G.GAME.probabilities.normal / 4 then
+        if SMODS.pseudorandom_probability(G.GAME.blind, 'hades_money', 1, 4) then
             local cur = G.GAME.dollars or 0
             if cur > 0 then
                 ease_dollars(-cur)
@@ -1142,7 +1142,7 @@ SMODS.Blind {
                 }))
             end
         end
-        if pseudorandom('hades_no_score') < G.GAME.probabilities.normal / 3 then
+        if SMODS.pseudorandom_probability(G.GAME.blind, 'hades_no_score', 1, 3) then
             G.GAME.blind.effect.reality_warp_hades_nullify = true
         else
             G.GAME.blind.effect.reality_warp_hades_nullify = false
@@ -1174,7 +1174,7 @@ SMODS.Blind {
         end
         if context.after then
             G.GAME.blind.effect.reality_warp_hades_nullify = false
-            if pseudorandom('hades_hand') < G.GAME.probabilities.normal / 10 then
+            if SMODS.pseudorandom_probability(blind, 'hades_hand', 1, 10) then
                 if G.hand and G.hand.cards and #G.hand.cards > 0 then
                     local held_cards = {}
                     for _, card in ipairs(G.hand.cards) do
@@ -1257,21 +1257,18 @@ SMODS.Blind {
     end,
     calculate = function(self, blind, context)
         if blind.disabled then return end
-        if context.after and context.scoring_hand and #context.scoring_hand > 0 then
-            local rank_down_map = {
-                ['Ace'] = 'King', ['King'] = 'Queen', ['Queen'] = 'Jack', ['Jack'] = '10',
-                ['10'] = '9', ['9'] = '8', ['8'] = '7', ['7'] = '6',
-                ['6'] = '5', ['5'] = '4', ['4'] = '3', ['3'] = '2', ['2'] = 'Ace'
-            }
+        if context and context.after and not context.blueprint and not context.individual and not context.repetition and
+            context.scoring_hand and #context.scoring_hand > 0 then
             local changed = false
+            local seen = {}
             for _, c in ipairs(context.scoring_hand) do
-                if not c.destroyed and c.base and c.base.value then
-                    local next_r = rank_down_map[c.base.value]
-                    if next_r and c.base.suit then
-                        local pk = c.base.suit .. '_' .. next_r
-                        local p_card = G.P_CARDS[pk] or G.P_CARDS[string.sub(c.base.suit, 1, 1) .. '_' .. next_r]
-                        if p_card then
-                            c:set_base(p_card)
+                if c and not seen[c] then
+                    seen[c] = true
+                    if not c.removed and not c.destroyed and not c.shattered and not c.getting_sliced and
+                        c.base and c.base.value and SMODS.Ranks[c.base.value] then
+                        local previous_rank = c.base.value
+                        SMODS.modify_rank(c, -1)
+                        if c.base.value ~= previous_rank then
                             c:juice_up(0.4, 0.4)
                             changed = true
                         end

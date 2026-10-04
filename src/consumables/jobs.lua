@@ -311,8 +311,7 @@ SMODS.Sticker {
             local cash = pseudorandom('miner_cash', 1, 3)
             ease_dollars(cash)
 
-            local roll = pseudorandom('miner_gem', 1, 8)
-            if roll == 1 then
+            if SMODS.pseudorandom_probability(card, 'miner_gem', 1, 8, nil, true) then
                 if G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit then
                     SMODS.add_card { set = 'Tarot', key_append = 'miner_dig' }
                     play_sound('tarot2')

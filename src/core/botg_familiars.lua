@@ -1246,11 +1246,18 @@ end
 -- Hook Card.calculate_joker exclusively for the familiar card
 if Card and Card.calculate_joker then
     local orig_calculate_joker = Card.calculate_joker
-    function Card:calculate_joker(context)
+    local function pack_familiar_returns(...) return {n = select('#', ...), ...} end
+    function Card:calculate_joker(context, ...)
         if self.area and self.area == G.botg_familiars then
-            return botg_calculate_familiar(self, context)
+            local result = pack_familiar_returns(botg_calculate_familiar(self, context, ...))
+            local glitch = reality_warp_glitch_bonus(self, context)
+            if glitch then
+                result[1] = reality_warp_append_joker_effect(result[1], glitch)
+                if result[1] ~= nil then result.n = math.max(result.n, 1) end
+            end
+            return unpack(result, 1, result.n)
         end
-        return orig_calculate_joker(self, context)
+        return orig_calculate_joker(self, context, ...)
     end
 end
 
@@ -1388,7 +1395,7 @@ function botg_calculate_familiar(self, context)
 
     -- 13. Baby Wheel: 1 in 3 chance for scored card to give +6 to +30 Mult
     if f_key == 'c_reality_warp_baby_wheel' and context.individual and context.cardarea == G.play and context.other_card then
-        if pseudorandom('baby_wheel') < (G.GAME.probabilities.normal or 1) / 3 then
+        if SMODS.pseudorandom_probability(fam, 'baby_wheel', 1, 3) then
             local mult = 6 * fam_level
             return {
                 mult = mult,
@@ -1549,7 +1556,7 @@ function botg_calculate_familiar(self, context)
     -- 24. Baby Bell: retrigger scored cards (20% to 100% chance)
     if f_key == 'c_reality_warp_baby_bell' and context.repetition and context.cardarea == G.play then
         local chance = 0.2 * fam_level
-        if pseudorandom('baby_bell') < chance then
+        if SMODS.pseudorandom_probability(fam, 'baby_bell', chance, 1, nil, true) then
             return {
                 message = 'Again! [Baby Bell Lv.' .. fam_level .. ']',
                 repetitions = 1,
@@ -1562,7 +1569,7 @@ function botg_calculate_familiar(self, context)
     if f_key == 'c_reality_warp_baby_acorn' and (context.retrigger_joker_check or context.retrigger_joker) and G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
         if context.other_card == G.jokers.cards[#G.jokers.cards] then
             local chance = 0.2 * fam_level
-            if pseudorandom('baby_acorn') < chance then
+            if SMODS.pseudorandom_probability(fam, 'baby_acorn', chance, 1, nil, true) then
                 return {
                     message = 'Again! [Baby Acorn Lv.' .. fam_level .. ']',
                     repetitions = 1,
