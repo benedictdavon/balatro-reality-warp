@@ -25,12 +25,12 @@ Source: ISSUE.md #2
 Classification: Historical symptom requiring isolated game reproduction
 Priority: Normal
 Dependencies: 1, 6, 19, R10
-State: AUDITED
+State: READY
 Branch: —
 PR: —
 Commit: —
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: READY on accepted main 36c4283: encounter/effect ownership and PR 13 action draws are accepted. Current Ares destroys scored cards only after scoring; Violet scales its target. No residual Ares/Violet held-card discard emitter is established. Create a fresh bounded source-validation branch; isolate native Hook, Minotaur and possessed Hook controls before any further production patch.
 
 ## 3: Athena can display one required poker hand and enforce another
 
@@ -95,20 +95,20 @@ Branch: fix/round-action-draws
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/13
 Commit: 99618014e3ce21a30b0c9b04f632c652343b082d; 0b386690550d3126916492fb42e4dc91d62dcf43; 7c1cd917fbbc80c74e7f3197bbefd0e31ac86995; accepted-main integration ddd97d7
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Local source implementation is APPROVED by Sol High and Luna; PR #13 is open for independent review and actual gameplay/save behavior remains unverified. The existing branch integrates accepted main 004387097ca286256363fb42e442d7f138049c99, including merged R5 and R6. The state-aware tests/run.py passes Lua 5.1 compilation, TOML/payload and installed target checks, validator negative controls, and all eleven harness files. Runtime-owned draw restriction restores native auto-refill for disabled Ouroboros alone while live Serpent remains independent. The physical-card selection boundary, pending counters, ownership and stable-ID partial/completed plan are covered by focused source/model checks; real Balatro event/save behavior remains in the manual queue. N1 and N4 Familiar issues remain separate and excluded.
+Notes: Local source implementation is APPROVED by Sol High and Luna; PR #13 is accepted and merged at 98ffbbc999263f334e4d0b9e600c746f8e4df339 and actual gameplay/save behavior remains unverified. The existing branch integrates accepted main 004387097ca286256363fb42e442d7f138049c99, including merged R5 and R6. The state-aware tests/run.py passes Lua 5.1 compilation, TOML/payload and installed target checks, validator negative controls, and all eleven harness files. Runtime-owned draw restriction restores native auto-refill for disabled Ouroboros alone while live Serpent remains independent. The physical-card selection boundary, pending counters, ownership and stable-ID partial/completed plan are covered by focused source/model checks; real Balatro event/save behavior remains in the manual queue. N1 and N4 Familiar issues remain separate and excluded.
 
 ## 8: Helin's exponent effect can do nothing in big-number mode
 
 Source: ISSUE.md #8
-Classification: Likely unsupported scoring dispatch; verify number extension
+Classification: Historical scoring symptom; installed extension supports e_mult
 Priority: Normal
 Dependencies: R5
-State: AUDITED
+State: READY
 Branch: —
 PR: —
 Commit: —
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: READY on accepted main 36c4283 after accepted R5 (PR 12). Installed Amulet supports e_mult; actual numeric/Omega source checks contradict the unsupported-key theory. Create a fresh bounded original-calculation/mode/Blueprint validation branch. Preserve supported dispatch and sequential exponentiation; retain exact human cold-runtime validation.
 
 ## 9: Colosseum starting Perishable Stencils can expire, then become active again
 
@@ -147,20 +147,20 @@ Branch: docs/baby-mark-retrigger-validation
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/16
 Commit: 74e5961fc2407d6c14ed477e12af05308e0d6eed (source validation); e1f23a4bc62e3024c9dcaa4258afc4b6667d88bf (accepted R5 composer harness integration); 8593e599082fbd7893270c60472313871a2a3e51 (accepted-main merge)
 Manual test requirement: Required to resolve the historical ~ten-message report; exact isolated procedure is in REGRESSION_TESTS.md.
-Notes: Current Mark code returns XMult for `context.individual` on a scored face card and returns no `repetitions`. Installed `SMODS.score_card` owns repeated scoring passes; Red Seal supplies one repeat and Polychrome supplies an XMult edition effect. The Familiar scoring area wrapper checks for the same area before appending it. On the original `f863d0c` base, nine harness files passed; the test uses source-extracted native loops/callbacks with explicit evaluation/UI adapters and cannot recreate the reported run. After merging accepted main `be91b9b3cc1a72836b5b00b68c30d24265cae1e8`, its harness loads the actual accepted R5 composer before the Familiar wrapper and the stock runner passes all fourteen harnesses, Lua 5.1 compilation, TOML/payload checks and target-validator controls. The exact game symptom remains unverified; do not suppress Mark on legitimate repeated evaluations. PR #16 is open for independent review.
+Notes: Current Mark code returns XMult for `context.individual` on a scored face card and returns no `repetitions`. Installed `SMODS.score_card` owns repeated scoring passes; Red Seal supplies one repeat and Polychrome supplies an XMult edition effect. The Familiar scoring area wrapper checks for the same area before appending it. On the original `f863d0c` base, nine harness files passed; the test uses source-extracted native loops/callbacks with explicit evaluation/UI adapters and cannot recreate the reported run. After merging accepted main `be91b9b3cc1a72836b5b00b68c30d24265cae1e8`, its harness loads the actual accepted R5 composer before the Familiar wrapper and the stock runner passes all fourteen harnesses, Lua 5.1 compilation, TOML/payload checks and target-validator controls. The exact game symptom remains unverified; do not suppress Mark on legitimate repeated evaluations. PR #16 is accepted and merged at c7879d9ad4c170a565c0a3d438a4bdf05a852982.
 
 ## 12: Consumable stacking compatibility / UI: no clean native stacking, and early visual-only patches buried cards
 
 Source: ISSUE.md #12
-Classification: Optional requested feature
-Priority: Normal
-Dependencies: correctness stabilization
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Native quantity model absent. Implement only after correctness stabilization; inspect use/copy/save contracts and avoid copying external licensed code.
+Classification: NOT_A_BUG on current main; optional feature gap, with historical local implementations absent
+Priority: Optional
+Dependencies: None for this source-only disposition; any future feature waits for correctness stabilization
+State: NOT_A_BUG
+Branch: docs/consumable-stacking-disposition
+PR: [#18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) (open for independent review)
+Commit: c6c78485bb752df26e8347c313465875b93b0548 (source disposition; Sol High APPROVE)
+Manual test requirement: None for the source-only disposition. Optional baseline confirmation and future feature acceptance tests are in REGRESSION_TESTS.md.
+Notes: Current Reality Warp and installed framework use separate real Card objects; no quantity/representative/split-use/save model or local v1–v6 patch is present. The old visual-only buried-card behavior cannot execute in this checkout. Potion Pouch is separate serialized storage for up to six potions, and Cauldron consumes two real cards into a recipe result; neither is stacking. This closes the reported current-main defect claim without implementing the requested optional feature. Preserve A/B/C controls.
 
 ## 13: Dark Alchemy Tag tooltip/code probability deserves verification
 
@@ -168,12 +168,12 @@ Source: ISSUE.md #13
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 14
-State: AUDITED
+State: READY
 Branch: —
 PR: —
 Commit: —
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: READY on accepted main 36c4283 after accepted Lucky probability ownership (PR 17). Two overlapping 3% paths plus native polling imply approximately 0.060846 versus baseline 0.003, not 10x. Activation is already synchronous before first shop stock. Establish a single owned edition-weight/options/sample contract on a fresh branch without hijacking RNG.
 
 ## 14: Lucky One probability logic has historically been broader than the tooltip suggests
 
@@ -256,15 +256,15 @@ Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permane
 ## 20: Consumable-stack quantity badge alignment was confusing
 
 Source: ISSUE.md #20
-Classification: Historical badge implementation absent
-Priority: Normal
-Dependencies: 12
+Classification: STALE; historical local-v6 badge implementation absent from current main
+Priority: Cosmetic
+Dependencies: 12 only if a separate stacking feature is implemented
 State: STALE
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: No current quantity badge. Future #12 implementation must use centered representative badge.
+Branch: docs/consumable-stacking-disposition
+PR: [#18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) (open for independent review)
+Commit: c6c78485bb752df26e8347c313465875b93b0548
+Manual test requirement: None while no quantity badge exists. If stacking is implemented later, test quantities 2/10/100 at normal, hover, and drag scales with adjacent stacks, hitboxes, and controller focus.
+Notes: Current source has no representative quantity badge or local-v6 placement code. The historical top-right to top-center correction cannot be reproduced here; this label is stale on current main, not a verified fix to Reality Warp.
 
 ## R1: Encounter parameters are not persisted and shared definitions survive runs
 
@@ -329,7 +329,7 @@ Branch: fix/joker-calculation-composition
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/12
 Commit: 62a4cf10945c28580920720c90e51af931a4ef85; correction eadc076a1f61c2db1085bc95a10afe888c83e3c2; accepted-main integration 2b0d9d3; N3 matcher correction 6856781df919d338e9fdb8b393a80e80ecd0358a
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Local source implementation and independent review are complete; PR #12 is open for independent review. The branch preserves the supported true-removal-sentinel correction and integrates accepted main add5727837c396fff2b5af12283fc3f25904d242 (including merged Arrow R6). Ten Lua harness files, Lua 5.1 compilation, TOML/payload checks, original/applied target-patch validation, and negative validator controls pass. The test runner rejects missing, partial, duplicate, and mixed target-patch states, including an original pattern combined with a partial applied payload. Runtime/save/load/optional-mod gameplay remains unverified and required.
+Notes: Local source implementation and independent review are complete; PR #12 is accepted and merged at 004387097ca286256363fb42e442d7f138049c99. The branch preserves the supported true-removal-sentinel correction and integrates accepted main add5727837c396fff2b5af12283fc3f25904d242 (including merged Arrow R6). Ten Lua harness files, Lua 5.1 compilation, TOML/payload checks, original/applied target-patch validation, and negative validator controls pass. The test runner rejects missing, partial, duplicate, and mixed target-patch states, including an original pattern combined with a partial applied payload. Runtime/save/load/optional-mod gameplay remains unverified and required.
 
 ## R6: Arrow rank lookup uses invalid vanilla card keys
 
@@ -342,7 +342,7 @@ Branch: fix/arrow-rank-mapping
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/11
 Commit: 31015cf76b9637e6ddcce757b1528ce07e81690e
 Manual test requirement: Required for gameplay; exact procedure will be recorded in REGRESSION_TESTS.md.
-Notes: Local source review APPROVE at implementation commit 31015cf76b9637e6ddcce757b1528ce07e81690e. The nine Lua harnesses and Lua 5.1 compilation pass; the stock aggregate runner still has the separately documented N3 exact-pattern limitation, while an original-or-fully-applied check confirms both owned Lovely target payloads. `SMODS.modify_rank` follows registered `prev`/`prev_behavior` and `SMODS.change_base` resolves registered suit/rank `card_key`s. Actual Balatro gameplay remains unverified and required.
+Notes: Local source review APPROVE at implementation commit 31015cf76b9637e6ddcce757b1528ce07e81690e. The original-base nine Lua harnesses and Lua 5.1 compilation passed; at that historical checkpoint the stock aggregate runner had the N3 exact-pattern limitation, and an independent original-or-fully-applied check confirmed both owned Lovely target payloads. N3 is now FIXED in accepted PR 12; all fifteen harnesses pass on current main. `SMODS.modify_rank` follows registered `prev`/`prev_behavior` and `SMODS.change_base` resolves registered suit/rank `card_key`s. Actual Balatro gameplay remains unverified and required.
 
 ## R7: Direct boss dissolution bypasses destruction-notification bookkeeping
 
@@ -368,7 +368,7 @@ Branch: fix/straight-api-forwarding
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/14
 Commit: 19b60afda787c64d6da37de9ea43923d1893c8dc (implementation); 528ec0d34b0bb8c249efb5e27cf12bddcba143ab (accepted-main integration)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: The pre-fix wrapper accepted only `hand`, dropping the installed four-argument detector contract and all trailing values; its numeric fallback bypassed custom rank graphs. R8 restores native/helper forwarding and retains Colorful Street through framework helpers. Sol High independently reviewed the complete immutable diff and surrounding/native dispatch contracts: APPROVE. PR #14 is open for independent review. The branch integrates accepted main 98ffbbc999263f334e4d0b9e600c746f8e4df339; the state-aware runner passes all twelve harness files, Lua 5.1 compilation, TOML/payload, installed original/applied target checks and git diff --check. No Balatro execution is claimed. ISSUE #10's historical hand remains classified STALE for its original fallback failure and stays in the regression controls; R8 addresses the separate modern API contract. Real card scoring, custom ranks, optional helper behavior and cold restart remain pending.
+Notes: The pre-fix wrapper accepted only `hand`, dropping the installed four-argument detector contract and all trailing values; its numeric fallback bypassed custom rank graphs. R8 restores native/helper forwarding and retains Colorful Street through framework helpers. Sol High independently reviewed the complete immutable diff and surrounding/native dispatch contracts: APPROVE. PR #14 is accepted and merged at 31886a8dca4b22b47c5f05e1e9795b18c63d5286. The branch integrates accepted main 98ffbbc999263f334e4d0b9e600c746f8e4df339; the state-aware runner passes all twelve harness files, Lua 5.1 compilation, TOML/payload, installed original/applied target checks and git diff --check. No Balatro execution is claimed. ISSUE #10's historical hand remains classified STALE for its original fallback failure and stays in the regression controls; R8 addresses the separate modern API contract. Real card scoring, custom ranks, optional helper behavior and cold restart remain pending.
 
 ## R9: Chronos and Guillotine each run at two scoring stages; Void checks before queued score addition
 
@@ -394,7 +394,7 @@ Branch: fix/round-action-draws
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/13
 Commit: 99618014e3ce21a30b0c9b04f632c652343b082d; 0b386690550d3126916492fb42e4dc91d62dcf43; 7c1cd917fbbc80c74e7f3197bbefd0e31ac86995; accepted-main integration ddd97d7
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Local source implementation is APPROVED by Sol High and Luna; PR #13 is open for independent review and actual gameplay/save behavior remains unverified. The branch integrates accepted main 004387097ca286256363fb42e442d7f138049c99, including R5 and R6. The state-aware runner passes all eleven harness files and installed target checks. Possessed Serpent draw restriction and score contribution remain independent, Water is once per eligible physical owner/action, and Hook selects and commits distinct successful transfers. Native pending/event order and the actual save codec still require the documented gameplay fixture. N1 and N4 Familiar issues are separate and excluded.
+Notes: Local source implementation is APPROVED by Sol High and Luna; PR #13 is accepted and merged at 98ffbbc999263f334e4d0b9e600c746f8e4df339 and actual gameplay/save behavior remains unverified. The branch integrates accepted main 004387097ca286256363fb42e442d7f138049c99, including R5 and R6. The state-aware runner passes all eleven harness files and installed target checks. Possessed Serpent draw restriction and score contribution remain independent, Water is once per eligible physical owner/action, and Hook selects and commits distinct successful transfers. Native pending/event order and the actual save codec still require the documented gameplay fixture. N1 and N4 Familiar issues are separate and excluded.
 
 ## R11: Canonical Blind keys are missing from several active-effect detectors
 
@@ -420,9 +420,9 @@ Branch: fix/divine-ward-reroll
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/15
 Commit: 2e57572528f044da1a002ca492cffd39d2840681 (implementation); d271c4504c31f79af7cde0fc8291c0787ecb357c; 76bdcea1186425baf45dd36fb20339b4c8c8f7ca (review record); 844a30ca2f338fa09d5666985ba1ef7a43ab8780 (accepted-main integration)
 Manual test requirement: Required for zero/low-cash UI and delayed payment, Boss Tag, resets, Ante grant, and cold restart; exact procedure is in REGRESSION_TESTS.md.
-Notes: Native ease_dollars(-10) applies through a queued event, so the old immediate dollar snapshot/refund does not cancel payment. Native reroll UI also hides/disables the button based on voucher and $10 checks. The installed dump already includes Steamodded's priority -10 no-UI payload once, leaving exactly two post-Steamodded fee sites. The fix consumes the serialized per-Ante Ward at both native fee boundaries and derives UI allowance/price from the same state. The original R12 branch passed nine harness files; its then-current stock runner still had the separate N3 applied-payload limitation. After integrating accepted main 31886a8dca4b22b47c5f05e1e9795b18c63d5286, the stock tests/run.py passes all thirteen harnesses, Lua 5.1 compilation, TOML/payload checks, installed patch-state checks and validator controls. Sol High's source review approved the implementation; PR #15 is open for independent review. Real-game callback/UI and cold-restart behavior remain unverified.
+Notes: Native ease_dollars(-10) applies through a queued event, so the old immediate dollar snapshot/refund does not cancel payment. Native reroll UI also hides/disables the button based on voucher and $10 checks. The installed dump already includes Steamodded's priority -10 no-UI payload once, leaving exactly two post-Steamodded fee sites. The fix consumes the serialized per-Ante Ward at both native fee boundaries and derives UI allowance/price from the same state. The original R12 branch passed nine harness files; its then-current stock runner still had the separate N3 applied-payload limitation. After integrating accepted main 31886a8dca4b22b47c5f05e1e9795b18c63d5286, the stock tests/run.py passes all thirteen harnesses, Lua 5.1 compilation, TOML/payload checks, installed patch-state checks and validator controls. Sol High's source review approved the implementation; PR #15 is accepted and merged at be91b9b3cc1a72836b5b00b68c30d24265cae1e8. Real-game callback/UI and cold-restart behavior remain unverified.
 
-Independent review: APPROVE by Sol High at 2e57572528f044da1a002ca492cffd39d2840681. All nine headless regressions and all Lua/TOML checks passed on the original base, including an independently constructed already-applied Lovely fixture with real match_indent behavior. Sol High re-reviewed the integrated source and harness after accepted main 31886a8dca4b22b47c5f05e1e9795b18c63d5286; no source correction was requested, and all thirteen stock harnesses now pass. PR #15 is open. Gameplay, live UI, event timing and cold restart remain HUMAN_TEST_NEEDED.
+Independent review: APPROVE by Sol High at 2e57572528f044da1a002ca492cffd39d2840681. All nine headless regressions and all Lua/TOML checks passed on the original base, including an independently constructed already-applied Lovely fixture with real match_indent behavior. Sol High re-reviewed the integrated source and harness after accepted main 31886a8dca4b22b47c5f05e1e9795b18c63d5286; no source correction was requested, and all thirteen stock harnesses now pass. PR #15 is accepted and merged at be91b9b3cc1a72836b5b00b68c30d24265cae1e8. Gameplay, live UI, event timing and cold restart remain HUMAN_TEST_NEEDED.
 
 ## R13: The Code punishes one consumable twice and bypasses Eternal filtering
 
