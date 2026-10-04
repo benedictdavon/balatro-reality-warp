@@ -141,13 +141,13 @@ Notes: Source trace in BUG_AUDIT.md; R8 remains independently actionable. Add de
 Source: ISSUE.md #11
 Classification: No Mark-generated repetition is source-confirmed; the historical symptom remains HUMAN_TEST_NEEDED
 Priority: Normal
-Dependencies: Accepted encounter/effect contracts on main f863d0c2c543c4befa481803a581847ca8fe7274. R5 is not a prerequisite for this isolated `individual` callback: Baby Mark's wrapper path and the final `joker_main` composer are separate. Combined mode integration remains in the human test queue.
+Dependencies: The accepted R5 composer, draw integration, R8 straight API and R12 reroll fix are integrated at current accepted main be91b9b3cc1a72836b5b00b68c30d24265cae1e8. No production fix for Baby Mark is proposed.
 State: HUMAN_TEST_NEEDED
 Branch: docs/baby-mark-retrigger-validation
-PR: —
-Commit: 74e5961fc2407d6c14ed477e12af05308e0d6eed
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/16
+Commit: 74e5961fc2407d6c14ed477e12af05308e0d6eed (source validation); e1f23a4bc62e3024c9dcaa4258afc4b6667d88bf (accepted R5 composer harness integration); 8593e599082fbd7893270c60472313871a2a3e51 (accepted-main merge)
 Manual test requirement: Required to resolve the historical ~ten-message report; exact isolated procedure is in REGRESSION_TESTS.md.
-Notes: Current Mark code returns XMult for `context.individual` on a scored face card and returns no `repetitions`. Installed `SMODS.score_card` owns repeated scoring passes; Red Seal supplies one repeat and Polychrome supplies an XMult edition effect. The Familiar scoring area wrapper checks for the same area before appending it. A source-extracted loop/callback harness covers these contracts but cannot recreate Balatro UI callbacks, optional mod dispatch or the reported run. Do not suppress Mark on legitimate repeated evaluations.
+Notes: Current Mark code returns XMult for `context.individual` on a scored face card and returns no `repetitions`. Installed `SMODS.score_card` owns repeated scoring passes; Red Seal supplies one repeat and Polychrome supplies an XMult edition effect. The Familiar scoring area wrapper checks for the same area before appending it. On the original `f863d0c` base, nine harness files passed; the test uses source-extracted native loops/callbacks with explicit evaluation/UI adapters and cannot recreate the reported run. After merging accepted main `be91b9b3cc1a72836b5b00b68c30d24265cae1e8`, its harness loads the actual accepted R5 composer before the Familiar wrapper and the stock runner passes all fourteen harnesses, Lua 5.1 compilation, TOML/payload checks and target-validator controls. The exact game symptom remains unverified; do not suppress Mark on legitimate repeated evaluations. PR #16 is open for independent review.
 
 ## 12: Consumable stacking compatibility / UI: no clean native stacking, and early visual-only patches buried cards
 
