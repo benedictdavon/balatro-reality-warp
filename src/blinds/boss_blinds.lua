@@ -1257,21 +1257,18 @@ SMODS.Blind {
     end,
     calculate = function(self, blind, context)
         if blind.disabled then return end
-        if context.after and context.scoring_hand and #context.scoring_hand > 0 then
-            local rank_down_map = {
-                ['Ace'] = 'King', ['King'] = 'Queen', ['Queen'] = 'Jack', ['Jack'] = '10',
-                ['10'] = '9', ['9'] = '8', ['8'] = '7', ['7'] = '6',
-                ['6'] = '5', ['5'] = '4', ['4'] = '3', ['3'] = '2', ['2'] = 'Ace'
-            }
+        if context and context.after and not context.blueprint and not context.individual and not context.repetition and
+            context.scoring_hand and #context.scoring_hand > 0 then
             local changed = false
+            local seen = {}
             for _, c in ipairs(context.scoring_hand) do
-                if not c.destroyed and c.base and c.base.value then
-                    local next_r = rank_down_map[c.base.value]
-                    if next_r and c.base.suit then
-                        local pk = c.base.suit .. '_' .. next_r
-                        local p_card = G.P_CARDS[pk] or G.P_CARDS[string.sub(c.base.suit, 1, 1) .. '_' .. next_r]
-                        if p_card then
-                            c:set_base(p_card)
+                if c and not seen[c] then
+                    seen[c] = true
+                    if not c.removed and not c.destroyed and not c.shattered and not c.getting_sliced and
+                        c.base and c.base.value and SMODS.Ranks[c.base.value] then
+                        local previous_rank = c.base.value
+                        SMODS.modify_rank(c, -1)
+                        if c.base.value ~= previous_rank then
                             c:juice_up(0.4, 0.4)
                             changed = true
                         end
