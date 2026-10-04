@@ -69,26 +69,3 @@ function botg_corrupt_card_glitch(card)
     card:juice_up(0.6, 0.6)
     play_sound('holo1', 1.2, 0.8)
 end
-
--- Calculate Glitch Multiplier
-if Card and Card.calculate_joker then
-    local orig_calc_joker = Card.calculate_joker
-    function Card:calculate_joker(context)
-        local ret = orig_calc_joker(self, context)
-        if self.ability and self.ability.glitched and context.joker_main then
-            if ret then
-                ret.x_mult = (ret.x_mult or 1) * self.ability.glitch_mult
-            else
-                ret = {
-                    x_mult = self.ability.glitch_mult,
-                    message = 'X' .. self.ability.glitch_mult .. ' Mult [Glitched]',
-                    colour = G.C.PURPLE
-                }
-            end
-        end
-        return ret
-    end
-end
-
-
-

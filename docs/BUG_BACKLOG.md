@@ -321,15 +321,15 @@ Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permane
 ## R5: Apotheosis/Exalted interception replaces normal Joker calculation
 
 Source: BUG_AUDIT.md R5
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed composition defect; runtime interactions remain HUMAN_TEST_NEEDED
 Priority: Normal
 Dependencies: 18
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/joker-calculation-composition
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/12
+Commit: 62a4cf10945c28580920720c90e51af931a4ef85; correction eadc076a1f61c2db1085bc95a10afe888c83e3c2; accepted-main integration 2b0d9d3; N3 matcher correction 6856781df919d338e9fdb8b393a80e80ecd0358a
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Local source implementation and independent review are complete; PR #12 is open for independent review. The branch preserves the supported true-removal-sentinel correction and integrates accepted main add5727837c396fff2b5af12283fc3f25904d242 (including merged Arrow R6). Ten Lua harness files, Lua 5.1 compilation, TOML/payload checks, original/applied target-patch validation, and negative validator controls pass. The test runner rejects missing, partial, duplicate, and mixed target-patch states, including an original pattern combined with a partial applied payload. Runtime/save/load/optional-mod gameplay remains unverified and required.
 
 ## R6: Arrow rank lookup uses invalid vanilla card keys
 
@@ -486,3 +486,42 @@ PR: —
 Commit: —
 Manual test requirement: Preserve as regression controls.
 Notes: common.lua before context upgrades scoring enhanced cards; Stone special route and Glass terminal behavior are intentional.
+
+## N1: Familiar extra-draw numeric arguments are ignored
+
+Source: Stabilization source trace; botg_familiars.lua Baby Fish/Serpent draw wrapper versus installed state_events.lua draw_from_deck_to_hand.
+Classification: Source-confirmed additional defect outside the original audit
+Priority: Normal
+Dependencies: 7, R10 for shared draw-boundary design
+State: AUDITED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: After play/discard with the relevant familiar at levels1/2/4, compare requested and actual extra cards; include hand capacity and Serpent effects.
+Notes: The familiar wrapper adds to e, but the installed native routine recomputes and overwrites that argument. Separate from possession R10 and excluded from R5; needs its own focused branch. Do not claim the advertised familiar extra draws are verified.
+
+## N2: Potion Mirror aggregates only selected retrigger fields
+
+Source: Stabilization full-chain trace; potions.lua outer Card.calculate_joker wrapper.
+Classification: Source-confirmed additional composition limit outside the audit's listed chain
+Priority: Normal
+Dependencies: R5 establishes supported composed effects
+State: AUDITED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Mirror active on the rightmost Joker returning legacy Xmult_mod, nested extra effects or secondary post effects; compare both real calculations and effect application with an ordinary native retrigger.
+Notes: Current aggregation adds chips/mult/dollars and multiplies x_mult/Xmult only, losing other second-calculation effects/post data and mutating the first return table. R5 preserves the primary forwarding contract and existing supported aggregation without silently redesigning the Potion. A separate branch must address full retrigger composition; it does not block standard R5 calculations with Mirror inactive.
+
+## N3: Regression runner rejects an already patched Lovely dump
+
+Source: R5 validation; tests/run.py versus current installed lovely/dump/blind.lua and UI_definitions.lua.
+Classification: Source-confirmed test infrastructure defect; blocks required local checks after dump regeneration
+Priority: Normal
+Dependencies: Original target patches PR9
+State: FIXED
+Branch: fix/joker-calculation-composition
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/12
+Commit: 62a4cf10945c28580920720c90e51af931a4ef85; matcher correction 6856781df919d338e9fdb8b393a80e80ecd0358a
+Manual test requirement: None for count validation; game behavior remains separate.
+Notes: PR #12 carries the runner fix. The runner previously required exactly one pre-replacement pattern even when the installed dump contained the complete applied payload. R5's state-aware validator now accepts exactly one original OR one complete applied payload and rejects missing, partial, duplicate, or mixed states, including an original pattern with a partial applied payload. It does not skip the check or claim runtime gameplay verification. Ten Lua harnesses, Lua 5.1 compilation, TOML and installed payload controls pass on the integrated R5 branch.
