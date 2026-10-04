@@ -11,7 +11,7 @@ All 34 original labels are inventoried: 28 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | ID | Finding | Disposition | Branch | PR / acceptance |
 | --- | --- | --- | --- | --- |
 | #1 | Battle of Gods / Colosseum can display one Blind while a different Blind or effect is actually active | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
-| #2 | Ares / Violet Vessel sometimes behave like The Hook / Minotaur and discard two random cards | HUMAN_TEST_NEEDED | docs/ares-vessel-discard-validation | Source validation complete; PR publication pending |
+| #2 | Ares / Violet Vessel sometimes behave like The Hook / Minotaur and discard two random cards | HUMAN_TEST_NEEDED | docs/ares-vessel-discard-validation | [PR 19](https://github.com/benedictdavon/balatro-reality-warp/pull/19), open for review |
 | #3 | Athena can display one required poker hand and enforce another | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
 | #4 | The Net can display one target rank and destroy another | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
 | #5 | Godly Hubris / Blind chip requirement can differ between preview and actual combat | HUMAN_TEST_NEEDED | fix/blind-target-calculation | [PR 9](https://github.com/benedictdavon/balatro-reality-warp/pull/9); N7 correction required |
@@ -71,11 +71,11 @@ All 34 original labels are inventoried: 28 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | [PR 17](https://github.com/benedictdavon/balatro-reality-warp/pull/17) | fix/lucky-one-rng | 14 | c53fffc6a9fac38f2a2816b3e9359cd706e54bb3 | a8319d6f1b9ed06751b60822c0115d794a0b9a8e | 36c4283213cf841e0e7cc32088cc9a0cd482e4be |
 | [PR 18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) | docs/consumable-stacking-disposition | 12, 20 | c6c78485bb752df26e8347c313465875b93b0548 | 6987331795c0b0cc659fe01adc8708440ae816c1 | d0f83b461d0777ffb52bb2a1af727f0906f7c967 |
 
-Correction and integration commits remain in the linked accepted PR histories. The #2 validation candidate has not yet been published; acceptance and its immutable commits will be recorded after actual GitHub operations.
+Correction and integration commits remain in the linked accepted PR histories. PR 19 is open at source-validation commit ca0f92ace6828911e1286e441a41c41e0c434b07; final approval/merge remains pending.
 
 ## Validation and limits
 
-The combined accepted main has 16 passing focused Lua harnesses, Lua 5.1 source compilation, shipping TOML/payload compilation and original-or-fully-applied native boundary validation. Lucky additionally passes actual installed Amulet Omega probability-ratio checks under LuaJIT and in-memory original/full/mixed/duplicate reset fixtures. Mark exercises actual native scoring and copy callbacks with labeled UI/event/card adapters. Real games, cold restart, optional-mod interplay and scheduling remain human tests. The documentation integration changes only four Markdown files; it verifies source inventory, every original row, accepted Git ancestry, immutable provenance and the complete diff. No installed dump or save is modified.
+This candidate on accepted main has 16 passing focused Lua harnesses, Lua 5.1 source compilation, shipping TOML/payload compilation and original-or-fully-applied native boundary validation. Lucky additionally passes actual installed Amulet Omega probability-ratio checks under LuaJIT and in-memory original/full/mixed/duplicate reset fixtures. Mark exercises actual native scoring and copy callbacks with labeled UI/event/card adapters. Real games, cold restart, optional-mod interplay and scheduling remain human tests. The #2 branch adds one focused source fixture and updates four Markdown files; it verifies source inventory, every original row, accepted Git ancestry, immutable provenance and the complete diff. No installed dump or save is modified.
 
 ## New findings outside the original audit
 

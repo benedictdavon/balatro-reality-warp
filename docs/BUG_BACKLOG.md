@@ -27,8 +27,8 @@ Priority: Normal
 Dependencies: 1, 6, 19, R10
 State: HUMAN_TEST_NEEDED
 Branch: docs/ares-vessel-discard-validation
-PR: Publication pending
-Commit: Pending reviewed validation commit
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/19
+Commit: ca0f92ace6828911e1286e441a41c41e0c434b07 (source validation)
 Manual test requirement: Exact isolated game procedure in REGRESSION_TESTS.md; no Balatro execution.
 Notes: Fresh branch from accepted d0f83b461d0777ffb52bb2a1af727f0906f7c967. Source-extracted native/Steamodded press-play dispatch, real registered Violet Vessel record, current Ares/Minotaur callbacks and possessed Hook exercise separate owners. Ares/Vessel cause no held-card discard; Ares destroys only scored cards after scoring. Native Hook and Minotaur discard two distinct held cards. Actual defeat wrapper, disabled state and reused same-key/new-ID encounters cancel stale Minotaur events. Possessed Hook remains an independent once/action owner while the Blind is disabled. All 16 Lua harnesses, Lua 5.1 compilation and shipping target/native-boundary controls pass. Luna's draft was taken over after a usage-limit failure; Sol corrected the native fixture and reviewed surrounding contracts. No speculative production change. Historical exact inventory remains unavailable.
 
