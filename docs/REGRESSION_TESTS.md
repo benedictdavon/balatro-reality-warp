@@ -191,3 +191,42 @@ Human: EYEFTHTG, record salt/versions and big-number backend, White stake, Red D
 Agent fixture executes installed native create_card, Steamodded legacy poll_edition and full optional object-weight algorithms, actual native edition getters, shipping3 lower creation calls and actual Tag apply. Eligible pool/culling, Card/UI/context adapters are labeled. Each backend uses10000 deterministic midpoints: Negative30→300, Poly30/Holo140/Foil200 unchanged, exactly one native edition sample per creation. Rawweight3 remains unchanged. Controls cover inactive/unowned/Aura/no_negative/guaranteed/string and explicit weighted options, modifier/rate, actual areas and forced type, bypass/preexisting edition, voucher/duplicate retries, one-owned-poll, nested polls/creations, late getter wrappers, errors, tag expiry, replaced run/area, exact argument arity/options and multiple returns. Global pseudorandom is unchanged. This is deterministic source-contract validation, not a real game or MonteCarlo experiment.
 
 Human: EYEFTHTG recorded salt, exact versions/object_weights setting/custom editions, White stake, Red Deck then Colosseum, Antes1/12. Start with Dark Alchemy only, no Familiar/possession/Lucky; compare first shop, reroll and booster-pack Jokers, logging actual native seed/sample/weight/edition and current flag. Verify Negative modified weight×10 only for actual shop/pack Joker creation; default vanilla probability0.3%→3%, no added roll. Run separate Aura/no_negative and guaranteed-edition controls plus string-only and explicitly weighted pools; expect native filters/exclusions. Repeat forced Joker versus forced Tarot, existing edition/bypass, Critic/Taster replacement and duplicate retries. Tag shop_start flag must precede first stock, delayed fee feedback must not gate activation; verify existing+$2 reroll fees and expiry when leaving/resetting the shop. Cold-save/restart during the shop and after expiry. Then reintroduce Lucky (charges unspent by edition polls), object weights, custom edition modifiers, Cartomancer and JokerDisplay separately. Native filtered/custom/capped probabilities may differ from universal absolute10×; tooltip states relative generation weight. HUMAN_TEST_NEEDED.
+
+
+## POST runtime phase: accepted-source revalidation
+
+Reported checkpoint: f863d0c, Balatro1.0.1o-FULL, Steamodded26.829.0, Lovely0.9.0, Amulet3.6.2, JokerDisplay1.10.9, Windows, retrigger_joker enabled. These are user gameplay observations; the agent has not executed Balatro. Start current revalidation with seed EYEFTHTG, recorded salt and exact current versions, White stake, Red Deck then Colosseum, no unrelated possessions/Familiars/stickers unless stated. Use a separate test profile/save for unlock and optional-mod isolation. Record Ante/slot/keys/ID/target and actual callback results; after each source fix add its focused acceptance procedure here.
+
+### POST-N7 — Croupier calls an unavailable dice sound
+
+Score Dice/Croupier cards for outcomes 1–6 with sound enabled/muted; compare RNG/scoring, then cold restart. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-N6 — Hieroglyph changes difficulty Ante and regenerates encounter schedule
+
+Ante1→0 and5→4 with Hieroglyph; Petroglyph too. Record slot, all keys/IDs/params, usage counts, tags, Ward token and target before/after, then cold restart and actual next-Ante advance. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-#9 — Starter Perishables are continuously refreshed by Thanatos
+
+Track both actual starter tallies through each Blind to zero, regular/fused/showdown/milestone defeat, independently owned ordinary Perishables and Rental cleansing, copy/restore and cold restart. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-N8 — Shop and pack duplicate Joker offers escape owner-only check
+
+No Showman: owned, same-shop and same-Buffoon-pack keys; Critic/Taster replacements and repeated rerolls. Live/debuffed Showman and deliberate forced-key controls. Preserve rarity, editions, native seed/notifications and finite-pool behavior. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-N3 — BOTG-adopted Familiar lacks permanent unlock/discovery
+
+Fresh test profile with a locked Familiar: obtain reward, preview/decline, adopt and replace, inspect active card/collection/Nursery; fully quit and reopen profile/run. Preview/decline must not permanently unlock. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-N4 — Pending Echo Tags consume only one tag
+
+1/2/3 pending Echo + Negative yield3/5/7 Negative and zero pending Echo. Echo+Echo does not recursively duplicate; triggered controls, native Double Tag and cold restart. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-N9 — Long-run performance degrades and cold restart restores it
+
+At Ante2/5/10 and every hand: Lua KB, event queue counts, actual card/area counts, Familiar/possession/encounter table sizes, calculate/status/event counts. Compare same save before/after restart, JokerDisplay isolation and safe Amulet test-save isolation. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-N5 — Manacle-associated two-dollar loss may be Divine Zap
+
+Manacle versus another semantic Boss with no Parasitic/money-loss mechanics. Force failed/winning hand and each counterattack outcome, record exact emitter/message and dollars; disabled/defeated/next-encounter controls. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+POST controls: Hieroglyph preserves current Small/Big/Boss progression and already-generated skip Tags. Divine Zap is a legitimate possible global source of the Manacle-associated loss. Keep Black Hole/Blueprint exponent, Perfectionism replacement and Upgrade Roulette progression controls. N9 forced collection is an explicitly triggered diagnostic experiment, not a scheduled shipped workaround.

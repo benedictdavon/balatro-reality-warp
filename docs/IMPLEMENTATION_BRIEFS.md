@@ -366,3 +366,33 @@ Explicitly excluded work: Production changes, new gameplay fixes, optional stack
 Required static validation: Full documentation diff, source document tracking, all 34 fields/counts, all 22 accepted ledger entries and exact branch base/main/remote ancestry, status/stat/diffcheck; read-only independent Luna review and Sol published-head review.
 Required runtime/manual validation: No new runtime check for documentation. Existing 30 HUMAN_TEST_NEEDED cases remain the exact human queue.
 Known risks: Report snapshot records accepted source head before its own documentation merge; final user report must give the actual refreshed main after that merge. Shared author account uses pinned COMMENT technical APPROVE with human-authorized expected-head controlled merge.
+
+
+## POST source inventory and runtime backlog
+
+Issue: Track all eight user POST findings and reopen original #9 after direct Begin post instruction.
+Classification: Documentation-only inventory; initial source evidence is not final gameplay validation.
+Dependencies: Original source pass accepted at c94227daa5b08dfe7e26497fe601b19e9ebb2b02.
+Relevant files/functions: Immutable POST_SOL_RUNTIME_FINDINGS.md; BUG_BACKLOG.md, REGRESSION_TESTS.md, POST_STABILIZATION_STATUS.md, historical STABILIZATION_STATUS.md and this brief.
+Confirmed root cause: Report is untracked and the prior original report reflects an intentionally deferred POST phase.
+Required behavior: Track the input unchanged, all eight qualified IDs with required fields/evidence/order/manual cases, historical checkpoint, original #9 reopening and POST-A1 independent discovery.
+Behavior that must remain unchanged: All production/tests and prior immutable acceptance provenance; distinguish human-reported gameplay from agent execution.
+Explicitly excluded work: Production fixes, runtime claims, arbitrary Perishable balance choice and performance workaround.
+Required static validation: Source-file byte hash unchanged; complete diff/status/stat/diffcheck; all eight fields/IDs/order, reopened9, no code/test changes; independent Luna review and Sol published review.
+Required runtime/manual validation: None for tracking; preserve full human queue.
+Known risks: Historical runtime checkpoint predates accepted later fixes. Current source defects still need isolated actual game/cold restart where specified.
+
+
+## POST-N7: Croupier missing feedback sound
+
+Issue: POST-N7 hard crash when the Dice/Croupier job is scored.
+Classification: Source-confirmed missing native sound; HUMAN_TEST_NEEDED after bounded patch and reviewed checks.
+Dependencies: Accept initial POST tracking PR, refresh latest main, then create fix/croupier-missing-sound from that main.
+Relevant files/functions: src/consumables/jobs.lua croupier_job.calculate; actual installed Balatro archive resources/sounds/generic1.ogg; native sound_manager fallback; focused source-extracted sticker harness and stabilization docs.
+Confirmed root cause: calculate calls unregistered dice sound. Mod sound definitions/assets provide no dice key; native executable archive lacks resources/sounds/dice.ogg while generic1.ogg is present. Native sound fallback opens resources/sounds/<sound_code>.ogg and fails for dice.
+Required behavior: Replace only missing feedback key with native generic1. Keep pitch 1.0 + roll*0.05 and existing volume/call count. Regression must load the actual sticker definition, execute eligible die outcomes1–6 and assert native available key, exact pitch, unchanged RNG seed/range/count and scoring results; negative non-play/non-scoring contexts must not roll/play sound. Use packaged native archive/source evidence, not a fabricated sound whitelist.
+Behavior that must remain unchanged: Die distribution and dice_job seed, scoring contexts, +8 Mult/pip or+30 Chips/pip orX2 effects, message/color/Card fields, existing repetition-flag callback and all other jobs/stickers.
+Explicitly excluded work: POST-A1 missing high-roll retrigger flag producer; changing scoring/repetition lifecycle; new sound assets/registrations; RNG/global wrappers; other POST or earlier local findings; formatting/refactors.
+Required static validation: Luna reads AGENTS and relevant ISSUE/BUG_AUDIT/POST sections, confirms accepted clean base, creates branch, traces exact lower/native contracts, makes smallest patch, adds source-based focused regression, updates backlog/POST status/manuals/brief as needed, runs applicable focused and full current tests/run.py plus Lua5.1/TOML/native controls, inspects status/stat/full diff/diffcheck, commits/pushes/opens and attaches one PR in owned fork. If root cause materially differs, stop/report. Sol independently reviews complete PR.
+Required runtime/manual validation: EYEFTHTG with recorded salt/versions, White stake, Red Deck then Colosseum, test Croupier playing card with sound enabled and muted, all six die outcomes, repeated scoring/Red Seal, cold restart. Expected no missing-file/sound-thread crash and existing score values retained. Report high-roll repetition behavior separately as POST-A1; do not claim it repaired by sound change.
+Known risks: Audio pitch/timbre changes to a valid packaged feedback sound; no scoring/RNG balance changes. Headless sound sink cannot prove real audio-thread operation. Native asset listing is source evidence, not game execution. Human directly resumed POST under existing sequential workflow/public fork context.

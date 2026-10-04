@@ -113,15 +113,15 @@ Notes: Fresh branch from accepted adf2df084fee06bbdb6036f61ae6d8e7905f2402. Actu
 ## 9: Colosseum starting Perishable Stencils can expire, then become active again
 
 Source: ISSUE.md #9
-Classification: Historical correction with residual eligibility/ownership risk
+Classification: Reopened by POST runtime report; source confirms refresh policy needs adjudication
 Priority: Normal
 Dependencies: 1, 18, R4
-State: HUMAN_TEST_NEEDED
+State: AUDITED
 Branch: fix/blind-effect-ownership
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/4 (accepted and merged)
 Commit: e3e3d49ef65836945eec43f8bbb70a4ed581daf9 (implementation/disposition); e3e3d49ef65836945eec43f8bbb70a4ed581daf9 (reviewed head); 8e4c2bfad92fc0572dcdb289608895d2f452e4ac (accepted merge)
 Manual test requirement: Required for gameplay/save/load; exact procedure is in REGRESSION_TESTS.md.
-Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup require human testing.
+Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup require human testing. Reopened under POST-#9 on accepted main c94227daa5b08dfe7e26497fe601b19e9ebb2b02 after human instruction Begin post; original acceptance provenance remains historical evidence, not closure of this new runtime/policy finding.
 
 ## 10: Shortcut failed a valid one-gap Straight
 
@@ -518,7 +518,7 @@ Notes: The unchanged get_flush fallback and Card:is_suit amalgam scan in src/cor
 
 The user extended the goal to audit POST_SOL_RUNTIME_FINDINGS.md after the original ISSUE #1-20 and R1-R14 pass finishes, then repeat sequential Option A for its confirmed actionable findings. The file is present and was read completely; it reports user gameplay on main f863d0c, Balatro1.0.1o-FULL/Steamodded26.829.0/Lovely0.9.0/Amulet3.6.2/JokerDisplay1.10.9, with retrigger_joker enabled. This is reported human evidence, not agent game execution. Preserve that checkpoint for revalidation against the eventual accepted main.
 
-The report remains untracked and unchanged as a user-authored input after the original source stabilization pass. The latest human instruction defers POST work: leave this input unchanged and untracked during original stabilization. Its IDs will be source-qualified as POST-N3 through POST-N9 and POST-#9, avoiding collisions with local stabilization discoveries N1-N3. When the human resumes the deferred POST phase, it must revalidate underlying causes (including the reported starter Perishable refresh behavior), preserve the stated non-bug observations, and profile the performance finding before proposing a speculative production fix. No follow-up source patch has begun.
+The report was preserved untracked and unchanged through the original source stabilization pass. The original deferral has now been lifted by the direct human instruction Begin post. Preserve and track the report unchanged as the POST source input. Its IDs will be source-qualified as POST-N3 through POST-N9 and POST-#9, avoiding collisions with local stabilization discoveries N1-N3. The resumed POST phase must revalidate underlying causes (including the reported starter Perishable refresh behavior), preserve the stated non-bug observations, and profile the performance finding before proposing a speculative production fix. No follow-up source patch has begun.
 
 ## N4: Familiar draw wrapper drops the native early-return/argument contract
 
@@ -588,4 +588,126 @@ Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR
 
 ## Original stabilization acceptance checkpoint
 
-Original ISSUE #1–20 and audit R1–R14 are all accounted for: 30 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG. Accepted source main is 52f76d72e9a980275446fb9707640288c573f139. All source candidates were reviewed and merged; no original label is BLOCKED or awaiting publication. STABILIZATION_STATUS.md contains the final branch/PR/commit ledger, validation limits, complete human queue, residual risks and recommended end-to-end sequence. POST work remains deferred; local N1/N2/N4/N5/N6 remain separately documented outside the original audit. No Balatro execution is claimed.
+At the original acceptance checkpoint, ISSUE #1–20 and audit R1–R14 were all accounted for: 30 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG. Accepted source main was 52f76d72e9a980275446fb9707640288c573f139. All source candidates were reviewed and merged; no original label is BLOCKED or awaiting publication. STABILIZATION_STATUS.md contains the final branch/PR/commit ledger, validation limits, complete human queue, residual risks and recommended end-to-end sequence. POST was deferred at that checkpoint and is now resumed below; local N1/N2/N4/N5/N6 remain separately documented outside the original audit. No Balatro execution is claimed.
+
+## POST runtime phase checkpoint
+
+Human instruction Begin post resumes the full goal after original source pass completion. Base c94227daa5b08dfe7e26497fe601b19e9ebb2b02. The immutable reported checkpoint is f863d0c; these are reported human observations, not agent Balatro execution. POST IDs are source-qualified and distinct from earlier local N1–N7. Original #9 is reopened; prior original final report remains a historical accepted source snapshot. Current phase state is in POST_STABILIZATION_STATUS.md.
+
+## POST-N7: Croupier calls an unavailable dice sound
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N7; reported runtime main f863d0c
+Classification: Source-confirmed missing sound; reported human crash at f863d0c
+Priority: Critical
+Dependencies: Initial POST tracking acceptance
+State: READY
+Branch: fix/croupier-missing-sound (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: Score Dice/Croupier cards for outcomes 1–6 with sound enabled/muted; compare RNG/scoring, then cold restart.
+Notes: jobs.lua calls dice; no matching mod registration/asset. Installed Balatro executable archive contains resources/sounds/generic1.ogg and lacks dice.ogg. Native sound fallback opens the requested filename. Replace only feedback sound; keep die seed/pitch/score semantics. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+
+## POST-N6: Hieroglyph changes difficulty Ante and regenerates encounter schedule
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N6; reported runtime main f863d0c
+Classification: Source-confirmed Ante-zero clamp and schedule/Ante conflation; persistence-sensitive
+Priority: High
+Dependencies: POST-N7; accepted encounter/target contracts
+State: AUDITED
+Branch: fix/hieroglyph-botg-ante (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: Ante1→0 and5→4 with Hieroglyph; Petroglyph too. Record slot, all keys/IDs/params, usage counts, tags, Ward token and target before/after, then cold restart and actual next-Ante advance.
+Notes: get_botg_base_blind clamps to1; scheduler treats entry.ante inequality as new progression and set_blind likewise recommits. Numeric difficulty adjustment must not regenerate schedule or grant another progression reward. Architectural design and native progression trace required. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+
+## POST-#9: Starter Perishables are continuously refreshed by Thanatos
+
+Source: POST_SOL_RUNTIME_FINDINGS.md #9; reported runtime main f863d0c
+Classification: Reopened original #9 by reported runtime; source confirms intentional4-round starters plus every-showdown refresh
+Priority: High
+Dependencies: POST-N6; human clarification of cleansing policy
+State: AUDITED
+Branch: fix/perishable-starter-refresh (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: Track both actual starter tallies through each Blind to zero, regular/fused/showdown/milestone defeat, independently owned ordinary Perishables and Rental cleansing, copy/restore and cold restart.
+Notes: decks.lua explicitly documents4-round Stencil/Blueprint. battle_of_gods.lua refills every Perishable on semantic showdown, and Boss slot chooses showdown every Ante. Existing behavior is not a missing expiration callback; scope of cleansing is a gameplay-policy decision. Clarification requested; other independent findings continue. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+
+## POST-N8: Shop and pack duplicate Joker offers escape owner-only check
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N8; reported runtime main f863d0c
+Classification: Source-confirmed predicate ignores other offers; framework pool/Showman contracts still require complete revalidation
+Priority: High
+Dependencies: POST-N7; accepted Dark Alchemy creation scope
+State: AUDITED
+Branch: fix/shop-joker-duplicates (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: No Showman: owned, same-shop and same-Buffoon-pack keys; Critic/Taster replacements and repeated rerolls. Live/debuffed Showman and deliberate forced-key controls. Preserve rarity, editions, native seed/notifications and finite-pool behavior.
+Notes: utils.lua documented offer uniqueness only checks G.jokers; its capped retries and voucher lower creation path can leave offered duplicates. Review native pool lifecycle and all lower wrappers before selecting bounded exclusion/selection mechanism. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+
+## POST-N3: BOTG-adopted Familiar lacks permanent unlock/discovery
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N3; reported runtime main f863d0c
+Classification: Source confirms adoption updates card instance only; registered/profile/Nursery persistence must be traced
+Priority: High
+Dependencies: POST-N7; native unlock/profile save contracts
+State: AUDITED
+Branch: fix/familiar-adoption-unlock (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: Fresh test profile with a locked Familiar: obtain reward, preview/decline, adopt and replace, inspect active card/collection/Nursery; fully quit and reopen profile/run. Preview/decline must not permanently unlock.
+Notes: botg_set_active_familiar sets bypass_discovery_center and instance discovered/unlocked. Both adoption handlers call it without permanent unlock/discovery update. Use report preferred policy: successful adoption unlocks/discovers; do not restrict reward pool without cause. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+
+## POST-N4: Pending Echo Tags consume only one tag
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N4; reported runtime main f863d0c
+Classification: Source-confirmed break in pending Echo scan
+Priority: Medium
+Dependencies: POST-N7; native Tag:yep removal/event semantics
+State: AUDITED
+Branch: fix/echo-tag-stacking (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: 1/2/3 pending Echo + Negative yield3/5/7 Negative and zero pending Echo. Echo+Echo does not recursively duplicate; triggered controls, native Double Tag and cold restart.
+Notes: tags.lua calls lower add_tag, iterates backward, queues two copies and breaks after first Echo. Need a stable pending-owner snapshot because Tag:yep mutates/removes live tags; mark once and bypass Echo recursion on generated copies. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+
+## POST-N9: Long-run performance degrades and cold restart restores it
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N9; reported runtime main f863d0c
+Classification: Reported runtime degradation; transient accumulation hypothesis unproven on accepted main
+Priority: High
+Dependencies: POST-N7/N6/#9/N8/N3/N4 accepted; isolate current stack and profile
+State: AUDITED
+Branch: docs/profile-long-run-performance (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: At Ante2/5/10 and every hand: Lua KB, event queue counts, actual card/area counts, Familiar/possession/encounter table sizes, calculate/status/event counts. Compare same save before/after restart, JokerDisplay isolation and safe Amulet test-save isolation.
+Notes: Reported 0.05–0.10s frames at f863d0c suggest process-local accumulation but establish no culprit. No production fix until actual growing resource/repeated registration or source-confirmed pathological path is identified. No periodic forced-GC workaround; no claim Amulet caused it. Diagnostic plan/instrumentation and labeled agent stress checks may finish with HUMAN_TEST_NEEDED for real profile. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+
+## POST-N5: Manacle-associated two-dollar loss may be Divine Zap
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N5; reported runtime main f863d0c
+Classification: Source explains a legitimate global BOTG counterattack; historical callback attribution remains unverified
+Priority: Low
+Dependencies: POST-N6 ownership/progression checks; source-isolated counterattack validation
+State: AUDITED
+Branch: docs/manacle-counterattack-validation (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: Manacle versus another semantic Boss with no Parasitic/money-loss mechanics. Force failed/winning hand and each counterattack outcome, record exact emitter/message and dollars; disabled/defeated/next-encounter controls.
+Notes: botg_combat.lua queues an encounter-owned failed-hand counterattack; its first third loses up to2 and explicitly displays Divine Zap. No Manacle-specific patch unless isolated evidence contradicts this explanation. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+
+
+## POST-A1: Croupier high-roll retrigger flag has no producer
+
+Source: Newly discovered during POST-N7 source review; outside the posted findings.
+Classification: Source-confirmed tooltip/flag discrepancy; native repetition ordering requires independent trace
+Priority: Normal
+Dependencies: POST-N7 crash fix; native playing-card/sticker repetition contract
+State: DISCOVERED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Force5/6 versus1–4, record scoring/repetition order and actual extra evaluations with Red Seal, debuff and repeated hands. Avoid self-retrigger loops.
+Notes: jobs.lua reads and clears ability.croupier_rolled_high but repository search finds no writer. Current high rolls return X2 without setting that flag. This is independently actionable from the missing-sound crash and excluded from its minimal sound patch. Do not claim high-roll retriggers were repaired by a feedback-only change.
