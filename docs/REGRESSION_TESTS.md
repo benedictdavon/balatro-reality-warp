@@ -215,7 +215,9 @@ No Showman: owned, same-shop and same-Buffoon-pack keys; Critic/Taster replaceme
 
 ### POST-N3 — BOTG-adopted Familiar lacks permanent unlock/discovery
 
-Fresh test profile with a locked Familiar: obtain reward, preview/decline, adopt and replace, inspect active card/collection/Nursery; fully quit and reopen profile/run. Preview/decline must not permanently unlock. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+Positive control: fresh unseeded profile without prior one-hand Familiar reward, generate an unseeded White stake Red Deck run, then Colosseum separately; record generated seed/salt, exact versions and canonical locked Familiar key. Preview and keep remain non-unlocking. Adopt/replace must update active Card usability, registered collection flags and Nursery marker; fully quit/reopen the game/profile/run. Separate seeded EYEFTHTG and challenge denial controls keep the active Card usable while native center/profile remain locked; configured seeded_unlocks=true permits unlocks. Exclude the separate POST-A2 one-hand writer and existing inconsistent profiles. HUMAN_TEST_NEEDED for actual game and physical save/load.
+
+Local source `beee7e9` / final head `deea505` is independently APPROVED; all19 Lua5.1 harnesses/TOML/native validators and focused LuaJIT2.1 pass. The fixture executes native SMODS.create_card/unlock/discover/Game.save_progress/SAVE_UNLOCKS/Card.save and the shipping Nursery reader. Constructor/UI/FIFO/geometry/in-memory metadata are labeled adapters; actual sprite/tooltip predicates and static Card.load bypass-field assignments are checked. Fresh default-locked center plus detached profile/meta reconstruction is agent source validation, not a Balatro or physical cold restart.
 
 ### POST-N4 — Pending Echo Tags consume only one tag
 

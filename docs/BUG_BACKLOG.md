@@ -651,15 +651,17 @@ Notes: utils.lua documented offer uniqueness only checks G.jokers; its capped re
 ## POST-N3: BOTG-adopted Familiar lacks permanent unlock/discovery
 
 Source: POST_SOL_RUNTIME_FINDINGS.md N3; reported runtime main f863d0c
-Classification: Source confirms adoption updates card instance only; registered/profile/Nursery persistence must be traced
+Classification: Source-confirmed adoption persistence and constructor-bypass defect; reviewed local patch, HUMAN_TEST_NEEDED for gameplay/physical-save behavior.
 Priority: High
 Dependencies: Accepted main/native unlock and profile-save contracts; no N7/N4 source dependency.
-State: READY
-Branch: fix/familiar-adoption-unlock (planned; not created)
-PR: —
-Commit: —
-Manual test requirement: Fresh test profile with a locked Familiar: obtain reward, preview/decline, adopt and replace, inspect active card/collection/Nursery; fully quit and reopen profile/run. Preview/decline must not permanently unlock.
+State: APPROVED locally; HUMAN_TEST_NEEDED in game and physical save/load. No accepted-main integration or publication.
+Branch: fix/familiar-adoption-unlock
+PR: Pending; not created or published.
+Commit: `beee7e97161722510a680f20f9ef28bd04d2e9e2` source/test; reviewed candidate `6b44df2a4cc5f4ef0135a7c1e7547476a468c402`; final local review stamp/head `deea505c9929fdfe0e713e281a23a086a88506ec`.
+Manual test requirement: Fresh unseeded profile without a prior one-hand Familiar reward; generate an unseeded White/Red then Colosseum run and record generated seed/salt/versions/canonical reward key. Preview/keep must not unlock; adopt/replace must update usable active Card, registered collection and Nursery. Full quit/reload. Separate seeded EYEFTHTG and challenge denial controls, then configured seeded_unlocks=true positive control. Exclude POST-A2 from the fixture.
 Notes: botg_set_active_familiar sets bypass_discovery_center and instance discovered/unlocked. Both adoption handlers call it without permanent unlock/discovery update. Use report preferred policy: successful adoption unlocks/discovers; do not restrict reward pool without cause. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. Executed installed unlock_card/discover_card/Game.save_progress/SAVE_UNLOCKS with in-memory meta, FIFO/notification adapters: unseeded UDAud/profile flag persisted and reconstructed centers restored; default seeded/challenge restriction and configured seeded_unlocks control respected. No physical disk/game restart. Boot defaults precede SAVE_UNLOCKS, so do not remove them speculatively. Pass discovery bypass before Card construction and unlock/profile-save only successful adoption/replacement; restoration/preview/decline must not unlock.
+
+Local patch evidence: canonical prevalidation and actual-center validation precede destructive replacement; SMODS.create_card receives bypass before construction. The setter returns the active Card without permanent unlock. Successful adopt/replace invokes native unlock/discover, then saves a new current-profile Nursery marker only after actual center flags permit it. Root independently inspected complete source/test/docs/native contracts and passed all19 Lua5.1 harnesses/TOML/native validator controls plus focused LuaJIT2.1. Actual native save/restore APIs and Nursery reader execute with labeled constructor/UI/FIFO/in-memory metadata adapters and a fresh default-locked center; native Card:save executes while Card:load bypass assignments are static contracts. No Balatro or physical disk test; the independent one-hand writer and existing inconsistent-profile migration remain excluded. Before eventual publication integrate then-accepted main and re-review this same branch.
 
 ## POST-N4: Pending Echo Tags consume only one tag
 
