@@ -225,13 +225,53 @@ Local source `beee7e9` / final head `deea505` is independently APPROVED; all19 L
 
 ### POST-N9 — Long-run performance degrades and cold restart restores it
 
-At Ante2/5/10 and every hand: Lua KB, event queue counts, actual card/area counts, Familiar/possession/encounter table sizes, calculate/status/event counts. Compare same save before/after restart, JokerDisplay isolation and safe Amulet test-save isolation. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+Static fixture: `tests/test_long_run_profile.lua` checks inert loading, zero global changes, six-hook allowlisting, exact zero/explicit-nil argument arity, return counts and nil holes, error identity, coroutine yields, raw context reads, bounded counters/snapshots/history/report, hook ownership, stale shims across restart, optional missing functions/metrics, and missing `G`. It dynamically reads and executes the installed native `Event:init`, `EventManager:add_event`, and `EventManager:update` code from the sibling game dump. The small `Object`, clock and environment are labeled test adapters; native code is read at test time and is not copied into the repo. The fixture does not run Balatro or establish actual resource growth, UI behavior, or cold-save persistence. `tests/run.py` covers Lua 5.1 and TOML/native payload controls; a separate focused run checks the profiler fixture under LuaJIT.
+
+Manual procedure: Use two fresh unseeded White-stake runs: Red Deck, then a separate Colosseum run. Leave the seed blank; record each generated seed/salt and exact Balatro, Steamodded, Lovely, Reality Warp, Amulet, JokerDisplay and retrigger-mod versions/configuration. Start the profiler explicitly from the in-game console after a run is loaded:
+
+```lua
+RWP_PROFILE = assert(SMODS.load_file('tools/long_run_profile.lua', 'reality_warp'))()
+RWP_PROFILE.start()
+print(RWP_PROFILE.report('Ante 2 before hand'))
+```
+
+Use the same console global at later checkpoints, for example `print(RWP_PROFILE.report('Ante 5 after queue drain'))`. `RWP_PROFILE.history()` returns the detached in-memory snapshots, up to the most recent 32. Call `RWP_PROFILE.stop('profiler off')` to remove its owned hooks and take one final snapshot; after reviewing history, clear `RWP_PROFILE`.
+
+Take labeled reports around comparable hands and after the native event queue drains at Ante 2, 5, 10 and the first late-run slowdown. Record Ante, round, Blind/encounter key, identity and phase, hands, inventory, retriggers, pending/complete/started queue counts, Lua heap, card/area and native-instance counts, possession/Familiar counts, encounter-state sizes, and optional Talisman metrics. Queue `started` means the event timer began, not that it is actively consuming CPU; `Game:update` dt is frame input, not CPU time. Talisman's elapsed/frame value and `LAST_CALC_TIME` are native scoring elapsed/frame metrics, not CPU attribution. A scan-limit or unavailable metric must remain marked in the report rather than being interpreted as zero.
+
+When console access is unavailable, only in a local test copy, add this complete temporary snippet to `RealityWarp.lua` after modules and aliases initialize. Pick keys that are actually unused in the current setup. It reports on F8 and toggles profiling on/off with F9 while preserving the original callback's arguments, returns, and key handling:
+
+```lua
+local profiler = assert(SMODS.load_file('tools/long_run_profile.lua', 'reality_warp'))()
+profiler.start()
+local profiling = true
+local previous_keypressed = love.keypressed
+if type(previous_keypressed) == 'function' then
+    love.keypressed = function(...)
+        local key = select(1, ...)
+        if key == 'f8' then
+            print(profiler.report('manual F8'))
+        elseif key == 'f9' then
+            if profiling then
+                profiler.stop('manual F9 off')
+                profiling = false
+            else
+                profiler.start()
+                profiling = true
+            end
+        end
+        return previous_keypressed(...)
+    end
+end
+```
+
+For an enabled/disabled overhead control, toggle F9 around matched hands in the same process and record elapsed time or observed frame rate separately from profiler metrics; F8 can print before and after each interval. The console route can resume with `RWP_PROFILE.start()`. The 32-entry history remains available across profiling sessions. Remove the temporary loader/key code and restart after collecting logs. Compare the same persistent test save before and after fully quitting/restarting Balatro, then continue until the slowdown recurs. Use backup/test saves for JokerDisplay, retrigger and Amulet isolation; do not disable a required number mod on the only copy of a large-number save. Do not force garbage collection as part of this test. The report records no real-game measurements or confirmed culprit; N9 stays HUMAN_TEST_NEEDED until a growing resource or repeated workload is isolated.
 
 ### POST-N5 — Manacle-associated two-dollar loss may be Divine Zap
 
 Manacle versus another semantic Boss with no Parasitic/money-loss mechanics. Force failed/winning hand and each counterattack outcome, record exact emitter/message and dollars; disabled/defeated/next-encounter controls. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
 
-POST controls: Hieroglyph preserves current Small/Big/Boss progression and already-generated skip Tags. Divine Zap is a legitimate possible global source of the Manacle-associated loss. Keep Black Hole/Blueprint exponent, Perfectionism replacement and Upgrade Roulette progression controls. N9 forced collection is an explicitly triggered diagnostic experiment, not a scheduled shipped workaround.
+POST controls: Hieroglyph preserves current Small/Big/Boss progression and already-generated skip Tags. Divine Zap is a legitimate possible global source of the Manacle-associated loss. Keep Black Hole/Blueprint exponent, Perfectionism replacement and Upgrade Roulette progression controls. N9 reads Lua heap count without forcing collection; preserve the installed native garbage-collection policy.
 
 ### POST revalidation controls and policy
 

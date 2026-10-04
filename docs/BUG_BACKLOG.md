@@ -518,7 +518,7 @@ Notes: The unchanged get_flush fallback and Card:is_suit amalgam scan in src/cor
 
 The user extended the goal to audit POST_SOL_RUNTIME_FINDINGS.md after the original ISSUE #1-20 and R1-R14 pass finishes, then repeat sequential Option A for its confirmed actionable findings. The file is present and was read completely; it reports user gameplay on main f863d0c, Balatro1.0.1o-FULL/Steamodded26.829.0/Lovely0.9.0/Amulet3.6.2/JokerDisplay1.10.9, with retrigger_joker enabled. This is reported human evidence, not agent game execution. Preserve that checkpoint for revalidation against the eventual accepted main.
 
-The report was preserved untracked and unchanged through the original source stabilization pass. The original deferral has now been lifted by the direct human instruction Begin post. Preserve and track the report unchanged as the POST source input. Its IDs will be source-qualified as POST-N3 through POST-N9 and POST-#9, avoiding collisions with local stabilization discoveries N1-N3. The resumed POST phase must revalidate underlying causes (including the reported starter Perishable refresh behavior), preserve the stated non-bug observations, and profile the performance finding before proposing a speculative production fix. No follow-up source patch has begun.
+The report was preserved untracked and unchanged through the original source stabilization pass. The original deferral has now been lifted by the direct human instruction Begin post. Preserve and track the report unchanged as the POST source input. Its IDs will be source-qualified as POST-N3 through POST-N9 and POST-#9, avoiding collisions with local stabilization discoveries N1-N3. The resumed POST phase must revalidate underlying causes (including the reported starter Perishable refresh behavior), preserve the stated non-bug observations, and profile the performance finding before proposing a speculative production fix. Independent local POST candidates now exist; their reviewed status is recorded below. No POST branch is published or part of accepted main.
 
 ## N4: Familiar draw wrapper drops the native early-return/argument contract
 
@@ -678,16 +678,16 @@ Notes: tags.lua calls lower add_tag, iterates backward, queues two copies and br
 
 ## POST-N9: Long-run performance degrades and cold restart restores it
 
-Source: POST_SOL_RUNTIME_FINDINGS.md N9; reported runtime main f863d0c
-Classification: Reported runtime degradation; transient accumulation hypothesis unproven on accepted main
+Source: `POST_SOL_RUNTIME_FINDINGS.md`, N9 (user-authored report tracked on `docs/post-runtime-backlog`); symptom reported on historical main `f863d0c`.
+Classification: Reported runtime symptom confirmed by the user's test; exact source cause remains HUMAN_TEST_NEEDED.
 Priority: High
-Dependencies: Instrumentation is independent; final live reproduction should use accepted preceding source fixes.
-State: READY for opt-in diagnostics; cause unproven.
-Branch: docs/profile-long-run-performance (planned; not created)
-PR: —
-Commit: —
-Manual test requirement: At Ante2/5/10 and every hand: Lua KB, event queue counts, actual card/area counts, Familiar/possession/encounter table sizes, calculate/status/event counts. Compare same save before/after restart, JokerDisplay isolation and safe Amulet test-save isolation.
-Notes: Reported 0.05–0.10s frames at f863d0c suggest process-local accumulation but establish no culprit. No production fix until actual growing resource/repeated registration or source-confirmed pathological path is identified. No periodic forced-GC workaround; no claim Amulet caused it. Diagnostic plan/instrumentation and labeled agent stress checks may finish with HUMAN_TEST_NEEDED for real profile. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. Use bounded primitive snapshots/counters and explicit start/stop ownership; input frame dt is not CPU cost. No automatic loader/GC/RNG/save mutation. Current JokerDisplay package2.0.4 differs from historical report1.10.9; package presence does not prove enabled runtime.
+Dependencies: Revalidated on accepted main `c94227daa5b08dfe7e26497fe601b19e9ebb2b02`; independent of unpublished source candidates. Any later production fix needs its own measured cause and review.
+State: APPROVED locally; HUMAN_TEST_NEEDED for measured cause/gameplay. No accepted-main integration or publication.
+Branch: `feat/opt-in-runtime-profiling`
+PR: Pending explicit POST publication authorization and eventual published-head review; no PR opened.
+Commit: `33786ff4bebdcd5c409a81cedd99f7f4e16f7ea1` (source and focused test). All 19 Lua harnesses, Lua 5.1 compilation, TOML/installed-payload controls, and focused LuaJIT 2.1 passed. Reviewed full candidate `59ecd89dc6b7512ffbdab17faab46f55995a81ae`; final local review-stamp head `019c5213e2368a322d005e04014c41b9c2e4756b`. No real-game or cold-save run is claimed.
+Manual test requirement: Required. Use the exact fresh unseeded Red Deck and separate Colosseum procedure in `REGRESSION_TESTS.md`, capture Ante 2/5/10/late reports before and after comparable hands and queue drain, compare the same save after a full restart, isolate optional mods on backup saves, and compare matched hands with profiling enabled and disabled.
+Notes: The candidate adds an explicitly loaded profiler module only; `RealityWarp.lua` automatic loading remains unchanged. Six wrappers are direct tail-forwarders with session-token protection. The focused Lua 5.1/JIT tests dynamically execute the installed native Event implementation; small class/clock objects are labeled adapters. Queue `start_timer` and Talisman's elapsed/frame metrics are not CPU attribution. No leak, duplicated workload, or culpable mod has been identified. See the bounded POST-N9 brief for exclusions and risks. No real-game or physical-save test was run.
 
 ## POST-N5: Manacle-associated two-dollar loss may be Divine Zap
 
