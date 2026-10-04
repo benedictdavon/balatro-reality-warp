@@ -170,8 +170,8 @@ Priority: Normal
 Dependencies: 14
 State: HUMAN_TEST_NEEDED
 Branch: fix/dark-alchemy-edition-weight
-PR: Publication pending
-Commit: Pending implementation commit
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/22
+Commit: a3b34017c84f9c50d4be13d5a6ace3c36a8ed8bb (implementation); eda648bd8ed646f75db3cac970eb722a6b4595ff (independent review record)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
 Notes: Fresh branch from accepted475b549498f2bc693524f428c7cd3b6a7ca72729. Two additive3% paths are removed; single private creation/native edition-poll ownership chains the actual Negative center getter and multiplies its modified weight once by10. Actual shop/pack area, effective forced Joker kind, native ediseed, current run/Ante/tag and one initial poll are required. No_negative, guaranteed and explicit weighted options preserve native behavior; fifth/trailing options, exact arity and multiple returns are forwarded. Nested/error scopes and late external getter wrappers restore ownership without double amplification. Raw definitions and global RNG are unchanged. All3 utils lower calls (initial/voucher/duplicate retry) use the same factory. Actual native Tag activation already precedes first stock; lifetime/+$2 fees unchanged. Eighteen stock harnesses, Lua5.1/TOML/native boundaries and actual Omega Helin/Lucky checks pass. Actual legacy/object-weight algorithms over10000 deterministic midpoints each give baselineNegative30 versusactive300, other editions unchanged, one edition sample percreation. This is source-contract evidence with labeled Card/pool/UI adapters, not MonteCarlo or Balatro. Tooltip promises relative Negative generation weight×10; custom pools/rates/saturation follow native policy. Real shop/pack/cold-runtime/optional-mod behavior requires human validation.
 

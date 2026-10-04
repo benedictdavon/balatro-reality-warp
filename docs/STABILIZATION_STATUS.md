@@ -22,7 +22,7 @@ All 34 original labels are inventoried: 30 HUMAN_TEST_NEEDED, 3 STALE and 1 NOT_
 | #10 | Shortcut failed a valid one-gap Straight | STALE | — | Source disposition |
 | #11 | Baby Mark appeared to trigger roughly ten times from one Red Seal Polychrome King | HUMAN_TEST_NEEDED | docs/baby-mark-retrigger-validation | [PR 16](https://github.com/benedictdavon/balatro-reality-warp/pull/16) |
 | #12 | Consumable stacking compatibility / UI: no clean native stacking, and early visual-only patches buried cards | NOT_A_BUG | docs/consumable-stacking-disposition | [PR 18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) |
-| #13 | Dark Alchemy Tag tooltip/code probability deserves verification | HUMAN_TEST_NEEDED | fix/dark-alchemy-edition-weight | Source candidate; review/publication pending |
+| #13 | Dark Alchemy Tag tooltip/code probability deserves verification | HUMAN_TEST_NEEDED | fix/dark-alchemy-edition-weight | [PR22](https://github.com/benedictdavon/balatro-reality-warp/pull/22), independent Luna APPROVE; Root published review pending |
 | #14 | Lucky One probability logic has historically been broader than the tooltip suggests | HUMAN_TEST_NEEDED | fix/lucky-one-rng | [PR 17](https://github.com/benedictdavon/balatro-reality-warp/pull/17) |
 | #15 | Battle-of-Gods boss usage counters can be polluted by blind rolls that are immediately overwritten | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
 | #16 | Fused and regular boss categories overlap in the current selector | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
@@ -74,7 +74,7 @@ All 34 original labels are inventoried: 30 HUMAN_TEST_NEEDED, 3 STALE and 1 NOT_
 | [PR20](https://github.com/benedictdavon/balatro-reality-warp/pull/20) | fix/vessel-target-key | N7 / #5 | 0c1e38fc3a32d1818efcebad4cb295e5b7799add | 57d541ec20c6f85d9d05c42e03816a9652f304d7 | adf2df084fee06bbdb6036f61ae6d8e7905f2402 |
 | [PR21](https://github.com/benedictdavon/balatro-reality-warp/pull/21) | docs/helin-exponent-validation | 8 | ec9470cbf18e9eb9d91ca9fd862a68b9653e3fc1 | fd7c4db95ae1af1e175ba436e127da6614e34cfa | 475b549498f2bc693524f428c7cd3b6a7ca72729 |
 
-Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 PR20 was accepted and merged. #8 PR21 was accepted and merged. #13 candidate publication/review/merge remains pending.
+Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 PR20 was accepted and merged. #8 PR21 was accepted and merged. #13 PR22 is open: source a3b34017c84f9c50d4be13d5a6ace3c36a8ed8bb independently approved by Luna; Root final published review/merge remains pending.
 
 ## Validation and limits
 
