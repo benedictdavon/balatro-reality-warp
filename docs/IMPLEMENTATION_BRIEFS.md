@@ -352,3 +352,17 @@ Known risks: Native custom pool/rate/capping semantics cannot promise universal 
 Accepted base:475b549498f2bc693524f428c7cd3b6a7ca72729. Sol implements directly under wrapper-architecture exception; Luna independently reviews read-only. New scopes are private and ephemeral; each new wrapper preserves exact argument arity and multiple return values. Existing outer create wrappers retain their pre-existing contracts.
 
 Independent Luna review: APPROVE at a3b34017c84f9c50d4be13d5a6ace3c36a8ed8bb; complete nine-file diff and actual native contracts checked, all18 harnesses and Lua5.1/TOML/native controls independently passed. No production/test correction requested; historical prerequisite wording clarified for current accepted base. No game execution.
+
+## Final original stabilization report
+
+Issue: Close the original ISSUE #1–20 / BUG_AUDIT R1–R14 acceptance ledger after actual PR22 merge.
+Classification: Documentation-only final source report; preserve HUMAN_TEST_NEEDED gameplay requirements.
+Dependencies: PRs 1–22 are reviewed, merged and in latest accepted main 52f76d72e9a980275446fb9707640288c573f139.
+Relevant files/functions: docs/BUG_BACKLOG.md, docs/STABILIZATION_STATUS.md and this bounded brief. Existing REGRESSION_TESTS.md supplies detailed game procedures.
+Confirmed root cause: Historical candidate/open-review references do not yet reflect actual accepted PR22; several older rows lack concrete accepted hashes.
+Required behavior: Record all 34 terminal dispositions, actual branch/PR/source/head/merge and correction provenance, validation limits, human queue, end-to-end sequence and outside-audit findings. Verify recorded Git ancestry and all original required fields.
+Behavior that must remain unchanged: All code/tests/gameplay, original source documents, terminal classifications, A/B/C controls and user-authored POST input.
+Explicitly excluded work: Production changes, new gameplay fixes, optional stacking implementation, POST audit, local outside-audit follow-up fixes and claiming a real game/cold restart.
+Required static validation: Full documentation diff, source document tracking, all 34 fields/counts, all 22 accepted ledger entries and exact branch base/main/remote ancestry, status/stat/diffcheck; read-only independent Luna review and Sol published-head review.
+Required runtime/manual validation: No new runtime check for documentation. Existing 30 HUMAN_TEST_NEEDED cases remain the exact human queue.
+Known risks: Report snapshot records accepted source head before its own documentation merge; final user report must give the actual refreshed main after that merge. Shared author account uses pinned COMMENT technical APPROVE with human-authorized expected-head controlled merge.
