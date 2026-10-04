@@ -1,6 +1,6 @@
 # POST runtime stabilization
 
-Resumed by direct human instruction Begin post. Initial accepted main is c94227daa5b08dfe7e26497fe601b19e9ebb2b02. Original source pass and its23 merged PRs remain in STABILIZATION_STATUS.md; original #9 is now reopened from the runtime report.
+Resumed by direct human instruction Begin post. Initial accepted main is c94227daa5b08dfe7e26497fe601b19e9ebb2b02. The original source pass and PRs 1–22 are recorded in STABILIZATION_STATUS.md; PR 23 merged that final report; original #9 is now reopened from the runtime report.
 
 POST_SOL_RUNTIME_FINDINGS.md is the immutable user input, now tracked through this documentation branch. Reported test checkpoint f863d0c predates later accepted fixes, so every claim must be revalidated. No agent game execution is claimed.
 
