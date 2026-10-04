@@ -113,15 +113,15 @@ Notes: Fresh branch from accepted adf2df084fee06bbdb6036f61ae6d8e7905f2402. Actu
 ## 9: Colosseum starting Perishable Stencils can expire, then become active again
 
 Source: ISSUE.md #9
-Classification: Reopened by POST runtime report; source confirms refresh policy needs adjudication
+Classification: NOT_A_BUG under the human-confirmed all-Perishable refresh policy; original accepted effect-ownership validation remains historical provenance.
 Priority: Normal
 Dependencies: 1, 18, R4
-State: AUDITED
+State: NOT_A_BUG for the current reopened policy finding; original acceptance was HUMAN_TEST_NEEDED for effect/gameplay validation.
 Branch: fix/blind-effect-ownership
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/4 (accepted and merged)
 Commit: e3e3d49ef65836945eec43f8bbb70a4ed581daf9 (implementation/disposition); e3e3d49ef65836945eec43f8bbb70a4ed581daf9 (reviewed head); 8e4c2bfad92fc0572dcdb289608895d2f452e4ac (accepted merge)
 Manual test requirement: Required for gameplay/save/load; exact procedure is in REGRESSION_TESTS.md.
-Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup require human testing. Reopened under POST-#9 on accepted main c94227daa5b08dfe7e26497fe601b19e9ebb2b02 after human instruction Begin post; original acceptance provenance remains historical evidence, not closure of this new runtime/policy finding.
+Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup still require human testing. The POST-#9 revalidation on accepted c94227d executes native expiry 4→3→2→1→0 and current showdown cleansing. Human explicitly requested refresh all Perishable after Thanatos, including starters; preserve the existing every-semantic-showdown trigger and Rental cleansing. The reopened policy finding is therefore NOT_A_BUG with no production patch. Original PR4 acceptance, its HUMAN_TEST_NEEDED status and the original 30/3/1 snapshot counts remain historical evidence; no Balatro runtime or physical-save verification is claimed.
 
 ## 10: Shortcut failed a valid one-gap Straight
 

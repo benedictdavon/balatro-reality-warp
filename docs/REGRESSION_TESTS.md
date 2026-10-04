@@ -207,7 +207,7 @@ Ante1→0 and5→4 with Hieroglyph; Petroglyph too. Record slot, all keys/IDs/pa
 
 ### POST-#9 — Starter Perishables are continuously refreshed by Thanatos
 
-Track both actual starter tallies through each Blind to zero, regular/fused/showdown/milestone defeat, independently owned ordinary Perishables and Rental cleansing, copy/restore and cold restart. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+Track both actual starter tallies through each Blind to zero, regular/fused/showdown/milestone defeat, independently owned ordinary Perishables and Rental cleansing, copy/restore and cold restart. Native expiry and current source cleansing controls pass; the human policy refreshes every Perishable after Thanatos, including starters, with the existing every-semantic-showdown trigger. Policy disposition is NOT_A_BUG; real gameplay/cleanup/save checks remain unrun and must not be marked verified from source adapters.
 
 ### POST-N8 — Shop and pack duplicate Joker offers escape owner-only check
 
