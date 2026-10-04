@@ -625,13 +625,13 @@ Notes: get_botg_base_blind clamps to1; scheduler treats entry.ante inequality as
 Source: POST_SOL_RUNTIME_FINDINGS.md #9; reported runtime main f863d0c
 Classification: Reopened original #9 by reported runtime; source confirms intentional4-round starters plus every-showdown refresh
 Priority: High
-Dependencies: POST-N6; human clarification of cleansing policy
+Dependencies: POST-N6; human policy received: all Perishables refresh after actual Thanatos defeat
 State: AUDITED
 Branch: fix/perishable-starter-refresh (planned; not created)
 PR: —
 Commit: —
 Manual test requirement: Track both actual starter tallies through each Blind to zero, regular/fused/showdown/milestone defeat, independently owned ordinary Perishables and Rental cleansing, copy/restore and cold restart.
-Notes: decks.lua explicitly documents4-round Stencil/Blueprint. battle_of_gods.lua refills every Perishable on semantic showdown, and Boss slot chooses showdown every Ante. Existing behavior is not a missing expiration callback; scope of cleansing is a gameplay-policy decision. Clarification requested; other independent findings continue. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
+Notes: decks.lua explicitly documents4-round Stencil/Blueprint. battle_of_gods.lua refills every Perishable on semantic showdown, and Boss slot chooses showdown every Ante. Existing behavior is not a missing expiration callback; Human answered refresh all perishable after thanatos. Implement as actual canonical Thanatos defeat only; preserve all-Perishable scope, explicit4-round starters and existing showdown Rental cleansing. Other showdowns must not refresh Perishables. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution.
 
 ## POST-N8: Shop and pack duplicate Joker offers escape owner-only check
 

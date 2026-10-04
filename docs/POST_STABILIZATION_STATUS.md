@@ -10,7 +10,7 @@ Initial order: crash N7 → architectural Ante N6 → starter policy #9 → offe
 | --- | --- | --- | --- |
 | POST-N7 | Croupier calls an unavailable dice sound | READY | Initial POST tracking acceptance |
 | POST-N6 | Hieroglyph changes difficulty Ante and regenerates encounter schedule | AUDITED | POST-N7; accepted encounter/target contracts |
-| POST-#9 | Starter Perishables are continuously refreshed by Thanatos | AUDITED | POST-N6; human clarification of cleansing policy |
+| POST-#9 | Starter Perishables are continuously refreshed by Thanatos | AUDITED | POST-N6; human policy: actual Thanatos defeat refreshes all Perishables |
 | POST-N8 | Shop and pack duplicate Joker offers escape owner-only check | AUDITED | POST-N7; accepted Dark Alchemy creation scope |
 | POST-N3 | BOTG-adopted Familiar lacks permanent unlock/discovery | AUDITED | POST-N7; native unlock/profile save contracts |
 | POST-N4 | Pending Echo Tags consume only one tag | AUDITED | POST-N7; native Tag:yep removal/event semantics |
@@ -18,7 +18,7 @@ Initial order: crash N7 → architectural Ante N6 → starter policy #9 → offe
 | POST-N5 | Manacle-associated two-dollar loss may be Divine Zap | AUDITED | POST-N6 ownership/progression checks; source-isolated counterattack validation |
 
 
-The starter policy question is pending; it does not block the crash or independent source audits. Preserve the existing explicit4-round starter design unless the human changes it. Successful adoption should follow the report's preferred permanent unlock/discovery policy; preview/decline must not unlock.
+Human policy received: refresh all perishable after thanatos. Interpret this as actual canonical Thanatos Blind defeat, with all Perishables refreshed then and no Perishable refresh on other showdowns. Preserve the existing explicit4-round starter design and existing showdown Rental cleansing. Successful adoption should follow the report's preferred permanent unlock/discovery policy; preview/decline must not unlock.
 
 N9 requires profiling before a production fix. A runtime-only final disposition must provide exact instrumentation/isolation procedures and distinguish reported old gameplay from current agent source checks. Do not blame a specific optional mod from patch warnings.
 
