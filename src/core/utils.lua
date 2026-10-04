@@ -1577,6 +1577,16 @@ function create_card(type, area, legendary, _rarity, skip_materialize, soulable,
 end
 
 -- Falta de Lectura activation tracker & Doppelgänger real-time per-activation counter hook
+local function pack_joker_returns(...) return {n = select('#', ...), ...} end
+local function any_joker_effect(effect, predicate)
+    local seen = {}
+    while type(effect) == 'table' and not seen[effect] do
+        seen[effect] = true
+        if predicate(effect) then return true end
+        effect = effect.extra
+    end
+    return false
+end
 local calculate_joker_ref = Card.calculate_joker
 function Card:calculate_joker(context, ...)
     -- Block incompatible Jokers from being copied by Blueprint, Brainstorm, or Chameleon
@@ -1591,9 +1601,9 @@ function Card:calculate_joker(context, ...)
         end
         local orig_add_event = G.E_MANAGER and G.E_MANAGER.add_event
         if orig_add_event then G.E_MANAGER.add_event = function() end end
-        local ret, post = calculate_joker_ref(self, context, ...)
+        local result = pack_joker_returns(calculate_joker_ref(self, context, ...))
         if orig_add_event then G.E_MANAGER.add_event = orig_add_event end
-        return ret, post
+        return unpack(result, 1, result.n)
     end
 
     if context and (context.ending_shop or context.setting_blind) then
@@ -1603,7 +1613,8 @@ function Card:calculate_joker(context, ...)
     -- Doppelgänger: Track if the possessed Joker triggers during hand scoring
     local is_doppel_active = G.GAME and reality_warp_blind_is(G.GAME.blind, 'doppelganger') and not G.GAME.blind.disabled
 
-    local ret, post = calculate_joker_ref(self, context, ...)
+    local result = pack_joker_returns(calculate_joker_ref(self, context, ...))
+    local ret = result[1]
 
     -- Secret Jokers & Amalgams Screen Sparkles
     if not self.debuff and (is_secret_card(self) or is_amalgam_card(self)) then
@@ -1620,7 +1631,10 @@ function Card:calculate_joker(context, ...)
         local is_self = (key == 'j_reality_warp_falta_de_lectura_joker' or key == 'falta_de_lectura_joker' or key == 'j_falta_de_lectura_joker' or key == 'falta_de_lectura' or card_has_key(self, 'reading_deficiency_joker'))
         if not is_self then
             if context.joker_main or context.individual or context.before or context.repetition then
-                if ret.mult or ret.chips or ret.Xmult or ret.x_mult or ret.dollars or ret.x_chips or ret.p_dollars or ret.message or ret.swap then
+                if any_joker_effect(ret, function(effect)
+                    return effect.mult or effect.chips or effect.Xmult or effect.x_mult or effect.dollars or
+                        effect.x_chips or effect.p_dollars or effect.message or effect.swap
+                end) then
                     G.GAME.falta_de_lectura_other_activated = true
                 end
             end
@@ -1630,14 +1644,13 @@ function Card:calculate_joker(context, ...)
     -- Doppelgänger activation detection: if possessed joker triggers during a hand, flag for ÷4 at final scoring
     if is_doppel_active and reality_warp_doppelganger_target() and self == reality_warp_doppelganger_target() and ret and type(ret) == 'table' and not self.debuff and context then
         if not context.end_of_round and not context.ending_shop and not context.starting_shop and not context.setting_blind and not context.doppel_sim and not context.edition and not context.selling_card and not context.buying_card and not context.open_booster and not context.skip_blind then
-            local is_activation = false
-            if (ret.mult and ret.mult ~= 0) or (ret.mult_mod and ret.mult_mod ~= 0) or (ret.h_mult and ret.h_mult ~= 0) or
-               (ret.chips and ret.chips ~= 0) or (ret.chip_mod and ret.chip_mod ~= 0) or (ret.h_chips and ret.h_chips ~= 0) or
-               (ret.Xmult and ret.Xmult ~= 1) or (ret.x_mult and ret.x_mult ~= 1) or (ret.Xmult_mod and ret.Xmult_mod ~= 1) or (ret.h_x_mult and ret.h_x_mult ~= 1) or
-               (ret.x_chips and ret.x_chips ~= 1) or (ret.repetitions and ret.repetitions > 0) or
-               ret.dollars or ret.p_dollars or ret.swap or ret.message or ret.level_up then
-                is_activation = true
-            end
+            local is_activation = any_joker_effect(ret, function(effect)
+                return (effect.mult and effect.mult ~= 0) or (effect.mult_mod and effect.mult_mod ~= 0) or (effect.h_mult and effect.h_mult ~= 0) or
+               (effect.chips and effect.chips ~= 0) or (effect.chip_mod and effect.chip_mod ~= 0) or (effect.h_chips and effect.h_chips ~= 0) or
+               (effect.Xmult and effect.Xmult ~= 1) or (effect.x_mult and effect.x_mult ~= 1) or (effect.Xmult_mod and effect.Xmult_mod ~= 1) or (effect.h_x_mult and effect.h_x_mult ~= 1) or
+               (effect.x_chips and effect.x_chips ~= 1) or (effect.repetitions and effect.repetitions > 0) or
+               effect.dollars or effect.p_dollars or effect.swap or effect.message or effect.level_up
+            end)
 
             if is_activation and not G.GAME.doppel_triggered_in_hand then
                 G.GAME.doppel_triggered_in_hand = true
@@ -1650,7 +1663,7 @@ function Card:calculate_joker(context, ...)
         end
     end
 
-    return ret, post
+    return unpack(result, 1, result.n)
 end
 
 -- Hook card_eval_status_text to display negative mult/chips and divisions cleanly

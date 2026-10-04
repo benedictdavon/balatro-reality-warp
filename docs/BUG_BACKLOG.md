@@ -87,15 +87,15 @@ Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permane
 ## 7: Ouroboros does not reliably enforce “always draw 3 cards” after Play or Discard
 
 Source: ISSUE.md #7
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed draw defect; real gameplay and save behavior remain HUMAN_TEST_NEEDED
 Priority: Normal
 Dependencies: 1, 6, 19
-State: APPROVED
+State: HUMAN_TEST_NEEDED
 Branch: fix/round-action-draws
 PR: —
 Commit: 99618014e3ce21a30b0c9b04f632c652343b082d; 0b386690550d3126916492fb42e4dc91d62dcf43; 7c1cd917fbbc80c74e7f3197bbefd0e31ac86995
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Local implementation, Sol High source review and independent Luna approval complete. All repository Lua/TOML/owned pattern checks and nine harnesses pass through the independent runner (the accepted-main N3 aggregate-runner limitation is documented). One review correction makes draw restriction runtime-owned so disabled Ouroboros alone restores native auto-refill; live Serpent remains independent. No PR/merge exists; publication awaits required human authorization, and accepted main still contains these defects. Revalidated against refreshed accepted main f863d0c; exact physical-card count requires an owned native selection boundary as well as context flags. Shared draw/transfer contract with R10 in IMPLEMENTATION_BRIEFS.md. Independent of local reviewed R5 and R6; publication withheld pending the required human confirmation. New Familiar extra-draw finding N1 is documented on local Joker-composition branch and excluded here.
+Notes: Local source implementation is APPROVED by Sol High and Luna; actual gameplay/save behavior remains unverified. The existing branch integrates accepted main 004387097ca286256363fb42e442d7f138049c99, including merged R5 and R6. The state-aware tests/run.py passes Lua 5.1 compilation, TOML/payload and installed target checks, validator negative controls, and all eleven harness files. Runtime-owned draw restriction restores native auto-refill for disabled Ouroboros alone while live Serpent remains independent. The physical-card selection boundary, pending counters, ownership and stable-ID partial/completed plan are covered by focused source/model checks; real Balatro event/save behavior remains in the manual queue. N1 and N4 Familiar issues remain separate and excluded.
 
 ## 8: Helin's exponent effect can do nothing in big-number mode
 
@@ -321,28 +321,28 @@ Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permane
 ## R5: Apotheosis/Exalted interception replaces normal Joker calculation
 
 Source: BUG_AUDIT.md R5
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed composition defect; runtime interactions remain HUMAN_TEST_NEEDED
 Priority: Normal
 Dependencies: 18
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/joker-calculation-composition
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/12
+Commit: 62a4cf10945c28580920720c90e51af931a4ef85; correction eadc076a1f61c2db1085bc95a10afe888c83e3c2; accepted-main integration 2b0d9d3; N3 matcher correction 6856781df919d338e9fdb8b393a80e80ecd0358a
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: Local source implementation and independent review are complete; PR #12 is open for independent review. The branch preserves the supported true-removal-sentinel correction and integrates accepted main add5727837c396fff2b5af12283fc3f25904d242 (including merged Arrow R6). Ten Lua harness files, Lua 5.1 compilation, TOML/payload checks, original/applied target-patch validation, and negative validator controls pass. The test runner rejects missing, partial, duplicate, and mixed target-patch states, including an original pattern combined with a partial applied payload. Runtime/save/load/optional-mod gameplay remains unverified and required.
 
 ## R6: Arrow rank lookup uses invalid vanilla card keys
 
 Source: BUG_AUDIT.md R6
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed invalid vanilla rank-key lookup; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
-Dependencies: 6
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Dependencies: Accepted canonical identity and disabled-effect contracts (PR2/4); current scoring-stage main (PR10)
+State: HUMAN_TEST_NEEDED
+Branch: fix/arrow-rank-mapping
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/11
+Commit: 31015cf76b9637e6ddcce757b1528ce07e81690e
+Manual test requirement: Required for gameplay; exact procedure will be recorded in REGRESSION_TESTS.md.
+Notes: Local source review APPROVE at implementation commit 31015cf76b9637e6ddcce757b1528ce07e81690e. The nine Lua harnesses and Lua 5.1 compilation pass; the stock aggregate runner still has the separately documented N3 exact-pattern limitation, while an original-or-fully-applied check confirms both owned Lovely target payloads. `SMODS.modify_rank` follows registered `prev`/`prev_behavior` and `SMODS.change_base` resolves registered suit/rank `card_key`s. Actual Balatro gameplay remains unverified and required.
 
 ## R7: Direct boss dissolution bypasses destruction-notification bookkeeping
 
@@ -386,15 +386,15 @@ Notes: Source fix independently reviewed APPROVE by Sol High; all Lua5.1 compila
 ## R10: Possession draw/discard callbacks can issue repeated or duplicate transfers
 
 Source: BUG_AUDIT.md R10
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed possession draw/transfer defects; exact runtime behavior remains HUMAN_TEST_NEEDED
 Priority: Normal
 Dependencies: 7
-State: APPROVED
+State: HUMAN_TEST_NEEDED
 Branch: fix/round-action-draws
 PR: —
 Commit: 99618014e3ce21a30b0c9b04f632c652343b082d; 0b386690550d3126916492fb42e4dc91d62dcf43; 7c1cd917fbbc80c74e7f3197bbefd0e31ac86995
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Local implementation, Sol High source review and independent Luna approval complete. All repository Lua/TOML/owned pattern checks and nine harnesses pass through the independent runner (the accepted-main N3 aggregate-runner limitation is documented). One review correction makes draw restriction runtime-owned so disabled Ouroboros alone restores native auto-refill; live Serpent remains independent. No PR/merge exists; publication awaits required human authorization, and accepted main still contains these defects. Revalidated against refreshed accepted main f863d0c; exact physical-card count requires an owned native selection boundary as well as context flags. Shared draw/transfer contract with R10 in IMPLEMENTATION_BRIEFS.md. Independent of local reviewed R5 and R6; publication withheld pending the required human confirmation. New Familiar extra-draw finding N1 is documented on local Joker-composition branch and excluded here.
+Notes: Local source implementation is APPROVED by Sol High and Luna; actual gameplay/save behavior remains unverified. The branch integrates accepted main 004387097ca286256363fb42e442d7f138049c99, including R5 and R6. The state-aware runner passes all eleven harness files and installed target checks. Possessed Serpent draw restriction and score contribution remain independent, Water is once per eligible physical owner/action, and Hook selects and commits distinct successful transfers. Native pending/event order and the actual save codec still require the documented gameplay fixture. N1 and N4 Familiar issues are separate and excluded.
 
 ## R11: Canonical Blind keys are missing from several active-effect detectors
 
@@ -505,3 +505,41 @@ PR: -
 Commit: -
 Manual test requirement: Zero hand limit with empty hand: native draw returns true for GAME_OVER; the actual full outer chain must preserve it so Game:update_draw_to_hand stops before scheduling SELECTING_HAND. Preserve all optional arguments and return positions through the Familiar wrapper.
 Notes: The Familiar wrapper calls orig_draw(e) without returning it and accepts only e, even without a Familiar present. The current draw fix leaves that separately actionable wrapper contract for its own branch rather than claiming full-chain zero-limit game-over behavior. This local N4 is distinct from POST-N4 Echo stacking; keep the source-qualified identifiers in the final report.
+## N1: Familiar extra-draw numeric arguments are ignored
+
+Source: Stabilization source trace; botg_familiars.lua Baby Fish/Serpent draw wrapper versus installed state_events.lua draw_from_deck_to_hand.
+Classification: Source-confirmed additional defect outside the original audit
+Priority: Normal
+Dependencies: 7, R10 for shared draw-boundary design
+State: AUDITED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: After play/discard with the relevant familiar at levels1/2/4, compare requested and actual extra cards; include hand capacity and Serpent effects.
+Notes: The familiar wrapper adds to e, but the installed native routine recomputes and overwrites that argument. Separate from possession R10 and excluded from R5; needs its own focused branch. Do not claim the advertised familiar extra draws are verified.
+
+## N2: Potion Mirror aggregates only selected retrigger fields
+
+Source: Stabilization full-chain trace; potions.lua outer Card.calculate_joker wrapper.
+Classification: Source-confirmed additional composition limit outside the audit's listed chain
+Priority: Normal
+Dependencies: R5 establishes supported composed effects
+State: AUDITED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Mirror active on the rightmost Joker returning legacy Xmult_mod, nested extra effects or secondary post effects; compare both real calculations and effect application with an ordinary native retrigger.
+Notes: Current aggregation adds chips/mult/dollars and multiplies x_mult/Xmult only, losing other second-calculation effects/post data and mutating the first return table. R5 preserves the primary forwarding contract and existing supported aggregation without silently redesigning the Potion. A separate branch must address full retrigger composition; it does not block standard R5 calculations with Mirror inactive.
+
+## N3: Regression runner rejects an already patched Lovely dump
+
+Source: R5 validation; tests/run.py versus current installed lovely/dump/blind.lua and UI_definitions.lua.
+Classification: Source-confirmed test infrastructure defect; blocks required local checks after dump regeneration
+Priority: Normal
+Dependencies: Original target patches PR9
+State: FIXED
+Branch: fix/joker-calculation-composition
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/12
+Commit: 62a4cf10945c28580920720c90e51af931a4ef85; matcher correction 6856781df919d338e9fdb8b393a80e80ecd0358a
+Manual test requirement: None for count validation; game behavior remains separate.
+Notes: PR #12 carries the runner fix. The runner previously required exactly one pre-replacement pattern even when the installed dump contained the complete applied payload. R5's state-aware validator now accepts exactly one original OR one complete applied payload and rejects missing, partial, duplicate, or mixed states, including an original pattern with a partial applied payload. It does not skip the check or claim runtime gameplay verification. Ten Lua harnesses, Lua 5.1 compilation, TOML and installed payload controls pass on the integrated R5 branch.
