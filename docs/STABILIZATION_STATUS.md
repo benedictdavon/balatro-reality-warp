@@ -1,10 +1,10 @@
 # Stabilization status and review queue
 
-Snapshot: accepted main/origin/main adf2df084fee06bbdb6036f61ae6d8e7905f2402 (PR20). PRs1–20 are accepted. This separate Helin validation starts from that accepted main. Public publication and controlled merging after technical approval are authorized.
+Snapshot: accepted main/origin/main475b549498f2bc693524f428c7cd3b6a7ca72729 (PR21). PRs1–21 are accepted. This separate Dark Alchemy fix starts from that accepted main. Public publication and controlled merging after technical approval are authorized.
 
 AGENTS.md, ISSUE.md and BUG_AUDIT.md are tracked. POST_SOL_RUNTIME_FINDINGS.md remains untouched and untracked; POST work is deferred.
 
-All 34 original labels are inventoried: 29 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG and 1 READY. Original stabilization remains incomplete: accept #8 validation, then implement #13 from fresh accepted main. No Balatro execution or cold-runtime verification is claimed.
+All 34 original labels are inventoried: 30 HUMAN_TEST_NEEDED, 3 STALE and 1 NOT_A_BUG. All original source dispositions are accounted for. Final completion requires independent review, publication and actual acceptance of this last #13 candidate, followed by the final provenance audit. No Balatro execution or cold-runtime verification is claimed.
 
 ## Original findings
 
@@ -17,12 +17,12 @@ All 34 original labels are inventoried: 29 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | #5 | Godly Hubris / Blind chip requirement can differ between preview and actual combat | HUMAN_TEST_NEEDED | fix/blind-target-calculation | [PR 9](https://github.com/benedictdavon/balatro-reality-warp/pull/9); [N7 PR20](https://github.com/benedictdavon/balatro-reality-warp/pull/20) (accepted) |
 | #6 | Chicot can visually disable custom bosses while their custom effects still execute | HUMAN_TEST_NEEDED | fix/blind-effect-ownership | [PR 4](https://github.com/benedictdavon/balatro-reality-warp/pull/4) |
 | #7 | Ouroboros does not reliably enforce “always draw 3 cards” after Play or Discard | HUMAN_TEST_NEEDED | fix/round-action-draws | [PR 13](https://github.com/benedictdavon/balatro-reality-warp/pull/13) |
-| #8 | Helin's exponent effect can do nothing in big-number mode | HUMAN_TEST_NEEDED | docs/helin-exponent-validation | [PR21](https://github.com/benedictdavon/balatro-reality-warp/pull/21), review pending |
+| #8 | Helin's exponent effect can do nothing in big-number mode | HUMAN_TEST_NEEDED | docs/helin-exponent-validation | [PR21](https://github.com/benedictdavon/balatro-reality-warp/pull/21) (accepted) |
 | #9 | Colosseum starting Perishable Stencils can expire, then become active again | HUMAN_TEST_NEEDED | fix/blind-effect-ownership | [PR 4](https://github.com/benedictdavon/balatro-reality-warp/pull/4) |
 | #10 | Shortcut failed a valid one-gap Straight | STALE | — | Source disposition |
 | #11 | Baby Mark appeared to trigger roughly ten times from one Red Seal Polychrome King | HUMAN_TEST_NEEDED | docs/baby-mark-retrigger-validation | [PR 16](https://github.com/benedictdavon/balatro-reality-warp/pull/16) |
 | #12 | Consumable stacking compatibility / UI: no clean native stacking, and early visual-only patches buried cards | NOT_A_BUG | docs/consumable-stacking-disposition | [PR 18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) |
-| #13 | Dark Alchemy Tag tooltip/code probability deserves verification | READY | — | Prerequisites accepted; fresh focused branch queued |
+| #13 | Dark Alchemy Tag tooltip/code probability deserves verification | HUMAN_TEST_NEEDED | fix/dark-alchemy-edition-weight | Source candidate; review/publication pending |
 | #14 | Lucky One probability logic has historically been broader than the tooltip suggests | HUMAN_TEST_NEEDED | fix/lucky-one-rng | [PR 17](https://github.com/benedictdavon/balatro-reality-warp/pull/17) |
 | #15 | Battle-of-Gods boss usage counters can be polluted by blind rolls that are immediately overwritten | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
 | #16 | Fused and regular boss categories overlap in the current selector | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
@@ -72,12 +72,13 @@ All 34 original labels are inventoried: 29 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | [PR 18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) | docs/consumable-stacking-disposition | 12, 20 | c6c78485bb752df26e8347c313465875b93b0548 | 6987331795c0b0cc659fe01adc8708440ae816c1 | d0f83b461d0777ffb52bb2a1af727f0906f7c967 |
 | [PR19](https://github.com/benedictdavon/balatro-reality-warp/pull/19) | docs/ares-vessel-discard-validation | 2 | ca0f92ace6828911e1286e441a41c41e0c434b07 | b28bcc4c3eaf802ffd9aa3f58e8fb619d88fb905 | 0474ed39013d53bd96f3af08fb956832a644afe1 |
 | [PR20](https://github.com/benedictdavon/balatro-reality-warp/pull/20) | fix/vessel-target-key | N7 / #5 | 0c1e38fc3a32d1818efcebad4cb295e5b7799add | 57d541ec20c6f85d9d05c42e03816a9652f304d7 | adf2df084fee06bbdb6036f61ae6d8e7905f2402 |
+| [PR21](https://github.com/benedictdavon/balatro-reality-warp/pull/21) | docs/helin-exponent-validation | 8 | ec9470cbf18e9eb9d91ca9fd862a68b9653e3fc1 | fd7c4db95ae1af1e175ba436e127da6614e34cfa | 475b549498f2bc693524f428c7cd3b6a7ca72729 |
 
-Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 PR20 was accepted and merged. #8 PR21 is open at source validation ec9470cbf18e9eb9d91ca9fd862a68b9653e3fc1; acceptance pending.
+Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 PR20 was accepted and merged. #8 PR21 was accepted and merged. #13 candidate publication/review/merge remains pending.
 
 ## Validation and limits
 
-This candidate on accepted main has 17 passing focused Lua harnesses, Lua 5.1 source compilation, shipping TOML/payload compilation and original-or-fully-applied native boundary validation. Lucky additionally passes actual installed Amulet Omega probability-ratio checks under LuaJIT and in-memory original/full/mixed/duplicate reset fixtures. Mark exercises actual native scoring and copy callbacks with labeled UI/event/card adapters. Real games, cold restart, optional-mod interplay and scheduling remain human tests. Helin additionally passes actual installed Omega exponent/Amulet dispatch under LuaJIT. This branch adds one source fixture and four documentation updates; it verifies source inventory, every original row, accepted Git ancestry, immutable provenance and the complete diff. No installed dump or save is modified.
+This candidate on accepted main has 18 passing focused Lua harnesses, Lua 5.1 source compilation, shipping TOML/payload compilation and original-or-fully-applied native boundary validation. Lucky additionally passes actual installed Amulet Omega probability-ratio checks under LuaJIT and in-memory original/full/mixed/duplicate reset fixtures. Mark exercises actual native scoring and copy callbacks with labeled UI/event/card adapters. Real games, cold restart, optional-mod interplay and scheduling remain human tests. Helin additionally passes actual installed Omega exponent/Amulet dispatch under LuaJIT. Dark Alchemy executes actual native creation and both poll backends with labeled adapters and10000 deterministic midpoint controls. This branch adds one ownership module/fixture, removes duplicate additive paths and updates tooltip/docs; it verifies source inventory, every original row, accepted Git ancestry, immutable provenance and the complete diff. No installed dump or save is modified.
 
 ## New findings outside the original audit
 

@@ -108,7 +108,7 @@ Branch: docs/helin-exponent-validation
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/21
 Commit: ec9470cbf18e9eb9d91ca9fd862a68b9653e3fc1 (source validation)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: Fresh branch from accepted adf2df084fee06bbdb6036f61ae6d8e7905f2402. Actual Amulet registration and individual dispatcher consume e_mult, emult and Emult_mod. Source-extracted Helin/native Blueprint through accepted R5 composition yields144/20736/429981696 from12 with0/1/2 copies, both numeric fallback and supported dispatch. Actual installed Omega under LuaJIT also verifies these values and1e400→1e800. Modes append after original exponent; copy eligibility and0/1 controls pass. Seventeen stock harnesses and Lua5.1/TOML/native target checks pass. The audit unsupported-field premise is contradicted; do not replace the supported effect with direct mutation. A labeled Card eligibility adapter, ordered effect-chain/scoring-parameter sinks and UI sinks do not establish real game ordering or reproduce historical inventory. Actual Joker position governs subsequent XMult: exponent then×2 gives288, ×2 then exponent gives576. End-of-scoring tooltip interpretation is recorded for human validation, not silently redesigned. HUMAN_TEST_NEEDED, no production change or Balatro execution.
+Notes: Fresh branch from accepted adf2df084fee06bbdb6036f61ae6d8e7905f2402. Actual Amulet registration and individual dispatcher consume e_mult, emult and Emult_mod. Source-extracted Helin/native Blueprint through accepted R5 composition yields144/20736/429981696 from12 with0/1/2 copies, both numeric fallback and supported dispatch. Actual installed Omega under LuaJIT also verifies these values and1e400→1e800. Modes append after original exponent; copy eligibility and0/1 controls pass. Seventeen stock harnesses and Lua5.1/TOML/native target checks pass. The audit unsupported-field premise is contradicted; do not replace the supported effect with direct mutation. A labeled Card eligibility adapter, ordered effect-chain/scoring-parameter sinks and UI sinks do not establish real game ordering or reproduce historical inventory. Actual Joker position governs subsequent XMult: exponent then×2 gives288, ×2 then exponent gives576. End-of-scoring tooltip interpretation is recorded for human validation, not silently redesigned. HUMAN_TEST_NEEDED, no production change or Balatro execution. PR21 accepted at475b549498f2bc693524f428c7cd3b6a7ca72729.
 
 ## 9: Colosseum starting Perishable Stencils can expire, then become active again
 
@@ -168,12 +168,12 @@ Source: ISSUE.md #13
 Classification: Source-confirmed defect; revalidate before implementation
 Priority: Normal
 Dependencies: 14
-State: READY
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: fix/dark-alchemy-edition-weight
+PR: Publication pending
+Commit: Pending implementation commit
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: READY on accepted main 36c4283 after accepted Lucky probability ownership (PR 17). Two overlapping 3% paths plus native polling imply approximately 0.060846 versus baseline 0.003, not 10x. Activation is already synchronous before first shop stock. Establish a single owned edition-weight/options/sample contract on a fresh branch without hijacking RNG.
+Notes: Fresh branch from accepted475b549498f2bc693524f428c7cd3b6a7ca72729. Two additive3% paths are removed; single private creation/native edition-poll ownership chains the actual Negative center getter and multiplies its modified weight once by10. Actual shop/pack area, effective forced Joker kind, native ediseed, current run/Ante/tag and one initial poll are required. No_negative, guaranteed and explicit weighted options preserve native behavior; fifth/trailing options, exact arity and multiple returns are forwarded. Nested/error scopes and late external getter wrappers restore ownership without double amplification. Raw definitions and global RNG are unchanged. All3 utils lower calls (initial/voucher/duplicate retry) use the same factory. Actual native Tag activation already precedes first stock; lifetime/+$2 fees unchanged. Eighteen stock harnesses, Lua5.1/TOML/native boundaries and actual Omega Helin/Lucky checks pass. Actual legacy/object-weight algorithms over10000 deterministic midpoints each give baselineNegative30 versusactive300, other editions unchanged, one edition sample percreation. This is source-contract evidence with labeled Card/pool/UI adapters, not MonteCarlo or Balatro. Tooltip promises relative Negative generation weight×10; custom pools/rates/saturation follow native policy. Real shop/pack/cold-runtime/optional-mod behavior requires human validation.
 
 ## 14: Lucky One probability logic has historically been broader than the tooltip suggests
 

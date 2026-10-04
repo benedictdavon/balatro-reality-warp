@@ -1507,7 +1507,7 @@ if SMODS and SMODS.showman then
 end
 
 -- Card generation hook for La Muchachada, Vouchers, and Duplicate Prevention
-local create_card_ref = create_card
+local create_card_ref = reality_warp_wrap_alchemy_create(create_card)
 function create_card(type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
     clean_leaked_duplicate_flags()
     if type == 'Joker' then
@@ -1557,17 +1557,6 @@ function create_card(type, area, legendary, _rarity, skip_materialize, soulable,
                     card = rep_card
                 else
                     break
-                end
-            end
-        end
-
-        -- Dark Alchemy Tag: 10x chance to be Negative in shop and packs
-        if G.GAME and G.GAME.dark_alchemy_tag_active and not card.edition then
-            local is_shop_or_pack = (area == G.shop_jokers or area == G.pack_cards or (key_append and (string.find(key_append, 'sho') or string.find(key_append, 'pack'))))
-            if is_shop_or_pack then
-                local neg_poll = pseudorandom(pseudoseed('dark_alchemy_' .. (key_append or 'sho') .. (card.ID or 0)))
-                if neg_poll > 0.97 then
-                    card:set_edition({ negative = true }, true)
                 end
             end
         end
@@ -1685,21 +1674,6 @@ if card_eval_status_text then
             eval_type = 'extra'
         end
         return card_eval_status_text_ref(card, eval_type, amt, percent, dir, extra)
-    end
-end
-
--- Dark Alchemy Tag: 10x chance to generate Negative edition in shop and packs
-if poll_edition then
-    local poll_edition_ref = poll_edition
-    function poll_edition(_key, _mod, _no_neg, _guaranteed)
-        if G.GAME and G.GAME.dark_alchemy_tag_active then
-            local neg_poll = pseudorandom(pseudoseed((_key or 'edition_generic') .. '_dark_alchemy'))
-            local neg_rate = 0.03 * (_mod or 1)
-            if neg_poll > 1 - neg_rate then
-                return { negative = true }
-            end
-        end
-        return poll_edition_ref(_key, _mod, _no_neg, _guaranteed)
     end
 end
 
