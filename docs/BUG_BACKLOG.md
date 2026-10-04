@@ -414,15 +414,15 @@ Notes: Canonical Mountain/Doppelganger/Pincer detectors restored. Pincer unlock 
 Source: BUG_AUDIT.md R12
 Classification: Source-confirmed delayed-fee/UI allowance defect; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
-Dependencies: Accepted encounter scheduling (PR3), canonical identity and target fixes on main f863d0c2c543c4befa481803a581847ca8fe7274
-State: APPROVED_LOCAL
+Dependencies: Accepted PR3 provides the once-per-Ante Ward grant; the reroll payment/UI fix is otherwise independent. Integrated accepted main 31886a8dca4b22b47c5f05e1e9795b18c63d5286.
+State: HUMAN_TEST_NEEDED
 Branch: fix/divine-ward-reroll
-PR: — (publication approval pending)
-Commit: 2e57572528f044da1a002ca492cffd39d2840681
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/15
+Commit: 2e57572528f044da1a002ca492cffd39d2840681 (implementation); d271c4504c31f79af7cde0fc8291c0787ecb357c; 76bdcea1186425baf45dd36fb20339b4c8c8f7ca (review record); 844a30ca2f338fa09d5666985ba1ef7a43ab8780 (accepted-main integration)
 Manual test requirement: Required for zero/low-cash UI and delayed payment, Boss Tag, resets, Ante grant, and cold restart; exact procedure is in REGRESSION_TESTS.md.
-Notes: Native ease_dollars(-10) applies through a queued event, so the old immediate dollar snapshot/refund does not cancel payment. Native reroll UI also hides/disables the button based on voucher and $10 checks. The installed dump already includes Steamodded's priority -10 no-UI payload once, leaving exactly two post-Steamodded fee sites. The fix consumes the serialized per-Ante Ward at both native fee boundaries and derives UI allowance/price from the same state. Real-game callback/UI behavior remains unverified.
+Notes: Native ease_dollars(-10) applies through a queued event, so the old immediate dollar snapshot/refund does not cancel payment. Native reroll UI also hides/disables the button based on voucher and $10 checks. The installed dump already includes Steamodded's priority -10 no-UI payload once, leaving exactly two post-Steamodded fee sites. The fix consumes the serialized per-Ante Ward at both native fee boundaries and derives UI allowance/price from the same state. The original R12 branch passed nine harness files; its then-current stock runner still had the separate N3 applied-payload limitation. After integrating accepted main 31886a8dca4b22b47c5f05e1e9795b18c63d5286, the stock tests/run.py passes all thirteen harnesses, Lua 5.1 compilation, TOML/payload checks, installed patch-state checks and validator controls. Sol High's source review approved the implementation; PR #15 is open for independent review. Real-game callback/UI and cold-restart behavior remain unverified.
 
-Independent review: APPROVE by Sol High at 2e57572528f044da1a002ca492cffd39d2840681. All nine headless regressions and all Lua/TOML checks passed, including an independently constructed already-applied Lovely fixture with real match_indent behavior. Source implementation is complete; publication and merge remain pending the existing explicit approval request. Main remains f863d0c2c543c4befa481803a581847ca8fe7274; gameplay/cold restart are HUMAN_TEST_NEEDED.
+Independent review: APPROVE by Sol High at 2e57572528f044da1a002ca492cffd39d2840681. All nine headless regressions and all Lua/TOML checks passed on the original base, including an independently constructed already-applied Lovely fixture with real match_indent behavior. Sol High re-reviewed the integrated source and harness after accepted main 31886a8dca4b22b47c5f05e1e9795b18c63d5286; no source correction was requested, and all thirteen stock harnesses now pass. PR #15 is open. Gameplay, live UI, event timing and cold restart remain HUMAN_TEST_NEEDED.
 
 ## R13: The Code punishes one consumable twice and bypasses Eternal filtering
 
