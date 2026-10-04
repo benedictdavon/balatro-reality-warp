@@ -14,7 +14,7 @@ All 34 original labels are inventoried: 28 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | #2 | Ares / Violet Vessel sometimes behave like The Hook / Minotaur and discard two random cards | HUMAN_TEST_NEEDED | docs/ares-vessel-discard-validation | [PR 19](https://github.com/benedictdavon/balatro-reality-warp/pull/19) (accepted) |
 | #3 | Athena can display one required poker hand and enforce another | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
 | #4 | The Net can display one target rank and destroy another | HUMAN_TEST_NEEDED | fix/botg-encounter-lifecycle | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
-| #5 | Godly Hubris / Blind chip requirement can differ between preview and actual combat | HUMAN_TEST_NEEDED | fix/blind-target-calculation | [PR 9](https://github.com/benedictdavon/balatro-reality-warp/pull/9); N7 correction required |
+| #5 | Godly Hubris / Blind chip requirement can differ between preview and actual combat | HUMAN_TEST_NEEDED | fix/blind-target-calculation | [PR 9](https://github.com/benedictdavon/balatro-reality-warp/pull/9); [N7 PR20](https://github.com/benedictdavon/balatro-reality-warp/pull/20), review pending |
 | #6 | Chicot can visually disable custom bosses while their custom effects still execute | HUMAN_TEST_NEEDED | fix/blind-effect-ownership | [PR 4](https://github.com/benedictdavon/balatro-reality-warp/pull/4) |
 | #7 | Ouroboros does not reliably enforce “always draw 3 cards” after Play or Discard | HUMAN_TEST_NEEDED | fix/round-action-draws | [PR 13](https://github.com/benedictdavon/balatro-reality-warp/pull/13) |
 | #8 | Helin's exponent effect can do nothing in big-number mode | READY | — | Prerequisites accepted; fresh focused branch queued |
@@ -72,7 +72,7 @@ All 34 original labels are inventoried: 28 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | [PR 18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) | docs/consumable-stacking-disposition | 12, 20 | c6c78485bb752df26e8347c313465875b93b0548 | 6987331795c0b0cc659fe01adc8708440ae816c1 | d0f83b461d0777ffb52bb2a1af727f0906f7c967 |
 | [PR19](https://github.com/benedictdavon/balatro-reality-warp/pull/19) | docs/ares-vessel-discard-validation | 2 | ca0f92ace6828911e1286e441a41c41e0c434b07 | b28bcc4c3eaf802ffd9aa3f58e8fb619d88fb905 | 0474ed39013d53bd96f3af08fb956832a644afe1 |
 
-Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 correction publication is pending; no merge is assumed.
+Correction and integration commits remain in the linked accepted PR histories. PR19 was accepted and merged. N7 PR20 is open at implementation 0c1e38fc3a32d1818efcebad4cb295e5b7799add; no merge is assumed.
 
 ## Validation and limits
 

@@ -580,7 +580,7 @@ Priority: High
 Dependencies: 5, R3; finish #2 branch first
 State: HUMAN_TEST_NEEDED
 Branch: fix/vessel-target-key
-PR: Publication pending
-Commit: Pending implementation commit
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/20
+Commit: 0c1e38fc3a32d1818efcebad4cb295e5b7799add (canonical correction)
 Manual test requirement: BOTG base ×8 and ordinary native base ×6, preview/selection/runtime/reset/cold restart with exact versions, salt and modifiers recorded.
 Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR9's helper and synthetic fixture copied the nonexistent key, causing actual Colosseum Vessel to use generic5 instead of its prior8. The smallest canonical-key correction restores8. The target fixture now source-extracts actual native Vessel metadata, checks ordinary6 and localized-name-spoof5, and retains the full preview/runtime/modifier/slot/reset matrix. All16 stock harnesses and Lua5.1/TOML/native boundary checks pass. No game execution.
