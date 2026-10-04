@@ -1246,11 +1246,18 @@ end
 -- Hook Card.calculate_joker exclusively for the familiar card
 if Card and Card.calculate_joker then
     local orig_calculate_joker = Card.calculate_joker
-    function Card:calculate_joker(context)
+    local function pack_familiar_returns(...) return {n = select('#', ...), ...} end
+    function Card:calculate_joker(context, ...)
         if self.area and self.area == G.botg_familiars then
-            return botg_calculate_familiar(self, context)
+            local result = pack_familiar_returns(botg_calculate_familiar(self, context, ...))
+            local glitch = reality_warp_glitch_bonus(self, context)
+            if glitch then
+                result[1] = reality_warp_append_joker_effect(result[1], glitch)
+                if result[1] ~= nil then result.n = math.max(result.n, 1) end
+            end
+            return unpack(result, 1, result.n)
         end
-        return orig_calculate_joker(self, context)
+        return orig_calculate_joker(self, context, ...)
     end
 end
 

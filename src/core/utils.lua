@@ -1577,6 +1577,16 @@ function create_card(type, area, legendary, _rarity, skip_materialize, soulable,
 end
 
 -- Falta de Lectura activation tracker & Doppelgänger real-time per-activation counter hook
+local function pack_joker_returns(...) return {n = select('#', ...), ...} end
+local function any_joker_effect(effect, predicate)
+    local seen = {}
+    while type(effect) == 'table' and not seen[effect] do
+        seen[effect] = true
+        if predicate(effect) then return true end
+        effect = effect.extra
+    end
+    return false
+end
 local calculate_joker_ref = Card.calculate_joker
 function Card:calculate_joker(context, ...)
     -- Block incompatible Jokers from being copied by Blueprint, Brainstorm, or Chameleon
@@ -1591,9 +1601,9 @@ function Card:calculate_joker(context, ...)
         end
         local orig_add_event = G.E_MANAGER and G.E_MANAGER.add_event
         if orig_add_event then G.E_MANAGER.add_event = function() end end
-        local ret, post = calculate_joker_ref(self, context, ...)
+        local result = pack_joker_returns(calculate_joker_ref(self, context, ...))
         if orig_add_event then G.E_MANAGER.add_event = orig_add_event end
-        return ret, post
+        return unpack(result, 1, result.n)
     end
 
     if context and (context.ending_shop or context.setting_blind) then
@@ -1603,7 +1613,8 @@ function Card:calculate_joker(context, ...)
     -- Doppelgänger: Track if the possessed Joker triggers during hand scoring
     local is_doppel_active = G.GAME and reality_warp_blind_is(G.GAME.blind, 'doppelganger') and not G.GAME.blind.disabled
 
-    local ret, post = calculate_joker_ref(self, context, ...)
+    local result = pack_joker_returns(calculate_joker_ref(self, context, ...))
+    local ret = result[1]
 
     -- Secret Jokers & Amalgams Screen Sparkles
     if not self.debuff and (is_secret_card(self) or is_amalgam_card(self)) then
@@ -1620,7 +1631,10 @@ function Card:calculate_joker(context, ...)
         local is_self = (key == 'j_reality_warp_falta_de_lectura_joker' or key == 'falta_de_lectura_joker' or key == 'j_falta_de_lectura_joker' or key == 'falta_de_lectura' or card_has_key(self, 'reading_deficiency_joker'))
         if not is_self then
             if context.joker_main or context.individual or context.before or context.repetition then
-                if ret.mult or ret.chips or ret.Xmult or ret.x_mult or ret.dollars or ret.x_chips or ret.p_dollars or ret.message or ret.swap then
+                if any_joker_effect(ret, function(effect)
+                    return effect.mult or effect.chips or effect.Xmult or effect.x_mult or effect.dollars or
+                        effect.x_chips or effect.p_dollars or effect.message or effect.swap
+                end) then
                     G.GAME.falta_de_lectura_other_activated = true
                 end
             end
@@ -1630,14 +1644,13 @@ function Card:calculate_joker(context, ...)
     -- Doppelgänger activation detection: if possessed joker triggers during a hand, flag for ÷4 at final scoring
     if is_doppel_active and reality_warp_doppelganger_target() and self == reality_warp_doppelganger_target() and ret and type(ret) == 'table' and not self.debuff and context then
         if not context.end_of_round and not context.ending_shop and not context.starting_shop and not context.setting_blind and not context.doppel_sim and not context.edition and not context.selling_card and not context.buying_card and not context.open_booster and not context.skip_blind then
-            local is_activation = false
-            if (ret.mult and ret.mult ~= 0) or (ret.mult_mod and ret.mult_mod ~= 0) or (ret.h_mult and ret.h_mult ~= 0) or
-               (ret.chips and ret.chips ~= 0) or (ret.chip_mod and ret.chip_mod ~= 0) or (ret.h_chips and ret.h_chips ~= 0) or
-               (ret.Xmult and ret.Xmult ~= 1) or (ret.x_mult and ret.x_mult ~= 1) or (ret.Xmult_mod and ret.Xmult_mod ~= 1) or (ret.h_x_mult and ret.h_x_mult ~= 1) or
-               (ret.x_chips and ret.x_chips ~= 1) or (ret.repetitions and ret.repetitions > 0) or
-               ret.dollars or ret.p_dollars or ret.swap or ret.message or ret.level_up then
-                is_activation = true
-            end
+            local is_activation = any_joker_effect(ret, function(effect)
+                return (effect.mult and effect.mult ~= 0) or (effect.mult_mod and effect.mult_mod ~= 0) or (effect.h_mult and effect.h_mult ~= 0) or
+               (effect.chips and effect.chips ~= 0) or (effect.chip_mod and effect.chip_mod ~= 0) or (effect.h_chips and effect.h_chips ~= 0) or
+               (effect.Xmult and effect.Xmult ~= 1) or (effect.x_mult and effect.x_mult ~= 1) or (effect.Xmult_mod and effect.Xmult_mod ~= 1) or (effect.h_x_mult and effect.h_x_mult ~= 1) or
+               (effect.x_chips and effect.x_chips ~= 1) or (effect.repetitions and effect.repetitions > 0) or
+               effect.dollars or effect.p_dollars or effect.swap or effect.message or effect.level_up
+            end)
 
             if is_activation and not G.GAME.doppel_triggered_in_hand then
                 G.GAME.doppel_triggered_in_hand = true
@@ -1650,7 +1663,7 @@ function Card:calculate_joker(context, ...)
         end
     end
 
-    return ret, post
+    return unpack(result, 1, result.n)
 end
 
 -- Hook card_eval_status_text to display negative mult/chips and divisions cleanly
@@ -2195,6 +2208,47 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
 end
 
 -- Colorful Street Hand Evaluation Handlers (4-card Straights and Flushes, 1-gap Straights)
+local function reality_warp_has_live_colorful_street()
+    if not (G and G.jokers and G.jokers.cards) then return false end
+    for _, joker in ipairs(G.jokers.cards) do
+        if joker and joker.area == G.jokers and not joker.debuff and not joker.removed and
+            not joker.destroyed and not joker.shattered and not joker.getting_sliced and
+            (card_has_key(joker, 'colorful_street') or card_has_key(joker, 'calle_colorida')) then
+            return true
+        end
+    end
+    return false
+end
+
+local function reality_warp_pack(...)
+    return {n = select('#', ...), ...}
+end
+
+if SMODS and SMODS.four_fingers then
+    local four_fingers_ref = SMODS.four_fingers
+    function SMODS.four_fingers(hand_type, ...)
+        local result = reality_warp_pack(four_fingers_ref(hand_type, ...))
+        if (hand_type == 'straight' or hand_type == 'flush') and reality_warp_has_live_colorful_street() then
+            local lower_minimum = type(result[1]) == 'number' and result[1] or 5
+            result[1] = math.min(lower_minimum, 4)
+            result.n = math.max(result.n, 1)
+        end
+        return unpack(result, 1, result.n)
+    end
+end
+
+if SMODS and SMODS.shortcut then
+    local shortcut_ref = SMODS.shortcut
+    function SMODS.shortcut(...)
+        local result = reality_warp_pack(shortcut_ref(...))
+        if reality_warp_has_live_colorful_street() then
+            result[1] = true
+            result.n = math.max(result.n, 1)
+        end
+        return unpack(result, 1, result.n)
+    end
+end
+
 if get_flush then
     local orig_get_flush = get_flush
     function get_flush(hand)
@@ -2228,66 +2282,15 @@ end
 
 if get_straight then
     local orig_get_straight = get_straight
-    function get_straight(hand)
-        local ret = orig_get_straight(hand)
-        if ret and #ret > 0 then return ret end
-        local has_cs = false
-        local has_shortcut = false
-        local has_four_fingers = false
-        if G.jokers and G.jokers.cards then
-            for _, j in ipairs(G.jokers.cards) do
-                if not j.debuff then
-                    if card_has_key(j, 'colorful_street') or card_has_key(j, 'calle_colorida') then
-                        has_cs = true
-                        has_shortcut = true
-                        has_four_fingers = true
-                    end
-                    if card_has_key(j, 'shortcut') or card_has_key(j, 'atajo') or (j.ability and (j.ability.name == 'Shortcut' or j.ability.name == 'j_shortcut')) then
-                        has_shortcut = true
-                    end
-                    if card_has_key(j, 'four_fingers') or card_has_key(j, 'cuatro_dedos') or (j.ability and (j.ability.name == 'Four Fingers' or j.ability.name == 'j_four_fingers')) then
-                        has_four_fingers = true
-                    end
-                end
-            end
+    function get_straight(hand, ...)
+        local args = reality_warp_pack(...)
+        if args.n > 0 then
+            return orig_get_straight(hand, unpack(args, 1, args.n))
         end
-        if (has_cs or has_shortcut or has_four_fingers) and hand and #hand >= (has_four_fingers and 4 or 5) then
-            local IDS = {}
-            for i = 1, #hand do
-                local id = hand[i]:get_id()
-                if id and id > 1 and id < 15 then
-                    if IDS[id] then
-                        table.insert(IDS[id], hand[i])
-                    else
-                        IDS[id] = { hand[i] }
-                    end
-                end
-            end
-            local req_length = has_four_fingers and 4 or 5
-            local straight_length = 0
-            local skipped_rank = false
-            local t = {}
-            for j = 1, 14 do
-                local rank_idx = (j == 1 and 14 or j)
-                if IDS[rank_idx] then
-                    straight_length = straight_length + 1
-                    skipped_rank = false
-                    for _, v in ipairs(IDS[rank_idx]) do
-                        table.insert(t, v)
-                    end
-                elseif has_shortcut and not skipped_rank and j ~= 14 and straight_length > 0 then
-                    skipped_rank = true
-                else
-                    straight_length = 0
-                    skipped_rank = false
-                    t = {}
-                end
-                if straight_length >= req_length then
-                    return { t }
-                end
-            end
-        end
-        return ret or {}
+        local min_length = SMODS.four_fingers('straight')
+        local skip = SMODS.shortcut()
+        local wrap = SMODS.wrap_around_straight()
+        return orig_get_straight(hand, min_length, skip, wrap)
     end
 end
 
