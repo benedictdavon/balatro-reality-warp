@@ -22,15 +22,15 @@ Notes: One scheduler/commit path, disjoint eligible pools and serialized slot/ac
 ## 2: Ares / Violet Vessel sometimes behave like The Hook / Minotaur and discard two random cards
 
 Source: ISSUE.md #2
-Classification: Historical symptom requiring isolated game reproduction
+Classification: Historical symptom; current source validation complete
 Priority: Normal
 Dependencies: 1, 6, 19, R10
-State: READY
-Branch: —
-PR: —
-Commit: —
-Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: READY on accepted main 36c4283: encounter/effect ownership and PR 13 action draws are accepted. Current Ares destroys scored cards only after scoring; Violet scales its target. No residual Ares/Violet held-card discard emitter is established. Create a fresh bounded source-validation branch; isolate native Hook, Minotaur and possessed Hook controls before any further production patch.
+State: HUMAN_TEST_NEEDED
+Branch: docs/ares-vessel-discard-validation
+PR: Publication pending
+Commit: Pending reviewed validation commit
+Manual test requirement: Exact isolated game procedure in REGRESSION_TESTS.md; no Balatro execution.
+Notes: Fresh branch from accepted d0f83b461d0777ffb52bb2a1af727f0906f7c967. Source-extracted native/Steamodded press-play dispatch, real registered Violet Vessel record, current Ares/Minotaur callbacks and possessed Hook exercise separate owners. Ares/Vessel cause no held-card discard; Ares destroys only scored cards after scoring. Native Hook and Minotaur discard two distinct held cards. Actual defeat wrapper, disabled state and reused same-key/new-ID encounters cancel stale Minotaur events. Possessed Hook remains an independent once/action owner while the Blind is disabled. All 16 Lua harnesses, Lua 5.1 compilation and shipping target/native-boundary controls pass. Luna's draft was taken over after a usage-limit failure; Sol corrected the native fixture and reviewed surrounding contracts. No speculative production change. Historical exact inventory remains unavailable.
 
 ## 3: Athena can display one required poker hand and enforce another
 
@@ -570,3 +570,17 @@ PR: https://github.com/benedictdavon/balatro-reality-warp/pull/12
 Commit: 62a4cf10945c28580920720c90e51af931a4ef85; matcher correction 6856781df919d338e9fdb8b393a80e80ecd0358a
 Manual test requirement: None for count validation; game behavior remains separate.
 Notes: PR #12 carries the runner fix. The runner previously required exactly one pre-replacement pattern even when the installed dump contained the complete applied payload. R5's state-aware validator now accepts exactly one original OR one complete applied payload and rejects missing, partial, duplicate, or mixed states, including an original pattern with a partial applied payload. It does not skip the check or claim runtime gameplay verification. Ten Lua harnesses, Lua 5.1 compilation, TOML and installed payload controls pass on the integrated R5 branch.
+
+
+## N7: Violet Vessel target uses a nonexistent native key
+
+Source: Original #5 follow-up discovered during #2 source validation; not POST
+Classification: Source-confirmed regression in accepted unified target helper
+Priority: High
+Dependencies: 5, R3; finish #2 branch first
+State: READY
+Branch: fix/vessel-target-key (planned)
+PR: —
+Commit: —
+Manual test requirement: BOTG base ×8 and ordinary native base ×6, preview/selection/runtime/reset/cold restart with exact versions, salt and modifiers recorded.
+Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR9's helper and synthetic fixture copied the nonexistent key, causing actual Colosseum Vessel to use generic5 instead of its prior8. Separate smallest canonical-key correction and real native fixture required before original-goal completion.
