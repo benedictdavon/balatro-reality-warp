@@ -597,9 +597,9 @@ Source: User-reported POST-N7 runtime crash, revalidated against `src/consumable
 Classification: Source-confirmed invalid sound key; HUMAN_TEST_NEEDED for audio runtime.
 Priority: Critical
 Dependencies: No code dependency beyond accepted main `c94227daa5b08dfe7e26497fe601b19e9ebb2b02`; POST tracking publication remains a separate administrative gate.
-State: IN_PROGRESS; local source/tests are ready for independent review.
+State: APPROVED (local source/test review only; human runtime validation and publication/published-head review pending).
 Branch: fix/croupier-missing-sound
 PR: — (public POST publication awaits explicit human authorization)
-Commit: 27377d3b9529d349d234516f05450e95a4ea5902 (local source/test implementation; independent review pending)
+Commit: 27377d3b9529d349d234516f05450e95a4ea5902 (source/test implementation; locally approved)
 Manual test requirement: EYEFTHTG with recorded salt/versions, White stake, Red Deck and Colosseum; apply Dice to a playing card and check sound enabled/muted, die outcomes1–6, normal/Red Seal repeated scoring and cold restart. No Balatro execution has been claimed.
 Notes: The scoring callback samples `pseudorandom('dice_job', 1, 6)` once and then requests `play_sound('dice', 1.0 + roll * 0.05)`. The native sound manager falls back to `resources/sounds/<key>.ogg`; the inspected local Balatro archive contains `generic1.ogg` and no `dice.ogg`. Replace only the key with `generic1`; preserve pitch, score fields, messages, RNG and call count. POST-A1 is distinct: scoring still has no producer for `ability.croupier_rolled_high`; its existing repetition callback only reads/clears that flag. This patch does not implement or claim high-roll retrigger behavior.
