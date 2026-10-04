@@ -18,7 +18,7 @@ local function pack(...)
 end
 
 local utils = read('src/core/utils.lua')
-local rw_handlers = region(utils, '-- Colorful Street Hand Evaluation Handlers', 'local function is_probability_seed')
+local rw_handlers = region(utils, '-- Colorful Street Hand Evaluation Handlers', '-- Spectral Shatter, Card dissolution effect')
 local overrides = read('../smods/src/overrides.lua', true)
 local smods_utils = read('../smods/src/utils.lua', true)
 local misc_functions = read('../lovely/dump/functions/misc_functions.lua', true)

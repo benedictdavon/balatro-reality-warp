@@ -75,6 +75,7 @@ local function install(before_module)
         if self.calculation then return self:calculation(context, ...) end
         return 'original', nil, 'card-tail', nil
     end}
+    load(read('src/core/joker_effects.lua'), 'accepted Joker effect composer')
     if before_module then before_module() end
     local original_rng = pseudorandom
     load(module_source, 'Reality Warp probability ownership')

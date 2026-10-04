@@ -179,6 +179,14 @@ local function install_runtime(familiar_key, level, physical_id)
         if key == 'baby_bell' then return 0 end
         return 1
     end
+    -- Lucky One now routes Familiar odds through the typed API. This bounded adapter serves only
+    -- Baby Bell's deterministic retrigger positive control; its probability ownership is tested
+    -- separately against the installed native API in test_lucky_one_probability.lua.
+    SMODS.pseudorandom_probability = function(trigger_obj, seed, numerator, denominator, identifier, no_mod)
+        assert(trigger_obj == familiar and seed == 'baby_bell' and identifier == nil and no_mod == true,
+            'the Baby Bell control uses its original fixed-odds probability call')
+        return pseudorandom(seed) < numerator / denominator
+    end
 
     local poly_calculate = load_polychrome()
     local scored_card
