@@ -157,7 +157,7 @@ Priority: Optional
 Dependencies: None for this source-only disposition; any future feature waits for correctness stabilization
 State: NOT_A_BUG
 Branch: docs/consumable-stacking-disposition
-PR: — (reviewed documentation; publication in progress)
+PR: [#18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) (open for independent review)
 Commit: c6c78485bb752df26e8347c313465875b93b0548 (source disposition; Sol High APPROVE)
 Manual test requirement: None for the source-only disposition. Optional baseline confirmation and future feature acceptance tests are in REGRESSION_TESTS.md.
 Notes: Current Reality Warp and installed framework use separate real Card objects; no quantity/representative/split-use/save model or local v1–v6 patch is present. The old visual-only buried-card behavior cannot execute in this checkout. Potion Pouch is separate serialized storage for up to six potions, and Cauldron consumes two real cards into a recipe result; neither is stacking. This closes the reported current-main defect claim without implementing the requested optional feature. Preserve A/B/C controls.
@@ -261,7 +261,7 @@ Priority: Cosmetic
 Dependencies: 12 only if a separate stacking feature is implemented
 State: STALE
 Branch: docs/consumable-stacking-disposition
-PR: — (reviewed documentation; publication in progress)
+PR: [#18](https://github.com/benedictdavon/balatro-reality-warp/pull/18) (open for independent review)
 Commit: c6c78485bb752df26e8347c313465875b93b0548
 Manual test requirement: None while no quantity badge exists. If stacking is implemented later, test quantities 2/10/100 at normal, hover, and drag scales with adjacent stacks, hitboxes, and controller focus.
 Notes: Current source has no representative quantity badge or local-v6 placement code. The historical top-right to top-center correction cannot be reproduced here; this label is stale on current main, not a verified fix to Reality Warp.

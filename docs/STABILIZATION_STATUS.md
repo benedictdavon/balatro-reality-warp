@@ -21,7 +21,7 @@ All 34 original labels are inventoried: 27 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_B
 | #9 | Colosseum starting Perishable Stencils can expire, then become active again | HUMAN_TEST_NEEDED | `fix/blind-effect-ownership` | [PR 4](https://github.com/benedictdavon/balatro-reality-warp/pull/4) |
 | #10 | Shortcut failed a valid one-gap Straight | STALE | — | Source disposition |
 | #11 | Baby Mark appeared to trigger roughly ten times from one Red Seal Polychrome King | HUMAN_TEST_NEEDED | `docs/baby-mark-retrigger-validation` | [PR 16](https://github.com/benedictdavon/balatro-reality-warp/pull/16) |
-| #12 | Consumable stacking compatibility / UI: no clean native stacking, and early visual-only patches buried cards | NOT_A_BUG | `docs/consumable-stacking-disposition` | Reviewed documentation; publication in progress |
+| #12 | Consumable stacking compatibility / UI: no clean native stacking, and early visual-only patches buried cards | NOT_A_BUG | `docs/consumable-stacking-disposition` | [PR 18](https://github.com/benedictdavon/balatro-reality-warp/pull/18), open for independent review |
 | #13 | Dark Alchemy Tag tooltip/code probability deserves verification | READY | — | Prerequisites accepted; fresh focused branch queued |
 | #14 | Lucky One probability logic has historically been broader than the tooltip suggests | HUMAN_TEST_NEEDED | `fix/lucky-one-rng` | [PR 17](https://github.com/benedictdavon/balatro-reality-warp/pull/17) |
 | #15 | Battle-of-Gods boss usage counters can be polluted by blind rolls that are immediately overwritten | HUMAN_TEST_NEEDED | `fix/botg-encounter-lifecycle` | [PR 3](https://github.com/benedictdavon/balatro-reality-warp/pull/3) |
@@ -82,7 +82,7 @@ Corrections and integration commits retained in accepted history:
 
 ## Current documentation candidate and continuation
 
-The remaining previously reviewed candidate is `docs/consumable-stacking-disposition`: source disposition `c6c78485bb752df26e8347c313465875b93b0548`, original coordination `c3ca8f8b2a16144ddb7f04dbf33e982431a1839a`. #12 is an absent optional feature, classified NOT_A_BUG; #20 is STALE because no quantity badge exists. No feature or licensed historical stacking implementation is imported. Final integrated publication is independently reviewed before acceptance.
+The documentation PR is `docs/consumable-stacking-disposition` ([PR 18](https://github.com/benedictdavon/balatro-reality-warp/pull/18)): source disposition `c6c78485bb752df26e8347c313465875b93b0548`, original coordination `c3ca8f8b2a16144ddb7f04dbf33e982431a1839a`, and accepted-main integration `c3219964853efa360eac17cf2a09ab07521c460c`. #12 is an absent optional feature, classified NOT_A_BUG; #20 is STALE because no quantity badge exists. No feature or licensed historical stacking implementation is imported. The integrated PR remains open for independent review before acceptance.
 
 After accepting this documentation PR, process #2 Ares/Violet symptom validation, #8 Helin native/Amulet validation and #13 Dark Alchemy odds on fresh sequential branches. All their prerequisites are accepted. Dark Alchemy activation already precedes first stock; the overlapping probability paths and dropped options require a bounded edition-ownership design. Preserve unusual intentional behavior and do not invent symptom patches unsupported by current source.
 
