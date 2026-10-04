@@ -117,19 +117,9 @@ SMODS.Sticker {
         }
     },
     calculate = function(self, card, context)
-        if context.before and not context.blueprint and G.hand and G.hand.cards and #G.hand.cards > 0 then
-            local count = 0
-            for i = 1, math.min(2, #G.hand.cards) do
-                local target = pseudorandom_element(G.hand.cards, pseudoseed('hook_disc'))
-                if target then
-                    draw_card(G.hand, G.discard, 90, 'down', nil, target)
-                    count = count + 1
-                end
-            end
-            card.ability.hook_bonus = 1 + (count * 0.75)
-        end
+        reality_warp_hook_discard(card, context)
         if context.joker_main then
-            local bonus = card.ability.hook_bonus or 1.75
+            local bonus = card.ability.hook_bonus or 1
             return {
                 x_mult = bonus,
                 message = 'X' .. tostring(bonus) .. ' Mult [Hook]',
@@ -286,11 +276,8 @@ SMODS.Sticker {
         }
     },
     calculate = function(self, card, context)
-        if (context.after or context.discard) and not context.blueprint then
-            if G.FUNCS and G.FUNCS.draw_from_deck_to_hand then
-                G.FUNCS.draw_from_deck_to_hand(3)
-            end
-        end
+        if context.drawing_cards and reality_warp_owned_possession(card, 'possessed_serpent') and
+            reality_warp_fixed_action_draw() then return {cards_to_draw = 3} end
         if context.individual and context.cardarea == G.play then
             return {
                 chips = 30,
@@ -321,11 +308,7 @@ SMODS.Sticker {
         if context.setting_blind and not context.blueprint then
             ease_discard(-G.GAME.current_round.discards_left)
         end
-        if context.before and not context.blueprint then
-            if G.FUNCS and G.FUNCS.draw_from_deck_to_hand then
-                G.FUNCS.draw_from_deck_to_hand(4)
-            end
-        end
+        reality_warp_draw_water_cards(card, context)
     end
 }
 
