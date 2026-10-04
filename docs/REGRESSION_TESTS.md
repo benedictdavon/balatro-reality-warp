@@ -230,3 +230,13 @@ At Ante2/5/10 and every hand: Lua KB, event queue counts, actual card/area count
 Manacle versus another semantic Boss with no Parasitic/money-loss mechanics. Force failed/winning hand and each counterattack outcome, record exact emitter/message and dollars; disabled/defeated/next-encounter controls. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
 
 POST controls: Hieroglyph preserves current Small/Big/Boss progression and already-generated skip Tags. Divine Zap is a legitimate possible global source of the Manacle-associated loss. Keep Black Hole/Blueprint exponent, Perfectionism replacement and Upgrade Roulette progression controls. N9 forced collection is an explicitly triggered diagnostic experiment, not a scheduled shipped workaround.
+
+### POST revalidation controls and policy
+
+POST-#9: current expected policy is all Perishables refreshed after every semantic showdown, including both four-round starters. With no showdown, actual native tally reaches zero and expires; a regular Blind defeat does not refresh it. Compare ordinary and starter Perishables, expired/independently debuffed cards, Rental cleansing and cold restart. No code change or game verification is claimed.
+
+POST-N3 persistence: use an unseeded test profile for the native unlock positive control, or explicitly record seeded_unlocks=true. Default seeded/challenge restrictions are intentional controls. Check native registered-center flags, profile witch_discovered_familiars, active visual/UI and Nursery after full shutdown; preview/decline/restoration must not unlock. Headless save controls use in-memory compressed meta/events and do not prove physical disk persistence.
+
+POST-N8 finite pools: test legacy and object_weights paths with enough eligible unique Jokers, then deliberately exhaust the selected rarity. The cross-rarity fallback policy requires a human answer before changes; returning nil is unsafe in native reroll callers. Preserve Critic no-Common, Showman/forced-key contracts, rarity and edition/RNG/removal semantics.
+
+POST-N9 diagnostics remain opt-in and bounded, with frame input dt distinguished from CPU time. Compare current exact enabled versions against the historical report; package presence does not prove an enabled mod. No forced-GC production workaround is authorized by source evidence.
