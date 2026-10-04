@@ -50,7 +50,18 @@ local boss = {key = 'bl_hook', mult = 2, boss = {min = 1}}
 local fused = {key = 'bl_reality_warp_obelisk', mult = 2, boss = {min = 12}, reality_warp_fused = true}
 local showdown = {key = 'bl_reality_warp_code', mult = 2, boss = {min = 8, showdown = true}}
 local chronos = {key = 'bl_reality_warp_chronos', mult = 4, boss = {showdown = true}}
-local vessel = {key = 'bl_vessel', mult = 6, boss = {showdown = true}}
+-- Exercise actual installed native registration, not an invented alias.
+function HEX(colour) return colour end
+local native_game = read('../lovely/dump/game.lua')
+local vessel_line = assert(native_game:match('([^\n]*bl_final_vessel =[^\n]*)'))
+local native_blinds = assert(loadstring('return {' .. vessel_line .. '}'))()
+local vessel = assert(native_blinds.bl_final_vessel)
+vessel.key = 'bl_final_vessel'
+assert(vessel.name == 'Violet Vessel' and vessel.mult == 6 and vessel.boss.showdown)
+local native_modifiers = {botg = false, stake = 1, hubris = 1, walls = 0}
+assert(reality_warp_calculate_blind_target(300, vessel, native_modifiers) == 1800)
+local fake_vessel = {key = 'bl_other', name = 'Violet Vessel', mult = 6, boss = {showdown = true}}
+assert(reality_warp_calculate_blind_target(300, fake_vessel, {botg = true, stake = 1, hubris = 1, walls = 0}) == 1500)
 local localized = {key = 'bl_other', name = 'Chronos', mult = 6, boss = {showdown = true}}
 G.GAME.round_resets.blind_ante = 1
 for count = 0, 3 do

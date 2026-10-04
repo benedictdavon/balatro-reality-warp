@@ -49,7 +49,7 @@ function reality_warp_calculate_blind_target(base, definition, modifiers)
     local mult = definition.mult or 0
     if modifiers.botg and reality_warp_blind_is_showdown(definition) then
         local key = definition.key
-        mult = (key == 'bl_vessel' or key == 'bl_reality_warp_chronos') and 8 or 5
+        mult = (key == 'bl_final_vessel' or key == 'bl_reality_warp_chronos') and 8 or 5
     end
     local amount = base * mult * modifiers.stake
     if modifiers.rod then amount = math.floor(amount * modifiers.rod) end
