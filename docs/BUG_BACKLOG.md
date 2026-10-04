@@ -360,15 +360,15 @@ Notes: Ares, Net, and Hades submit deduplicated snapshots with already-removing 
 ## R8: get_straight wrapper discards modern API parameters
 
 Source: BUG_AUDIT.md R8
-Classification: Source-confirmed defect; revalidate before implementation
+Classification: Source-confirmed compatibility defect; gameplay remains HUMAN_TEST_NEEDED
 Priority: Normal
-Dependencies: none
-State: AUDITED
-Branch: —
-PR: —
-Commit: —
+Dependencies: None (independent API fix); integrated accepted main 98ffbbc999263f334e4d0b9e600c746f8e4df339
+State: HUMAN_TEST_NEEDED
+Branch: fix/straight-api-forwarding
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/14
+Commit: 19b60afda787c64d6da37de9ea43923d1893c8dc (implementation); 528ec0d34b0bb8c249efb5e27cf12bddcba143ab (accepted-main integration)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: See source document and dependency order; not yet implemented.
+Notes: The pre-fix wrapper accepted only `hand`, dropping the installed four-argument detector contract and all trailing values; its numeric fallback bypassed custom rank graphs. R8 restores native/helper forwarding and retains Colorful Street through framework helpers. Sol High independently reviewed the complete immutable diff and surrounding/native dispatch contracts: APPROVE. PR #14 is open for independent review. The branch integrates accepted main 98ffbbc999263f334e4d0b9e600c746f8e4df339; the state-aware runner passes all twelve harness files, Lua 5.1 compilation, TOML/payload, installed original/applied target checks and git diff --check. No Balatro execution is claimed. ISSUE #10's historical hand remains classified STALE for its original fallback failure and stays in the regression controls; R8 addresses the separate modern API contract. Real card scoring, custom ranks, optional helper behavior and cold restart remain pending.
 
 ## R9: Chronos and Guillotine each run at two scoring stages; Void checks before queued score addition
 
@@ -487,6 +487,18 @@ Commit: —
 Manual test requirement: Preserve as regression controls.
 Notes: common.lua before context upgrades scoring enhanced cards; Stone special route and Glass terminal behavior are intentional.
 
+## N5: Colorful Street Flush and suit fallback can outlive physical ownership
+
+Source: Sol High surrounding-code review during R8; this is a local source finding, distinct from POST-N5.
+Classification: Source-confirmed ownership-filter mismatch; actual transition impact requires gameplay evidence.
+Priority: Normal
+Dependencies: R8 helper contract
+State: AUDITED (outside original audit; separate future branch)
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Slice/destroy/remove Colorful Street while it remains in a pending area snapshot; compare Straight helpers, four-card Flush and mixed red/black suit checks before actual removal and after queue drain. Preserve unrelated live Four Fingers/Shortcut/Smeared effects.
+Notes: The unchanged get_flush fallback and Card:is_suit amalgam scan in src/core/utils.lua check nondebuff status but omit the new helpers' physical-area/removal/destruction/slicing filter. A pending-removal Colorful Street left in G.jokers.cards can therefore retain those fallback bonuses while its Straight helpers stop. R8 explicitly excludes rewriting these separate wrappers and preserves them; no speculative gameplay fix is included. Revalidate this separate finding on accepted main before implementation.
 ## Queued follow-up: post-stabilization runtime audit
 
 The user extended the goal to audit POST_SOL_RUNTIME_FINDINGS.md after the original ISSUE #1-20 and R1-R14 pass finishes, then repeat sequential Option A for its confirmed actionable findings. The file is present and was read completely; it reports user gameplay on main f863d0c, Balatro1.0.1o-FULL/Steamodded26.829.0/Lovely0.9.0/Amulet3.6.2/JokerDisplay1.10.9, with retrigger_joker enabled. This is reported human evidence, not agent game execution. Preserve that checkpoint for revalidation against the eventual accepted main.

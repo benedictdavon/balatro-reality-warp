@@ -20,6 +20,14 @@ For permanent effects include enabled positive control, disabled at setup, disab
 
 10 diamonds, 9 hearts, 8 hearts, 7 clubs, 5 hearts is a Straight with active Shortcut; without or debuffed Shortcut it is not. Also test A K Q J 9, A 2 3 4 6, two consecutive missing ranks, separated one-rank gaps, duplicates, Four Fingers and Colorful Street combinations. R8 must additionally preserve explicit min_length/skip/wrap/custom rank topology.
 
+## Straight detector API forwarding (R8)
+
+Static: `tests/test_straight_api.lua` source-extracts the installed Steamodded `get_straight`, helper, native flush, and actual `_straight` callback implementations without persisting them, then runs the Reality Warp wrappers through both direct and native-dispatch paths. Verify explicit min_length=6 rejects a five-card hand even with Shortcut/Four Fingers/Colorful Street, explicit nil/false/trailing arguments and all original return positions reach the lower detector, and hand-only legacy calls derive the current helper values. Exercise the historical one-gap hand, absent/debuffed Shortcut, A-K-Q-J-9, A-2-3-4-6, consecutive and separated gaps, duplicates, Four Fingers+Shortcut, Colorful Street canonical/Spanish aliases in isolation, debuffed/removed controls, smaller custom helper minima, custom rank topology, wrap, and the Colorful Street native four-card flush helper. No third-party implementation source is written into the repository.
+
+Integrated automated run: after accepted R5/R6/R10 main, `tests/run.py` compiles every Lua file with Lua 5.1, validates TOML/payloads and original-or-complete-applied target states, and passes all twelve harness files including this detector regression. The harness checks the installed native rank graph and does not establish in-game poker-hand scoring or optional-mod behavior.
+
+Manual: Use EYEFTHTG with recorded salt, White stake, baseline then Colosseum, required Steamodded/Lovely only, and no Familiars/possessions/optional mods. Force the `10♦ 9♥ 8♥ 7♣ 5♥` hand: active Shortcut should score a Straight; absent/debuffed Shortcut should not. Also test `A K Q J 9`, `A 2 3 4 6`, Four Fingers, Colorful Street's four-card Straight/Flush, mixed suits, a normal five-card Straight Flush, consecutive gaps, and duplicates. Record final poker-hand classification and exact scored Cards; test custom ranks/wrap only with their mod installed. Repeat after cold restart. No Balatro runtime result has yet been recorded.
+
 ## Canonical identity (#18, R11)
 
 Static: tests/run.py compiles Lua 5.1 and tests/test_blind_identity.lua checks canonical matching, Big-slot semantic boss/showdown classification, no name inference and idempotent disabled-aware Pincer unlock preserving an independent debuff in a stub.

@@ -2208,6 +2208,47 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
 end
 
 -- Colorful Street Hand Evaluation Handlers (4-card Straights and Flushes, 1-gap Straights)
+local function reality_warp_has_live_colorful_street()
+    if not (G and G.jokers and G.jokers.cards) then return false end
+    for _, joker in ipairs(G.jokers.cards) do
+        if joker and joker.area == G.jokers and not joker.debuff and not joker.removed and
+            not joker.destroyed and not joker.shattered and not joker.getting_sliced and
+            (card_has_key(joker, 'colorful_street') or card_has_key(joker, 'calle_colorida')) then
+            return true
+        end
+    end
+    return false
+end
+
+local function reality_warp_pack(...)
+    return {n = select('#', ...), ...}
+end
+
+if SMODS and SMODS.four_fingers then
+    local four_fingers_ref = SMODS.four_fingers
+    function SMODS.four_fingers(hand_type, ...)
+        local result = reality_warp_pack(four_fingers_ref(hand_type, ...))
+        if (hand_type == 'straight' or hand_type == 'flush') and reality_warp_has_live_colorful_street() then
+            local lower_minimum = type(result[1]) == 'number' and result[1] or 5
+            result[1] = math.min(lower_minimum, 4)
+            result.n = math.max(result.n, 1)
+        end
+        return unpack(result, 1, result.n)
+    end
+end
+
+if SMODS and SMODS.shortcut then
+    local shortcut_ref = SMODS.shortcut
+    function SMODS.shortcut(...)
+        local result = reality_warp_pack(shortcut_ref(...))
+        if reality_warp_has_live_colorful_street() then
+            result[1] = true
+            result.n = math.max(result.n, 1)
+        end
+        return unpack(result, 1, result.n)
+    end
+end
+
 if get_flush then
     local orig_get_flush = get_flush
     function get_flush(hand)
@@ -2241,66 +2282,15 @@ end
 
 if get_straight then
     local orig_get_straight = get_straight
-    function get_straight(hand)
-        local ret = orig_get_straight(hand)
-        if ret and #ret > 0 then return ret end
-        local has_cs = false
-        local has_shortcut = false
-        local has_four_fingers = false
-        if G.jokers and G.jokers.cards then
-            for _, j in ipairs(G.jokers.cards) do
-                if not j.debuff then
-                    if card_has_key(j, 'colorful_street') or card_has_key(j, 'calle_colorida') then
-                        has_cs = true
-                        has_shortcut = true
-                        has_four_fingers = true
-                    end
-                    if card_has_key(j, 'shortcut') or card_has_key(j, 'atajo') or (j.ability and (j.ability.name == 'Shortcut' or j.ability.name == 'j_shortcut')) then
-                        has_shortcut = true
-                    end
-                    if card_has_key(j, 'four_fingers') or card_has_key(j, 'cuatro_dedos') or (j.ability and (j.ability.name == 'Four Fingers' or j.ability.name == 'j_four_fingers')) then
-                        has_four_fingers = true
-                    end
-                end
-            end
+    function get_straight(hand, ...)
+        local args = reality_warp_pack(...)
+        if args.n > 0 then
+            return orig_get_straight(hand, unpack(args, 1, args.n))
         end
-        if (has_cs or has_shortcut or has_four_fingers) and hand and #hand >= (has_four_fingers and 4 or 5) then
-            local IDS = {}
-            for i = 1, #hand do
-                local id = hand[i]:get_id()
-                if id and id > 1 and id < 15 then
-                    if IDS[id] then
-                        table.insert(IDS[id], hand[i])
-                    else
-                        IDS[id] = { hand[i] }
-                    end
-                end
-            end
-            local req_length = has_four_fingers and 4 or 5
-            local straight_length = 0
-            local skipped_rank = false
-            local t = {}
-            for j = 1, 14 do
-                local rank_idx = (j == 1 and 14 or j)
-                if IDS[rank_idx] then
-                    straight_length = straight_length + 1
-                    skipped_rank = false
-                    for _, v in ipairs(IDS[rank_idx]) do
-                        table.insert(t, v)
-                    end
-                elseif has_shortcut and not skipped_rank and j ~= 14 and straight_length > 0 then
-                    skipped_rank = true
-                else
-                    straight_length = 0
-                    skipped_rank = false
-                    t = {}
-                end
-                if straight_length >= req_length then
-                    return { t }
-                end
-            end
-        end
-        return ret or {}
+        local min_length = SMODS.four_fingers('straight')
+        local skip = SMODS.shortcut()
+        local wrap = SMODS.wrap_around_straight()
+        return orig_get_straight(hand, min_length, skip, wrap)
     end
 end
 
