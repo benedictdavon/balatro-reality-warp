@@ -12,6 +12,7 @@ local function region(source, first, following)
 end
 
 local familiar_source = read('src/core/botg_familiars.lua')
+local joker_effects_source = read('src/core/joker_effects.lua')
 local native_utils = read('../smods/src/utils.lua')
 local native_card = read('../lovely/dump/card.lua')
 local native_objects = read('../smods/src/game_object.lua')
@@ -63,6 +64,7 @@ local active_level
 local native_get_card_areas_chunk = compile(native_area_source, 'installed SMODS.get_card_areas')
 local install_area_wrapper = compile(area_wrapper_source, 'Reality Warp Familiar-area registration')
 local install_joker_wrapper = compile(calculate_joker_wrapper_source, 'Reality Warp Familiar calculate_joker wrapper')
+local load_joker_effects = compile(joker_effects_source, 'Reality Warp Joker-effect composer')
 local load_level = compile(familiar_level_source, 'Reality Warp Familiar level helper')
 local load_familiar_callback = compile(familiar_callback_source, 'Reality Warp Familiar callback')
 local load_seal = compile(seal_source, 'installed Card:calculate_seal')
@@ -160,6 +162,10 @@ local function install_runtime(familiar_key, level, physical_id)
     end
     load_seal()
     setmetatable(familiar, {__index = Card})
+    -- RealityWarp.lua loads the R5 composer before botg_familiars.lua installs its Familiar override.
+    -- This no-Glitch fixture keeps the real composer/helper active; Mark's individual and repetition
+    -- contexts add no mode bonus, while an ordinary Joker still passes through the wrapped base method.
+    load_joker_effects()
     install_area_wrapper()
     install_joker_wrapper()
     load_level()
