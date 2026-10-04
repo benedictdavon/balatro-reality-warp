@@ -339,7 +339,7 @@ Priority: Normal
 Dependencies: Accepted canonical identity and disabled-effect contracts (PR2/4); current scoring-stage main (PR10)
 State: HUMAN_TEST_NEEDED
 Branch: fix/arrow-rank-mapping
-PR: —
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/11
 Commit: 31015cf76b9637e6ddcce757b1528ce07e81690e
 Manual test requirement: Required for gameplay; exact procedure will be recorded in REGRESSION_TESTS.md.
 Notes: Local source review APPROVE at implementation commit 31015cf76b9637e6ddcce757b1528ce07e81690e. The nine Lua harnesses and Lua 5.1 compilation pass; the stock aggregate runner still has the separately documented N3 exact-pattern limitation, while an original-or-fully-applied check confirms both owned Lovely target payloads. `SMODS.modify_rank` follows registered `prev`/`prev_behavior` and `SMODS.change_base` resolves registered suit/rank `card_key`s. Actual Balatro gameplay remains unverified and required.
