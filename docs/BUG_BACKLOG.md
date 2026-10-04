@@ -588,4 +588,17 @@ Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR
 
 ## Original stabilization acceptance checkpoint
 
-Original ISSUE #1–20 and audit R1–R14 are all accounted for: 30 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG. Accepted source main is 52f76d72e9a980275446fb9707640288c573f139. All source candidates were reviewed and merged; no original label is BLOCKED or awaiting publication. STABILIZATION_STATUS.md contains the final branch/PR/commit ledger, validation limits, complete human queue, residual risks and recommended end-to-end sequence. POST work remains deferred; local N1/N2/N4/N5/N6 remain separately documented outside the original audit. No Balatro execution is claimed.
+Original ISSUE #1–20 and audit R1–R14 are all accounted for: 30 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG. Accepted source main is 52f76d72e9a980275446fb9707640288c573f139. All source candidates were reviewed and merged; no original label is BLOCKED or awaiting publication. STABILIZATION_STATUS.md contains the final branch/PR/commit ledger, validation limits, complete human queue, residual risks and recommended end-to-end sequence. POST was deferred at that original checkpoint and is now resumed; this independent local follow-up is unpublished and must reconcile with the tracking inventory on eventual acceptance. Local N1/N2/N4/N5/N6 remain separately documented outside the original audit. No Balatro execution is claimed.
+
+## POST-N6: Difficulty Ante changes must preserve encounter ownership
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N6, reported checkpoint f863d0c; separate unpublished tracking inventory.
+Classification: Source-confirmed schedule/difficulty conflation and Ante-zero clamp; HUMAN_TEST_NEEDED for game/save behavior after source acceptance.
+Priority: High
+Dependencies: Accepted main c94227daa5b08dfe7e26497fe601b19e9ebb2b02 and accepted encounter/target architecture. No dependency on independent N7/N4 source candidates. Public POST approval/integration review pending.
+State: IN_PROGRESS (local source/test complete and self-reviewed; independent review pending).
+Branch: fix/hieroglyph-botg-ante
+PR: — (no publication)
+Commit: 5315abcaed37cfe108637215e71b4ef5943d13eb (source/tests); branch starts accepted main c94227daa5b08dfe7e26497fe601b19e9ebb2b02.
+Manual test requirement: EYEFTHTG recorded salt/versions, White stake, Red Deck then Colosseum; Ante1→0 and5→4 with Hieroglyph/Petroglyph independently. Record keys/IDs/params/phases/tags/slot/Ward/preview/runtime chips before purchase, before queued HUD update and after. Lower future difficulty and native voucher costs, unchanged identity/consumed Ward/active dynamic chips. Actual Boss advancement back to prior numeric Ante and BOTG cycle produce new schedule/one allowance. Fully quit/reload before and after each boundary.
+Notes: Serialized schedule_generation owns commitments and Ward; numeric entry.ante remains historical difficulty. Native explicit reset_blind_choices and BOTG cycle advance generation. Legacy metadata adopts existing keys/params and free/consumed allowance without RNG/refund. Ante<1 floor5000 restores native100/300 ratio to BOTG Ante-one15000, retaining all positive curve/modifiers/caps. Changed wrappers retain arguments and nil-inclusive multiple returns. Root source self-review and all19 Lua5.1 harnesses/TOML/native validator checks pass; focused native vouchers/queued Ante/SMODS contexts/progression/cycle plus fresh Lua5.1/LuaJIT VM serialization reconstruction pass. Native UI, FIFO, Card geometry/initialization and primitive serialization adapters do not execute the game, physical save codec or audio. Independent review remains required; no PR or accepted-main change is claimed.
