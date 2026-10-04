@@ -103,12 +103,12 @@ Source: ISSUE.md #8
 Classification: Historical scoring symptom; installed extension supports e_mult
 Priority: Normal
 Dependencies: R5
-State: READY
-Branch: —
-PR: —
-Commit: —
+State: HUMAN_TEST_NEEDED
+Branch: docs/helin-exponent-validation
+PR: https://github.com/benedictdavon/balatro-reality-warp/pull/21
+Commit: ec9470cbf18e9eb9d91ca9fd862a68b9653e3fc1 (source validation)
 Manual test requirement: Required for gameplay/save/load; exact procedure will be accumulated in REGRESSION_TESTS.md.
-Notes: READY on accepted main 36c4283 after accepted R5 (PR 12). Installed Amulet supports e_mult; actual numeric/Omega source checks contradict the unsupported-key theory. Create a fresh bounded original-calculation/mode/Blueprint validation branch. Preserve supported dispatch and sequential exponentiation; retain exact human cold-runtime validation.
+Notes: Fresh branch from accepted adf2df084fee06bbdb6036f61ae6d8e7905f2402. Actual Amulet registration and individual dispatcher consume e_mult, emult and Emult_mod. Source-extracted Helin/native Blueprint through accepted R5 composition yields144/20736/429981696 from12 with0/1/2 copies, both numeric fallback and supported dispatch. Actual installed Omega under LuaJIT also verifies these values and1e400→1e800. Modes append after original exponent; copy eligibility and0/1 controls pass. Seventeen stock harnesses and Lua5.1/TOML/native target checks pass. The audit unsupported-field premise is contradicted; do not replace the supported effect with direct mutation. A labeled Card eligibility adapter, ordered effect-chain/scoring-parameter sinks and UI sinks do not establish real game ordering or reproduce historical inventory. Actual Joker position governs subsequent XMult: exponent then×2 gives288, ×2 then exponent gives576. End-of-scoring tooltip interpretation is recorded for human validation, not silently redesigned. HUMAN_TEST_NEEDED, no production change or Balatro execution.
 
 ## 9: Colosseum starting Perishable Stencils can expire, then become active again
 
@@ -583,4 +583,4 @@ Branch: fix/vessel-target-key
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/20
 Commit: 0c1e38fc3a32d1818efcebad4cb295e5b7799add (canonical correction)
 Manual test requirement: BOTG base ×8 and ordinary native base ×6, preview/selection/runtime/reset/cold restart with exact versions, salt and modifiers recorded.
-Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR9's helper and synthetic fixture copied the nonexistent key, causing actual Colosseum Vessel to use generic5 instead of its prior8. The smallest canonical-key correction restores8. The target fixture now source-extracts actual native Vessel metadata, checks ordinary6 and localized-name-spoof5, and retains the full preview/runtime/modifier/slot/reset matrix. All16 stock harnesses and Lua5.1/TOML/native boundary checks pass. No game execution.
+Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR9's helper and synthetic fixture copied the nonexistent key, causing actual Colosseum Vessel to use generic5 instead of its prior8. The smallest canonical-key correction restores8. The target fixture now source-extracts actual native Vessel metadata, checks ordinary6 and localized-name-spoof5, and retains the full preview/runtime/modifier/slot/reset matrix. All16 stock harnesses and Lua5.1/TOML/native boundary checks pass. No game execution. PR20 accepted at adf2df084fee06bbdb6036f61ae6d8e7905f2402.

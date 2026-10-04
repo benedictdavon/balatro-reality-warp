@@ -316,3 +316,20 @@ Excluded work: #2 discards, Helin, Dark Alchemy, POST and unrelated local N find
 Required static validation: Independent actual native definition/key trace; full small diff/source review; full current stock suite and Lua5.1/TOML/native boundary controls, actual native fixture assertions; status/stat/diffcheck.
 Required runtime/manual validation: EYEFTHTG recorded salt, White stake, Red Deck and Colosseum, canonical bl_final_vessel showdown on actual eligible Ante with stake/Hubris controls, preview-select-runtime and repeated reset/disable/cold restart. BOTG base×8; ordinary base×6 before applicable modifiers. No game claim.
 Known risks: Restores difficulty from erroneous generic5 to documented prior8; real optional mods/persistence remain human. This correction must land before declaring original#5 stabilization complete. Keep separate atomic PR.
+
+
+## Helin native exponent contract (#8)
+
+Issue: ISSUE #8 Helin exponent historically ignored in big-number mode.
+Classification: HUMAN_TEST_NEEDED; audit unsupported e_mult premise contradicted by actual installed Amulet handlers. Revalidate after accepted R5 composition before source change.
+Dependencies: Accepted R5 restores original Joker calculate; fresh branch latest then-accepted main.
+Relevant files/functions: src/jokers/secret.lua Helin registration/calculate, accepted joker_effects composer and wrappers/load order, actual installed Steamodded effect/Blueprint helpers, installed Amulet talisman/effects.lua and talisman/smods/ind_effect.lua, actual Omega numeric library. Tests/docs.
+Confirmed root cause: Amulet creates/registers e_mult/emult/Emult_mod aliases and consumes e_mult through registered scoring parameter; current Helin returns supported e_mult when to_big exists. Previously masked original Joker calculation is corrected by accepted R5. No unsupported-key/stage rewrite justified.
+Required behavior: Fresh docs/helin-exponent-validation unless evidence establishes residual source defect. Test actual source-extracted Helin, supported actual Amulet registration/individual dispatch and native Blueprint helper through accepted composition with labeled scoring/UI stubs. Numeric fallback and actual Omega: power2 Mult12 Helin0/1/2 copied exponents =144/20736/429981696. Preserve original e_mult and modes; check debuff/incompatible/removed gates and position/stage behavior. Explicitly record subsequent late XMult ordering as existing behavior, not redesign tooltip interpretation without confirmation.
+Behavior unchanged: Native scoring position, sequential exponentiation, supported aliases, configured power/defaults, Black Hole intentional control, all mode bonuses/copy eligibility and multi-return composition.
+Excluded: POST, global scoring stage redesign, speculative aliases, balance, Black Hole exponent fix, other source issues.
+Static: Read AGENTS/relevant ISSUE/AUDIT; confirm accepted clean base, native extension APIs/current wrappers; meaningful focused test with actually installed LuaJIT/Omega + stock suite, Lua5.1/TOML/payload checks, inspect status/stat/full diff/diffcheck. Source extraction/license attribution instead of copying extension implementation. If root cause differs materially stop/report before production patch.
+Manual: EYEFTHTG recorded salt, White stake, Red Deck/Colosseum, stable Ante/Blind no Familiars/possessions; controlled baseMult12 power2 and0/1/2Blueprint copies; normal number and Amulet actual version, late multiplier positions, Apotheosis/Exalted/Glitch separately and cold restart. Separate JokerDisplay display from actual resulting Mult. No Balatro claim.
+Known risks: Headless parameter sinks/model dispatch cannot establish actual full-game staging, optional mods or cold-save; retain HNE exact human procedure. Commit/push/open/attach samebounded fork PR, fullAGENTS template, stop for independentSolreview.
+
+Sol direct implementation: accepted base adf2df084fee06bbdb6036f61ae6d8e7905f2402. Wrapper/scoring framework sensitivity and unavailable Luna justify direct source validation. No production change.
