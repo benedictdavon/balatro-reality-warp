@@ -2,7 +2,7 @@
 
 Current authorization (2026-10-07): the human explicitly approves public publication of the POST report, stabilization documentation, and all currently reviewed and subsequent reviewed POST source/test/documentation branches to `benedictdavon/balatro-reality-warp`, followed by the sequential reviewed PR/merge workflow. The previous publication rejection is resolved by this explicit approval; historical local-review references below remain provenance, not claims of current acceptance.
 
-Tracking snapshot: the immutable report and POST tracking inventory were accepted through PR #24 at `main` commit `cf0d5f90ac1231a68f42e798290d29af62a0c50c`. The Croupier source branch is integrated against that accepted base before publication.
+Tracking snapshot: the immutable report and POST tracking inventory were accepted through PR #24 at `main` commit `cf0d5f90ac1231a68f42e798290d29af62a0c50c`. Croupier is integrated against that accepted base by merge commit `af0bfc784bd61ed0a952e694de605e26638e1219` and published for review as [PR #25](https://github.com/benedictdavon/balatro-reality-warp/pull/25).
 
 POST-N8 policy is now settled: try other allowed rarities first, preserving restrictions such as Critic's no-Common rule while any eligible unique Joker exists in another allowed rarity. Use Balatro's native fallback only after all allowed rarities are exhausted. The source implementation still needs its own fresh-main branch, checks and review.
 
@@ -14,7 +14,7 @@ The original priority order remains a planning guide: crash N7 → architectural
 
 | ID | Finding | Current state | Dependency / next evidence |
 | --- | --- | --- | --- |
-| POST-N7 | Croupier calls an unavailable dice sound | APPROVED locally; HUMAN_TEST_NEEDED in game | No production prerequisite; source/test `27377d3b9529d349d234516f05450e95a4ea5902` on `fix/croupier-missing-sound`, reviewed pre-integration head `892a8b69532d388f0788efc4de97913adf75a856`; integrated against accepted main `cf0d5f90ac1231a68f42e798290d29af62a0c50c`; PR publication follows integrated validation. |
+| POST-N7 | Croupier calls an unavailable dice sound | PR_OPEN; HUMAN_TEST_NEEDED in game | No production prerequisite; source/test `27377d3b9529d349d234516f05450e95a4ea5902` on `fix/croupier-missing-sound`; integrated by merge commit `af0bfc784bd61ed0a952e694de605e26638e1219` on accepted main `cf0d5f90ac1231a68f42e798290d29af62a0c50c`, published in [PR #25](https://github.com/benedictdavon/balatro-reality-warp/pull/25); published-head review pending. |
 | POST-N6 | Hieroglyph changes difficulty Ante and regenerates encounter schedule | APPROVED locally; HUMAN_TEST_NEEDED in game/save | No production dependency on N7/N4. Source `5315abcaed37cfe108637215e71b4ef5943d13eb`, final local head `9e7799897ac9b9a399ccd4d3b3a2fc01fcf14731` on `fix/hieroglyph-botg-ante`; independent Luna checks/APPROVE and Root review complete; no PR or accepted-main integration. |
 | POST-#9 | Thanatos Perishable refresh scope | NOT_A_BUG for current source/policy | Human authorized all-Perishable refresh after Thanatos; preserve the existing every-semantic-showdown trigger and starter/Rental behavior. No production patch. |
 | POST-N8 | Shop and pack duplicate Joker offers escape owner-only check | READY; source case confirmed, policy answered | Fresh accepted main required. Try eligible unique Jokers in other allowed rarities before native fallback; retain Critic no-Common while any allowed unique offer exists. |
@@ -32,7 +32,7 @@ POST-A1 is newly discovered outside the posted audit: Croupier high-roll retrigg
 
 POST-A2 is a separate source-confirmed writer outside adoption: the one-hand Familiar reward calls native unlock/discover then writes the Nursery profile marker regardless of seeded/challenge denial. An adoption-only patch must respect native policy and must not claim to fix that writer or existing inconsistent profiles. Test adoption on a fresh profile without a prior one-hand reward; keep the independent writer in the residual queue.
 
-The original local N1/N2/N4/N5/N6 findings remain separate. Local POST-N7, POST-N4, POST-N6, POST-N3 and the POST-N9 diagnostic source/test commits exist and are independently approved. No POST source branch has merged into accepted main; N7 is integrated against the current accepted base and its own PR/review proceeds sequentially, while other reviewed branches remain independent. N8 is ready under the answered exhausted-rarity policy; N9 measurements and N5 historical attribution remain in the human game queue. Do not create dependent stacked branches.
+The original local N1/N2/N4/N5/N6 findings remain separate. Local POST-N7, POST-N4, POST-N6, POST-N3 and the POST-N9 diagnostic source/test commits exist and are independently approved. No POST source branch has merged into accepted main; N7 is published as PR #25 and awaits published-head review, while other reviewed branches remain independent. N8 is ready under the answered exhausted-rarity policy; N9 measurements and N5 historical attribution remain in the human game queue. Do not create dependent stacked branches.
 
 ## Initial source revalidation
 
