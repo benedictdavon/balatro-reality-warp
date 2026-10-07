@@ -211,7 +211,7 @@ Track both actual starter tallies through each Blind to zero, regular/fused/show
 
 ### POST-N8 — Shop and pack duplicate Joker offers escape owner-only check
 
-No Showman: owned, same-shop and same-Buffoon-pack keys; Critic/Taster replacements and repeated rerolls. Live/debuffed Showman and deliberate forced-key controls. Preserve rarity, editions, native seed/notifications and finite-pool behavior. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+No Showman: owned, same-shop and same-Buffoon-pack keys; Critic/Taster replacements and repeated rerolls. Live/debuffed Showman and deliberate forced-key controls. Preserve ordinary rarity, editions, native seed/notifications and finite-pool behavior. When selected rarity is exhausted, try eligible unique Jokers in other allowed rarities first; retain Critic no-Common while any such offer exists. Only after all allowed rarities are exhausted may native fallback repeat a key. The answered policy is recorded in BUG_BACKLOG.md; do not mark gameplay verified from historical observations or headless sinks.
 
 ### POST-N3 — BOTG-adopted Familiar lacks permanent unlock/discovery
 

@@ -8,7 +8,7 @@ Resumed by direct human instruction Begin post. Initial accepted main is c94227d
 
 POST_SOL_RUNTIME_FINDINGS.md is the immutable user input, now tracked through this documentation branch. Reported test checkpoint f863d0c predates later accepted fixes, so every claim must be revalidated. No agent game execution is claimed.
 
-The original priority order remains a planning guide: crash N7 → architectural Ante N6 → starter policy #9 → offer uniqueness N8 → adoption persistence N3 → Echo N4 → performance diagnostics N9 → isolated Manacle attribution N5. It is not a blanket prerequisite chain. An independent source branch may be prepared from a freshly verified accepted main while the external POST-publication gate is pending; dependent changes must still wait for prerequisite acceptance and must not be stacked on a stale branch.
+The original priority order remains a planning guide: crash N7 → architectural Ante N6 → starter policy #9 → offer uniqueness N8 → adoption persistence N3 → Echo N4 → performance diagnostics N9 → isolated Manacle attribution N5. It is not a blanket prerequisite chain. The independent source branches were prepared from freshly verified accepted main while public authorization was pending; that gate is now resolved. Each existing branch must integrate then-accepted main before its PR. Dependent changes must still wait for prerequisite acceptance and must not be stacked on a stale branch.
 
 | ID | Finding | Current state | Dependency / next evidence |
 | --- | --- | --- | --- |
