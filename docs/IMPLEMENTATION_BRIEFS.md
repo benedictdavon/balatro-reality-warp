@@ -370,6 +370,8 @@ Known risks: Report snapshot records accepted source head before its own documen
 
 ## POST source inventory and runtime backlog
 
+Current authorization/policy update (2026-10-07): the human explicitly approves public publication of the POST report, stabilization documentation, and all currently reviewed and subsequent reviewed POST source/test/documentation branches to `benedictdavon/balatro-reality-warp`, with sequential reviewed PR/merge continuation. This supersedes historical pending-publication wording in the local preparation briefs. POST-N8 must try other allowed rarities while an eligible unique Joker exists, preserving Critic no-Common; native fallback is allowed only after all allowed rarities are exhausted. The existing reviewed source candidates still require then-accepted-main integration, repeated applicable checks, published-head review and expected-head controlled merge.
+
 Issue: Track all eight user POST findings and reopen original #9 after direct Begin post instruction.
 Classification: Documentation-only inventory; initial source evidence is not final gameplay validation.
 Dependencies: Original source pass accepted at c94227daa5b08dfe7e26497fe601b19e9ebb2b02.

@@ -640,8 +640,8 @@ Notes: Native Card/Steamodded Perishable callbacks expire4→3→2→1→0; curr
 Source: POST_SOL_RUNTIME_FINDINGS.md N8; reported runtime main f863d0c
 Classification: Source-confirmed finite-pool fallback/weighted-path escape; historical cause unproven.
 Priority: High
-Dependencies: Accepted Dark Alchemy scope; required human exhausted-rarity policy answer pending.
-State: AUDITED; exhaustion policy pending before source change.
+Dependencies: Accepted Dark Alchemy scope; fresh accepted main. Human exhausted-rarity policy answered 2026-10-07.
+State: READY; try other allowed rarities before native fallback, preserving Critic no-Common while any eligible unique Joker remains.
 Branch: fix/shop-joker-duplicates (planned; not created)
 PR: —
 Commit: —
@@ -684,7 +684,7 @@ Priority: High
 Dependencies: Revalidated on accepted main `c94227daa5b08dfe7e26497fe601b19e9ebb2b02`; independent of unpublished source candidates. Any later production fix needs its own measured cause and review.
 State: APPROVED locally; HUMAN_TEST_NEEDED for measured cause/gameplay. No accepted-main integration or publication.
 Branch: `feat/opt-in-runtime-profiling`
-PR: Pending explicit POST publication authorization and eventual published-head review; no PR opened.
+PR: Publication authorized 2026-10-07; pending accepted-main integration and published-head review; no PR opened.
 Commit: `33786ff4bebdcd5c409a81cedd99f7f4e16f7ea1` (profiler source and original focused test); `5ad68e6396365fa951adceb53c00aaf18d5868b2` (test-only optional-native correction). All 19 Lua harnesses, Lua 5.1 compilation, TOML/installed-payload controls, focused LuaJIT 2.1, and the simulated-missing-native-Event Lua 5.1 control passed. Reviewed corrected candidate `f8a6a76f5940f49d4b1802a80b0263390f052a93`; final local review-stamp head `444ec2cdcec58ae9b10d1cd6c6dde188ee13390c`. Sol also independently passed native-absent Lua5.1/LuaJIT controls and file-opener restoration. No real-game or cold-save run is claimed.
 Manual test requirement: Required. Use the exact fresh unseeded Red Deck and separate Colosseum procedure in `REGRESSION_TESTS.md`, capture Ante 2/5/10/late reports before and after comparable hands and queue drain, compare the same save after a full restart, isolate optional mods on backup saves, and compare matched hands with profiling enabled and disabled.
 Notes: The candidate adds an explicitly loaded profiler module only; `RealityWarp.lua` automatic loading remains unchanged. Six wrappers are direct tail-forwarders with session-token protection. The focused Lua 5.1/JIT tests dynamically execute installed native Event code when its sibling dump exists; otherwise this integration prints `SKIP` while the other profiler checks continue. A focused Lua 5.1 control simulates that absence by intercepting `io.open` only for the Event path. Small class/clock objects are labeled adapters. Queue `start_timer` and Talisman's elapsed/frame metrics are not CPU attribution. No leak, duplicated workload, or culpable mod has been identified. See the bounded POST-N9 brief for exclusions and risks. No real-game or physical-save test was run.
