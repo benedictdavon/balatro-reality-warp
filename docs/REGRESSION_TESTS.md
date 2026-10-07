@@ -193,10 +193,96 @@ Agent fixture executes installed native create_card, Steamodded legacy poll_edit
 Human: EYEFTHTG recorded salt, exact versions/object_weights setting/custom editions, White stake, Red Deck then Colosseum, Antes1/12. Start with Dark Alchemy only, no Familiar/possession/Lucky; compare first shop, reroll and booster-pack Jokers, logging actual native seed/sample/weight/edition and current flag. Verify Negative modified weight×10 only for actual shop/pack Joker creation; default vanilla probability0.3%→3%, no added roll. Run separate Aura/no_negative and guaranteed-edition controls plus string-only and explicitly weighted pools; expect native filters/exclusions. Repeat forced Joker versus forced Tarot, existing edition/bypass, Critic/Taster replacement and duplicate retries. Tag shop_start flag must precede first stock, delayed fee feedback must not gate activation; verify existing+$2 reroll fees and expiry when leaving/resetting the shop. Cold-save/restart during the shop and after expiry. Then reintroduce Lucky (charges unspent by edition polls), object weights, custom edition modifiers, Cartomancer and JokerDisplay separately. Native filtered/custom/capped probabilities may differ from universal absolute10×; tooltip states relative generation weight. HUMAN_TEST_NEEDED.
 
 
-## POST-N7 — Croupier / Dice sticker sound
+## POST runtime phase: accepted-source revalidation
 
-Agent regression: `tests/test_croupier_missing_sound.lua` extracts and registers the actual Croupier sticker definition. It checks both main-scoring and individual G.play contexts with deterministic outcomes1–6; one `dice_job` sample in range1–6; one `generic1` sound call with the original pitch/arity; exact score/message/color/Card fields; and no extra return fields. Non-scoring, non-play, and repetition queries without the legacy flag produce no roll or sound. A supplied legacy flag still reaches the unchanged repetition callback. The assertion that the scoring callback does not write that flag records POST-A1 as separate work. All19 Lua harnesses pass; tests/run.py also passes Lua5.1 compilation, TOML/payload checks and native target-patch controls. These are Lua/source checks, not Balatro audio or event-thread execution.
+Reported checkpoint: f863d0c, Balatro1.0.1o-FULL, Steamodded26.829.0, Lovely0.9.0, Amulet3.6.2, JokerDisplay1.10.9, Windows, retrigger_joker enabled. These are user gameplay observations; the agent has not executed Balatro. Start current revalidation with seed EYEFTHTG, recorded salt and exact current versions, White stake, Red Deck then Colosseum, no unrelated possessions/Familiars/stickers unless stated. Use a separate test profile/save for unlock and optional-mod isolation. Record Ante/slot/keys/ID/target and actual callback results; after each source fix add its focused acceptance procedure here.
+
+### POST-N7 — Croupier calls an unavailable dice sound
+
+Agent regression: `tests/test_croupier_missing_sound.lua` extracts and registers the actual Croupier sticker definition. It checks both main-scoring and individual `G.play` contexts with deterministic outcomes 1–6; one `dice_job` sample in range 1–6; one `generic1` sound call with the original pitch and arity; exact score/message/color/Card fields; and no extra return fields. Non-scoring, non-play, and repetition queries without the legacy flag produce no roll or sound. A supplied legacy flag still reaches the unchanged repetition callback. The test asserts the scoring callback does not write that flag, keeping POST-A1 separate. All 19 Lua harnesses, Lua 5.1 compilation, TOML/native payload controls, and focused LuaJIT pass. These are source/headless checks, not Balatro audio-thread execution.
 
 Native asset check: the installed Balatro executable archive on this machine lists `resources/sounds/generic1.ogg` and not `resources/sounds/dice.ogg`. Other hosts should skip this optional archive check when the executable is unavailable; do not infer sound-thread behavior from the archive listing. The archive check passed locally; it is not game execution.
 
-Human test: seed EYEFTHTG, record salt and game/framework/mod versions, White stake, Red Deck then Colosseum, Dice/Croupier sticker on a playing card, no unrelated options except named comparison mods. With sound enabled and muted, score each die result1–6 and score repeatedly, including Red Seal. Verify no missing-file/audio-thread crash and unchanged +8 Mult/+30 Chips/X2 output, message, RNG and pitch. Cold restart and repeat. Separately record whether 5/6 actually retrigger: the missing `croupier_rolled_high` flag producer is POST-A1 and is not repaired by this sound change. No agent game execution is claimed.
+Human test: use seed EYEFTHTG, recording salt and exact game/framework/mod versions; White stake, Red Deck then Colosseum; apply Dice/Croupier to a playing card. With sound enabled and muted, score each die result 1–6, including ordinary and Red Seal repeated scoring. Verify no missing-file/audio-thread crash and unchanged +8 Mult/+30 Chips/X2 output, message, RNG and pitch. Cold restart and repeat. Separately record whether 5/6 actually retrigger: the missing `croupier_rolled_high` flag producer is POST-A1 and is not repaired by this sound change. No agent game execution is claimed.
+
+### POST-N6 — Hieroglyph changes difficulty Ante and regenerates encounter schedule
+
+Ante1→0 and5→4 with Hieroglyph; Petroglyph too. Record slot, all keys/IDs/params, usage counts, tags, Ward token and target before/after, then cold restart and actual next-Ante advance. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-#9 — Starter Perishables are continuously refreshed by Thanatos
+
+Track both actual starter tallies through each Blind to zero, regular/fused/showdown/milestone defeat, independently owned ordinary Perishables and Rental cleansing, copy/restore and cold restart. Native expiry and current source cleansing controls pass; the human policy refreshes every Perishable after Thanatos, including starters, with the existing every-semantic-showdown trigger. Policy disposition is NOT_A_BUG; real gameplay/cleanup/save checks remain unrun and must not be marked verified from source adapters.
+
+### POST-N8 — Shop and pack duplicate Joker offers escape owner-only check
+
+No Showman: owned, same-shop and same-Buffoon-pack keys; Critic/Taster replacements and repeated rerolls. Live/debuffed Showman and deliberate forced-key controls. Preserve ordinary rarity, editions, native seed/notifications and finite-pool behavior. When selected rarity is exhausted, try eligible unique Jokers in other allowed rarities first; retain Critic no-Common while any such offer exists. Only after all allowed rarities are exhausted may native fallback repeat a key. The answered policy is recorded in BUG_BACKLOG.md; do not mark gameplay verified from historical observations or headless sinks.
+
+### POST-N3 — BOTG-adopted Familiar lacks permanent unlock/discovery
+
+Positive control: fresh unseeded profile without prior one-hand Familiar reward, generate an unseeded White stake Red Deck run, then Colosseum separately; record generated seed/salt, exact versions and canonical locked Familiar key. Preview and keep remain non-unlocking. Adopt/replace must update active Card usability, registered collection flags and Nursery marker; fully quit/reopen the game/profile/run. Separate seeded EYEFTHTG and challenge denial controls keep the active Card usable while native center/profile remain locked; configured seeded_unlocks=true permits unlocks. Exclude the separate POST-A2 one-hand writer and existing inconsistent profiles. HUMAN_TEST_NEEDED for actual game and physical save/load.
+
+Local source `beee7e9` / final head `deea505` is independently APPROVED; all19 Lua5.1 harnesses/TOML/native validators and focused LuaJIT2.1 pass. The fixture executes native SMODS.create_card/unlock/discover/Game.save_progress/SAVE_UNLOCKS/Card.save and the shipping Nursery reader. Constructor/UI/FIFO/geometry/in-memory metadata are labeled adapters; actual sprite/tooltip predicates and static Card.load bypass-field assignments are checked. Fresh default-locked center plus detached profile/meta reconstruction is agent source validation, not a Balatro or physical cold restart.
+
+### POST-N4 — Pending Echo Tags consume only one tag
+
+1/2/3 pending Echo + Negative yield3/5/7 Negative and zero pending Echo. Echo+Echo does not recursively duplicate; triggered controls, native Double Tag and cold restart. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+### POST-N9 — Long-run performance degrades and cold restart restores it
+
+Static fixture: `tests/test_long_run_profile.lua` checks inert loading, zero global changes, six-hook allowlisting, exact zero/explicit-nil argument arity, return counts and nil holes, error identity, coroutine yields, raw context reads, bounded counters/snapshots/history/report, hook ownership, stale shims across restart, optional missing functions/metrics, and missing `G`. When the sibling game dump is available, it dynamically reads and executes the installed native `Event:init`, `EventManager:add_event`, and `EventManager:update` code. If that file is absent, it prints an explicit `SKIP` and still runs all profiler checks that do not depend on the native implementation; a focused absence control intercepts `io.open` for that exact path only. Other existing harnesses retain their own installed-source requirements. The small `Object`, clock and environment are labeled test adapters; native code is read at test time and is not copied into the repo. The fixture does not run Balatro or establish actual resource growth, UI behavior, or cold-save persistence. `tests/run.py` covers Lua 5.1 and TOML/native payload controls; a separate focused run checks the profiler fixture under LuaJIT.
+
+Manual procedure: Use two fresh unseeded White-stake runs: Red Deck, then a separate Colosseum run. Leave the seed blank; record each generated seed/salt and exact Balatro, Steamodded, Lovely, Reality Warp, Amulet, JokerDisplay and retrigger-mod versions/configuration. Start the profiler explicitly from the in-game console after a run is loaded:
+
+```lua
+RWP_PROFILE = assert(SMODS.load_file('tools/long_run_profile.lua', 'reality_warp'))()
+RWP_PROFILE.start()
+print(RWP_PROFILE.report('Ante 2 before hand'))
+```
+
+Use the same console global at later checkpoints, for example `print(RWP_PROFILE.report('Ante 5 after queue drain'))`. `RWP_PROFILE.history()` returns the detached in-memory snapshots, up to the most recent 32. Call `RWP_PROFILE.stop('profiler off')` to remove its owned hooks and take one final snapshot; after reviewing history, clear `RWP_PROFILE`.
+
+Take labeled reports around comparable hands and after the native event queue drains at Ante 2, 5, 10 and the first late-run slowdown. Record Ante, round, Blind/encounter key, identity and phase, hands, inventory, retriggers, pending/complete/started queue counts, Lua heap, card/area and native-instance counts, possession/Familiar counts, encounter-state sizes, and optional Talisman metrics. Queue `started` means the event timer began, not that it is actively consuming CPU; `Game:update` dt is frame input, not CPU time. Talisman's elapsed/frame value and `LAST_CALC_TIME` are native scoring elapsed/frame metrics, not CPU attribution. A scan-limit or unavailable metric must remain marked in the report rather than being interpreted as zero.
+
+When console access is unavailable, only in a local test copy, add this complete temporary snippet to `RealityWarp.lua` after modules and aliases initialize. Pick keys that are actually unused in the current setup. It reports on F8 and toggles profiling on/off with F9 while preserving the original callback's arguments, returns, and key handling:
+
+```lua
+local profiler = assert(SMODS.load_file('tools/long_run_profile.lua', 'reality_warp'))()
+profiler.start()
+local profiling = true
+local previous_keypressed = love.keypressed
+if type(previous_keypressed) == 'function' then
+    love.keypressed = function(...)
+        local key = select(1, ...)
+        if key == 'f8' then
+            print(profiler.report('manual F8'))
+        elseif key == 'f9' then
+            if profiling then
+                profiler.stop('manual F9 off')
+                profiling = false
+            else
+                profiler.start()
+                profiling = true
+            end
+        end
+        return previous_keypressed(...)
+    end
+end
+```
+
+For an enabled/disabled overhead control, toggle F9 around matched hands in the same process and record elapsed time or observed frame rate separately from profiler metrics; F8 can print before and after each interval. The console route can resume with `RWP_PROFILE.start()`. The 32-entry history remains available across profiling sessions. Remove the temporary loader/key code and restart after collecting logs. Compare the same persistent test save before and after fully quitting/restarting Balatro, then continue until the slowdown recurs. Use backup/test saves for JokerDisplay, retrigger and Amulet isolation; do not disable a required number mod on the only copy of a large-number save. Do not force garbage collection as part of this test. The report records no real-game measurements or confirmed culprit; N9 stays HUMAN_TEST_NEEDED until a growing resource or repeated workload is isolated.
+
+### POST-N5 — Manacle-associated two-dollar loss may be Divine Zap
+
+Manacle versus another semantic Boss with no Parasitic/money-loss mechanics. Force failed/winning hand and each counterattack outcome, record exact emitter/message and dollars; disabled/defeated/next-encounter controls. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+
+POST controls: Hieroglyph preserves current Small/Big/Boss progression and already-generated skip Tags. Divine Zap is a legitimate possible global source of the Manacle-associated loss. Keep Black Hole/Blueprint exponent, Perfectionism replacement and Upgrade Roulette progression controls. N9 reads Lua heap count without forcing collection; preserve the installed native garbage-collection policy.
+
+### POST revalidation controls and policy
+
+POST-#9: current expected policy is all Perishables refreshed after every semantic showdown, including both four-round starters. With no showdown, actual native tally reaches zero and expires; a regular Blind defeat does not refresh it. Compare ordinary and starter Perishables, expired/independently debuffed cards, Rental cleansing and cold restart. No code change or game verification is claimed.
+
+POST-N3 persistence: use an unseeded test profile for the native unlock positive control, or explicitly record seeded_unlocks=true. Default seeded/challenge restrictions are intentional controls. Check native registered-center flags, profile witch_discovered_familiars, active visual/UI and Nursery after full shutdown; preview/decline/restoration must not unlock. Headless save controls use in-memory compressed meta/events and do not prove physical disk persistence.
+
+POST-N8 finite pools: test legacy and object_weights paths with enough eligible unique Jokers, then deliberately exhaust the selected rarity. Under the human's 2026-10-07 policy, try eligible unique offers in other allowed rarities first, preserving Critic no-Common while any such offer exists; use Balatro's native fallback only after every allowed rarity is exhausted. Returning nil is unsafe in native reroll callers. Preserve Showman/forced-key contracts, ordinary rarity behavior and edition/RNG/removal semantics. The source implementation remains pending independent validation and review.
+
+POST-N9 diagnostics remain opt-in and bounded, with frame input dt distinguished from CPU time. Compare current exact enabled versions against the historical report; package presence does not prove an enabled mod. No forced-GC production workaround is authorized by source evidence.

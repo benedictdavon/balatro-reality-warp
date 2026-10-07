@@ -1,8 +1,10 @@
 # Original stabilization final report
 
+Historical original-source snapshot. The human has since resumed POST; current phase state is in POST_STABILIZATION_STATUS.md and original #9 is reopened in BUG_BACKLOG.md. The original ledger and final dispositions below record the accepted original pass, not the newly reopened POST investigation.
+
 Accepted source snapshot: main/origin/main 52f76d72e9a980275446fb9707640288c573f139 (PR22). PRs 1–22 are accepted and merged. This documentation-only report branch starts from that accepted source head; its eventual merge adds no source or test changes. Public publication and controlled merging after technical approval are authorized.
 
-AGENTS.md, ISSUE.md and BUG_AUDIT.md are tracked. POST_SOL_RUNTIME_FINDINGS.md remains untouched and untracked; the latest human instruction defers all POST work.
+AGENTS.md, ISSUE.md and BUG_AUDIT.md are tracked. At this original checkpoint POST_SOL_RUNTIME_FINDINGS.md was preserved untouched and untracked, and POST was deferred. The resumed phase now tracks that unchanged input; see the historical-snapshot notice above.
 
 The original stabilization pass is complete under AGENTS.md's autonomous completion rule: all 34 original labels have an explicit final disposition, with 30 HUMAN_TEST_NEEDED, 3 STALE and 1 NOT_A_BUG. There are no unaccounted original findings or merge blockers. Every source candidate has completed applicable agent checks, technical review and actual acceptance. HUMAN_TEST_NEEDED is a terminal source disposition, not a claim of verified gameplay. No Balatro execution or cold-runtime verification is claimed.
 
@@ -144,4 +146,4 @@ Gameplay event order, real UI behavior, the actual save codec/cold restart, opti
 
 The newly discovered N1/N2/N4/N5/N6 findings remain outside the original audit, documented for separate revalidation and bounded branches. N3 is fixed; N7 was required for original #5 and is accepted, pending its game test. Familiar draws/return forwarding and active Potion Mirror secondary effects limit claims about the full outer wrapper chain. Hypnotist independent debuff cleanup and Colorful pending-removal ownership remain separate risks. Existing outer create wrappers also retain their preexisting eight-argument/one-Card-return contract; PR22 preserves native current calls and its own full forwarding contract.
 
-A/B/C intentional behaviors remain NOT_A_BUG. No consumable quantity model or badge is shipped. No POST audit or implementation is started by this report; the broader follow-up goal remains deferred by the latest human instruction. There are no unavailable external dependencies blocking the completed original source pass.
+A/B/C intentional behaviors remain NOT_A_BUG. No consumable quantity model or badge is shipped. This original report did not start POST audit or implementation; the subsequent Begin post instruction resumes that separate phase, as noted above. There are no unavailable external dependencies blocking the completed original source pass.

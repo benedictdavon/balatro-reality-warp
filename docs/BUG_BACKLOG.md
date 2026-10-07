@@ -113,15 +113,15 @@ Notes: Fresh branch from accepted adf2df084fee06bbdb6036f61ae6d8e7905f2402. Actu
 ## 9: Colosseum starting Perishable Stencils can expire, then become active again
 
 Source: ISSUE.md #9
-Classification: Historical correction with residual eligibility/ownership risk
+Classification: NOT_A_BUG under the human-confirmed all-Perishable refresh policy; original accepted effect-ownership validation remains historical provenance.
 Priority: Normal
 Dependencies: 1, 18, R4
-State: HUMAN_TEST_NEEDED
+State: NOT_A_BUG for the current reopened policy finding; original acceptance was HUMAN_TEST_NEEDED for effect/gameplay validation.
 Branch: fix/blind-effect-ownership
 PR: https://github.com/benedictdavon/balatro-reality-warp/pull/4 (accepted and merged)
 Commit: e3e3d49ef65836945eec43f8bbb70a4ed581daf9 (implementation/disposition); e3e3d49ef65836945eec43f8bbb70a4ed581daf9 (reviewed head); 8e4c2bfad92fc0572dcdb289608895d2f452e4ac (accepted merge)
 Manual test requirement: Required for gameplay/save/load; exact procedure is in REGRESSION_TESTS.md.
-Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup require human testing.
+Notes: Disabled callbacks suppress penalties after source-owned cleanup. Permanent queued effects validate game/encounter/key/phase; captured targets avoid later global lists. Athena/Phone release only their SMODS sources. Thanatos uses actual showdown metadata and recalculates after refreshing expiry; Apotheosis exempts Blind restrictions without erasing other sources/expiry. Callback/event/debuff Lua stubs pass. Winning-hand queue order and actual game cleanup still require human testing. The POST-#9 revalidation on accepted c94227d executes native expiry 4→3→2→1→0 and current showdown cleansing. Human explicitly requested refresh all Perishable after Thanatos, including starters; preserve the existing every-semantic-showdown trigger and Rental cleansing. The reopened policy finding is therefore NOT_A_BUG with no production patch. Original PR4 acceptance, its HUMAN_TEST_NEEDED status and the original 30/3/1 snapshot counts remain historical evidence; no Balatro runtime or physical-save verification is claimed.
 
 ## 10: Shortcut failed a valid one-gap Straight
 
@@ -518,7 +518,7 @@ Notes: The unchanged get_flush fallback and Card:is_suit amalgam scan in src/cor
 
 The user extended the goal to audit POST_SOL_RUNTIME_FINDINGS.md after the original ISSUE #1-20 and R1-R14 pass finishes, then repeat sequential Option A for its confirmed actionable findings. The file is present and was read completely; it reports user gameplay on main f863d0c, Balatro1.0.1o-FULL/Steamodded26.829.0/Lovely0.9.0/Amulet3.6.2/JokerDisplay1.10.9, with retrigger_joker enabled. This is reported human evidence, not agent game execution. Preserve that checkpoint for revalidation against the eventual accepted main.
 
-The report remains untracked and unchanged as a user-authored input after the original source stabilization pass. The latest human instruction defers POST work: leave this input unchanged and untracked during original stabilization. Its IDs will be source-qualified as POST-N3 through POST-N9 and POST-#9, avoiding collisions with local stabilization discoveries N1-N3. When the human resumes the deferred POST phase, it must revalidate underlying causes (including the reported starter Perishable refresh behavior), preserve the stated non-bug observations, and profile the performance finding before proposing a speculative production fix. No follow-up source patch has begun.
+The report was preserved untracked and unchanged through the original source stabilization pass. The original deferral has now been lifted by the direct human instruction Begin post. Preserve and track the report unchanged as the POST source input. Its IDs will be source-qualified as POST-N3 through POST-N9 and POST-#9, avoiding collisions with local stabilization discoveries N1-N3. The resumed POST phase must revalidate underlying causes (including the reported starter Perishable refresh behavior), preserve the stated non-bug observations, and profile the performance finding before proposing a speculative production fix. Independent local POST candidates now exist; their reviewed status is recorded below. No POST branch is published or part of accepted main.
 
 ## N4: Familiar draw wrapper drops the native early-return/argument contract
 
@@ -588,18 +588,142 @@ Notes: Native registration and Steamodded use bl_final_vessel, not bl_vessel. PR
 
 ## Original stabilization acceptance checkpoint
 
-Original ISSUE #1–20 and audit R1–R14 are all accounted for: 30 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG. Accepted source main is 52f76d72e9a980275446fb9707640288c573f139. All source candidates were reviewed and merged; no original label is BLOCKED or awaiting publication. STABILIZATION_STATUS.md contains the final branch/PR/commit ledger, validation limits, complete human queue, residual risks and recommended end-to-end sequence. At that original checkpoint, POST work was deferred; local N1/N2/N4/N5/N6 remain separately documented outside the original audit. No Balatro execution is claimed.
+At the original acceptance checkpoint, ISSUE #1–20 and audit R1–R14 were all accounted for: 30 HUMAN_TEST_NEEDED, 3 STALE, 1 NOT_A_BUG. Accepted source main was 52f76d72e9a980275446fb9707640288c573f139. All source candidates were reviewed and merged; no original label is BLOCKED or awaiting publication. STABILIZATION_STATUS.md contains the final branch/PR/commit ledger, validation limits, complete human queue, residual risks and recommended end-to-end sequence. POST was deferred at that checkpoint and is now resumed below; local N1/N2/N4/N5/N6 remain separately documented outside the original audit. No Balatro execution is claimed.
 
+## POST runtime phase checkpoint
 
-## POST-N7: Croupier/Dice sticker requests a missing sound
+Human instruction Begin post resumes the full goal after original source pass completion. Base c94227daa5b08dfe7e26497fe601b19e9ebb2b02. The immutable reported checkpoint is f863d0c; these are reported human observations, not agent Balatro execution. POST IDs are source-qualified and distinct from earlier local N1–N7. Original #9 is reopened; prior original final report remains a historical accepted source snapshot. Current phase state is in POST_STABILIZATION_STATUS.md.
 
-Source: User-reported POST-N7 runtime crash, revalidated against `src/consumables/jobs.lua` and installed native sound code.
-Classification: Source-confirmed invalid sound key; HUMAN_TEST_NEEDED for audio runtime.
+## POST-N7: Croupier calls an unavailable dice sound
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N7; reported runtime main f863d0c
+Classification: Source-confirmed missing sound; reported human crash at f863d0c
 Priority: Critical
-Dependencies: No code dependency beyond accepted main `c94227daa5b08dfe7e26497fe601b19e9ebb2b02`; POST tracking publication remains a separate administrative gate.
-State: APPROVED (local source/test review only; human runtime validation and publication/published-head review pending).
+Dependencies: Accepted main cf0d5f90ac1231a68f42e798290d29af62a0c50c; no pending production prerequisite. Human authorized POST publication 2026-10-07; published-head review remains required.
+State: APPROVED locally; HUMAN_TEST_NEEDED for real audio/gameplay; accepted-main integration complete, published PR review pending.
 Branch: fix/croupier-missing-sound
-PR: — (public POST publication awaits explicit human authorization)
-Commit: 27377d3b9529d349d234516f05450e95a4ea5902 (source/test implementation; locally approved)
-Manual test requirement: EYEFTHTG with recorded salt/versions, White stake, Red Deck and Colosseum; apply Dice to a playing card and check sound enabled/muted, die outcomes1–6, normal/Red Seal repeated scoring and cold restart. No Balatro execution has been claimed.
-Notes: The scoring callback samples `pseudorandom('dice_job', 1, 6)` once and then requests `play_sound('dice', 1.0 + roll * 0.05)`. The native sound manager falls back to `resources/sounds/<key>.ogg`; the inspected local Balatro archive contains `generic1.ogg` and no `dice.ogg`. Replace only the key with `generic1`; preserve pitch, score fields, messages, RNG and call count. POST-A1 is distinct: scoring still has no producer for `ability.croupier_rolled_high`; its existing repetition callback only reads/clears that flag. This patch does not implement or claim high-roll retrigger behavior.
+PR: Pending creation after integrated-branch validation; publication explicitly authorized 2026-10-07.
+Commit: 27377d3b9529d349d234516f05450e95a4ea5902 (immutable source/test); integrated candidate retains the reviewed source/test blobs from local head 892a8b69532d388f0788efc4de97913adf75a856 on latest accepted main cf0d5f90ac1231a68f42e798290d29af62a0c50c.
+Manual test requirement: Use EYEFTHTG with recorded salt and exact versions, White stake, Red Deck then Colosseum. Apply Dice/Croupier to a playing card; test sound enabled/muted, die outcomes 1–6, ordinary and Red Seal repeated scoring, then cold restart. Verify no missing-file/audio-thread crash and unchanged score/message/RNG behavior; record 5/6 retrigger separately as POST-A1.
+Notes: `jobs.lua` originally requested `play_sound('dice', 1.0 + roll * 0.05)`. Native `sound_manager.lua` resolves the key to `resources/sounds/<key>.ogg`; the inspected installed Balatro executable archive contains `resources/sounds/generic1.ogg` and no `resources/sounds/dice.ogg`. The patch changes only the key to `generic1`; the focused registered-sticker fixture verifies one seeded `dice_job` sample in 1–6, one two-argument sound call with the original pitch, exact score/message/color/Card fields, and non-scoring/non-play/repetition controls. All 19 harnesses, Lua 5.1 compilation, TOML/native payload checks, focused LuaJIT, and the local archive check pass. No Balatro/audio-thread execution is claimed. POST-A1 remains separate: the scoring callback still does not produce `ability.croupier_rolled_high`.
+
+## POST-N6: Hieroglyph changes difficulty Ante and regenerates encounter schedule
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N6; reported runtime main f863d0c
+Classification: Source-confirmed Ante-zero clamp and schedule/Ante conflation; persistence-sensitive
+Priority: High
+Dependencies: Accepted encounter/target contracts on main c94227daa5b08dfe7e26497fe601b19e9ebb2b02; independent of N7/N4 local code.
+State: APPROVED locally; HUMAN_TEST_NEEDED for game/save; publication/integration review pending.
+Branch: fix/hieroglyph-botg-ante
+PR: —
+Commit: 5315abcaed37cfe108637215e71b4ef5943d13eb (source/test); final local head9e7799897ac9b9a399ccd4d3b3a2fc01fcf14731
+Manual test requirement: Ante1→0 and5→4 with Hieroglyph; Petroglyph too. Record slot, all keys/IDs/params, usage counts, tags, Ward token and target before/after, then cold restart and actual next-Ante advance.
+Notes: get_botg_base_blind clamps to1; scheduler treats entry.ante inequality as new progression and set_blind likewise recommits. Numeric difficulty adjustment must not regenerate schedule or grant another progression reward. Architectural design and native progression trace required. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. Use serialized schedule generation advanced only at explicit schedule creation/BOTG cycle, migrate existing entries and Ward without refunds, and use native Ante-below-one ratio100/300: BOTG floor5000 versus Ante1 base15000. Positive curve remains unchanged. Local preparation is independent; publication requires approval and later accepted-main integration.
+
+Local implementation and review: Sol implemented directly from accepted c94227d; fresh Luna Max independently APPROVED source5315abc and complete candidatec3b8137, independently reran all19 Lua5.1/TOML/native controls and fresh-VM Lua5.1/LuaJIT reconstruction. Root final review agrees. Exact native voucher/queued Ante/progression/cycle controls use labeled UI/FIFO/Card/primitive serialization adapters. No Balatro, physical disk round trip, public PR or main integration. Full bounded brief/manuals remain on the existing local issue branch and must reconcile once on acceptance.
+
+## POST-#9: Starter Perishables are continuously refreshed by Thanatos
+
+Source: POST_SOL_RUNTIME_FINDINGS.md #9; reported runtime main f863d0c
+Classification: NOT_A_BUG: native expiration plus intentional all-Perishable showdown cleansing under human policy.
+Priority: High
+Dependencies: None; human explicitly requires refresh all Perishable after Thanatos.
+State: NOT_A_BUG
+Branch: — (no code change justified)
+PR: —
+Commit: —
+Manual test requirement: Track both actual starter tallies through each Blind to zero, regular/fused/showdown/milestone defeat, independently owned ordinary Perishables and Rental cleansing, copy/restore and cold restart.
+Notes: Native Card/Steamodded Perishable callbacks expire4→3→2→1→0; current showdown defeat refills all Perishables to5 and clears Rental. The human explicitly requires all-Perishable refresh after Thanatos. Preserve the existing every-semantic-showdown trigger; no starter exemption or new milestone policy is inferred. There is no registered Thanatos Blind; Thanatos Hourglass is the cleansing mechanic. Native source checks use labeled UI/recalculation adapters and are not game execution. Original acceptance snapshot remains historical; this live follow-up resolves its reopened policy question.
+
+## POST-N8: Shop and pack duplicate Joker offers escape owner-only check
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N8; reported runtime main f863d0c
+Classification: Source-confirmed finite-pool fallback/weighted-path escape; historical cause unproven.
+Priority: High
+Dependencies: Accepted Dark Alchemy scope; fresh accepted main. Human exhausted-rarity policy answered 2026-10-07.
+State: READY; try other allowed rarities before native fallback, preserving Critic no-Common while any eligible unique Joker remains.
+Branch: fix/shop-joker-duplicates (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: No Showman: owned, same-shop and same-Buffoon-pack keys; Critic/Taster replacements and repeated rerolls. Live/debuffed Showman and deliberate forced-key controls. Preserve rarity, editions, native seed/notifications and finite-pool behavior.
+Notes: utils.lua documented offer uniqueness only checks G.jokers; its capped retries and voucher lower creation path can leave offered duplicates. Review native pool lifecycle and all lower wrappers before selecting bounded exclusion/selection mechanism. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. Native used_jokers normally excludes owned/offered centers. Deterministic finite-catalog source test with Critic/no Showman yielded r2,r3,j_joker,j_joker: native empty-rarity fallback bypasses exclusions. Object-weight polled forced keys bypass current owned-only guard. Native reroll callers cannot accept nil. The human's 2026-10-07 answer requires eligible unique Jokers in other allowed rarities first, preserving Critic no-Common; native fallback is allowed only after all allowed rarities are exhausted.
+
+## POST-N3: BOTG-adopted Familiar lacks permanent unlock/discovery
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N3; reported runtime main f863d0c
+Classification: Source-confirmed adoption persistence and constructor-bypass defect; reviewed local patch, HUMAN_TEST_NEEDED for gameplay/physical-save behavior.
+Priority: High
+Dependencies: Accepted main/native unlock and profile-save contracts; no N7/N4 source dependency.
+State: APPROVED locally; HUMAN_TEST_NEEDED in game and physical save/load. No accepted-main integration or publication.
+Branch: fix/familiar-adoption-unlock
+PR: Pending; not created or published.
+Commit: `beee7e97161722510a680f20f9ef28bd04d2e9e2` source/test; reviewed candidate `6b44df2a4cc5f4ef0135a7c1e7547476a468c402`; final local review stamp/head `deea505c9929fdfe0e713e281a23a086a88506ec`.
+Manual test requirement: Fresh unseeded profile without a prior one-hand Familiar reward; generate an unseeded White/Red then Colosseum run and record generated seed/salt/versions/canonical reward key. Preview/keep must not unlock; adopt/replace must update usable active Card, registered collection and Nursery. Full quit/reload. Separate seeded EYEFTHTG and challenge denial controls, then configured seeded_unlocks=true positive control. Exclude POST-A2 from the fixture.
+Notes: botg_set_active_familiar sets bypass_discovery_center and instance discovered/unlocked. Both adoption handlers call it without permanent unlock/discovery update. Use report preferred policy: successful adoption unlocks/discovers; do not restrict reward pool without cause. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. Executed installed unlock_card/discover_card/Game.save_progress/SAVE_UNLOCKS with in-memory meta, FIFO/notification adapters: unseeded UDAud/profile flag persisted and reconstructed centers restored; default seeded/challenge restriction and configured seeded_unlocks control respected. No physical disk/game restart. Boot defaults precede SAVE_UNLOCKS, so do not remove them speculatively. Pass discovery bypass before Card construction and unlock/profile-save only successful adoption/replacement; restoration/preview/decline must not unlock.
+
+Local patch evidence: canonical prevalidation and actual-center validation precede destructive replacement; SMODS.create_card receives bypass before construction. The setter returns the active Card without permanent unlock. Successful adopt/replace invokes native unlock/discover, then saves a new current-profile Nursery marker only after actual center flags permit it. Root independently inspected complete source/test/docs/native contracts and passed all19 Lua5.1 harnesses/TOML/native validator controls plus focused LuaJIT2.1. Actual native save/restore APIs and Nursery reader execute with labeled constructor/UI/FIFO/in-memory metadata adapters and a fresh default-locked center; native Card:save executes while Card:load bypass assignments are static contracts. No Balatro or physical disk test; the independent one-hand writer and existing inconsistent-profile migration remain excluded. Before eventual publication integrate then-accepted main and re-review this same branch.
+
+## POST-N4: Pending Echo Tags consume only one tag
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N4; reported runtime main f863d0c
+Classification: Source-confirmed break in pending Echo scan
+Priority: Medium
+Dependencies: Accepted main c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no N7 source dependency; native Tag contracts validated.
+State: APPROVED locally; HUMAN_TEST_NEEDED for game; publication/integration review pending.
+Branch: fix/echo-tag-stacking
+PR: —
+Commit: 81dbce3056afc51865578eb7aef5acd11f0004c3 (source/test); reviewed local head04dd210814230d256a4af1d38b9325d26186039c
+Manual test requirement: 1/2/3 pending Echo + Negative yield3/5/7 Negative and zero pending Echo. Echo+Echo does not recursively duplicate; triggered controls, native Double Tag and cold restart.
+Notes: tags.lua calls lower add_tag, iterates backward, queues two copies and breaks after first Echo. Need a stable pending-owner snapshot because Tag:yep mutates/removes live tags; mark once and bypass Echo recursion on generated copies. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. All19 Lua5.1 harnesses, TOML/native validator controls and focused LuaJIT2.1 pass; Root independently reviewed/reran. Owners are reserved before lower reentrancy, every owner adds two key-only copies once. Native run deletion clears ordinary receipt/removal events; native transient triggered flag is not serialized. Existing Overseer one-argument/first-return contract remains unchanged. No public PR or accepted-main integration; real animation/removal/mid-animation save unverified.
+
+## POST-N9: Long-run performance degrades and cold restart restores it
+
+Source: `POST_SOL_RUNTIME_FINDINGS.md`, N9 (user-authored report tracked on `docs/post-runtime-backlog`); symptom reported on historical main `f863d0c`.
+Classification: Reported runtime symptom confirmed by the user's test; exact source cause remains HUMAN_TEST_NEEDED.
+Priority: High
+Dependencies: Revalidated on accepted main `c94227daa5b08dfe7e26497fe601b19e9ebb2b02`; independent of unpublished source candidates. Any later production fix needs its own measured cause and review.
+State: APPROVED locally; HUMAN_TEST_NEEDED for measured cause/gameplay. No accepted-main integration or publication.
+Branch: `feat/opt-in-runtime-profiling`
+PR: Publication authorized 2026-10-07; pending accepted-main integration and published-head review; no PR opened.
+Commit: `33786ff4bebdcd5c409a81cedd99f7f4e16f7ea1` (profiler source and original focused test); `5ad68e6396365fa951adceb53c00aaf18d5868b2` (test-only optional-native correction). All 19 Lua harnesses, Lua 5.1 compilation, TOML/installed-payload controls, focused LuaJIT 2.1, and the simulated-missing-native-Event Lua 5.1 control passed. Reviewed corrected candidate `f8a6a76f5940f49d4b1802a80b0263390f052a93`; final local review-stamp head `444ec2cdcec58ae9b10d1cd6c6dde188ee13390c`. Sol also independently passed native-absent Lua5.1/LuaJIT controls and file-opener restoration. No real-game or cold-save run is claimed.
+Manual test requirement: Required. Use the exact fresh unseeded Red Deck and separate Colosseum procedure in `REGRESSION_TESTS.md`, capture Ante 2/5/10/late reports before and after comparable hands and queue drain, compare the same save after a full restart, isolate optional mods on backup saves, and compare matched hands with profiling enabled and disabled.
+Notes: The candidate adds an explicitly loaded profiler module only; `RealityWarp.lua` automatic loading remains unchanged. Six wrappers are direct tail-forwarders with session-token protection. The focused Lua 5.1/JIT tests dynamically execute installed native Event code when its sibling dump exists; otherwise this integration prints `SKIP` while the other profiler checks continue. A focused Lua 5.1 control simulates that absence by intercepting `io.open` only for the Event path. Small class/clock objects are labeled adapters. Queue `start_timer` and Talisman's elapsed/frame metrics are not CPU attribution. No leak, duplicated workload, or culpable mod has been identified. See the bounded POST-N9 brief for exclusions and risks. No real-game or physical-save test was run.
+
+## POST-N5: Manacle-associated two-dollar loss may be Divine Zap
+
+Source: POST_SOL_RUNTIME_FINDINGS.md N5; reported runtime main f863d0c
+Classification: Source explains a legitimate global BOTG counterattack; historical callback attribution remains unverified
+Priority: Low
+Dependencies: No pending source prerequisite for isolated native-counter attribution.
+State: HUMAN_TEST_NEEDED
+Branch: docs/manacle-counterattack-validation (planned; not created)
+PR: —
+Commit: —
+Manual test requirement: Manacle versus another semantic Boss with no Parasitic/money-loss mechanics. Force failed/winning hand and each counterattack outcome, record exact emitter/message and dollars; disabled/defeated/next-encounter controls.
+Notes: botg_combat.lua queues an encounter-owned failed-hand counterattack; its first third loses up to2 and explicitly displays Divine Zap. No Manacle-specific patch unless isolated evidence contradicts this explanation. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. Executed native press_play/Steamodded dispatch plus current owned counter with labeled UI/FIFO/probability/Card adapters. Failed-hand Divine Zap removes up to2, only enabled current owner; zero/negative funds never heal, winning/disabled/defeated/replaced-run or same-key/new-ID queues cancel. Source explanation is valid; actual historical emitter needs human game observation. No Manacle-specific patch justified.
+
+## POST-A1: Croupier high-roll retrigger flag has no producer
+
+Source: Newly discovered during POST-N7 source review; outside the posted findings.
+Classification: Source-confirmed tooltip/flag discrepancy; native repetition ordering requires independent trace
+Priority: Normal
+Dependencies: POST-N7 crash fix; native playing-card/sticker repetition contract
+State: DISCOVERED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Force5/6 versus1–4, record scoring/repetition order and actual extra evaluations with Red Seal, debuff and repeated hands. Avoid self-retrigger loops.
+Notes: jobs.lua reads and clears ability.croupier_rolled_high but repository search finds no writer. Current high rolls return X2 without setting that flag. This is independently actionable from the missing-sound crash and excluded from its minimal sound patch. Do not claim high-roll retriggers were repaired by a feedback-only change.
+
+## POST-A2: One-hand Familiar reward writes Nursery discovery despite native unlock denial
+
+Source: Newly discovered during POST-N3 adoption/persistence trace; src/core/utils.lua Blind:defeat one-hand Familiar unlock path on accepted c94227d.
+Classification: Source-confirmed independent profile-policy inconsistency; outside the posted adoption finding.
+Priority: Medium
+Dependencies: Native seeded/challenge unlock policy and registered/profile discovery contracts.
+State: DISCOVERED
+Branch: —
+PR: —
+Commit: —
+Manual test requirement: Fresh test profile, native seeded_unlocks=false, seeded/challenge run, defeat a mapped native Boss in one hand. Compare registered Familiar unlocked/discovered with profile witch_discovered_familiars and Nursery. Unseeded and seeded_unlocks=true positive controls should agree. No agent game execution.
+Notes: Native unlock_card/discover_card decline seeded/challenge unlocks by default, but the existing one-hand defeat wrapper writes the custom profile marker true unconditionally afterward. Nursery prioritizes that marker. This writer is independent of successful adoption/replacement and does not block an adoption-only patch that checks actual native center flags. Keep it separate; do not claim adoption fixes it or repairs already inconsistent profiles.
