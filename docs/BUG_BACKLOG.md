@@ -600,7 +600,7 @@ Source: POST_SOL_RUNTIME_FINDINGS.md N7; reported runtime main f863d0c
 Classification: Source-confirmed missing sound; reported human crash at f863d0c
 Priority: Critical
 Dependencies: Accepted main `1e07dc2138708a28aa0935f7e29409610f2270b4`; no pending production prerequisite. Human authorized POST publication 2026-10-07. HUMAN_TEST_NEEDED for real audio/gameplay.
-State: MERGED (PR #25); HUMAN_TEST_NEEDED for real audio/gameplay.
+State: HUMAN_TEST_NEEDED
 Branch: fix/croupier-missing-sound
 PR: [#25](https://github.com/benedictdavon/balatro-reality-warp/pull/25), merged.
 Commit: 27377d3b9529d349d234516f05450e95a4ea5902 (immutable source/test); published review head `5249913c0de438e40173494a91dd927686cb0b46`; merged by accepted-main commit `1e07dc2138708a28aa0935f7e29409610f2270b4`. The reviewed source/test blobs remain unchanged from pre-integration head 892a8b69532d388f0788efc4de97913adf75a856.
@@ -613,10 +613,10 @@ Source: POST_SOL_RUNTIME_FINDINGS.md N6; reported runtime main f863d0c
 Classification: Source-confirmed Ante-zero clamp and schedule/Ante conflation; persistence-sensitive
 Priority: High
 Dependencies: Accepted encounter/target contracts on main `1e07dc2138708a28aa0935f7e29409610f2270b4`; independent of N7/N4 source code. Public POST publication is authorized.
-State: Integrated with latest accepted main; APPROVED locally; HUMAN_TEST_NEEDED for game/save; published-head review pending.
+State: PR_OPEN; HUMAN_TEST_NEEDED for game/save; published-head review pending.
 Branch: fix/hieroglyph-botg-ante
-PR: Pending creation after integrated validation.
-Commit: `5315abcaed37cfe108637215e71b4ef5943d13eb` (immutable source/test); previously reviewed candidate `9e7799897ac9b9a399ccd4d3b3a2fc01fcf14731`; integrated with accepted main `1e07dc2138708a28aa0935f7e29409610f2270b4` without production or test changes.
+PR: [#26](https://github.com/benedictdavon/balatro-reality-warp/pull/26), open against main.
+Commit: `5315abcaed37cfe108637215e71b4ef5943d13eb` (immutable source/test); previously reviewed candidate `9e7799897ac9b9a399ccd4d3b3a2fc01fcf14731`; integrated by merge commit `b462325f1be4ced46b5b1d90be03f07c7057a433` with accepted main `1e07dc2138708a28aa0935f7e29409610f2270b4` without production or test changes.
 Manual test requirement: EYEFTHTG with recorded salt and versions, White stake, Red Deck then Colosseum; test Hieroglyph and Petroglyph independently at Ante 1→0 and 5→4. Record all slot states, current slot, canonical keys/IDs/generations/params, skip Tags, boss-use counts, Ward and targets before purchase, before queued HUD update and after completion. Then complete actual Boss progression back to a visited numeric Ante and the Ante24 cycle; cold quit/reload before/after voucher and progression boundaries, including legacy metadata. Verify future difficulty decreases, native hand/discard costs stay fixed, current identity/tags/params and spent Ward remain, and explicit progression produces one new schedule and Ward.
 Notes: Source confirms the accepted-main scheduler and `set_blind` treated raw `entry.ante` inequality as new progression, while BOTG base clamped Ante to 1. The patch separates serialized `schedule_generation` from numeric difficulty, advances it only at explicit new-schedule creation/BOTG cycle, and migrates old schedule/Ward metadata without reroll or refund. Ante below 1 uses the native 100/300 ratio: BOTG floor5000 versus Ante1 base15000; all positive-Ante curve/modifier/cap behavior remains. Reviewed source/test blobs are unchanged through main integration. All 20 Lua 5.1 harnesses, TOML/native validator controls, focused LuaJIT, and standalone fresh-VM `tests/test_ante_cold_restart.py` under Lua 5.1 and LuaJIT pass. Native voucher/queued Ante/progression/cycle controls execute installed source with labeled UI/FIFO/Card/serialization adapters. No Balatro or physical save round trip is claimed; published-head review and human runtime validation remain required.
 
