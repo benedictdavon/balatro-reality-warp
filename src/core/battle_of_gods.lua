@@ -320,22 +320,28 @@ end
 -- Intercept the framework's explicit new-Ante schedule creation before it rolls candidates.
 if SMODS.reset_blind_choices then
     local original = SMODS.reset_blind_choices
+    local function pack(...) return {n = select('#', ...), ...} end
     function SMODS.reset_blind_choices(choices, ...)
         if G.GAME.battle_of_gods then
+            reality_warp_begin_blind_schedule()
+            G.GAME.round_resets.blind_order = {'Small', 'Big', 'Boss'}
+            G.GAME.round_resets.blind_choices = choices or G.GAME.round_resets.blind_choices or {}
             reality_warp_schedule_blinds(true)
             return
         end
-        local result = original(choices, ...)
+        local result = pack(original(choices, ...))
+        reality_warp_begin_blind_schedule()
         reality_warp_schedule_blinds(false)
-        return result
+        return unpack(result, 1, result.n)
     end
 end
 
 if reset_blinds then
     local original = reset_blinds
+    local function pack(...) return {n = select('#', ...), ...} end
     function reset_blinds(...)
         local boss_defeated = G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Boss == 'Defeated'
-        local result = original(...)
+        local result = pack(original(...))
         local sel_fam = get_nursery_selected_fam and get_nursery_selected_fam()
         if G.GAME.battle_of_gods or sel_fam then
             if init_botg_familiars_area then init_botg_familiars_area() end
@@ -351,7 +357,7 @@ if reset_blinds then
         local migrating = not G.GAME.round_resets.reality_warp_encounters
         reality_warp_schedule_blinds(not boss_defeated and G.GAME.reality_warp_refresh_pending, migrating)
         G.GAME.reality_warp_refresh_pending = nil
-        return result
+        return unpack(result, 1, result.n)
     end
 end
 
@@ -529,7 +535,9 @@ local function make_botg_big_amount(mantissa, exponent)
 end
 
 local function get_botg_base_blind(ante)
-    local a = math.max(1, ante)
+    -- Preserve native below-one difficulty (100/300 of the Ante-one base).
+    if ante < 1 then return botg_ante_bases[1] / 3 end
+    local a = ante
     if a <= 8 then
         return botg_ante_bases[a]
     end
@@ -750,6 +758,7 @@ G.FUNCS.confirm_battle_of_gods = function(e)
     end
 
     -- Reset Battle of Gods state & Antes to 1
+    reality_warp_begin_blind_schedule()
     G.GAME.battle_of_gods = true
     G.GAME.won = false
     G.GAME.win_notified = false

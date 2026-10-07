@@ -2,6 +2,38 @@
 local preview_slot
 local slots = {'Small', 'Big', 'Boss'}
 
+-- Ante is difficulty, not a schedule identity: vouchers may change it mid-cycle.
+function reality_warp_ensure_blind_schedule()
+    local game, resets = G.GAME, G.GAME.round_resets
+    local generation = resets.reality_warp_schedule_generation or 1
+    resets.reality_warp_schedule_generation = generation
+    for _, entry in pairs(resets.reality_warp_encounters or {}) do
+        entry.schedule_generation = entry.schedule_generation or generation
+    end
+    local active = game.reality_warp_active_encounter
+    if active and not active.schedule_generation then
+        local scheduled = (resets.reality_warp_encounters or {})[active.slot]
+        active.schedule_generation = scheduled and scheduled.id == active.id and
+            scheduled.schedule_generation or generation
+    end
+    -- Adopt legacy allowances, including an explicit consumed value, without refund.
+    if resets.reality_warp_ward_generation == nil and
+        (resets.reality_warp_ward_ante ~= nil or resets.divine_ward_free ~= nil) then
+        resets.reality_warp_ward_generation = generation
+    end
+    return generation
+end
+
+function reality_warp_begin_blind_schedule()
+    local resets = G.GAME.round_resets
+    local existing = resets.reality_warp_schedule_generation ~= nil or
+        resets.reality_warp_encounters ~= nil or G.GAME.reality_warp_active_encounter ~= nil
+    local generation = reality_warp_ensure_blind_schedule()
+    if existing then generation = generation + 1 end
+    resets.reality_warp_schedule_generation = generation
+    return generation
+end
+
 function reality_warp_blind_category(definition)
     if reality_warp_blind_is_showdown(definition) then return 'showdown' end
     if definition and definition.reality_warp_fused then return 'fused' end
@@ -59,10 +91,12 @@ end
 function reality_warp_commit_blind(slot, key, migrating)
     assert(G.P_BLINDS[key], 'Reality Warp: cannot commit unknown Blind ' .. tostring(key))
     local game, resets = G.GAME, G.GAME.round_resets
+    local generation = reality_warp_ensure_blind_schedule()
     game.reality_warp_encounter_sequence = (game.reality_warp_encounter_sequence or 0) + 1
     resets.reality_warp_encounters = resets.reality_warp_encounters or {}
     local entry = {id = game.reality_warp_encounter_sequence, key = key, slot = slot,
-        ante = resets.ante, category = reality_warp_blind_category(G.P_BLINDS[key])}
+        ante = resets.ante, schedule_generation = generation,
+        category = reality_warp_blind_category(G.P_BLINDS[key])}
     entry.params = parameters(key, entry.id, migrating)
     resets.reality_warp_encounters[slot] = entry
     resets.blind_choices[slot] = key
@@ -99,14 +133,15 @@ end
 
 function reality_warp_schedule_blinds(refresh, migrating)
     local resets = G.GAME.round_resets
+    local generation = reality_warp_ensure_blind_schedule()
     resets.blind_choices = resets.blind_choices or {}
     local entries = resets.reality_warp_encounters or {}
     for _, slot in ipairs(slots) do
         local entry, key = entries[slot], resets.blind_choices[slot]
         local state = (resets.blind_states or {})[slot]
-        local new_ante = not entry or entry.ante ~= resets.ante
+        local new_schedule = not entry or entry.schedule_generation ~= generation
         local refresh_slot = refresh and state ~= 'Defeated' and state ~= 'Skipped' and state ~= 'Current'
-        if new_ante or refresh_slot or not G.P_BLINDS[key] then
+        if new_schedule or refresh_slot or not G.P_BLINDS[key] then
             if (G.GAME.battle_of_gods and not migrating) or not G.P_BLINDS[key] then key = choose_slot(slot) end
             reality_warp_commit_blind(slot, key, migrating)
         elseif entry.key ~= key then
@@ -115,7 +150,8 @@ function reality_warp_schedule_blinds(refresh, migrating)
         end
         entries = resets.reality_warp_encounters
     end
-    if G.GAME.battle_of_gods and resets.reality_warp_ward_ante ~= resets.ante then
+    if G.GAME.battle_of_gods and resets.reality_warp_ward_generation ~= generation then
+        resets.reality_warp_ward_generation = generation
         resets.reality_warp_ward_ante = resets.ante
         resets.divine_ward_free = true
     end
@@ -156,8 +192,9 @@ local set_blind = Blind.set_blind
 function Blind:set_blind(definition, reset, silent, ...)
     if definition and not reset then
         local slot, resets = reality_warp_current_slot(), G.GAME.round_resets
+        local generation = reality_warp_ensure_blind_schedule()
         local entry = (resets.reality_warp_encounters or {})[slot]
-        if not entry or entry.key ~= definition.key or entry.ante ~= resets.ante then
+        if not entry or entry.key ~= definition.key or entry.schedule_generation ~= generation then
             entry = reality_warp_commit_blind(slot, definition.key)
         end
         G.GAME.reality_warp_active_encounter = copy_table(entry)
@@ -166,8 +203,10 @@ function Blind:set_blind(definition, reset, silent, ...)
 end
 
 local load_blind = Blind.load
+local function pack_blind_load(...) return {n = select('#', ...), ...} end
 function Blind:load(saved, ...)
-    local result = load_blind(self, saved, ...)
+    local result = pack_blind_load(load_blind(self, saved, ...))
+    reality_warp_ensure_blind_schedule()
     local active = G.GAME.reality_warp_active_encounter
     if not active or active.key ~= reality_warp_blind_key(self) then
         -- Old saves never serialized these targets. Migrate explicitly without a UI RNG roll.
@@ -180,5 +219,5 @@ function Blind:load(saved, ...)
     local target = reality_warp_doppelganger_target()
     if target and reality_warp_blind_is(self, 'doppelganger') then target.doppelganger_reflected = true end
     self:set_text()
-    return result
+    return unpack(result, 1, result.n)
 end

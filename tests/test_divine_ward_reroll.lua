@@ -519,18 +519,24 @@ G.GAME.battle_of_gods = false
 G.GAME.round_resets.divine_ward_free = true
 assert(not reality_warp_divine_ward_free_available())
 
--- Reuse the installed encounter scheduler harness and verify the serialized allowance grants only on a new Ante.
+-- A difficulty edit does not renew the allowance; an explicit new schedule does.
 dofile(REPO_ROOT .. '/tests/test_blind_encounters.lua')
 local ward_resets = G.GAME.round_resets
 local last_ante = ward_resets.ante
+local last_ward_ante = ward_resets.reality_warp_ward_ante
 reality_warp_schedule_blinds(false)
-assert(ward_resets.divine_ward_free and ward_resets.reality_warp_ward_ante == last_ante)
+assert(not ward_resets.divine_ward_free and
+    ward_resets.reality_warp_ward_generation == ward_resets.reality_warp_schedule_generation)
 ward_resets.divine_ward_free = false
 reality_warp_schedule_blinds(false)
 assert(not ward_resets.divine_ward_free, 'A partial reset in the same Ante must not grant another Ward')
 ward_resets.ante = last_ante + 1
 reality_warp_schedule_blinds(false)
-assert(ward_resets.divine_ward_free and ward_resets.reality_warp_ward_ante == ward_resets.ante)
+assert(not ward_resets.divine_ward_free and ward_resets.reality_warp_ward_ante == last_ward_ante)
+reality_warp_begin_blind_schedule()
+reality_warp_schedule_blinds(false)
+assert(ward_resets.divine_ward_free and
+    ward_resets.reality_warp_ward_generation == ward_resets.reality_warp_schedule_generation)
 ward_resets.divine_ward_free = false
 reality_warp_schedule_blinds(false)
-assert(not ward_resets.divine_ward_free, 'The new-Ante grant is consumed once and not repeated on another reset')
+assert(not ward_resets.divine_ward_free, 'A new-schedule grant is consumed once and not repeated on partial reset')
