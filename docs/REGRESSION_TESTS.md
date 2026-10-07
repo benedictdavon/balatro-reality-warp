@@ -199,7 +199,11 @@ Reported checkpoint: f863d0c, Balatro1.0.1o-FULL, Steamodded26.829.0, Lovely0.9.
 
 ### POST-N7 — Croupier calls an unavailable dice sound
 
-Score Dice/Croupier cards for outcomes 1–6 with sound enabled/muted; compare RNG/scoring, then cold restart. Expected source behavior and unresolved policy are recorded in BUG_BACKLOG.md; do not mark current gameplay verified from historical observations or headless sinks.
+Agent regression: `tests/test_croupier_missing_sound.lua` extracts and registers the actual Croupier sticker definition. It checks both main-scoring and individual `G.play` contexts with deterministic outcomes 1–6; one `dice_job` sample in range 1–6; one `generic1` sound call with the original pitch and arity; exact score/message/color/Card fields; and no extra return fields. Non-scoring, non-play, and repetition queries without the legacy flag produce no roll or sound. A supplied legacy flag still reaches the unchanged repetition callback. The test asserts the scoring callback does not write that flag, keeping POST-A1 separate. All 19 Lua harnesses, Lua 5.1 compilation, TOML/native payload controls, and focused LuaJIT pass. These are source/headless checks, not Balatro audio-thread execution.
+
+Native asset check: the installed Balatro executable archive on this machine lists `resources/sounds/generic1.ogg` and not `resources/sounds/dice.ogg`. Other hosts should skip this optional archive check when the executable is unavailable; do not infer sound-thread behavior from the archive listing. The archive check passed locally; it is not game execution.
+
+Human test: use seed EYEFTHTG, recording salt and exact game/framework/mod versions; White stake, Red Deck then Colosseum; apply Dice/Croupier to a playing card. With sound enabled and muted, score each die result 1–6, including ordinary and Red Seal repeated scoring. Verify no missing-file/audio-thread crash and unchanged +8 Mult/+30 Chips/X2 output, message, RNG and pitch. Cold restart and repeat. Separately record whether 5/6 actually retrigger: the missing `croupier_rolled_high` flag producer is POST-A1 and is not repaired by this sound change. No agent game execution is claimed.
 
 ### POST-N6 — Hieroglyph changes difficulty Ante and regenerates encounter schedule
 

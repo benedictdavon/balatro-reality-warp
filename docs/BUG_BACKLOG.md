@@ -518,7 +518,7 @@ Notes: The unchanged get_flush fallback and Card:is_suit amalgam scan in src/cor
 
 The user extended the goal to audit POST_SOL_RUNTIME_FINDINGS.md after the original ISSUE #1-20 and R1-R14 pass finishes, then repeat sequential Option A for its confirmed actionable findings. The file is present and was read completely; it reports user gameplay on main f863d0c, Balatro1.0.1o-FULL/Steamodded26.829.0/Lovely0.9.0/Amulet3.6.2/JokerDisplay1.10.9, with retrigger_joker enabled. This is reported human evidence, not agent game execution. Preserve that checkpoint for revalidation against the eventual accepted main.
 
-The report was preserved untracked and unchanged through the original source stabilization pass. The original deferral has now been lifted by the direct human instruction Begin post. Preserve and track the report unchanged as the POST source input. Its IDs will be source-qualified as POST-N3 through POST-N9 and POST-#9, avoiding collisions with local stabilization discoveries N1-N3. The resumed POST phase must revalidate underlying causes (including the reported starter Perishable refresh behavior), preserve the stated non-bug observations, and profile the performance finding before proposing a speculative production fix. Independent local POST candidates now exist; their reviewed status is recorded below. No POST branch is published or part of accepted main.
+The report was preserved untracked and unchanged through the original source stabilization pass. The original deferral has now been lifted by the direct human instruction Begin post. Preserve and track the report unchanged as the POST source input. Its IDs will be source-qualified as POST-N3 through POST-N9 and POST-#9, avoiding collisions with local stabilization discoveries N1-N3. The resumed POST phase must revalidate underlying causes (including the reported starter Perishable refresh behavior), preserve the stated non-bug observations, and profile the performance finding before proposing a speculative production fix. Independent local POST candidates now exist; their reviewed status is recorded below. POST-N7 is published as PR #25; no POST source branch has merged into accepted main.
 
 ## N4: Familiar draw wrapper drops the native early-return/argument contract
 
@@ -599,13 +599,13 @@ Human instruction Begin post resumes the full goal after original source pass co
 Source: POST_SOL_RUNTIME_FINDINGS.md N7; reported runtime main f863d0c
 Classification: Source-confirmed missing sound; reported human crash at f863d0c
 Priority: Critical
-Dependencies: Accepted main c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no pending production prerequisite; POST publication gate.
-State: APPROVED locally; HUMAN_TEST_NEEDED for game; publication/integration review pending.
+Dependencies: Accepted main cf0d5f90ac1231a68f42e798290d29af62a0c50c; no pending production prerequisite. Human authorized POST publication 2026-10-07; published-head review remains required.
+State: PR_OPEN; HUMAN_TEST_NEEDED for real audio/gameplay; published-head review pending.
 Branch: fix/croupier-missing-sound
-PR: —
-Commit: 27377d3b9529d349d234516f05450e95a4ea5902 (source/test); reviewed local head892a8b69532d388f0788efc4de97913adf75a856
-Manual test requirement: Score Dice/Croupier cards for outcomes 1–6 with sound enabled/muted; compare RNG/scoring, then cold restart.
-Notes: jobs.lua calls dice; no matching mod registration/asset. Installed Balatro executable archive contains resources/sounds/generic1.ogg and lacks dice.ogg. Native sound fallback opens the requested filename. Replace only feedback sound; keep die seed/pitch/score semantics. Revalidated initial source on c94227daa5b08dfe7e26497fe601b19e9ebb2b02; no new agent game execution. Local feedback-only patch passes19 Lua5.1 harnesses and focused LuaJIT2.1 plus actual archive asset check. Root independently approved. No POST PR/push/merge or game execution.
+PR: [#25](https://github.com/benedictdavon/balatro-reality-warp/pull/25), open against main.
+Commit: 27377d3b9529d349d234516f05450e95a4ea5902 (immutable source/test); integrated by merge commit af0bfc784bd61ed0a952e694de605e26638e1219 on accepted main cf0d5f90ac1231a68f42e798290d29af62a0c50c; reviewed source/test blobs remain unchanged from pre-integration head 892a8b69532d388f0788efc4de97913adf75a856.
+Manual test requirement: Use EYEFTHTG with recorded salt and exact versions, White stake, Red Deck then Colosseum. Apply Dice/Croupier to a playing card; test sound enabled/muted, die outcomes 1–6, ordinary and Red Seal repeated scoring, then cold restart. Verify no missing-file/audio-thread crash and unchanged score/message/RNG behavior; record 5/6 retrigger separately as POST-A1.
+Notes: `jobs.lua` originally requested `play_sound('dice', 1.0 + roll * 0.05)`. Native `sound_manager.lua` resolves the key to `resources/sounds/<key>.ogg`; the inspected installed Balatro executable archive contains `resources/sounds/generic1.ogg` and no `resources/sounds/dice.ogg`. The patch changes only the key to `generic1`; the focused registered-sticker fixture verifies one seeded `dice_job` sample in 1–6, one two-argument sound call with the original pitch, exact score/message/color/Card fields, and non-scoring/non-play/repetition controls. All 19 harnesses, Lua 5.1 compilation, TOML/native payload checks, focused LuaJIT, and the local archive check pass. No Balatro/audio-thread execution is claimed. POST-A1 remains separate: the scoring callback still does not produce `ability.croupier_rolled_high`.
 
 ## POST-N6: Hieroglyph changes difficulty Ante and regenerates encounter schedule
 
